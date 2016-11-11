@@ -3,11 +3,11 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii2advanced',
-            'username' => 'root',
-            'password' => '',
+            'dsn' => 'mysql:host='.$dbHost.';dbname='.$dbName,
+            'username' => $dbUsername,
+            'password' => $dbPassword,
             'charset' => 'utf8',
-            'tablePrefix'=>'',
+            'tablePrefix'=>$dbTablePrefix,
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -15,7 +15,7 @@ return [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
         ],
     ],
 ];

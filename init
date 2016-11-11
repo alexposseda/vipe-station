@@ -64,6 +64,7 @@ if (empty($params['env'])) {
 }
 
 include_once "bdInit.php";
+include_once "emailInit.php";
 
 echo "\n  Start initialization ...\n\n";
 $files = getFileList("$root/environments/{$env['path']}");

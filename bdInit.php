@@ -22,3 +22,10 @@ $dbPassword = trim(fgets(STDIN));
 
 echo "\n Enter DB-tablePrefix: ";
 $dbTablePrefix = trim(fgets(STDIN));
+
+if(!mysqli_connect($dbHost,$dbUsername,$dbPassword,$dbName)){
+    echo 'Wrong DB setting';
+    exit(2);
+}else{
+
+}
