@@ -1,6 +1,6 @@
 <?php
-require_once "db.php";
 return [
+    'name' => $appSettings['name'],
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
@@ -13,10 +13,15 @@ return [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => false,
+            'useFileTransport' => $mailSetting['fileTransport'],
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => $mailSetting['host'],
+                'username' => $mailSetting['user'],
+                'password' => $mailSetting['pass'],
+                'port' => $mailSetting['port'],
+                'encryption' => $mailSetting['encryption'] ? true : false,
+            ],
         ],
     ],
 ];

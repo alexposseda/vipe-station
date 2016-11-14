@@ -63,14 +63,17 @@ if (empty($params['env'])) {
     }
 }
 
-include_once "bdInit.php";
-include_once "emailInit.php";
+include_once "console/Init/appNameInit.php";
+include_once "console/Init/bdInit.php";
+include_once "console/Init/emailInit.php";
 
 echo "\n  Start initialization ...\n\n";
 $files = getFileList("$root/environments/{$env['path']}");
 if (isset($env['skipFiles'])) {
     $skipFiles = $env['skipFiles'];
-    array_walk($skipFiles, function(&$value) use($env, $root) { $value = "$root/$value"; });
+    array_walk($skipFiles, function (&$value) use ($env, $root) {
+        $value = "$root/$value";
+    });
     $files = array_diff($files, array_intersect_key($env['skipFiles'], array_filter($skipFiles, 'file_exists')));
 }
 $all = false;
@@ -88,10 +91,6 @@ foreach ($callbacks as $callback) {
 }
 
 echo "\n  ... initialization completed.\n\n";
-
-
-
-
 
 function getFileList($root, $basePath = '')
 {
