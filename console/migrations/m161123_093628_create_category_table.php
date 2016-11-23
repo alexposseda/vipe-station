@@ -17,7 +17,7 @@
                 'title'      => $this->string()
                                      ->unique()
                                      ->notNull(),
-                'parent'     => $this->integer(),
+                'parent'     => $this->integer()->defaultValue(null),
                 'slug'       => $this->string()
                                      ->unique()
                                      ->notNull(),

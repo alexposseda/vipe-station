@@ -3,10 +3,10 @@
     use yii\db\Migration;
 
     /**
-     * Handles the creation of table `{{%product_characteristic}}`.
+     * Handles the creation of table `{{%cart}}`.
      */
-    class m161123_124135_create_product_characteristic_table extends Migration{
-        protected $tableName = '{{%product_characteristic}}';
+    class m161123_134642_create_cart_table extends Migration{
+        protected $tableName = '{{%cart}}';
 
         /**
          * @inheritdoc
@@ -18,20 +18,23 @@
             }
             $this->createTable($this->tableName, [
                 'id'         => $this->primaryKey(),
-                'category_id' => $this->integer()->notNull(),
-                'title' => $this->string()->notNull(),
+                'user_id'    => $this->integer(),
+                'guest_id'   => $this->string(),
+                'product_id' => $this->integer()->notNull(),
+                'options'    => $this->string()->defaultValue(json_encode([])),
+                'quantity'   => $this->integer()->notNull(),
                 'created_at' => $this->integer(),
                 'updated_at' => $this->integer(),
             ], $tableOptions);
 
-            $this->addForeignKey('FK_ProductCharacteristic_TO_Category', $this->tableName, 'category_id', '{{%category}}', 'id', 'CASCADE', 'CASCADE');
+            $this->addForeignKey('FK_Cart_TO_User', $this->tableName, 'user_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
         }
 
         /**
          * @inheritdoc
          */
         public function down(){
-            $this->dropForeignKey('FK_ProductCharacteristic_TO_Category', $this->tableName);
+            $this->dropForeignKey('FK_Cart_TO_User', $this->tableName);
             $this->dropTable($this->tableName);
         }
     }

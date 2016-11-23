@@ -22,7 +22,7 @@
                                             ->notNull(),
                 'product_id'        => $this->integer()
                                             ->notNull(),
-                'value'             => $this->string(),
+                'value'             => $this->string()->notNull(),
                 'created_at'        => $this->integer(),
                 'updated_at'        => $this->integer(),
             ], $tableOptions);

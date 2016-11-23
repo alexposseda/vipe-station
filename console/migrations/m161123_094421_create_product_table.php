@@ -23,13 +23,20 @@
                                         ->unique(),
                 'cover'         => $this->string(),
                 'gallery'       => $this->text(),
-                'description'   => $this->text()->notNull(),
-                'base_price'    => $this->float()->notNull()->defaultValue(0),
-                'base_quantity' => $this->integer()->notNull()->defaultValue(0),
+                'description'   => $this->text()
+                                        ->notNull(),
+                'base_price'    => $this->float()
+                                        ->notNull()
+                                        ->defaultValue(0),
+                'base_quantity' => $this->integer()
+                                        ->notNull()
+                                        ->defaultValue(0),
                 'slug'          => $this->string()
                                         ->unique()
                                         ->notNull(),
-                'seo_id'        => $this->integer(),
+                'sales'         => $this->integer()->defaultValue(0),
+                'views'         => $this->integer()->defaultValue(0),
+                'seo_id'        => $this->integer()->defaultValue(null),
                 'created_at'    => $this->integer(),
                 'updated_at'    => $this->integer(),
             ], $tableOptions);

@@ -22,7 +22,7 @@
                                             ->notNull(),
                 'product_id'        => $this->integer()
                                             ->notNull(),
-                'value'             => $this->string(),
+                'value'             => $this->string()->notNull(),
                 'delta_price'       => $this->float()
                                             ->defaultValue(0),
                 'quantity'          => $this->integer()
