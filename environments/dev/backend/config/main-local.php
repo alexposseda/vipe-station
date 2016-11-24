@@ -19,6 +19,15 @@ if (!YII_ENV_TEST) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
+        'generators' => [ //here
+                          'model' => [
+                              'class' => 'yii\gii\generators\model\Generator', // generator class
+                              'templates' => [
+                                  'Time_Model' => '@common/gii/modeltsb', // template name => path to template
+                                  'Time&Slug_Model' => '@common/gii/modelslug', // template name => path to template
+                              ]
+                          ]
+        ],
     ];
 }
 

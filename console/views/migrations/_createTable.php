@@ -15,10 +15,11 @@
             <?= "'{$field['property']}' => \$this->{$field['decorators']}" ?>,
 <?php endif;
 endforeach; ?>
+
     'created_at'           => $this->integer(),
     'updated_at'           => $this->integer(),
         ], $tableOptions);
-<?= $this->render('@yii/views/_addForeignKeys', [
+<?= $this->render('_addForeignKeys', [
     'table' => $table,
     'foreignKeys' => $foreignKeys,
 ]);

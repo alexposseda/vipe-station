@@ -6,7 +6,7 @@
 /* @var $table string the name table */
 /* @var $foreignKeys array the foreign keys */
 
-echo $this->render('@yii/views/_dropForeignKeys', [
+echo $this->render('_dropForeignKeys', [
     'table' => $table,
     'foreignKeys' => $foreignKeys,
 ]) ?>
