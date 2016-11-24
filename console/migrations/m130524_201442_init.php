@@ -37,7 +37,7 @@
             $adminEmail = '';
             while(empty($adminEmail)){
                 echo 'Enter admin email: ';
-                $adminEmail = trim(STDIN);
+                $adminEmail = trim(fgets(STDIN));
                 if(empty($adminEmail)){
                     echo "Email must be not empty!\n";
                 }
@@ -45,7 +45,7 @@
             $adminPassword = '';
             while(empty($adminPassword)){
                 echo 'Enter admin password';
-                $adminPassword = trim(STDIN);
+                $adminPassword = trim(fgets(STDIN));
                 if(empty($adminPassword)){
                     echo "Password must be not empty!\n";
                 }
