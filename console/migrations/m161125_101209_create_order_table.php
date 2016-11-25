@@ -24,15 +24,20 @@
                                         ->notNull(),
                 'delivery_data' => $this->text()
                                         ->notNull(),
+                'payment_id'  => $this->integer(),
+                'total_cost'    => $this->float(),
                 'created_at'    => $this->integer(),
                 'updated_at'    => $this->integer(),
             ], $tableOptions);
+
+            $this->addForeignKey('FK_Order_TO_Payment', $this->tableName, 'payment_id', '{{%payment}}', 'id', 'SET NULL', 'CASCADE');
         }
 
         /**
          * @inheritdoc
          */
         public function down(){
+            $this->dropForeignKey('FK_Order_TO_Payment', $this->tableName);
             $this->dropTable($this->tableName);
         }
     }
