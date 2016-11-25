@@ -63,6 +63,9 @@ if (empty($params['env'])) {
     }
 }
 
+include_once "console/Init/appNameInit.php";
+include_once "console/Init/bdInit.php";
+include_once "console/Init/emailInit.php";
 
 echo "\n  Start initialization ...\n\n";
 $files = getFileList("$root/environments/{$env['path']}");
@@ -87,9 +90,6 @@ foreach ($callbacks as $callback) {
     }
 }
 
-include_once "console/Init/appNameInit.php";
-include_once "console/Init/bdInit.php";
-include_once "console/Init/emailInit.php";
 
 echo "\n  ... initialization completed.\n\n";
 
