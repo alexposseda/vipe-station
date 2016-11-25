@@ -19,7 +19,7 @@
             $this->createTable($this->tableName, [
                 'id'            => $this->primaryKey(),
                 'user_id'       => $this->integer()
-                                        ->notNull(),
+                                        ->notNull()->unique(),
                 'name'          => $this->string()
                                         ->notNull(),
                 'phones'        => $this->string(),
