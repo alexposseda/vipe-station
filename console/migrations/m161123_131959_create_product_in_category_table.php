@@ -24,7 +24,7 @@
             ], $tableOptions);
 
             $this->addPrimaryKey('PK_ProductInCategory', $this->tableName, ['category_id', 'product_id']);
-            $this->addForeignKey('FK_ProductInCategory_TO_Category', $this->tableName, 'category_id', '{{%category}}', 'id', 'SET NULL', 'CASCADE');
+            $this->addForeignKey('FK_ProductInCategory_TO_Category', $this->tableName, 'category_id', '{{%category}}', 'id', 'CASCADE', 'CASCADE');
             $this->addForeignKey('FK_ProductInCategory_TO_Product', $this->tableName, 'product_id', '{{%product}}', 'id', 'CASCADE', 'CASCADE');
         }
 
