@@ -5,7 +5,7 @@
     /**
      * Handles the creation of table `{{%order_client}}`.
      */
-    class m161125_114959_create_client_table extends Migration{
+    class m161123_085020_create_client_table extends Migration{
         protected $tableName = '{{%order_client}}';
 
         /**
