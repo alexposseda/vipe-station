@@ -21,7 +21,6 @@
                 'title'         => $this->string()
                                         ->notNull()
                                         ->unique(),
-                'cover'         => $this->string(),
                 'gallery'       => $this->text(),
                 'description'   => $this->text()
                                         ->notNull(),

@@ -4,6 +4,7 @@
 
     class m130524_201442_init extends Migration{
         protected $tableName = '{{%user}}';
+
         public function up(){
             $tableOptions = null;
             if($this->db->driverName === 'mysql'){
@@ -29,7 +30,7 @@
                                                ->defaultValue(10),
                 'phone'                => $this->string(18)
                                                ->notNull(),
-                'birthday'             => $this->integer(),
+                'client_data'          => $this->text(),
                 'created_at'           => $this->integer(),
                 'updated_at'           => $this->integer(),
             ], $tableOptions);
@@ -52,16 +53,14 @@
             }
 
             $this->insert($this->tableName, [
-                'username' => 'admin',
-                'auth_key' => Yii::$app->security->generateRandomString(),
+                'username'      => 'admin',
+                'auth_key'      => Yii::$app->security->generateRandomString(),
                 'password_hash' => Yii::$app->security->generatePasswordHash($adminPassword),
-                'email' => $adminEmail,
-                'phone' => '+000000000000',
-                'created_at' => time(),
-                'updated_at' => time()
+                'email'         => $adminEmail,
+                'phone'         => '+000000000000',
+                'created_at'    => time(),
+                'updated_at'    => time()
             ]);
-
-
         }
 
         public function down(){
