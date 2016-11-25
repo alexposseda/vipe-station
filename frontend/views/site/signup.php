@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\widgets\MaskedInput;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
@@ -19,15 +20,21 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+            <?= $form->field($model, 'email') ?>
 
-                <?= $form->field($model, 'email') ?>
+            <?= $form->field($model, 'l_name')->textInput(['autofocus' => true]) ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+            <?= $form->field($model, 'f_name')->textInput() ?>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-                </div>
+            <?= $form->field($model, 'phone')->textInput()->widget(MaskedInput::className(),['mask' => '999-999-9999']) ?>
+
+            <?= $form->field($model, 'password_repeat')->passwordInput() ?>
+
+            <?= $form->field($model, 'password')->passwordInput() ?>
+
+            <div class="form-group">
+                <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+            </div>
 
             <?php ActiveForm::end(); ?>
         </div>
