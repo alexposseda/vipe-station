@@ -19,7 +19,7 @@
             $this->createTable($this->tableName, [
                 'id'            => $this->primaryKey(),
                 'comment'       => $this->text(),
-                'status'        => "ENUM ('active', 'deleted', 'aborted', 'sent', 'confirmed') NOT NULL DEFAULT 'active'",
+                'status'        => "ENUM ('active', 'deleted', 'aborted', 'sent', 'confirmed', 'finished', 'paid') NOT NULL DEFAULT 'active'",
                 'delivery_type' => $this->integer()
                                         ->notNull(),
                 'delivery_data' => $this->text()
