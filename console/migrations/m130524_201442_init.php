@@ -14,8 +14,6 @@
 
             $this->createTable($this->tableName, [
                 'id'                   => $this->primaryKey(),
-                'username'             => $this->string()
-                                               ->notNull(),
                 'auth_key'             => $this->string(32)
                                                ->notNull(),
                 'password_hash'        => $this->string()
@@ -28,9 +26,6 @@
                 'status'               => $this->smallInteger()
                                                ->notNull()
                                                ->defaultValue(10),
-                'phone'                => $this->string(18)
-                                               ->notNull(),
-                'client_data'          => $this->text(),
                 'created_at'           => $this->integer(),
                 'updated_at'           => $this->integer(),
             ], $tableOptions);
