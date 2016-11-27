@@ -48,11 +48,9 @@
             }
 
             $this->insert($this->tableName, [
-                'username'      => 'admin',
                 'auth_key'      => Yii::$app->security->generateRandomString(),
                 'password_hash' => Yii::$app->security->generatePasswordHash($adminPassword),
                 'email'         => $adminEmail,
-                'phone'         => '+000000000000',
                 'created_at'    => time(),
                 'updated_at'    => time()
             ]);

@@ -3,10 +3,10 @@
     use yii\db\Migration;
 
     /**
-     * Handles the creation of table `{{%order_client}}`.
+     * Handles the creation of table `{{%client}}`.
      */
     class m161123_085020_create_client_table extends Migration{
-        protected $tableName = '{{%order_client}}';
+        protected $tableName = '{{%client}}';
 
         /**
          * @inheritdoc

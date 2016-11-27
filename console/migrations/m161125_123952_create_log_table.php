@@ -20,7 +20,7 @@
                 'id'          => $this->primaryKey(),
                 'action'      => $this->string(),
                 'action_data' => $this->text(),
-                'initializer' => "ENUM ('system', 'user', 'manager', 'admin) NOT NULL DEFAULT 'system'",
+                'initializer' => "ENUM ('system', 'user', 'manager', 'admin') NOT NULL DEFAULT 'system'",
                 'user_id'     => $this->integer(),
                 'created_at'  => $this->integer(),
                 'updated_at'  => $this->integer(),
