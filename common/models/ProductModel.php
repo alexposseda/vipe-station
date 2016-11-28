@@ -24,15 +24,15 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property OrderData[] $orderDatas
- * @property Manufacturer $manufacturer
- * @property Seo $seo
- * @property ProductCharacteristicItem[] $productCharacteristicItems
- * @property ProductInCategory[] $productInCategories
- * @property Category[] $categories
- * @property ProductInStock[] $productInStocks
- * @property Stock[] $stocks
- * @property ProductOption[] $productOptions
+ * @property OrderDataModel[] $orderDatas
+ * @property ManufacturerModel $manufacturer
+ * @property SeoModel $seo
+ * @property ProductCharacteristicItemModel[] $productCharacteristicItems
+ * @property ProductInCategoryModel[] $productInCategories
+ * @property CategoryModel[] $categories
+ * @property ProductInStockModel[] $productInStocks
+ * @property StockModel[] $stocks
+ * @property ProductOptionModel[] $productOptions
  */
 class ProductModel extends ActiveRecord
 {
@@ -73,8 +73,8 @@ class ProductModel extends ActiveRecord
             [['title', 'slug'], 'string', 'max' => 255],
             [['title'], 'unique'],
             [['slug'], 'unique'],
-            [['manufacturer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Manufacturer::className(), 'targetAttribute' => ['manufacturer_id' => 'id']],
-            [['seo_id'], 'exist', 'skipOnError' => true, 'targetClass' => Seo::className(), 'targetAttribute' => ['seo_id' => 'id']],
+            [['manufacturer_id'], 'exist', 'skipOnError' => true, 'targetClass' => ManufacturerModel::className(), 'targetAttribute' => ['manufacturer_id' => 'id']],
+            [['seo_id'], 'exist', 'skipOnError' => true, 'targetClass' => SeoModel::className(), 'targetAttribute' => ['seo_id' => 'id']],
         ];
     }
 
@@ -105,7 +105,7 @@ class ProductModel extends ActiveRecord
      */
     public function getOrderDatas()
     {
-        return $this->hasMany(OrderData::className(), ['product_id' => 'id']);
+        return $this->hasMany(OrderDataModel::className(), ['product_id' => 'id']);
     }
 
     /**
@@ -113,7 +113,7 @@ class ProductModel extends ActiveRecord
      */
     public function getManufacturer()
     {
-        return $this->hasOne(Manufacturer::className(), ['id' => 'manufacturer_id']);
+        return $this->hasOne(ManufacturerModel::className(), ['id' => 'manufacturer_id']);
     }
 
     /**
@@ -121,7 +121,7 @@ class ProductModel extends ActiveRecord
      */
     public function getSeo()
     {
-        return $this->hasOne(Seo::className(), ['id' => 'seo_id']);
+        return $this->hasOne(SeoModel::className(), ['id' => 'seo_id']);
     }
 
     /**
@@ -129,7 +129,7 @@ class ProductModel extends ActiveRecord
      */
     public function getProductCharacteristicItems()
     {
-        return $this->hasMany(ProductCharacteristicItem::className(), ['product_id' => 'id']);
+        return $this->hasMany(ProductCharacteristicItemModel::className(), ['product_id' => 'id']);
     }
 
     /**
@@ -137,7 +137,7 @@ class ProductModel extends ActiveRecord
      */
     public function getProductInCategories()
     {
-        return $this->hasMany(ProductInCategory::className(), ['product_id' => 'id']);
+        return $this->hasMany(ProductInCategoryModel::className(), ['product_id' => 'id']);
     }
 
     /**
@@ -145,7 +145,7 @@ class ProductModel extends ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasMany(Category::className(), ['id' => 'category_id'])->viaTable('{{%product_in_category}}', ['product_id' => 'id']);
+        return $this->hasMany(CategoryModel::className(), ['id' => 'category_id'])->viaTable('{{%product_in_category}}', ['product_id' => 'id']);
     }
 
     /**
@@ -153,7 +153,7 @@ class ProductModel extends ActiveRecord
      */
     public function getProductInStocks()
     {
-        return $this->hasMany(ProductInStock::className(), ['product_id' => 'id']);
+        return $this->hasMany(ProductInStockModel::className(), ['product_id' => 'id']);
     }
 
     /**
@@ -161,7 +161,7 @@ class ProductModel extends ActiveRecord
      */
     public function getStocks()
     {
-        return $this->hasMany(Stock::className(), ['id' => 'stock_id'])->viaTable('{{%product_in_stock}}', ['product_id' => 'id']);
+        return $this->hasMany(StockModel::className(), ['id' => 'stock_id'])->viaTable('{{%product_in_stock}}', ['product_id' => 'id']);
     }
 
     /**
@@ -169,6 +169,6 @@ class ProductModel extends ActiveRecord
      */
     public function getProductOptions()
     {
-        return $this->hasMany(ProductOption::className(), ['product_id' => 'id']);
+        return $this->hasMany(ProductOptionModel::className(), ['product_id' => 'id']);
     }
 }

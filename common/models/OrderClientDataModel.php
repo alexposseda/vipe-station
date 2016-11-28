@@ -18,8 +18,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Client $client
- * @property Order $order
+ * @property ClientModelModel $client
+ * @property OrderModelModel $order
  */
 class OrderClientDataModel extends ActiveRecord
 {
@@ -51,8 +51,8 @@ class OrderClientDataModel extends ActiveRecord
             [['client_id', 'order_id', 'created_at', 'updated_at'], 'integer'],
             [['order_id', 'name', 'phone'], 'required'],
             [['name', 'email', 'phone'], 'string', 'max' => 255],
-            [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Client::className(), 'targetAttribute' => ['client_id' => 'id']],
-            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::className(), 'targetAttribute' => ['order_id' => 'id']],
+            [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => ClientModel::className(), 'targetAttribute' => ['client_id' => 'id']],
+            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrderModel::className(), 'targetAttribute' => ['order_id' => 'id']],
         ];
     }
 
@@ -78,7 +78,7 @@ class OrderClientDataModel extends ActiveRecord
      */
     public function getClient()
     {
-        return $this->hasOne(Client::className(), ['id' => 'client_id']);
+        return $this->hasOne(ClientModel::className(), ['id' => 'client_id']);
     }
 
     /**
@@ -86,6 +86,6 @@ class OrderClientDataModel extends ActiveRecord
      */
     public function getOrder()
     {
-        return $this->hasOne(Order::className(), ['id' => 'order_id']);
+        return $this->hasOne(OrderModel::className(), ['id' => 'order_id']);
     }
 }

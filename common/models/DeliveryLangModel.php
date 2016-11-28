@@ -17,8 +17,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Delivery $delivery
- * @property Language $language0
+ * @property DeliveryModel $delivery
+ * @property LanguageModel $language0
  */
 class DeliveryLangModel extends ActiveRecord
 {
@@ -51,8 +51,8 @@ class DeliveryLangModel extends ActiveRecord
             [['delivery_id', 'language', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 255],
-            [['delivery_id'], 'exist', 'skipOnError' => true, 'targetClass' => Delivery::className(), 'targetAttribute' => ['delivery_id' => 'id']],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['language' => 'id']],
+            [['delivery_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryModel::className(), 'targetAttribute' => ['delivery_id' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
         ];
     }
 
@@ -77,7 +77,7 @@ class DeliveryLangModel extends ActiveRecord
      */
     public function getDelivery()
     {
-        return $this->hasOne(Delivery::className(), ['id' => 'delivery_id']);
+        return $this->hasOne(DeliveryModel::className(), ['id' => 'delivery_id']);
     }
 
     /**
@@ -85,6 +85,6 @@ class DeliveryLangModel extends ActiveRecord
      */
     public function getLanguage0()
     {
-        return $this->hasOne(Language::className(), ['id' => 'language']);
+        return $this->hasOne(LanguageModel::className(), ['id' => 'language']);
     }
 }

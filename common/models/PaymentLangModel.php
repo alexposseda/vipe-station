@@ -17,8 +17,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Language $language0
- * @property Payment $payment
+ * @property LanguageModel $language0
+ * @property PaymentModel $payment
  */
 class PaymentLangModel extends ActiveRecord
 {
@@ -51,8 +51,8 @@ class PaymentLangModel extends ActiveRecord
             [['payment_id', 'language', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 255],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['language' => 'id']],
-            [['payment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Payment::className(), 'targetAttribute' => ['payment_id' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
+            [['payment_id'], 'exist', 'skipOnError' => true, 'targetClass' => PaymentModel::className(), 'targetAttribute' => ['payment_id' => 'id']],
         ];
     }
 
@@ -77,7 +77,7 @@ class PaymentLangModel extends ActiveRecord
      */
     public function getLanguage0()
     {
-        return $this->hasOne(Language::className(), ['id' => 'language']);
+        return $this->hasOne(LanguageModel::className(), ['id' => 'language']);
     }
 
     /**
@@ -85,6 +85,6 @@ class PaymentLangModel extends ActiveRecord
      */
     public function getPayment()
     {
-        return $this->hasOne(Payment::className(), ['id' => 'payment_id']);
+        return $this->hasOne(PaymentModel::className(), ['id' => 'payment_id']);
     }
 }

@@ -18,7 +18,7 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Client $client
+ * @property ClientModel $client
  */
 class User extends ActiveRecord
 {
@@ -78,6 +78,6 @@ class User extends ActiveRecord
      */
     public function getClient()
     {
-        return $this->hasOne(Client::className(), ['user_id' => 'id']);
+        return $this->hasOne(ClientModel::className(), ['user_id' => 'id']);
     }
 }

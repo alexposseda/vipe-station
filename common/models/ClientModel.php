@@ -19,7 +19,7 @@ use yii\db\ActiveRecord;
  * @property integer $updated_at
  *
  * @property User $user
- * @property OrderClientData[] $orderClientDatas
+ * @property OrderClientDataModel[] $orderClientDatas
  */
 class ClientModel extends ActiveRecord
 {
@@ -87,6 +87,6 @@ class ClientModel extends ActiveRecord
      */
     public function getOrderClientDatas()
     {
-        return $this->hasMany(OrderClientData::className(), ['client_id' => 'id']);
+        return $this->hasMany(OrderClientDataModel::className(), ['client_id' => 'id']);
     }
 }

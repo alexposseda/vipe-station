@@ -16,8 +16,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Language $language0
- * @property ProductCharacteristic $productCharacteristic
+ * @property LanguageModel $language0
+ * @property ProductCharacteristicModel $productCharacteristic
  */
 class ProductCharacteristicLangModel extends ActiveRecord
 {
@@ -49,8 +49,8 @@ class ProductCharacteristicLangModel extends ActiveRecord
             [['product_characteristic_id', 'language'], 'required'],
             [['product_characteristic_id', 'language', 'created_at', 'updated_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['language' => 'id']],
-            [['product_characteristic_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductCharacteristic::className(), 'targetAttribute' => ['product_characteristic_id' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
+            [['product_characteristic_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductCharacteristicModel::className(), 'targetAttribute' => ['product_characteristic_id' => 'id']],
         ];
     }
 
@@ -74,7 +74,7 @@ class ProductCharacteristicLangModel extends ActiveRecord
      */
     public function getLanguage0()
     {
-        return $this->hasOne(Language::className(), ['id' => 'language']);
+        return $this->hasOne(LanguageModel::className(), ['id' => 'language']);
     }
 
     /**
@@ -82,6 +82,6 @@ class ProductCharacteristicLangModel extends ActiveRecord
      */
     public function getProductCharacteristic()
     {
-        return $this->hasOne(ProductCharacteristic::className(), ['id' => 'product_characteristic_id']);
+        return $this->hasOne(ProductCharacteristicModel::className(), ['id' => 'product_characteristic_id']);
     }
 }
