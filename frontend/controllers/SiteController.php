@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\components\sender\Sender;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -63,6 +64,15 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    public function actionTest(){
+        $mailer = new Sender();
+        if(!$mailer->sendMail('alexposseda@gmail.com', 'test sender', 'test')){
+            echo '<pre>'.$mailer->getErrors()[0].'</pre>';
+        }else{
+            var_dump('Success');
+        }
     }
 
     /**
