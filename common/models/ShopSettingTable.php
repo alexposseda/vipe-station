@@ -42,9 +42,9 @@ class ShopSettingTable extends ActiveRecord
     public function rules()
     {
         return [
-            [['key'], 'required'],
-            [['key', 'created_at', 'updated_at'], 'integer'],
-            [['value'], 'string'],
+            [['key','value'], 'required'],
+            [['created_at', 'updated_at'], 'integer'],
+            [['key','value'], 'string'],
             [['key'], 'unique'],
         ];
     }
