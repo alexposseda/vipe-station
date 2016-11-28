@@ -16,8 +16,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Language $language0
- * @property ProductOption $productOption
+ * @property LanguageModel $language0
+ * @property ProductOptionModel $productOption
  */
 class ProductOptionLangModel extends ActiveRecord
 {
@@ -49,8 +49,8 @@ class ProductOptionLangModel extends ActiveRecord
             [['product_option_id', 'language'], 'required'],
             [['product_option_id', 'language', 'created_at', 'updated_at'], 'integer'],
             [['value'], 'string', 'max' => 255],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['language' => 'id']],
-            [['product_option_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductOption::className(), 'targetAttribute' => ['product_option_id' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
+            [['product_option_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductOptionModel::className(), 'targetAttribute' => ['product_option_id' => 'id']],
         ];
     }
 
@@ -74,7 +74,7 @@ class ProductOptionLangModel extends ActiveRecord
      */
     public function getLanguage0()
     {
-        return $this->hasOne(Language::className(), ['id' => 'language']);
+        return $this->hasOne(LanguageModel::className(), ['id' => 'language']);
     }
 
     /**
@@ -82,6 +82,6 @@ class ProductOptionLangModel extends ActiveRecord
      */
     public function getProductOption()
     {
-        return $this->hasOne(ProductOption::className(), ['id' => 'product_option_id']);
+        return $this->hasOne(ProductOptionModel::className(), ['id' => 'product_option_id']);
     }
 }

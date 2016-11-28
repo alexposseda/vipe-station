@@ -18,8 +18,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Order $order
- * @property Product $product
+ * @property OrderModel $order
+ * @property ProductModel $product
  */
 class OrderDataModel extends ActiveRecord
 {
@@ -52,8 +52,8 @@ class OrderDataModel extends ActiveRecord
             [['order_id', 'product_id', 'quantity', 'created_at', 'updated_at'], 'integer'],
             [['price'], 'number'],
             [['options'], 'string'],
-            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::className(), 'targetAttribute' => ['order_id' => 'id']],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
+            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrderModel::className(), 'targetAttribute' => ['order_id' => 'id']],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductModel::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
 
@@ -79,7 +79,7 @@ class OrderDataModel extends ActiveRecord
      */
     public function getOrder()
     {
-        return $this->hasOne(Order::className(), ['id' => 'order_id']);
+        return $this->hasOne(OrderModel::className(), ['id' => 'order_id']);
     }
 
     /**
@@ -87,6 +87,6 @@ class OrderDataModel extends ActiveRecord
      */
     public function getProduct()
     {
-        return $this->hasOne(Product::className(), ['id' => 'product_id']);
+        return $this->hasOne(ProductModel::className(), ['id' => 'product_id']);
     }
 }

@@ -19,10 +19,10 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Delivery $delivery
- * @property Payment $payment
- * @property OrderClientData[] $orderClientDatas
- * @property OrderData[] $orderDatas
+ * @property DeliveryModel $delivery
+ * @property PaymentModel $payment
+ * @property OrderClientDataModel[] $orderClientDatas
+ * @property OrderDataModel[] $orderDatas
  */
 class OrderModel extends ActiveRecord
 {
@@ -55,8 +55,8 @@ class OrderModel extends ActiveRecord
             [['delivery_id', 'payment_id', 'created_at', 'updated_at'], 'integer'],
             [['delivery_data'], 'required'],
             [['total_cost'], 'number'],
-            [['delivery_id'], 'exist', 'skipOnError' => true, 'targetClass' => Delivery::className(), 'targetAttribute' => ['delivery_id' => 'id']],
-            [['payment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Payment::className(), 'targetAttribute' => ['payment_id' => 'id']],
+            [['delivery_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryModel::className(), 'targetAttribute' => ['delivery_id' => 'id']],
+            [['payment_id'], 'exist', 'skipOnError' => true, 'targetClass' => PaymentModel::className(), 'targetAttribute' => ['payment_id' => 'id']],
         ];
     }
 
@@ -83,7 +83,7 @@ class OrderModel extends ActiveRecord
      */
     public function getDelivery()
     {
-        return $this->hasOne(Delivery::className(), ['id' => 'delivery_id']);
+        return $this->hasOne(DeliveryModel::className(), ['id' => 'delivery_id']);
     }
 
     /**
@@ -91,7 +91,7 @@ class OrderModel extends ActiveRecord
      */
     public function getPayment()
     {
-        return $this->hasOne(Payment::className(), ['id' => 'payment_id']);
+        return $this->hasOne(PaymentModel::className(), ['id' => 'payment_id']);
     }
 
     /**
@@ -99,7 +99,7 @@ class OrderModel extends ActiveRecord
      */
     public function getOrderClientDatas()
     {
-        return $this->hasMany(OrderClientData::className(), ['order_id' => 'id']);
+        return $this->hasMany(OrderClientDataModel::className(), ['order_id' => 'id']);
     }
 
     /**
@@ -107,6 +107,6 @@ class OrderModel extends ActiveRecord
      */
     public function getOrderDatas()
     {
-        return $this->hasMany(OrderData::className(), ['order_id' => 'id']);
+        return $this->hasMany(OrderDataModel::className(), ['order_id' => 'id']);
     }
 }

@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Product[] $products
+ * @property ProductModel[] $products
  */
 class ManufacturerModel extends ActiveRecord
 {
@@ -68,6 +68,6 @@ class ManufacturerModel extends ActiveRecord
      */
     public function getProducts()
     {
-        return $this->hasMany(Product::className(), ['manufacturer_id' => 'id']);
+        return $this->hasMany(ProductModel::className(), ['manufacturer_id' => 'id']);
     }
 }

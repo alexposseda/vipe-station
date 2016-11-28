@@ -15,9 +15,9 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Category $category
- * @property ProductCharacteristicItem[] $productCharacteristicItems
- * @property ProductOption[] $productOptions
+ * @property CategoryModel $category
+ * @property ProductCharacteristicItemModel[] $productCharacteristicItems
+ * @property ProductOptionModel[] $productOptions
  */
 class ProductCharacteristicModel extends ActiveRecord
 {
@@ -49,7 +49,7 @@ class ProductCharacteristicModel extends ActiveRecord
             [['category_id', 'title'], 'required'],
             [['category_id', 'created_at', 'updated_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CategoryModel::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
 
@@ -72,7 +72,7 @@ class ProductCharacteristicModel extends ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+        return $this->hasOne(CategoryModel::className(), ['id' => 'category_id']);
     }
 
     /**
@@ -80,7 +80,7 @@ class ProductCharacteristicModel extends ActiveRecord
      */
     public function getProductCharacteristicItems()
     {
-        return $this->hasMany(ProductCharacteristicItem::className(), ['characteristic_id' => 'id']);
+        return $this->hasMany(ProductCharacteristicItemModel::className(), ['characteristic_id' => 'id']);
     }
 
     /**
@@ -88,6 +88,6 @@ class ProductCharacteristicModel extends ActiveRecord
      */
     public function getProductOptions()
     {
-        return $this->hasMany(ProductOption::className(), ['characteristic_id' => 'id']);
+        return $this->hasMany(ProductOptionModel::className(), ['characteristic_id' => 'id']);
     }
 }

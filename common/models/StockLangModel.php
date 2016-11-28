@@ -17,8 +17,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Language $language0
- * @property Stock $stock
+ * @property LanguageModel $language0
+ * @property StockModel $stock
  */
 class StockLangModel extends ActiveRecord
 {
@@ -51,8 +51,8 @@ class StockLangModel extends ActiveRecord
             [['stock_id', 'language', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
             [['title'], 'string', 'max' => 255],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => Language::className(), 'targetAttribute' => ['language' => 'id']],
-            [['stock_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stock::className(), 'targetAttribute' => ['stock_id' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
+            [['stock_id'], 'exist', 'skipOnError' => true, 'targetClass' => StockModel::className(), 'targetAttribute' => ['stock_id' => 'id']],
         ];
     }
 
@@ -77,7 +77,7 @@ class StockLangModel extends ActiveRecord
      */
     public function getLanguage0()
     {
-        return $this->hasOne(Language::className(), ['id' => 'language']);
+        return $this->hasOne(LanguageModel::className(), ['id' => 'language']);
     }
 
     /**
@@ -85,6 +85,6 @@ class StockLangModel extends ActiveRecord
      */
     public function getStock()
     {
-        return $this->hasOne(Stock::className(), ['id' => 'stock_id']);
+        return $this->hasOne(StockModel::className(), ['id' => 'stock_id']);
     }
 }
