@@ -17,8 +17,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Category[] $categories
- * @property Product[] $products
+ * @property CategoryModel[] $categories
+ * @property ProductModel[] $products
  */
 class SeoModel extends ActiveRecord
 {
@@ -75,7 +75,7 @@ class SeoModel extends ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasMany(Category::className(), ['seo_id' => 'id']);
+        return $this->hasMany(CategoryModel::className(), ['seo_id' => 'id']);
     }
 
     /**
@@ -83,6 +83,6 @@ class SeoModel extends ActiveRecord
      */
     public function getProducts()
     {
-        return $this->hasMany(Product::className(), ['seo_id' => 'id']);
+        return $this->hasMany(ProductModel::className(), ['seo_id' => 'id']);
     }
 }

@@ -16,8 +16,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property ProductCharacteristic $characteristic
- * @property Product $product
+ * @property ProductCharacteristicModel $characteristic
+ * @property ProductModel $product
  */
 class ProductCharacteristicItemModel extends ActiveRecord
 {
@@ -49,8 +49,8 @@ class ProductCharacteristicItemModel extends ActiveRecord
             [['characteristic_id', 'product_id', 'value'], 'required'],
             [['characteristic_id', 'product_id', 'created_at', 'updated_at'], 'integer'],
             [['value'], 'string', 'max' => 255],
-            [['characteristic_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductCharacteristic::className(), 'targetAttribute' => ['characteristic_id' => 'id']],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
+            [['characteristic_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductCharacteristicModel::className(), 'targetAttribute' => ['characteristic_id' => 'id']],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductModel::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
 
@@ -74,7 +74,7 @@ class ProductCharacteristicItemModel extends ActiveRecord
      */
     public function getCharacteristic()
     {
-        return $this->hasOne(ProductCharacteristic::className(), ['id' => 'characteristic_id']);
+        return $this->hasOne(ProductCharacteristicModel::className(), ['id' => 'characteristic_id']);
     }
 
     /**
@@ -82,6 +82,6 @@ class ProductCharacteristicItemModel extends ActiveRecord
      */
     public function getProduct()
     {
-        return $this->hasOne(Product::className(), ['id' => 'product_id']);
+        return $this->hasOne(ProductModel::className(), ['id' => 'product_id']);
     }
 }

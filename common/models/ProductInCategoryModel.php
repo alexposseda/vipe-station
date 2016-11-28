@@ -14,8 +14,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Category $category
- * @property Product $product
+ * @property CategoryModel $category
+ * @property ProductModel $product
  */
 class ProductInCategoryModel extends ActiveRecord
 {
@@ -46,8 +46,8 @@ class ProductInCategoryModel extends ActiveRecord
         return [
             [['category_id', 'product_id'], 'required'],
             [['category_id', 'product_id', 'created_at', 'updated_at'], 'integer'],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CategoryModel::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductModel::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
 
@@ -69,7 +69,7 @@ class ProductInCategoryModel extends ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+        return $this->hasOne(CategoryModel::className(), ['id' => 'category_id']);
     }
 
     /**
@@ -77,6 +77,6 @@ class ProductInCategoryModel extends ActiveRecord
      */
     public function getProduct()
     {
-        return $this->hasOne(Product::className(), ['id' => 'product_id']);
+        return $this->hasOne(ProductModel::className(), ['id' => 'product_id']);
     }
 }

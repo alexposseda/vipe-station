@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Stock[] $stocks
+ * @property StockModel[] $stocks
  */
 class StockPolicyModel extends ActiveRecord
 {
@@ -68,6 +68,6 @@ class StockPolicyModel extends ActiveRecord
      */
     public function getStocks()
     {
-        return $this->hasMany(Stock::className(), ['policy_id' => 'id']);
+        return $this->hasMany(StockModel::className(), ['policy_id' => 'id']);
     }
 }

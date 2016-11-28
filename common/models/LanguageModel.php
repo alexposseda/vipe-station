@@ -15,13 +15,13 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property CategoryLang[] $categoryLangs
- * @property DeliveryLang[] $deliveryLangs
- * @property PaymentLang[] $paymentLangs
- * @property ProductCharacteristicLang[] $productCharacteristicLangs
- * @property ProductLang[] $productLangs
- * @property ProductOptionLang[] $productOptionLangs
- * @property StockLang[] $stockLangs
+ * @property CategoryLangModel[] $categoryLangs
+ * @property DeliveryLangModel[] $deliveryLangs
+ * @property PaymentLangModel[] $paymentLangs
+ * @property ProductCharacteristicLangModel[] $productCharacteristicLangs
+ * @property ProductLangModel[] $productLangs
+ * @property ProductOptionLangModel[] $productOptionLangs
+ * @property StockLangModel[] $stockLangs
  */
 class LanguageModel extends ActiveRecord
 {
@@ -78,7 +78,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getCategoryLangs()
     {
-        return $this->hasMany(CategoryLang::className(), ['language' => 'id']);
+        return $this->hasMany(CategoryLangModel::className(), ['language' => 'id']);
     }
 
     /**
@@ -86,7 +86,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getDeliveryLangs()
     {
-        return $this->hasMany(DeliveryLang::className(), ['language' => 'id']);
+        return $this->hasMany(DeliveryLangModel::className(), ['language' => 'id']);
     }
 
     /**
@@ -94,7 +94,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getPaymentLangs()
     {
-        return $this->hasMany(PaymentLang::className(), ['language' => 'id']);
+        return $this->hasMany(PaymentLangModel::className(), ['language' => 'id']);
     }
 
     /**
@@ -102,7 +102,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getProductCharacteristicLangs()
     {
-        return $this->hasMany(ProductCharacteristicLang::className(), ['language' => 'id']);
+        return $this->hasMany(ProductCharacteristicLangModel::className(), ['language' => 'id']);
     }
 
     /**
@@ -110,7 +110,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getProductLangs()
     {
-        return $this->hasMany(ProductLang::className(), ['language' => 'id']);
+        return $this->hasMany(ProductLangModel::className(), ['language' => 'id']);
     }
 
     /**
@@ -118,7 +118,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getProductOptionLangs()
     {
-        return $this->hasMany(ProductOptionLang::className(), ['language' => 'id']);
+        return $this->hasMany(ProductOptionLangModel::className(), ['language' => 'id']);
     }
 
     /**
@@ -126,6 +126,6 @@ class LanguageModel extends ActiveRecord
      */
     public function getStockLangs()
     {
-        return $this->hasMany(StockLang::className(), ['language' => 'id']);
+        return $this->hasMany(StockLangModel::className(), ['language' => 'id']);
     }
 }

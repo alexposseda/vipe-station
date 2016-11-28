@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Order[] $orders
+ * @property OrderModel[] $orders
  */
 class PaymentModel extends ActiveRecord
 {
@@ -71,6 +71,6 @@ class PaymentModel extends ActiveRecord
      */
     public function getOrders()
     {
-        return $this->hasMany(Order::className(), ['payment_id' => 'id']);
+        return $this->hasMany(OrderModel::className(), ['payment_id' => 'id']);
     }
 }

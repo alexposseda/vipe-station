@@ -14,8 +14,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property Product $product
- * @property Stock $stock
+ * @property ProductModel $product
+ * @property StockModel $stock
  */
 class ProductInStockModel extends ActiveRecord
 {
@@ -46,8 +46,8 @@ class ProductInStockModel extends ActiveRecord
         return [
             [['stock_id', 'product_id'], 'required'],
             [['stock_id', 'product_id', 'created_at', 'updated_at'], 'integer'],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
-            [['stock_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stock::className(), 'targetAttribute' => ['stock_id' => 'id']],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductModel::className(), 'targetAttribute' => ['product_id' => 'id']],
+            [['stock_id'], 'exist', 'skipOnError' => true, 'targetClass' => StockModel::className(), 'targetAttribute' => ['stock_id' => 'id']],
         ];
     }
 
@@ -69,7 +69,7 @@ class ProductInStockModel extends ActiveRecord
      */
     public function getProduct()
     {
-        return $this->hasOne(Product::className(), ['id' => 'product_id']);
+        return $this->hasOne(ProductModel::className(), ['id' => 'product_id']);
     }
 
     /**
@@ -77,6 +77,6 @@ class ProductInStockModel extends ActiveRecord
      */
     public function getStock()
     {
-        return $this->hasOne(Stock::className(), ['id' => 'stock_id']);
+        return $this->hasOne(StockModel::className(), ['id' => 'stock_id']);
     }
 }
