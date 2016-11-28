@@ -20,10 +20,10 @@
                 'id'            => $this->primaryKey(),
                 'comment'       => $this->text(),
                 'status'        => "ENUM ('active', 'deleted', 'aborted', 'sent', 'confirmed', 'finished', 'paid') NOT NULL DEFAULT 'active'",
-                'delivery_id'   => $this->integer(),
+                'delivery_id' => $this->integer(),
                 'delivery_data' => $this->text()
                                         ->notNull(),
-                'payment_id'    => $this->integer(),
+                'payment_id'  => $this->integer(),
                 'total_cost'    => $this->float(),
                 'created_at'    => $this->integer(),
                 'updated_at'    => $this->integer(),
