@@ -7,17 +7,19 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "{{%product_in_category}}".
+ * This is the model class for table "{{%category_lang}}".
  *
+ * @property integer $id
  * @property integer $category_id
- * @property integer $product_id
+ * @property integer $language
+ * @property string $title
  * @property integer $created_at
  * @property integer $updated_at
  *
  * @property CategoryModel $category
- * @property ProductModel $product
+ * @property LanguageModel $language0
  */
-class ProductInCategoryModel extends ActiveRecord
+class CategoryLangModel extends ActiveRecord
 {
 
     /**
@@ -35,7 +37,7 @@ class ProductInCategoryModel extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%product_in_category}}';
+        return '{{%category_lang}}';
     }
 
     /**
@@ -44,10 +46,11 @@ class ProductInCategoryModel extends ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'product_id'], 'required'],
-            [['category_id', 'product_id', 'created_at', 'updated_at'], 'integer'],
+            [['category_id', 'language'], 'required'],
+            [['category_id', 'language', 'created_at', 'updated_at'], 'integer'],
+            [['title'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CategoryModel::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductModel::className(), 'targetAttribute' => ['product_id' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
         ];
     }
 
@@ -57,8 +60,10 @@ class ProductInCategoryModel extends ActiveRecord
     public function attributeLabels()
     {
         return [
+            'id' => 'ID',
             'category_id' => 'Category ID',
-            'product_id' => 'Product ID',
+            'language' => 'Language',
+            'title' => 'Title',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -75,8 +80,8 @@ class ProductInCategoryModel extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct()
+    public function getLanguage0()
     {
-        return $this->hasOne(ProductModel::className(), ['id' => 'product_id']);
+        return $this->hasOne(LanguageModel::className(), ['id' => 'language']);
     }
 }

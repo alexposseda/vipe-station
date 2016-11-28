@@ -7,17 +7,20 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "{{%product_in_stock}}".
+ * This is the model class for table "{{%stock_lang}}".
  *
+ * @property integer $id
  * @property integer $stock_id
- * @property integer $product_id
+ * @property integer $language
+ * @property string $title
+ * @property string $description
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property ProductModel $product
+ * @property LanguageModel $language0
  * @property StockModel $stock
  */
-class ProductInStockModel extends ActiveRecord
+class StockLangModel extends ActiveRecord
 {
 
     /**
@@ -35,7 +38,7 @@ class ProductInStockModel extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%product_in_stock}}';
+        return '{{%stock_lang}}';
     }
 
     /**
@@ -44,9 +47,11 @@ class ProductInStockModel extends ActiveRecord
     public function rules()
     {
         return [
-            [['stock_id', 'product_id'], 'required'],
-            [['stock_id', 'product_id', 'created_at', 'updated_at'], 'integer'],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductModel::className(), 'targetAttribute' => ['product_id' => 'id']],
+            [['stock_id', 'language'], 'required'],
+            [['stock_id', 'language', 'created_at', 'updated_at'], 'integer'],
+            [['description'], 'string'],
+            [['title'], 'string', 'max' => 255],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
             [['stock_id'], 'exist', 'skipOnError' => true, 'targetClass' => StockModel::className(), 'targetAttribute' => ['stock_id' => 'id']],
         ];
     }
@@ -57,8 +62,11 @@ class ProductInStockModel extends ActiveRecord
     public function attributeLabels()
     {
         return [
+            'id' => 'ID',
             'stock_id' => 'Stock ID',
-            'product_id' => 'Product ID',
+            'language' => 'Language',
+            'title' => 'Title',
+            'description' => 'Description',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -67,9 +75,9 @@ class ProductInStockModel extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct()
+    public function getLanguage0()
     {
-        return $this->hasOne(ProductModel::className(), ['id' => 'product_id']);
+        return $this->hasOne(LanguageModel::className(), ['id' => 'language']);
     }
 
     /**

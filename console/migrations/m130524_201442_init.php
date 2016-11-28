@@ -40,7 +40,7 @@
             }
             $adminPassword = '';
             while(empty($adminPassword)){
-                echo 'Enter admin password';
+                echo 'Enter admin password: ';
                 $adminPassword = trim(fgets(STDIN));
                 if(empty($adminPassword)){
                     echo "Password must be not empty!\n";
