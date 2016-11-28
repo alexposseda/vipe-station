@@ -15,6 +15,7 @@
 if (class_exists('Swift', false)) {
     return;
 }
+
 // Load Swift utility class
 require __DIR__.'/classes/Swift.php';
 

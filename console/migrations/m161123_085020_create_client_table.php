@@ -1,35 +1,33 @@
 <?php
 
-use yii\db\Migration;
-
-/**
- * Handles the creation of table `{{%order_client}}`.
- */
-class m161123_085020_create_client_table extends Migration
-{
-    protected $tableName = '{{%client}}';
+    use yii\db\Migration;
 
     /**
-     * @inheritdoc
+     * Handles the creation of table `{{%client}}`.
      */
-    public function up()
-    {
-        $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-        }
-        $this->createTable($this->tableName, [
-            'id' => $this->primaryKey(),
-            'user_id' => $this->integer()
-                ->notNull()->unique(),
-            'name' => $this->string()
-                ->notNull(),
-            'phones' => $this->string(),
-            'birthday' => $this->integer(),
-            'delivery_data' => $this->text(),
-            'created_at' => $this->integer(),
-            'updated_at' => $this->integer(),
-        ], $tableOptions);
+    class m161123_085020_create_client_table extends Migration{
+        protected $tableName = '{{%client}}';
+
+        /**
+         * @inheritdoc
+         */
+        public function up(){
+            $tableOptions = null;
+            if($this->db->driverName === 'mysql'){
+                $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+            }
+            $this->createTable($this->tableName, [
+                'id'            => $this->primaryKey(),
+                'user_id'       => $this->integer()
+                                        ->notNull()->unique(),
+                'name'          => $this->string()
+                                        ->notNull(),
+                'phones'        => $this->string(),
+                'birthday'      => $this->integer(),
+                'delivery_data' => $this->text(),
+                'created_at'    => $this->integer(),
+                'updated_at'    => $this->integer(),
+            ], $tableOptions);
 
         $this->addForeignKey('FK_Client_TO_User', $this->tableName, 'user_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
 

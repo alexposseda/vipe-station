@@ -20,7 +20,7 @@
                 'id'            => $this->primaryKey(),
                 'comment'       => $this->text(),
                 'status'        => "ENUM ('active', 'deleted', 'aborted', 'sent', 'confirmed', 'finished', 'paid') NOT NULL DEFAULT 'active'",
-                'delivery_type' => $this->integer()
+                'delivery_id' => $this->integer()
                                         ->notNull(),
                 'delivery_data' => $this->text()
                                         ->notNull(),
@@ -31,6 +31,7 @@
             ], $tableOptions);
 
             $this->addForeignKey('FK_Order_TO_Payment', $this->tableName, 'payment_id', '{{%payment}}', 'id', 'SET NULL', 'CASCADE');
+            $this->addForeignKey('FK_Order_TO_Delivery', $this->tableName, 'delivery_id', '{{%delivery}}', 'id', 'SET NULL', 'CASCADE');
         }
 
         /**
@@ -38,6 +39,7 @@
          */
         public function down(){
             $this->dropForeignKey('FK_Order_TO_Payment', $this->tableName);
+            $this->dropForeignKey('FK_Order_TO_Delivery', $this->tableName);
             $this->dropTable($this->tableName);
         }
     }
