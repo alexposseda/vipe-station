@@ -1,7 +1,7 @@
 <?php
     return [
         'sourceLanguage' => 'en',
-        'language' => 'en',
+        'language' => 'ru',
         'vendorPath' => dirname(dirname(__DIR__)).'/vendor',
         'components' => [
             'cache'       => [
