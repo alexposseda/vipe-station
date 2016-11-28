@@ -1,13 +1,36 @@
 <?php
-return [
-    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-    'components' => [
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
+    return [
+        'sourceLanguage' => 'en',
+        'language' => 'en',
+        'vendorPath' => dirname(dirname(__DIR__)).'/vendor',
+        'components' => [
+            'cache'       => [
+                'class' => 'yii\caching\FileCache',
 
+            ],
+            'authManager' => [
+                'class' => 'yii\rbac\DbManager',
+            ],
+            'urlManager' => [
+                'class' => 'codemix\localeurls\UrlManager',
+                'languages' => ['en', 'ru', 'ua'],
+                'enablePrettyUrl' => true,
+                'showScriptName' => false,
+            ],
+            'i18n' => [
+                'translations' => [
+                    'system*' => [
+                        'class' => 'yii\i18n\PhpMessageSource',
+                        'basePath' => '@common/translations',
+                        'sourceLanguage' => 'en',
+                        'fileMap' => [
+                            'system'       => 'system/base.php',
+                            'system/error' => 'system/error.php',
+                            'system/success' => 'system/success.php',
+                        ],
+                    ],
+                ],
+            ],
         ],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-        ],
-    ],
-];
+
+    ];
