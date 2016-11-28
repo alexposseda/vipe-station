@@ -20,10 +20,10 @@ use yii\db\ActiveRecord;
  *
  * @property CategoryModel $parent0
  * @property CategoryModel[] $categoryModels
- * @property Seo $seo
- * @property ProductCharacteristic[] $productCharacteristics
- * @property ProductInCategory[] $productInCategories
- * @property Product[] $products
+ * @property SeoModel $seo
+ * @property ProductCharacteristicModel[] $productCharacteristics
+ * @property ProductInCategoryModel[] $productInCategories
+ * @property ProductModel[] $products
  */
 class CategoryModel extends ActiveRecord
 {
@@ -63,7 +63,7 @@ class CategoryModel extends ActiveRecord
             [['title'], 'unique'],
             [['slug'], 'unique'],
             [['parent'], 'exist', 'skipOnError' => true, 'targetClass' => CategoryModel::className(), 'targetAttribute' => ['parent' => 'id']],
-            [['seo_id'], 'exist', 'skipOnError' => true, 'targetClass' => Seo::className(), 'targetAttribute' => ['seo_id' => 'id']],
+            [['seo_id'], 'exist', 'skipOnError' => true, 'targetClass' => SeoModel::className(), 'targetAttribute' => ['seo_id' => 'id']],
         ];
     }
 
@@ -77,7 +77,7 @@ class CategoryModel extends ActiveRecord
             'title' => 'Title',
             'parent' => 'Parent',
             'slug' => 'Slug',
-            'seo_id' => 'Seo ID',
+            'seo_id' => 'SeoModel ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -104,7 +104,7 @@ class CategoryModel extends ActiveRecord
      */
     public function getSeo()
     {
-        return $this->hasOne(Seo::className(), ['id' => 'seo_id']);
+        return $this->hasOne(SeoModel::className(), ['id' => 'seo_id']);
     }
 
     /**
@@ -112,7 +112,7 @@ class CategoryModel extends ActiveRecord
      */
     public function getProductCharacteristics()
     {
-        return $this->hasMany(ProductCharacteristic::className(), ['category_id' => 'id']);
+        return $this->hasMany(ProductCharacteristicModel::className(), ['category_id' => 'id']);
     }
 
     /**
@@ -120,7 +120,7 @@ class CategoryModel extends ActiveRecord
      */
     public function getProductInCategories()
     {
-        return $this->hasMany(ProductInCategory::className(), ['category_id' => 'id']);
+        return $this->hasMany(ProductInCategoryModel::className(), ['category_id' => 'id']);
     }
 
     /**
@@ -128,6 +128,6 @@ class CategoryModel extends ActiveRecord
      */
     public function getProducts()
     {
-        return $this->hasMany(Product::className(), ['id' => 'product_id'])->viaTable('{{%product_in_category}}', ['category_id' => 'id']);
+        return $this->hasMany(ProductModel::className(), ['id' => 'product_id'])->viaTable('{{%product_in_category}}', ['category_id' => 'id']);
     }
 }

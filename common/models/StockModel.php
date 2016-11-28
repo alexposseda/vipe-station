@@ -23,9 +23,9 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property ProductInStock[] $productInStocks
- * @property Product[] $products
- * @property StockPolicy $policy
+ * @property ProductInStockModel[] $productInStocks
+ * @property ProductModel[] $products
+ * @property StockPolicyModel $policy
  */
 class StockModel extends ActiveRecord
 {
@@ -65,7 +65,7 @@ class StockModel extends ActiveRecord
             [['title', 'slug', 'cover'], 'string', 'max' => 255],
             [['title'], 'unique'],
             [['slug'], 'unique'],
-            [['policy_id'], 'exist', 'skipOnError' => true, 'targetClass' => StockPolicy::className(), 'targetAttribute' => ['policy_id' => 'id']],
+            [['policy_id'], 'exist', 'skipOnError' => true, 'targetClass' => StockPolicyModel::className(), 'targetAttribute' => ['policy_id' => 'id']],
         ];
     }
 
@@ -95,7 +95,7 @@ class StockModel extends ActiveRecord
      */
     public function getProductInStocks()
     {
-        return $this->hasMany(ProductInStock::className(), ['stock_id' => 'id']);
+        return $this->hasMany(ProductInStockModel::className(), ['stock_id' => 'id']);
     }
 
     /**
@@ -103,7 +103,7 @@ class StockModel extends ActiveRecord
      */
     public function getProducts()
     {
-        return $this->hasMany(Product::className(), ['id' => 'product_id'])->viaTable('{{%product_in_stock}}', ['stock_id' => 'id']);
+        return $this->hasMany(ProductModel::className(), ['id' => 'product_id'])->viaTable('{{%product_in_stock}}', ['stock_id' => 'id']);
     }
 
     /**
@@ -111,6 +111,6 @@ class StockModel extends ActiveRecord
      */
     public function getPolicy()
     {
-        return $this->hasOne(StockPolicy::className(), ['id' => 'policy_id']);
+        return $this->hasOne(StockPolicyModel::className(), ['id' => 'policy_id']);
     }
 }
