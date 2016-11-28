@@ -2,6 +2,7 @@
 
     namespace backend\controllers;
 
+    use backend\models\DeliverPayModel;
     use backend\models\MainSettingShopModel;
     use Yii;
     use yii\filters\AccessControl;
@@ -42,5 +43,11 @@
             }
 
             return $this->render('index', ['model' => $model]);
+        }
+
+        public function actionDeliverPay(){
+            $model = new DeliverPayModel();
+
+            return $this->render('delivery-payment', ['model' => $model]);
         }
     }
