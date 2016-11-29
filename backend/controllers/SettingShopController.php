@@ -2,6 +2,7 @@
 
     namespace backend\controllers;
 
+    use backend\models\AddressSettingModel;
     use backend\models\DeliverPayModel;
     use backend\models\MainSettingShopModel;
     use backend\models\UploadCover;
@@ -85,6 +86,15 @@
             }
 
             return $this->render('delivery-payment', ['model' => $model]);
+        }
+
+        public function actionAddressSetting(){
+            $model = new AddressSettingModel();
+
+            if($model->load(Yii::$app->request->post()) && $model->save()){
+                return $this->goHome();
+            }
+            return $this->render('address-setting',['model'=>$model]);
         }
 
 

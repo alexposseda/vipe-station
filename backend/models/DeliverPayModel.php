@@ -4,6 +4,7 @@
 
     use common\models\ShopSettingTable;
     use Yii;
+    use yii\alexposseda\fileManager\FileManager;
     use yii\base\Model;
 
     class DeliverPayModel extends Model{
@@ -69,6 +70,17 @@
             }
 
             if($pay->save() && $del->save()){
+                $del_logo = json_decode($this->logo[0]);
+                $pay_logo = json_decode($this->logo[1]);
+                if(!empty($del_logo)){
+                    FileManager::getInstance()
+                               ->removeFromSession($del_logo[0]);
+                }
+                if(!empty($pay_logo)){
+                    FileManager::getInstance()
+                               ->removeFromSession($pay_logo[0]);
+                }
+
                 return true;
             }
 
