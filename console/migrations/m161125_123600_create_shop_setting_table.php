@@ -18,10 +18,11 @@
             }
             $this->createTable($this->tableName, [
                 'id'         => $this->primaryKey(),
-                'key'        => $this->integer()
+                'key'        => $this->string()
                                      ->unique()
                                      ->notNull(),
-                'value'      => $this->text(),
+                'value'      => $this->text()
+                                     ->notNull(),
                 'created_at' => $this->integer(),
                 'updated_at' => $this->integer(),
             ], $tableOptions);

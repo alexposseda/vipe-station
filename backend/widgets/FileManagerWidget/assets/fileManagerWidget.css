@@ -1,0 +1,51 @@
+.fmw-content {
+    position: relative;
+}
+
+.fmw-preloader {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.fmw-preloader span {
+    display: inline-block;
+    color: #fff;
+    padding: 10px 50px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
+}
+
+.fmw-galleryBox-item {
+    position: relative;
+    height: 150px;
+    overflow: hidden
+}
+
+.fmw-galleryBox-item img {
+    width: 100%;
+}
+
+.fmw-notsaved-item {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+}
+
+.fmw-notsaved-item img {
+    width: 100%;
+}
+
+.fmw-actions {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/*# sourceMappingURL=fileManagerWidget.css.map */

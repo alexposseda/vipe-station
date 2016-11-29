@@ -43,6 +43,14 @@
                             'models/brand' => 'models/brand.php',
                         ],
                     ],
+                    'shop*'=>[
+                        'class'          => 'yii\i18n\PhpMessageSource',
+                        'basePath'       => '@common/translations',
+                        'sourceLanguage' => 'en',
+                        'fileMap'        => [
+                            'shop/setting'        => 'shop/setting.php',
+                        ],
+                    ]
                 ],
             ],
         ],
