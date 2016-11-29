@@ -1,9 +1,9 @@
 <?php
     return [
         'sourceLanguage' => 'en',
-        'language' => 'ru',
-        'vendorPath' => dirname(dirname(__DIR__)).'/vendor',
-        'components' => [
+        'language'       => 'ru',
+        'vendorPath'     => dirname(dirname(__DIR__)).'/vendor',
+        'components'     => [
             'cache'       => [
                 'class' => 'yii\caching\FileCache',
 
@@ -11,22 +11,36 @@
             'authManager' => [
                 'class' => 'yii\rbac\DbManager',
             ],
-            'urlManager' => [
-                'class' => 'codemix\localeurls\UrlManager',
-                'languages' => ['en', 'ru', 'ua'],
+            'urlManager'  => [
+                'class'           => 'codemix\localeurls\UrlManager',
+                'languages'       => [
+                    'en',
+                    'ru',
+                    'ua'
+                ],
                 'enablePrettyUrl' => true,
-                'showScriptName' => false,
+                'showScriptName'  => false,
             ],
-            'i18n' => [
+            'i18n'        => [
                 'translations' => [
                     'system*' => [
-                        'class' => 'yii\i18n\PhpMessageSource',
-                        'basePath' => '@common/translations',
+                        'class'          => 'yii\i18n\PhpMessageSource',
+                        'basePath'       => '@common/translations',
                         'sourceLanguage' => 'en',
-                        'fileMap' => [
-                            'system'       => 'system/base.php',
-                            'system/error' => 'system/error.php',
+                        'fileMap'        => [
+                            'system'         => 'system/base.php',
+                            'system/error'   => 'system/error.php',
                             'system/success' => 'system/success.php',
+                            'system/view'    => 'system/view.php',
+                        ],
+                    ],
+                    'models*' => [
+                        'class'          => 'yii\i18n\PhpMessageSource',
+                        'basePath'       => '@common/translations',
+                        'sourceLanguage' => 'en',
+                        'fileMap'        => [
+                            'models'       => 'models/base.php',
+                            'models/brand' => 'models/brand.php',
                         ],
                     ],
                     'shop*'=>[
