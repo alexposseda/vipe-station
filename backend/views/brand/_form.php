@@ -4,15 +4,23 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ManufacturerModel */
+/* @var $model common\models\BrandModel */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="manufacturer-model-form">
+<div class="brand-model-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'cover')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'seo_id')->textInput() ?>
 
     <?= $form->field($model, 'created_at')->textInput() ?>
 

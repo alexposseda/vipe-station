@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ManufacturerModel */
+/* @var $model common\models\BrandModel */
 
-$this->title = 'Create Manufacturer Model';
-$this->params['breadcrumbs'][] = ['label' => 'Manufacturer Models', 'url' => ['index']];
+$this->title = 'Create Brand Model';
+$this->params['breadcrumbs'][] = ['label' => 'Brand Models', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="manufacturer-model-create">
+<div class="brand-model-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
