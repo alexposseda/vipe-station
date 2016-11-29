@@ -1,4 +1,5 @@
 <?php
     return [
-        'test' => 'test ru'
+        'test' => 'test ru',
+        'Save' => 'Сохранить'
     ];
