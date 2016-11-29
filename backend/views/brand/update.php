@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\BrandModel */
 
-$this->title = 'Update Brand Model: ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Brand Models', 'url' => ['index']];
+$this->title = Yii::t('system/view', 'Update').' '.Yii::t('models', 'Brand'). $model->title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Brands'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = Yii::t('system/view', 'Update');
 ?>
 <div class="brand-model-update">
 

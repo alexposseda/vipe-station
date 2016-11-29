@@ -9,27 +9,31 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="brand-model-form">
-
     <?php $form = ActiveForm::begin(); ?>
+    <div class="row">
+        <div class="col-sm-12 col-md-9 col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-9 col-lg-4">
+            <div class="panel panel-success">
+                <div class="panel-heading"><?= Yii::t('system/view', 'Seo')?></div>
+                <div class="panel-body"></div>
+            </div>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'cover')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'seo_id')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
     </div>
-
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('system/view','Create') : Yii::t('system/view','Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
     <?php ActiveForm::end(); ?>
+
+
+
+
 
 </div>

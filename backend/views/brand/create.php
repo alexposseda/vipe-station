@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\BrandModel */
 
-$this->title = 'Create Brand Model';
-$this->params['breadcrumbs'][] = ['label' => 'Brand Models', 'url' => ['index']];
+$this->title = Yii::t('system/view', 'Create').' '.Yii::t('models', 'Brand');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Brands'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="brand-model-create">
