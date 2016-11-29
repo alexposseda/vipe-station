@@ -2,6 +2,7 @@
 
     namespace common\models;
 
+    use Yii;
     use yii\behaviors\SluggableBehavior;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
@@ -101,13 +102,13 @@
         public function attributeLabels(){
             return [
                 'id'          => 'ID',
-                'title'       => 'Title',
-                'cover'       => 'Cover',
-                'description' => 'Description',
-                'slug'        => 'Slug',
+                'title'       => Yii::t('models/brand', 'Brand Title'),
+                'cover'       => Yii::t('models/brand', 'Logo'),
+                'description' => Yii::t('models/brand', 'Brand Description'),
+                'slug'        => Yii::t('models/brand', 'Slug'),
                 'seo_id'      => 'Seo ID',
                 'created_at'  => 'Created At',
-                'updated_at'  => 'Updated At',
+                'updated_at'  => Yii::t('models/brand', 'Last Update'),
             ];
         }
 
