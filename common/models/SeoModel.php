@@ -105,4 +105,12 @@
         public function getBrands(){
             return $this->hasMany(BrandModel::className(), ['seo_id' => 'id']);
         }
+
+        public function canSave(){
+            if(!empty($this->title) or !empty($this->keywords) or !empty($this->description) or !empty($this->seo_block)){
+                return true;
+            }
+
+            return false;
+        }
     }

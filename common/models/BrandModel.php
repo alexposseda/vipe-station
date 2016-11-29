@@ -3,6 +3,7 @@
     namespace common\models;
 
     use Yii;
+    use yii\alexposseda\fileManager\FileManager;
     use yii\behaviors\SluggableBehavior;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
@@ -124,5 +125,12 @@
          */
         public function getProducts(){
             return $this->hasMany(ProductModel::className(), ['brand_id' => 'id']);
+        }
+
+        /**
+         * @return string
+         */
+        public function getLogo(){
+            return FileManager::getInstance()->getStorageUrl().json_decode($this->cover)[0];
         }
     }

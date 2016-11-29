@@ -2,12 +2,16 @@
 
     namespace backend\controllers;
 
+    use backend\models\BrandForm;
+    use backend\models\UploadCover;
+    use common\models\SeoModel;
     use Yii;
     use common\models\BrandModel;
     use common\models\search\BrandSearchModel;
+    use yii\alexposseda\fileManager\actions\RemoveAction;
+    use yii\alexposseda\fileManager\actions\UploadAction;
     use yii\filters\AccessControl;
     use yii\web\Controller;
-    use yii\web\HttpException;
     use yii\web\NotFoundHttpException;
     use yii\filters\VerbFilter;
     use yii\web\UnauthorizedHttpException;
@@ -24,7 +28,9 @@
                 'verbs'  => [
                     'class'   => VerbFilter::className(),
                     'actions' => [
-                        'delete' => ['POST'],
+                        'delete'      => ['POST'],
+                        'upload-logo' => ['POST'],
+                        'remove-logo' => ['POST'],
                     ],
                 ],
                 'access' => [
@@ -38,6 +44,25 @@
                             'roles' => ['admin']
                         ]
                     ]
+                ]
+            ];
+        }
+
+        public function actions(){
+            return [
+                'upload-logo' => [
+                    'class'         => UploadAction::className(),
+                    'uploadPath'    => 'brands',
+                    'sessionEnable' => true,
+                    'uploadModel'   => new UploadCover([
+                                                           'validationRules' => [
+                                                               'extensions' => 'jpg, png',
+                                                               'maxSize'    => 1024 * 500
+                                                           ]
+                                                       ])
+                ],
+                'remove-logo' => [
+                    'class' => RemoveAction::className()
                 ]
             ];
         }
@@ -75,12 +100,15 @@
          * @return mixed
          */
         public function actionCreate(){
-            $model = new BrandModel();
+            $model = new BrandForm([
+                                       'brand' => new BrandModel(),
+                                       'seo'   => new SeoModel()
+                                   ]);
 
-            if($model->load(Yii::$app->request->post()) && $model->save()){
+            if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
                                            'view',
-                                           'id' => $model->id
+                                           'id' => $model->brand->id
                                        ]);
             }else{
                 return $this->render('create', [
@@ -98,12 +126,15 @@
          * @return mixed
          */
         public function actionUpdate($id){
-            $model = $this->findModel($id);
+            $brand = $this->findModel($id);
+            $seo = ($brand->seo) ? $brand->seo : new SeoModel();
 
-            if($model->load(Yii::$app->request->post()) && $model->save()){
+            $model = new BrandForm(['brand' => $brand, 'seo' => $seo]);
+
+            if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
                                            'view',
-                                           'id' => $model->id
+                                           'id' => $model->brand->id
                                        ]);
             }else{
                 return $this->render('update', [

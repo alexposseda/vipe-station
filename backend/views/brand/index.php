@@ -29,56 +29,41 @@
                                      'layout'       => "{summary}\n<div class='table-responsive'>\n{items}\n</div>\n{pager}",
                                      'columns'      => [
                                          [
-                                             'class'         => 'yii\grid\SerialColumn',
-                                             'headerOptions' => [
-                                                 'style' => 'width: 1%;min-width: 25px;'
-                                             ]
-                                         ],
-                                         [
                                              'attribute'     => 'id',
                                              'headerOptions' => [
-                                                 'style' => 'width: 2%;min-width: 50px;'
-                                             ]
+                                                 'style' => 'width: 2%;max-width: 50px;'
+                                             ],
+                                             'contentOptions' => ['style' => 'vertical-align:middle;']
 
                                          ],
                                          [
                                              'attribute'     => 'title',
                                              'headerOptions' => [
-                                                 'style' => 'width: 20%;min-width: 150px;'
-                                             ]
+                                                 'style' => 'width: 20%;max-width: 150px;'
+                                             ],
+                                             'contentOptions' => ['style' => 'vertical-align:middle;']
 
                                          ],
                                          [
                                              'attribute'     => 'cover',
                                              'headerOptions' => [
-                                                 'style' => 'width: 10%;min-width: 80px;'
+                                                 'style' => 'width: 10%;max-width: 80px;'
                                              ],
                                              'content'       => function($data){
-                                                 return Html::img($data->cover, [
+                                                 return Html::img($data->getLogo(), [
                                                      'class' => 'img-circle',
                                                      'style' => 'width: 100%; max-width: 80px;'
                                                  ]);
-                                             }
+                                             },
+                                             'contentOptions' => ['style' => 'vertical-align:middle;']
                                          ],
                                          [
                                              'attribute'     => 'description',
                                              'headerOptions' => [
-                                                 'style' => 'width: 30%;min-width: 280px;'
-                                             ]
+                                                 'style' => 'width: 30%;max-width: 280px;'
+                                             ],
+                                             'contentOptions' => ['style' => 'vertical-align:middle;']
 
-                                         ],
-                                         [
-                                             'attribute'     => 'slug',
-                                             'content'       => function($data){
-                                                 return Html::a($data->slug, [
-                                                     'brand/view',
-                                                     'language' => Yii::$app->language,
-                                                     'id'       => $data->id
-                                                 ]);
-                                             },
-                                             'headerOptions' => [
-                                                 'style' => 'width: 10%;min-width: 100px;'
-                                             ]
                                          ],
                                          [
                                              'attribute'     => 'updated_at',
@@ -87,14 +72,16 @@
                                                  'HH:mm:ss dd.MM.YYYY'
                                              ],
                                              'headerOptions' => [
-                                                 'style' => 'width: 10%;min-width: 100px;'
-                                             ]
+                                                 'style' => 'width: 10%;max-width: 100px;'
+                                             ],
+                                             'contentOptions' => ['style' => 'vertical-align:middle;']
                                          ],
                                          [
                                              'class'         => 'yii\grid\ActionColumn',
                                              'headerOptions' => [
-                                                 'style' => 'width: 7%;min-width: 60px;'
-                                             ]
+                                                 'style' => 'width: 7%;max-width: 60px;'
+                                             ],
+                                             'contentOptions' => ['style' => 'vertical-align:middle;']
                                          ],
                                      ],
                                  ]); ?>

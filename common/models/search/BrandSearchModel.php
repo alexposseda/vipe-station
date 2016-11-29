@@ -6,6 +6,7 @@
     use yii\base\Model;
     use yii\data\ActiveDataProvider;
     use common\models\BrandModel;
+    use yii\data\Sort;
 
     /**
      * BrandSearchModel represents the model behind the search form of `common\models\BrandModel`.
@@ -53,6 +54,13 @@
 
             $dataProvider = new ActiveDataProvider([
                                                        'query' => $query,
+                                                       'sort'  => new Sort([
+                                                                               'attributes' => [
+                                                                                   'id',
+                                                                                   'title',
+                                                                                   'updated_at'
+                                                                               ]
+                                                                           ])
                                                    ]);
 
             $this->load($params);
@@ -65,7 +73,7 @@
 
             // grid filtering conditions
             $query->andFilterWhere([
-                                       'id'         => $this->id,
+                                       'id' => $this->id,
                                    ]);
 
             $query->andFilterWhere([
