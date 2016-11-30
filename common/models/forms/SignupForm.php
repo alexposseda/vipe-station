@@ -63,6 +63,14 @@
             ];
         }
 
+        public function attributeLabels(){
+            return [
+                'email'           => Yii::t('models/authorize', 'email'),
+                'password_repeat' => Yii::t('models/authorize', 'password'),
+                'password'        => Yii::t('models/authorize', 'password_repeat'),
+            ];
+        }
+
         /**
          * Signs user up.
          *

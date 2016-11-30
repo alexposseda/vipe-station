@@ -39,16 +39,17 @@
                         'basePath'       => '@common/translations',
                         'sourceLanguage' => 'en',
                         'fileMap'        => [
-                            'models'       => 'models/base.php',
-                            'models/brand' => 'models/brand.php',
+                            'models'           => 'models/base.php',
+                            'models/brand'     => 'models/brand.php',
+                            'models/authorize' => 'models/authorize.php',
                         ],
                     ],
-                    'shop*'=>[
+                    'shop*'   => [
                         'class'          => 'yii\i18n\PhpMessageSource',
                         'basePath'       => '@common/translations',
                         'sourceLanguage' => 'en',
                         'fileMap'        => [
-                            'shop/setting'        => 'shop/setting.php',
+                            'shop/setting' => 'shop/setting.php',
                         ],
                     ]
                 ],

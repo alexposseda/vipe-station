@@ -3,8 +3,8 @@
     /* @var $user common\models\UserIdentity */
     $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 'token' => $user->password_reset_token]);
 ?>
-    Hello <?= $user->client->name ?>,
+    <?= Yii::t('mailer/messages', 'Hello') ?> <?= $user->client->name ?>,
 
-    Follow the link below to reset your password:
+    <?= Yii::t('mailer/messages', 'Follow the link below to reset your password') ?>:
 
-<?= $resetLink ?>
+    <?= $resetLink ?>
