@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\ClientModel */
 
-$this->title = 'Create Client Model';
-$this->params['breadcrumbs'][] = ['label' => 'Client Models', 'url' => ['index']];
+$this->title = Yii::t('system/view', 'Create').' '.Yii::t('models/client', 'Client');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Clients'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="client-model-create">

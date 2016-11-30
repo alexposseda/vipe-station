@@ -1,14 +1,14 @@
 <?php
 
-use yii\helpers\Html;
+    use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\ClientModel */
+    /* @var $this yii\web\View */
+    /* @var $model common\models\ClientModel */
 
-$this->title = 'Update Client Model: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Client Models', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+    $this->title = Yii::t('system/view', 'Update').' '.Yii::t('models/client', 'Client').': '.$model->name;
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Clients'), 'url' => ['index']];
+    $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+    $this->params['breadcrumbs'][] = Yii::t('system/view', 'Update');
 ?>
 <div class="client-model-update">
 

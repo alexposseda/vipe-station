@@ -74,7 +74,7 @@
         /**
          * Signs user up.
          *
-         * @return User|bool the saved model or null if saving fails
+         * @return bool the saved model or null if saving fails
          */
         public function signup(){
             if(!$this->validate()){

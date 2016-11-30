@@ -42,6 +42,7 @@
                             'models'           => 'models/base.php',
                             'models/brand'     => 'models/brand.php',
                             'models/authorize' => 'models/authorize.php',
+                            'models/client'    => 'models/client.php',
                         ],
                     ],
                     'shop*'   => [

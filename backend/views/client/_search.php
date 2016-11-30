@@ -1,39 +1,36 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+    use yii\helpers\Html;
+    use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\search\ClientSearchModel */
-/* @var $form yii\widgets\ActiveForm */
+    /* @var $this yii\web\View */
+    /* @var $model common\models\search\ClientSearchModel */
+    /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="client-model-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
+                                        'action' => ['index'],
+                                        'method' => 'get',
+                                    ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="panel panel-default">
+        <div class="panel-heading"><?= Yii::t('system/view', 'Filter') ?></div>
+        <div class="panel-body">
+            <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'user_id') ?>
+            <?= $form->field($model, 'phones') ?>
 
-    <?= $form->field($model, 'name') ?>
+            <?= $form->field($model, 'email') ?>
 
-    <?= $form->field($model, 'phones') ?>
-
-    <?= $form->field($model, 'birthday') ?>
-
-    <?php // echo $form->field($model, 'delivery_data') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        </div>
+        <div class="panel-footer">
+            <div class="form-group">
+                <?= Html::submitButton(Yii::t('system/view', 'Search'), ['class' => 'btn btn-primary']) ?>
+                <?= Html::resetButton(Yii::t('system/view', 'Reset'), ['class' => 'btn btn-default']) ?>
+            </div>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

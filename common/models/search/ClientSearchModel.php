@@ -1,75 +1,77 @@
 <?php
 
-namespace common\models\search;
+    namespace common\models\search;
 
-use Yii;
-use yii\base\Model;
-use yii\data\ActiveDataProvider;
-use common\models\ClientModel;
-
-/**
- * ClientSearchModel represents the model behind the search form of `common\models\ClientModel`.
- */
-class ClientSearchModel extends ClientModel
-{
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['id', 'user_id', 'birthday', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'phones', 'delivery_data'], 'safe'],
-        ];
-    }
+    use Yii;
+    use yii\base\Model;
+    use yii\data\ActiveDataProvider;
+    use common\models\ClientModel;
+    use yii\data\Sort;
 
     /**
-     * @inheritdoc
+     * ClientSearchModel represents the model behind the search form of `common\models\ClientModel`.
      */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
-    }
+    class ClientSearchModel extends ClientModel{
+        public $email;
 
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
-    public function search($params)
-    {
-        $query = ClientModel::find();
-
-        // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
+        /**
+         * @inheritdoc
+         */
+        public function rules(){
+            return [
+                [['name', 'phones', 'email'], 'safe'],
+            ];
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-            'birthday' => $this->birthday,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
+        public function attributeLabels(){
+            return [
+                'name'   => Yii::t('models/client', 'name'),
+                'phones' => Yii::t('models/client', 'phone'),
+                'email'  => Yii::t('models/client', 'email')
+            ];
+        }
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'phones', $this->phones])
-            ->andFilterWhere(['like', 'delivery_data', $this->delivery_data]);
+        /**
+         * @inheritdoc
+         */
+        public function scenarios(){
+            // bypass scenarios() implementation in the parent class
+            return Model::scenarios();
+        }
 
-        return $dataProvider;
+        /**
+         * Creates data provider instance with search query applied
+         *
+         * @param array $params
+         *
+         * @return ActiveDataProvider
+         */
+        public function search($params){
+            $query = ClientModel::find()->joinWith('user');
+
+            $dataProvider = new ActiveDataProvider([
+                                                       'query' => $query,
+                                                       'sort'  => new Sort([
+                                                                               'attributes' => [
+                                                                                   'id',
+                                                                                   'name',
+                                                                                   'birthday',
+                                                                                   'email'
+                                                                               ]
+                                                                           ])
+                                                   ]);
+
+            $this->load($params);
+
+            if(!$this->validate()){
+                return $dataProvider;
+            }
+
+            $query->andFilterWhere(['like', 'email', $this->email]);
+
+            $query->andFilterWhere(['like', 'name', $this->name])
+                  ->andFilterWhere(['like', 'phones', $this->phones]);
+
+            return $dataProvider;
+        }
     }
-}

@@ -1,40 +1,49 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
+    use yii\helpers\Html;
+    use yii\grid\GridView;
+    use yii\widgets\Pjax;
 
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\search\ClientSearchModel */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+    /* @var $this yii\web\View */
+    /* @var $searchModel common\models\search\ClientSearchModel */
+    /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Client Models';
-$this->params['breadcrumbs'][] = $this->title;
+    $this->title = Yii::t('models', 'Clients');
+    $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="client-model-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php Pjax::begin(); ?>
+    <div class="row">
+        <div class="col-md-12 col-lg-3">
+            <p>
+                <?= Html::a(Yii::t('system/view', 'Create').' '.Yii::t('models/client', 'Client'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= $this->render('_search', ['model' => $searchModel]); ?>
+            </p>
+        </div>
+        <div class="col-md-12 col-lg-9">
+            <?= GridView::widget([
+                                     'dataProvider' => $dataProvider,
+                                     'filterModel'  => null,
+                                     'layout'       => "{summary}\n<div class='table-responsive'>\n{items}\n</div>\n{pager}",
+                                     'columns'      => [
+                                         ['class' => 'yii\grid\SerialColumn'],
 
-    <p>
-        <?= Html::a('Create Client Model', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+                                         [
+                                             'attribute' => 'email',
+                                             'content'   => function($data){
+                                                 return $data->user->email;
+                                             }
+                                         ],
+                                         'name',
+                                         'phones',
+                                         'birthday:date',
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'user_id',
-            'name',
-            'phones',
-            'birthday',
-            // 'delivery_data:ntext',
-            // 'created_at',
-            // 'updated_at',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                                         ['class' => 'yii\grid\ActionColumn'],
+                                     ],
+                                 ]); ?>
+        </div>
+    </div>
+    <?php Pjax::end(); ?>
 </div>
