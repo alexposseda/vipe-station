@@ -2,7 +2,7 @@
     return[
         'Delivery Name' => 'Название Доставки',
         'Delivery' => 'Доставку',
-        'Description' => 'Описание',
+        'Delivery Description' => 'Описание доставки',
         'Price' => 'Цена',
 
 
