@@ -2,16 +2,16 @@
 namespace frontend\controllers;
 
 use common\components\sender\Sender;
+use common\models\forms\LoginForm;
+use common\models\forms\PasswordResetRequestForm;
+use common\models\forms\ResetPasswordForm;
+use common\models\forms\SignupForm;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use common\models\SignupForm;
 use frontend\models\ContactForm;
 
 /**
@@ -161,9 +161,7 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
+                 return $this->goHome();
             }
         }
 

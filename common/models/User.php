@@ -5,7 +5,6 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -20,10 +19,12 @@ use yii\helpers\ArrayHelper;
  * @property integer $updated_at
  *
  * @property ClientModel $client
+ * @property CartModel[] $carts
+ * @property LogModel[] $logs
  */
 class User extends ActiveRecord
 {
-    private $_user;
+
     /**
     * @inheritdoc
     */
@@ -80,6 +81,22 @@ class User extends ActiveRecord
     public function getClient()
     {
         return $this->hasOne(ClientModel::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCarts()
+    {
+        return $this->hasMany(CartModel::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLogs()
+    {
+        return $this->hasMany(LogModel::className(), ['user_id' => 'id']);
     }
 
     public function getUserRole(){
