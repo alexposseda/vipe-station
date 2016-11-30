@@ -64,10 +64,10 @@ class CartModel extends ActiveRecord
             'user_id' => 'User ID',
             'guest_id' => 'Guest ID',
             'product_id' => 'Product ID',
-            'options' => 'Options',
-            'quantity' => 'Quantity',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'options' => Yii::t('models/cart','Options'),
+            'quantity' => Yii::t('models/cart','Quantity'),
+            'created_at' => Yii::t('models', 'Created'),
+            'updated_at' => Yii::t('models', 'Last Update'),
         ];
     }
 

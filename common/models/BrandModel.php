@@ -106,10 +106,10 @@
                 'title'       => Yii::t('models/brand', 'Brand Title'),
                 'cover'       => Yii::t('models/brand', 'Logo'),
                 'description' => Yii::t('models/brand', 'Brand Description'),
-                'slug'        => Yii::t('models/brand', 'Slug'),
+                'slug'        => Yii::t('models', 'Slug'),
                 'seo_id'      => 'Seo ID',
-                'created_at'  => 'Created At',
-                'updated_at'  => Yii::t('models/brand', 'Last Update'),
+                'created_at'  => Yii::t('models', 'Created'),
+                'updated_at'  => Yii::t('models', 'Last Update'),
             ];
         }
 

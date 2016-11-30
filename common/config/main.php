@@ -41,6 +41,9 @@
                         'fileMap'        => [
                             'models'       => 'models/base.php',
                             'models/brand' => 'models/brand.php',
+                            'models/cart' => 'models/cart.php',
+                            'models/category' => 'models/category.php',
+                            'models/delivery' => 'models/delivery.php',
                         ],
                     ],
                     'shop*'=>[
