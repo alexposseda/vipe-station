@@ -69,9 +69,9 @@ class User extends ActiveRecord
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
             'email' => 'Email',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'status' => Yii::t('models/user', 'Status'),
+            'created_at' => Yii::t('models', 'Created'),
+            'updated_at' => Yii::t('models', 'Last Update'),
         ];
     }
 
