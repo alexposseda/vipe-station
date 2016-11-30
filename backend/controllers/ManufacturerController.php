@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\ManufacturerModel;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,6 +21,19 @@ class ManufacturerController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'denyCallback' => function($rule, $action){
+                    throw new UnauthorizedHttpException(Yii::t('system/error', 'You do not have access to this page'));
+                },
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                ],
+            ],
+
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

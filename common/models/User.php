@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -22,7 +23,7 @@ use yii\db\ActiveRecord;
  */
 class User extends ActiveRecord
 {
-
+    private $_user;
     /**
     * @inheritdoc
     */
@@ -80,4 +81,28 @@ class User extends ActiveRecord
     {
         return $this->hasOne(ClientModel::className(), ['user_id' => 'id']);
     }
+
+    public function getUserRole(){
+        $roles = Yii::$app->authManager->getRolesByUser($this->id);
+        $roles = current($roles);
+
+//        switch($roles->name){
+//            case 'admin':
+//                return'admin';
+//                break;
+//            case 'user':
+//                return'user';
+//                break;
+//            case 'maneger':
+//                return'maneger';
+//                break;
+//        }
+
+        //return  $roles;
+        //return "Hello";
+
+
+    }
+
+
 }

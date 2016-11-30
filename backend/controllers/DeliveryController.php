@@ -9,6 +9,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UnauthorizedHttpException;
 
 /**
  * DeliveryController implements the CRUD actions for DeliveryModel model.
@@ -23,6 +24,9 @@ class DeliveryController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'denyCallback' => function($rule, $action){
+                    throw new UnauthorizedHttpException(Yii::t('system/error', 'You do not have access to this page'));
+                },
                 'rules' => [
                     [
                         'allow' => true,
