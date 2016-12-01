@@ -43,6 +43,7 @@
                             'models/brand'     => 'models/brand.php',
                             'models/authorize' => 'models/authorize.php',
                             'models/client'    => 'models/client.php',
+                            'models/seo'    => 'models/seo.php',
                         ],
                     ],
                     'shop*'   => [
