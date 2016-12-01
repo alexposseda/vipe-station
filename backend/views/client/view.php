@@ -23,7 +23,7 @@
     </ul>
 </div>
 
-<div class="client-view">
+<div class="client-view-info">
     <div class="row">
         <div class="col-lg-4">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png"
@@ -58,24 +58,33 @@
 
         </div>
     </div>
-    <?php // DetailView::widget([
-        //                               'model'      => $model,
-        //                               'attributes' => [
-        //                                   'id',
-        //                                   'user_id',
-        //                                   'name',
-        //                                   'phones',
-        //                                   'birthday',
-        //                                   'delivery_data:ntext',
-        //                                   'created_at',
-        //                                   'updated_at',
-        //                               ],
-        //                           ]) ?>
 
     <?= Html::a(Yii::t('system/view', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
     <?= Html::a(Yii::t('system/view', 'Request password reset'),
                 ['request-password-reset', 'email' => $model->user->email, 'goback' => Url::to(['view', 'id' => $model->id])],
                 ['class' => 'btn btn-danger']) ?>
 
+</div>
+<div class="client-orders">
+    <h4><?= Yii::t('models/client', 'Your orders') ?></h4>
+    <?php foreach($model->orderClientDatas as $orderClientData): ?>
+        <div class="row">
+            <div class="col-lg-2">
+                <?= Html::a($orderClientData->order->id, ['order/view', 'id' => $orderClientData->order->id]) ?>
+                <?= date('d.M.Y', $orderClientData->order->created_at) ?>
+            </div>
+            <div class="col-lg-5">
+                наименования
+            </div>
+            <div class="col-lg-3">
+                количество
+            </div>
+            <div class="col-lg-2">
+                price
+            </div>
+
+        </div>
+        <?= Yii::t('models/client', 'Total') ?> : <?= $orderClientData->order->total_cost ?>
+    <?php endforeach; ?>
 </div>
 
