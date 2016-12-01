@@ -13,4 +13,7 @@
         'Edit personal data'  => 'Редактирование личных данных',
         'First name'          => 'Имя',
         'Last name'           => 'Фамилия',
+
+        'Your orders' => 'Ваши заказы',
+        'Total'       => 'Итог'
     ];

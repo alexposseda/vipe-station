@@ -18,8 +18,8 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property ClientModelModel $client
- * @property OrderModelModel $order
+ * @property ClientModel $client
+ * @property OrderModel $order
  */
 class OrderClientDataModel extends ActiveRecord
 {
