@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\PaymentModel;
+use yii\data\Sort;
 
 /**
  * PaymentSearchModel represents the model behind the search form of `common\models\PaymentModel`.
@@ -43,10 +44,13 @@ class PaymentSearchModel extends PaymentModel
     {
         $query = PaymentModel::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+                                                    'query' => $query,
+                                                    'sort'  => new Sort([
+                                                                            'attributes' => [
+                                                                                'name'
+                                                                            ]
+                                                                        ])
         ]);
 
         $this->load($params);
@@ -60,12 +64,11 @@ class PaymentSearchModel extends PaymentModel
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'name' => $this->name,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'id', $this->id])
+            ->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

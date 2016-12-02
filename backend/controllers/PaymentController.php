@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\search\PaymentSearchModel;
+use Faker\Provider\ar_SA\Payment;
 use Yii;
 use common\models\PaymentModel;
 use yii\data\ActiveDataProvider;
@@ -49,11 +51,13 @@ class PaymentController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new PaymentSearchModel();
         $dataProvider = new ActiveDataProvider([
             'query' => PaymentModel::find(),
         ]);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

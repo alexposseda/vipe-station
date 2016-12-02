@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\search\DeliverySearchModel;
 use Yii;
 use common\models\DeliveryModel;
 use yii\data\ActiveDataProvider;
@@ -49,11 +50,13 @@ class DeliveryController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new DeliverySearchModel();
         $dataProvider = new ActiveDataProvider([
             'query' => DeliveryModel::find(),
         ]);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
