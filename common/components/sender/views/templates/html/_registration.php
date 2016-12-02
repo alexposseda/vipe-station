@@ -4,4 +4,4 @@
      */
 ?>
 
-<h1>Вы зарегистрированы на сайте <?= Yii::$app->name ?></h1>
+<h1><?=Yii::t('mailer/messages','Are you registered on the site')?> <?= Yii::$app->name ?></h1>

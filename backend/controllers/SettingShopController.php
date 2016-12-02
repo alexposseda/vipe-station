@@ -11,6 +11,7 @@
     use yii\alexposseda\fileManager\actions\UploadAction;
     use yii\filters\AccessControl;
     use yii\web\Controller;
+    use yii\web\UnauthorizedHttpException;
 
     class SettingShopController extends Controller{
         /**
@@ -20,6 +21,9 @@
             return [
                 'access' => [
                     'class' => AccessControl::className(),
+                    'denyCallback' => function($rule, $action){
+                        throw new UnauthorizedHttpException(Yii::t('system/error', 'You do not have access to this page'));
+                    },
                     'rules' => [
                         [
                             'allow' => true,

@@ -2,24 +2,20 @@
 
     namespace backend\controllers;
 
-    use backend\models\BrandForm;
-    use backend\models\UploadCover;
-    use common\models\SeoModel;
     use Yii;
-    use common\models\BrandModel;
-    use common\models\search\BrandSearchModel;
-    use yii\alexposseda\fileManager\actions\RemoveAction;
-    use yii\alexposseda\fileManager\actions\UploadAction;
+    use common\models\SeoModel;
+    use common\models\search\SeoSearchModel;
     use yii\filters\AccessControl;
+    use yii\validators\Validator;
     use yii\web\Controller;
     use yii\web\NotFoundHttpException;
     use yii\filters\VerbFilter;
     use yii\web\UnauthorizedHttpException;
 
     /**
-     * BrandController implements the CRUD actions for BrandModel model.
+     * SeoController implements the CRUD actions for SeoModel model.
      */
-    class BrandController extends Controller{
+    class SeoController extends Controller{
         /**
          * @inheritdoc
          */
@@ -28,9 +24,7 @@
                 'verbs'  => [
                     'class'   => VerbFilter::className(),
                     'actions' => [
-                        'delete'      => ['POST'],
-                        'upload-logo' => ['POST'],
-                        'remove-logo' => ['POST'],
+                        'delete' => ['POST'],
                     ],
                 ],
                 'access' => [
@@ -41,38 +35,19 @@
                     'rules'        => [
                         [
                             'allow' => true,
-                            'roles' => ['admin']
-                        ]
-                    ]
-                ]
-            ];
-        }
-
-        public function actions(){
-            return [
-                'upload-logo' => [
-                    'class'         => UploadAction::className(),
-                    'uploadPath'    => 'brands',
-                    'sessionEnable' => true,
-                    'uploadModel'   => new UploadCover([
-                                                           'validationRules' => [
-                                                               'extensions' => 'jpg, png',
-                                                               'maxSize'    => 1024 * 500
-                                                           ]
-                                                       ])
+                            'roles' => ['admin'],
+                        ],
+                    ],
                 ],
-                'remove-logo' => [
-                    'class' => RemoveAction::className()
-                ]
             ];
         }
 
         /**
-         * Lists all BrandModel models.
+         * Lists all SeoModel models.
          * @return mixed
          */
         public function actionIndex(){
-            $searchModel = new BrandSearchModel();
+            $searchModel = new SeoSearchModel();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
@@ -82,7 +57,7 @@
         }
 
         /**
-         * Displays a single BrandModel model.
+         * Displays a single SeoModel model.
          *
          * @param integer $id
          *
@@ -95,21 +70,17 @@
         }
 
         /**
-         * Creates a new BrandModel model.
+         * Creates a new SeoModel model.
          * If creation is successful, the browser will be redirected to the 'view' page.
          * @return mixed
          */
         public function actionCreate(){
-            $model = new BrandForm([
-                                       'brand' => new BrandModel(),
-                                       'seo'   => new SeoModel()
-                                   ]);
+            $model = new SeoModel();
 
-            if($model->loadData(Yii::$app->request->post()) && $model->save()){
-                return $this->redirect([
-                                           'view',
-                                           'id' => $model->brand->id
-                                       ]);
+            $model->validators[] = Validator::createValidator('required', $model, ['title', 'keywords', 'description']);
+
+            if($model->load(Yii::$app->request->post()) && $model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
             }else{
                 return $this->render('create', [
                     'model' => $model,
@@ -118,7 +89,7 @@
         }
 
         /**
-         * Updates an existing BrandModel model.
+         * Updates an existing SeoModel model.
          * If update is successful, the browser will be redirected to the 'view' page.
          *
          * @param integer $id
@@ -126,16 +97,12 @@
          * @return mixed
          */
         public function actionUpdate($id){
-            $brand = $this->findModel($id);
-            $seo = ($brand->seo) ? $brand->seo : new SeoModel();
+            $model = $this->findModel($id);
 
-            $model = new BrandForm(['brand' => $brand, 'seo' => $seo]);
+            $model->validators[] = Validator::createValidator('required', $model, ['title', 'keywords', 'description']);
 
-            if($model->loadData(Yii::$app->request->post()) && $model->save()){
-                return $this->redirect([
-                                           'view',
-                                           'id' => $model->brand->id
-                                       ]);
+            if($model->load(Yii::$app->request->post()) && $model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
             }else{
                 return $this->render('update', [
                     'model' => $model,
@@ -144,7 +111,7 @@
         }
 
         /**
-         * Deletes an existing BrandModel model.
+         * Deletes an existing SeoModel model.
          * If deletion is successful, the browser will be redirected to the 'index' page.
          *
          * @param integer $id
@@ -159,16 +126,16 @@
         }
 
         /**
-         * Finds the BrandModel model based on its primary key value.
+         * Finds the SeoModel model based on its primary key value.
          * If the model is not found, a 404 HTTP exception will be thrown.
          *
          * @param integer $id
          *
-         * @return BrandModel the loaded model
+         * @return SeoModel the loaded model
          * @throws NotFoundHttpException if the model cannot be found
          */
         protected function findModel($id){
-            if(($model = BrandModel::findOne($id)) !== null){
+            if(($model = SeoModel::findOne($id)) !== null){
                 return $model;
             }else{
                 throw new NotFoundHttpException('The requested page does not exist.');

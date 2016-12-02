@@ -34,7 +34,7 @@
         $this->insert($this->tableName, [
             'user_id' => 1,
             'name' => 'admin',
-            'phones' => '{{"000 000 0000"}}',
+            'phones' => json_encode(['066 388 5455']),
             'birthday' => strtotime('29/09/1979'),
             'delivery_data' => '{{"city":"kiev"}}',
             'created_at' => time(),

@@ -1,1 +1,1 @@
-Вы зарегистрированы на сайте <?= Yii::$app->name ?>
+<?= Yii::t('mailer/messages', 'Are you registered on the site') ?> <?= Yii::$app->name ?>

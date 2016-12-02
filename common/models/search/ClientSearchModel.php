@@ -5,30 +5,29 @@
     use Yii;
     use yii\base\Model;
     use yii\data\ActiveDataProvider;
-    use common\models\BrandModel;
+    use common\models\ClientModel;
     use yii\data\Sort;
 
     /**
-     * BrandSearchModel represents the model behind the search form of `common\models\BrandModel`.
+     * ClientSearchModel represents the model behind the search form of `common\models\ClientModel`.
      */
-    class BrandSearchModel extends BrandModel{
+    class ClientSearchModel extends ClientModel{
+        public $email;
+
         /**
          * @inheritdoc
          */
         public function rules(){
             return [
-                [
-                    [
-                        'id',
-                    ],
-                    'integer'
-                ],
-                [
-                    [
-                        'title',
-                    ],
-                    'safe'
-                ],
+                [['name', 'phones', 'email'], 'safe'],
+            ];
+        }
+
+        public function attributeLabels(){
+            return [
+                'name'   => Yii::t('models/client', 'name'),
+                'phones' => Yii::t('models/client', 'phone'),
+                'email'  => Yii::t('models/client', 'email')
             ];
         }
 
@@ -48,17 +47,16 @@
          * @return ActiveDataProvider
          */
         public function search($params){
-            $query = BrandModel::find();
-
-            // add conditions that should always apply here
+            $query = ClientModel::find()->joinWith('user');
 
             $dataProvider = new ActiveDataProvider([
                                                        'query' => $query,
                                                        'sort'  => new Sort([
                                                                                'attributes' => [
                                                                                    'id',
-                                                                                   'title',
-                                                                                   'updated_at'
+                                                                                   'name',
+                                                                                   'birthday',
+                                                                                   'email'
                                                                                ]
                                                                            ])
                                                    ]);
@@ -66,21 +64,13 @@
             $this->load($params);
 
             if(!$this->validate()){
-                // uncomment the following line if you do not want to return any records when validation fails
-                // $query->where('0=1');
                 return $dataProvider;
             }
 
-            // grid filtering conditions
-            $query->andFilterWhere([
-                                       'id' => $this->id,
-                                   ]);
+            $query->andFilterWhere(['like', 'email', $this->email]);
 
-            $query->andFilterWhere([
-                                       'like',
-                                       'title',
-                                       $this->title
-                                   ]);
+            $query->andFilterWhere(['like', 'name', $this->name])
+                  ->andFilterWhere(['like', 'phones', $this->phones]);
 
             return $dataProvider;
         }

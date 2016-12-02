@@ -39,7 +39,7 @@ class m161128_085020_create_payment_lang_table extends Migration
      */
     public function down()
     {
-        $this->dropForeignKey('FK_Payment_Lang_TO_Product_Option', $this->tableName);
+        $this->dropForeignKey('FK_Payment_Lang_TO_Payment', $this->tableName);
         $this->dropForeignKey('FK_Payment_Lang_TO_Language', $this->tableName);
         $this->dropTable($this->tableName);
     }

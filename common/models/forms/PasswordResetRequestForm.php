@@ -40,6 +40,12 @@
             ];
         }
 
+        public function attributeLabels(){
+            return[
+                'email'=>Yii::t('models/authorize', 'email'),
+            ];
+        }
+
         /**
          * Sends an email with a link, for resetting the password.
          *

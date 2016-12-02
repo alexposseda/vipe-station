@@ -39,8 +39,11 @@
                         'basePath'       => '@common/translations',
                         'sourceLanguage' => 'en',
                         'fileMap'        => [
-                            'models'       => 'models/base.php',
-                            'models/brand' => 'models/brand.php',
+                            'models'           => 'models/base.php',
+                            'models/brand'     => 'models/brand.php',
+                            'models/authorize' => 'models/authorize.php',
+                            'models/client'    => 'models/client.php',
+                            'models/seo'    => 'models/seo.php',
                             'models/cart' => 'models/cart.php',
                             'models/category' => 'models/category.php',
                             'models/delivery' => 'models/delivery.php',

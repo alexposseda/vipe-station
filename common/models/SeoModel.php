@@ -77,10 +77,10 @@
         public function attributeLabels(){
             return [
                 'id'          => 'ID',
-                'title'       => 'Title',
-                'keywords'    => 'Keywords',
-                'description' => 'Description',
-                'seo_block'   => 'Seo Block',
+                'title'       => Yii::t('models/seo', 'Title'),
+                'keywords'    => Yii::t('models/seo', 'Keywords'),
+                'description' => Yii::t('models/seo', 'Description'),
+                'seo_block'   => Yii::t('models/seo', 'Seo Block'),
                 'created_at'  => 'Created At',
                 'updated_at'  => 'Updated At',
             ];
@@ -99,6 +99,7 @@
         public function getProducts(){
             return $this->hasMany(ProductModel::className(), ['seo_id' => 'id']);
         }
+
         /**
          * @return \yii\db\ActiveQuery
          */

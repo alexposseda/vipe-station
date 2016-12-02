@@ -1,14 +1,14 @@
 <?php
 
-    use yii\helpers\Html;
-    use yii\widgets\ActiveForm;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
-    /* @var $this yii\web\View */
-    /* @var $model common\models\search\BrandSearchModel */
-    /* @var $form yii\widgets\ActiveForm */
+/* @var $this yii\web\View */
+/* @var $model common\models\search\SeoSearchModel */
+/* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="brand-model-search">
+<div class="seo-model-search">
     <?php $form = ActiveForm::begin([
                                         'action'  => ['index'],
                                         'method'  => 'get',
@@ -19,9 +19,13 @@
     <div class="panel panel-default">
         <div class="panel-heading"><?= Yii::t('system/view','Filter')?></div>
         <div class="panel-body">
-            <?= $form->field($model, 'id') ?>
-
             <?= $form->field($model, 'title') ?>
+
+            <?= $form->field($model, 'keywords') ?>
+
+            <?= $form->field($model, 'description') ?>
+
+            <?= $form->field($model, 'seo_block') ?>
         </div>
         <div class="panel-footer">
             <div class="form-group">
