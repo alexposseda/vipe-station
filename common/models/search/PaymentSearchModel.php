@@ -5,12 +5,12 @@ namespace common\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\SeoModel;
+use common\models\PaymentModel;
 
 /**
- * SeoSearchModel represents the model behind the search form of `common\models\SeoModel`.
+ * PaymentSearchModel represents the model behind the search form of `common\models\PaymentModel`.
  */
-class SeoSearchModel extends SeoModel
+class PaymentSearchModel extends PaymentModel
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class SeoSearchModel extends SeoModel
     {
         return [
             [['id', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'keywords', 'description', 'seo_block'], 'safe'],
+            [['name', 'description'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class SeoSearchModel extends SeoModel
      */
     public function search($params)
     {
-        $query = SeoModel::find();
+        $query = PaymentModel::find();
 
         // add conditions that should always apply here
 
@@ -64,10 +64,8 @@ class SeoSearchModel extends SeoModel
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'keywords', $this->keywords])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'seo_block', $this->seo_block]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

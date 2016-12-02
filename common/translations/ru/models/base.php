@@ -10,6 +10,7 @@
         'Delivery' => 'Доставка',
         'Deliveries' => 'Доставки',
         'Payment' => 'Оплата',
+
         'Last Update' => 'Обновлен',
         'Created' => 'Создан',
         'Slug' => 'Ярлык',

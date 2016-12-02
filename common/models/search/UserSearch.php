@@ -5,12 +5,12 @@ namespace common\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\SeoModel;
+use common\models\User;
 
 /**
- * SeoSearchModel represents the model behind the search form of `common\models\SeoModel`.
+ * UserSearch represents the model behind the search form of `common\models\User`.
  */
-class SeoSearchModel extends SeoModel
+class UserSearch extends User
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SeoSearchModel extends SeoModel
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'keywords', 'description', 'seo_block'], 'safe'],
+            [['id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['auth_key', 'password_hash', 'password_reset_token', 'email'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class SeoSearchModel extends SeoModel
      */
     public function search($params)
     {
-        $query = SeoModel::find();
+        $query = User::find();
 
         // add conditions that should always apply here
 
@@ -60,14 +60,15 @@ class SeoSearchModel extends SeoModel
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'keywords', $this->keywords])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'seo_block', $this->seo_block]);
+        $query->andFilterWhere(['like', 'auth_key', $this->auth_key])
+            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
+            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
+            ->andFilterWhere(['like', 'email', $this->email]);
 
         return $dataProvider;
     }
