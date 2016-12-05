@@ -1,0 +1,33 @@
+<?php
+    /**
+     * @var $this  \yii\web\View
+     * @var $model \common\models\ProductModel
+     */
+    use yii\bootstrap\Html;
+    use yii\widgets\DetailView;
+
+?>
+
+<?= DetailView::widget([
+                           'model'      => $model,
+                           'attributes' => [
+                               //                               'id',
+                               'title',
+                               //                               'gallery:ntext',
+                               'description:ntext',
+                               'base_price',
+                               'base_quantity',
+                               //                               'sales',
+                               //                               'views',
+                               'seo.title',
+                               'brand.title',
+                           ],
+                       ]) ?>
+<?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+<?= Html::a('Delete', ['delete', 'id' => $model->id], [
+    'class' => 'btn btn-danger',
+    'data'  => [
+        'confirm' => Yii::t('system/view', 'Are you sure you want to delete this item?'),
+        'method'  => 'post',
+    ],
+]) ?>
