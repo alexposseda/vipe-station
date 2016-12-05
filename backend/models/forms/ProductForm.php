@@ -43,7 +43,10 @@
         }
 
         public function init(){
-            $this->categories = ArrayHelper::map($this->product->categories, 'id', 'title');
+            $this->categories = ArrayHelper::map($this->product->categories, 'id', 'id');
+            foreach($this->categories as $key => $category){
+                $this->categories[$key] = ['selected' => 'selected'];
+            }
         }
 
         /**
@@ -99,16 +102,20 @@
                 $diff_categories = $this->product->getProductInCategories()
                                                  ->where(['not in', 'category_id', $this->categories])
                                                  ->all();
-                foreach($diff_categories as $category_delete){
-                    $category_delete->delete();
+                if($diff_categories){
+                    foreach($diff_categories as $category_delete){
+                        $category_delete->delete();
+                    }
                 }
                 //endregion
 
-                $gallery = $this->product->gallery ? $this->product->gallery : [];
+                //region Clear Session gallery
+                $gallery = $this->product->gallery ? json_decode($this->product->gallery) : [];
                 foreach($gallery as $gallery_item){
                     FileManager::getInstance()
                                ->removeFromSession($gallery_item);
                 }
+                //endregion
 
                 $transaction->commit();
 

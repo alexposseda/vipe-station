@@ -3,10 +3,13 @@
     namespace backend\controllers;
 
     use backend\models\forms\ProductForm;
+    use backend\models\UploadCover;
     use common\models\SeoModel;
     use Yii;
     use common\models\ProductModel;
     use common\models\search\ProductSearchModel;
+    use yii\alexposseda\fileManager\actions\RemoveAction;
+    use yii\alexposseda\fileManager\actions\UploadAction;
     use yii\filters\AccessControl;
     use yii\web\Controller;
     use yii\web\NotFoundHttpException;
@@ -45,6 +48,27 @@
             ];
         }
 
+        /**
+         * @inheritdoc
+         */
+        public function actions(){
+            return [
+                'upload-gallery' => [
+                    'class'         => UploadAction::className(),
+                    'uploadPath'    => 'brands',
+                    'sessionEnable' => true,
+                    'uploadModel'   => new UploadCover([
+                                                           'validationRules' => [
+                                                               'extensions' => 'jpg, png',
+                                                               'maxSize'    => 1024 * 500
+                                                           ]
+                                                       ])
+                ],
+                'remove-gallery' => [
+                    'class' => RemoveAction::className()
+                ]
+            ];
+        }
         /**
          * Lists all ProductModel models.
          * @return mixed

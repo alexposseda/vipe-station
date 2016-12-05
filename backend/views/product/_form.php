@@ -20,8 +20,7 @@
                     <?= $form->field($model->product, 'brand_id')
                              ->dropDownList($model->getAllBrand(), ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Brand')]) ?>
                 </div>
-            </div>
-
+            </div><!--Brand-->
             <div class="panel panel-default">
                 <div class="panel-body">
 
@@ -39,16 +38,17 @@
                                  ->input('number') ?>
                     </div>
                 </div>
-            </div>
+            </div><!--Product attributes-->
             <div class="panel panel-default">
                 <div class="panel-body">
                     <?= $form->field($model, 'categories[]')
                              ->dropDownList($model->allCategories, [
                                  'multiple' => 'multiple',
-                                 'prompt'   => Yii::t('models/product', Yii::t('system/view', 'Select').' '.Yii::t('models', 'Category'))
+//                                 'prompt'   => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Category'),
+                                 'options'=>$model->categories
                              ]) ?>
                 </div>
-            </div>
+            </div><!--Categories-->
         </div>
         <div class="col-sm-12 col-md-9 col-lg-4">
             <div class="panel panel-success">
@@ -58,7 +58,7 @@
                     <?= $form->field($model->seo, 'keywords') ?>
                     <?= $form->field($model->seo, 'description') ?>
                 </div>
-            </div>
+            </div><!--Seo-->
             <?= Html::activeHiddenInput($model->product, 'gallery', ['id' => 'gallery-input']) ?>
             <?= FileManagerWidget::widget([
                                               'uploadUrl'     => Url::to(['product/upload-gallery']),
@@ -68,7 +68,7 @@
                                               'title'         => Yii::t('models/product', 'Gallery'),
                                               'targetInputId' => 'gallery-input'
                                           ]) ?>
-        </div>
+        </div><!--Seo & Gallery-->
 
         <div class="form-group">
             <?= Html::submitButton($model->product->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),

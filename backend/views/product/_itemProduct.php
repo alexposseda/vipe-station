@@ -23,8 +23,8 @@
                                'brand.title',
                            ],
                        ]) ?>
-<?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-<?= Html::a('Delete', ['delete', 'id' => $model->id], [
+<?= Html::a(Yii::t('system/view', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+<?= Html::a(Yii::t('system/view', 'Delete'), ['delete', 'id' => $model->id], [
     'class' => 'btn btn-danger',
     'data'  => [
         'confirm' => Yii::t('system/view', 'Are you sure you want to delete this item?'),
