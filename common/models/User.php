@@ -137,7 +137,6 @@ class User extends ActiveRecord
     }
 
     public function afterSave($insert){
-        //Нужна консультация
         $resets = new PasswordResetRequestForm(['email' => $this->email]);
         if(!$resets->sendEmail()){
             throw new \Exception('error send mail');
