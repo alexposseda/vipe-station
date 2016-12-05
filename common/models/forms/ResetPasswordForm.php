@@ -2,6 +2,7 @@
     namespace common\models\forms;
 
     use common\models\UserIdentity;
+    use Yii;
     use yii\base\Model;
     use yii\base\InvalidParamException;
 
@@ -48,7 +49,7 @@
 
         public function attributeLabels(){
             return [
-                'password' => Yii::t('models/authorize', 'password')
+                'password' => Yii::t('models/authorize', 'Password')
             ];
         }
 

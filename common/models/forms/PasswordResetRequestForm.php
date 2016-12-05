@@ -42,7 +42,7 @@
 
         public function attributeLabels(){
             return[
-                'email'=>Yii::t('models/authorize', 'email'),
+                'email'=>Yii::t('models/authorize', 'Email'),
             ];
         }
 

@@ -1,14 +1,13 @@
 <?php
 
-use yii\helpers\Html;
+    use yii\helpers\Html;
 
+    /* @var $this yii\web\View */
+    /* @var $model \backend\models\BrandForm */
 
-/* @var $this yii\web\View */
-/* @var $model common\models\BrandModel */
-
-$this->title = Yii::t('system/view', 'Create').' '.Yii::t('models', 'Brand');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Brands'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+    $this->title = Yii::t('system/view', 'Create').' '.Yii::t('models', 'Brand');
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Brands'), 'url' => ['index']];
+    $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="brand-model-create">
 
