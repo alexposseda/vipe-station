@@ -121,8 +121,10 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        if($user_roles = current(Yii::$app->authManager->getRolesByUser($id))->name != 'admin'){
+        $user_roles = current(Yii::$app->authManager->getRolesByUser($id));
+        if($user_roles->name != 'admin'){
             $this->findModel($id)->delete();
+            Yii::$app->authManager->revoke($user_roles, $id);
         }
 
         return $this->redirect(['index']);
