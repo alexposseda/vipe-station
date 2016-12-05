@@ -31,9 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at:datetime',
             'updated_at:datetime',
             [
-                'label'=>Yii::t('models', 'Role'),
+                'label'=>Yii::t('models/user', 'Role'),
                 'content'=>function($data){
-
                     return current(Yii::$app->authManager->getRolesByUser($data->id))->name;
                 },
             ],

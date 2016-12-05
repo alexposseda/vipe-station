@@ -81,7 +81,7 @@ class UserController extends Controller
         $model = new User();
         $rol_user = 'user';
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save() && $model->setUserRole(Yii::$app->request->post('role'))) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -103,7 +103,7 @@ class UserController extends Controller
         $rol_user = current(Yii::$app->authManager->getRolesByUser($model->id))->name;
 
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()&& $model->setUserRole(Yii::$app->request->post('role'))) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
