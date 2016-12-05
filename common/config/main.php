@@ -43,20 +43,20 @@
                             'models/brand'     => 'models/brand.php',
                             'models/authorize' => 'models/authorize.php',
                             'models/client'    => 'models/client.php',
-                            'models/seo'    => 'models/seo.php',
-                            'models/cart' => 'models/cart.php',
-                            'models/category' => 'models/category.php',
-                            'models/delivery' => 'models/delivery.php',
-                            'models/payment' => 'models/payment.php',
-                            'models/user' => 'models/user.php',
+                            'models/seo'       => 'models/seo.php',
+                            'models/cart'      => 'models/cart.php',
+                            'models/category'  => 'models/category.php',
+                            'models/delivery'  => 'models/delivery.php',
+                            'models/payment'   => 'models/payment.php',
+                            'models/user'      => 'models/user.php',
                         ],
                     ],
-                    'shop*'=>[
+                    'shop*'   => [
                         'class'          => 'yii\i18n\PhpMessageSource',
                         'basePath'       => '@common/translations',
                         'sourceLanguage' => 'en',
                         'fileMap'        => [
-                            'shop/setting'        => 'shop/setting.php',
+                            'shop/setting' => 'shop/setting.php',
                         ],
                     ]
                 ],

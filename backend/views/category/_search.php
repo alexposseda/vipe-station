@@ -1,39 +1,36 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+    use yii\helpers\Html;
+    use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\search\CategorySearchModel */
-/* @var $form yii\widgets\ActiveForm */
+    /* @var $this yii\web\View */
+    /* @var $model common\models\search\CategorySearchModel */
+    /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="category-model-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
+                                        'action'  => ['index'],
+                                        'method'  => 'get',
+                                        'options' => [
+                                            'data-pjax' => 1,
+                                        ],
+                                    ]); ?>
+    <div class="panel panel-default">
+        <div class="panel-heading"><?= Yii::t('system/view', 'Filter') ?></div>
+        <div class="panel-body">
+            <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'title') ?>
-
-    <?= $form->field($model, 'parent') ?>
-
-    <?= $form->field($model, 'slug') ?>
-
-    <?= $form->field($model, 'seo_id') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+            <?= $form->field($model, 'title') ?>
+        </div>
+        <div class="panel-footer">
+            <div class="form-group">
+                <?= Html::submitButton(Yii::t('system/view', 'Search'), ['class' => 'btn btn-primary']) ?>
+                <?= Html::resetButton(Yii::t('system/view', 'Reset'), ['class' => 'btn btn-default']) ?>
+            </div>
+        </div>
     </div>
-
     <?php ActiveForm::end(); ?>
 
 </div>

@@ -1,5 +1,6 @@
 <?php
-    return[
+    return [
         'Category Title' => 'Название Категории',
-        'Parent' => 'Источник',
+        'Category'       => 'Категорию',
+        'Parent'         => 'Источник',
     ];
