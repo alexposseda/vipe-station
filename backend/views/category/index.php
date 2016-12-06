@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-md-12 col-lg-3">
             <p>
-                <?= Html::a(Yii::t('system/view','Create').' '.Yii::t('models','Category'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('system/view', 'Create').' '.Yii::t('models', 'Category'), ['create'], ['class' => 'btn btn-success']) ?>
                 <?= $this->render('_search', ['model' => $searchModel]); ?>
             </p>
         </div>
@@ -29,35 +29,46 @@
                                      'layout'       => "{summary}\n<div class='table-responsive'>\n{items}\n</div>\n{pager}",
                                      'columns'      => [
                                          [
-                                             'attribute'     => 'id',
-                                             'headerOptions' => [
+                                             'attribute'      => 'id',
+                                             'headerOptions'  => [
                                                  'style' => 'width: 2%;max-width: 50px;'
                                              ],
                                              'contentOptions' => ['style' => 'vertical-align:middle;']
 
                                          ],
                                          [
-                                             'attribute'     => 'title',
-                                             'headerOptions' => [
+                                             'attribute'      => 'title',
+                                             'headerOptions'  => [
                                                  'style' => 'width: 20%;max-width: 150px;'
                                              ],
                                              'contentOptions' => ['style' => 'vertical-align:middle;']
 
                                          ],
                                          [
-                                             'attribute'     => 'updated_at',
-                                             'format'        => [
+                                             'attribute'      => 'parent',
+                                             'value'          => function($data){
+                                                 return !$data->parent ? null : $data->parent0->title;
+                                             },
+                                             'headerOptions'  => [
+                                                 'style' => 'width: 20%;max-width: 150px;'
+                                             ],
+                                             'contentOptions' => ['style' => 'vertical-align:middle;']
+
+                                         ],
+                                         [
+                                             'attribute'      => 'updated_at',
+                                             'format'         => [
                                                  'date',
                                                  'HH:mm:ss dd.MM.YYYY'
                                              ],
-                                             'headerOptions' => [
+                                             'headerOptions'  => [
                                                  'style' => 'width: 10%;max-width: 100px;'
                                              ],
                                              'contentOptions' => ['style' => 'vertical-align:middle;']
                                          ],
                                          [
-                                             'class'         => 'yii\grid\ActionColumn',
-                                             'headerOptions' => [
+                                             'class'          => 'yii\grid\ActionColumn',
+                                             'headerOptions'  => [
                                                  'style' => 'width: 7%;max-width: 60px;'
                                              ],
                                              'contentOptions' => ['style' => 'vertical-align:middle;']

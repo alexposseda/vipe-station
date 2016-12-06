@@ -113,6 +113,8 @@
         public function actionUpdate($id){
             $category = $this->findModel($id);
             $category_array = ArrayHelper::map(CategoryModel::find()->all(), 'id', 'title');
+            ArrayHelper::remove($category_array, $id);
+
             $seo = ($category->seo) ? $category->seo : new SeoModel();
 
             $model = new CategoryForm(['category' => $category, 'seo' => $seo]);
