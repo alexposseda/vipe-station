@@ -12,8 +12,6 @@
         'url'   => ['index']
     ];
     $this->params['breadcrumbs'][] = $this->title;
-
-    var_dump($model->langs);
 ?>
 <div class="brand-model-view">
 

@@ -6,10 +6,12 @@
         'components'     => [
             'cache'       => [
                 'class' => 'yii\caching\FileCache',
-
             ],
             'authManager' => [
                 'class' => 'yii\rbac\DbManager',
+            ],
+            'db' => [
+                'enableSchemaCache' => true,
             ],
             'urlManager'  => [
                 'class'           => 'codemix\localeurls\UrlManager',
