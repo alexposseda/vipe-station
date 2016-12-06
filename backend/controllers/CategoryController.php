@@ -86,7 +86,8 @@
                                           'seo'      => new SeoModel()
                                       ]);
 
-            $category_array = ArrayHelper::map(CategoryModel::find()->all(), 'id', 'title');
+            $category_array = ArrayHelper::map(CategoryModel::find()
+                                                            ->all(), 'id', 'title');
 
             if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
@@ -96,8 +97,8 @@
             }else{
                 return $this->render('create', [
                     'category_parent' => $category_parent,
-                    'category_array' => $category_array,
-                    'model' => $model,
+                    'category_array'  => $category_array,
+                    'model'           => $model,
                 ]);
             }
         }
@@ -112,7 +113,8 @@
          */
         public function actionUpdate($id){
             $category = $this->findModel($id);
-            $category_array = ArrayHelper::map(CategoryModel::find()->all(), 'id', 'title');
+            $category_array = ArrayHelper::map(CategoryModel::find()
+                                                            ->all(), 'id', 'title');
             $seo = ($category->seo) ? $category->seo : new SeoModel();
 
             $model = new CategoryForm(['category' => $category, 'seo' => $seo]);
@@ -125,8 +127,8 @@
             }else{
                 return $this->render('update', [
                     'category_parent' => !$category->parent ? null : $category->parent0->title,
-                    'category_array' => $category_array,
-                    'model' => $model,
+                    'category_array'  => $category_array,
+                    'model'           => $model,
                 ]);
             }
         }
@@ -161,5 +163,13 @@
             }else{
                 throw new NotFoundHttpException('The requested page does not exist.');
             }
+        }
+
+        public function actionGetCharacteristic($id){
+            $category = $this->findModel($id);
+
+            $characteristic = ArrayHelper::map($category->productCharacteristics, 'id', 'title');
+
+            return json_encode($characteristic);
         }
     }

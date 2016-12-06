@@ -9,7 +9,18 @@
     /* @var $model \backend\models\forms\ProductForm */
     /* @var $form yii\widgets\ActiveForm */
 
-    var_dump($model->getAllCharacteristic());
+    /*
+     * todo javascript получить характеристики для категорий Url::to(['category/get-characteristic','id'=>$id_category])
+     * сформировать в переменную $model->characteristic массив характеристик [ id_character => value ] или пустой массив
+     *
+     * сформировать в переменную $model->options массив опций [
+     *   id_character =>[
+     *            value         =>значение,
+     *            delta_price   =>значение,
+     *            quantity      =>значение
+     *                    ]
+     * ] или пустой массив
+    */
 ?>
 
 <div class="product-model-form">
@@ -46,11 +57,19 @@
                     <?= $form->field($model, 'categories[]')
                              ->dropDownList($model->allCategories, [
                                  'multiple' => 'multiple',
-//                                 'prompt'   => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Category'),
-                                 'options'=>$model->categories
+                                 //                                 'prompt'   => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Category'),
+                                 'options'  => $model->categories
                              ]) ?>
                 </div>
             </div><!--Categories-->
+            <div class="row">
+                <div class="col-lg-6 characteristic">
+                    <?= $form->field($model, 'characteristic') ?>
+                </div>
+                <div class="col-lg-6 option">
+                    <?= $form->field($model, 'options') ?>
+                </div>
+            </div>
         </div>
         <div class="col-sm-12 col-md-9 col-lg-4">
             <div class="panel panel-success">

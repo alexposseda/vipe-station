@@ -137,7 +137,7 @@
                 'description'   => Yii::t('models/product', 'Description'),
                 'base_price'    => Yii::t('models/product', 'Base Price'),
                 'base_quantity' => Yii::t('models/product', 'Base Quantity'),
-                'slug'          => Yii::t('models/product', 'Slug'),
+                'slug'          => Yii::t('models', 'Slug'),
                 'brand_id'      => Yii::t('models', 'Brand'),
                 'sales'         => Yii::t('models/product', 'Sales'),
                 'views'         => Yii::t('models/product', 'Views'),

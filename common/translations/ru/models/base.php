@@ -13,8 +13,10 @@
         'Payments'   => 'Оплаты',
         'Category'   => 'Категория',
         'Categories' => 'Категории',
-        'Product' => 'Товар',
-        'Products' => 'Товары',
+        'Product'    => 'Товар',
+        'Products'   => 'Товары',
+        'Options'    => 'Опции',
+        'Option'     => 'Опция',
 
         'Last Update' => 'Обновлен',
         'Created'     => 'Создан',

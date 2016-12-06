@@ -4,8 +4,10 @@
 
     use common\models\BrandModel;
     use common\models\CategoryModel;
+    use common\models\ProductCharacteristicItemModel;
     use common\models\ProductInCategoryModel;
     use common\models\ProductModel;
+    use common\models\ProductOptionModel;
     use common\models\SeoModel;
     use Exception;
     use Yii;
@@ -29,16 +31,21 @@
         public $categories;
         public $error;
 
+        public $characteristic;
+        public $options;
+
         public function rules(){
             return [
                 ['categories', 'required'],
-                ['categories', 'safe'],
+                [['categories', 'characteristic', 'options'], 'safe'],
             ];
         }
 
         public function attributeLabels(){
             return [
-                'categories' => Yii::t('models', 'Categories')
+                'categories'     => Yii::t('models', 'Categories'),
+                'characteristic' => Yii::t('models/product', 'Characteristic'),
+                'options'        => Yii::t('models', 'Options')
             ];
         }
 
@@ -117,6 +124,32 @@
                 }
                 //endregion
 
+                $characteristic = json_decode($this->characteristic);
+                foreach($characteristic as $key => $value){
+                    $prod_characteristic = new ProductCharacteristicItemModel([
+                                                                                  'characteristic_id' => $key,
+                                                                                  'product_id'        => $this->product->id,
+                                                                                  'value'             => $value
+                                                                              ]);
+                    if(!$prod_characteristic->save()){
+                        throw new Exception('error to save characteristic '.$key.' => '.$value);
+                    }
+                }
+
+                $options = json_decode($this->options);
+                foreach($options as $key => $value){
+                    $prod_option = new ProductOptionModel([
+                                                              'characteristic_id' => $key,
+                                                              'product_id'        => $this->product->id,
+                                                              'value'             => $value->value,
+                                                              'quantity'          => $value->quantity,
+                                                              'delta_price'       => $value->delta_price
+                                                          ]);
+                    if(!$prod_option->save()){
+                        throw new Exception('error to save option '.$key.' => '.$value->value);
+                    }
+                }
+
                 $transaction->commit();
 
                 return true;
@@ -163,12 +196,4 @@
             return ArrayHelper::map($brands, 'id', 'title');
         }
 
-        public function getAllCharacteristic(){
-            $categories = $this->product->categories;
-            $characteristics = [];
-            foreach($categories as $category){
-                $characteristics[$category->id] = $category->productCharacteristics;
-            }
-            return $characteristics;
-        }
     }
