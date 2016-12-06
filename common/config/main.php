@@ -1,6 +1,6 @@
 <?php
     return [
-        'sourceLanguage' => 'en',
+        'sourceLanguage' => 'ru',
         'language'       => 'ru',
         'vendorPath'     => dirname(dirname(__DIR__)).'/vendor',
         'components'     => [
@@ -14,7 +14,6 @@
             'urlManager'  => [
                 'class'           => 'codemix\localeurls\UrlManager',
                 'languages'       => [
-                    'en',
                     'ru',
                     'ua'
                 ],

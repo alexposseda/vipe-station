@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ac9341769030d2cc26654994fde7fd76",
-    "content-hash": "117cc8822b5e25ea918f89d700fa616e",
+    "hash": "dfcea12da9b7502b998a19256ff0eb4b",
+    "content-hash": "ec4b905ec7ed5394f6bf775985fe5878",
     "packages": [
         {
             "name": "alexposseda/filemanager",
@@ -440,6 +440,54 @@
             "time": "2015-09-19 16:54:05"
         },
         {
+            "name": "omgdef/yii2-multilingual-behavior",
+            "version": "2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OmgDef/yii2-multilingual-behavior.git",
+                "reference": "93c1c3e20cb9219136b7706291e4e1f1e371dc95"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OmgDef/yii2-multilingual-behavior/zipball/93c1c3e20cb9219136b7706291e4e1f1e371dc95",
+                "reference": "93c1c3e20cb9219136b7706291e4e1f1e371dc95",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "phpunit/dbunit": ">=1.2",
+                "phpunit/phpunit": "4.6.*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "omgdef\\multilingual\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "OmgDef",
+                    "email": "omgdef@gmail.com"
+                }
+            ],
+            "description": "Port of the yii-multilingual-behavior for yii",
+            "keywords": [
+                " behavior",
+                " i18",
+                " multilingual",
+                " yii2-multilingual-behavior",
+                "extension",
+                "yii2"
+            ],
+            "time": "2016-02-12 10:38:57"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "5.x-dev",
             "source": {
@@ -502,7 +550,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/2b4925e988bf3cc2d3478be495933441eb640b45",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/f8202bb4eda46c2cb4664fee24723e6bf48f07e5",
                 "reference": "dafb94737017ab4c34ded5de5e33cbaeadf8af5c",
                 "shasum": ""
             },
@@ -646,7 +694,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-composer/zipball/e882cc327a6935a41f2e8665b9ef0317f6852d4d",
+                "url": "https://api.github.com/repos/yiisoft/yii2-composer/zipball/c6a294f01630e89f8ccc6209edb9ed8fbf008ac4",
                 "reference": "e882cc327a6935a41f2e8665b9ef0317f6852d4d",
                 "shasum": ""
             },
@@ -741,7 +789,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-swiftmailer/zipball/decd3ea203b8c4e682068e656dc23f4a32f13b4f",
+                "url": "https://api.github.com/repos/yiisoft/yii2-swiftmailer/zipball/c86c5ee2464ebf8c9f9adc2978193a9a2771b9c9",
                 "reference": "8e3e92f032e7400c2593fe26e1832c4d0a832b65",
                 "shasum": ""
             },
@@ -1058,7 +1106,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/70572abb2ee34c79a566dc13d016f89011f8365e",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/71c5ccec1b04649c26b7fa510b1cc6b811cb3fb9",
                 "reference": "70572abb2ee34c79a566dc13d016f89011f8365e",
                 "shasum": ""
             },
@@ -1462,7 +1510,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6cba06ff75a1a63a71033e1a01b89056f3af1e8d",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/903fd6318d0a90b4770a009ff73e4a4e9c437929",
                 "reference": "6cba06ff75a1a63a71033e1a01b89056f3af1e8d",
                 "shasum": ""
             },
@@ -1706,7 +1754,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/45673bdae6230ec3e2c329d5554be51ecc8e749d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7d84af2f76061a420e98ef64d5679d5bdb58753e",
                 "reference": "b0c4a96b3eca878a7fe1537d1b6fd1175dccd434",
                 "shasum": ""
             },
@@ -3063,7 +3111,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-faker/zipball/6e6eb430809e3f9c05e367303909a05a4912d4c0",
+                "url": "https://api.github.com/repos/yiisoft/yii2-faker/zipball/8a406289c3af4da5e0092a96b37734dc1a16a43b",
                 "reference": "6e6eb430809e3f9c05e367303909a05a4912d4c0",
                 "shasum": ""
             },
@@ -3110,7 +3158,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/ffefc12a47f9bdabdd53076767b92dbceb6283e9",
+                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/1238a0c39dc3c39161497e86e9a7d9c3f8c28935",
                 "reference": "ffefc12a47f9bdabdd53076767b92dbceb6283e9",
                 "shasum": ""
             },

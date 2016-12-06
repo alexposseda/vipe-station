@@ -9,6 +9,7 @@ use yii\widgets\DetailView;
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Brand Models', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+var_dump($model->langs);
 ?>
 <div class="brand-model-view">
 

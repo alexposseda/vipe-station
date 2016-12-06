@@ -3,11 +3,11 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\BrandModel */
+/* @var $model backend\models\BrandForm */
 
-$this->title = Yii::t('system/view', 'Update').' '.Yii::t('models', 'Brand'). $model->title;
+$this->title = Yii::t('system/view', 'Update').' '.Yii::t('models', 'Brand'). $model->brand->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Brands'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->brand->title, 'url' => ['view', 'id' => $model->brand->id]];
 $this->params['breadcrumbs'][] = Yii::t('system/view', 'Update');
 ?>
 <div class="brand-model-update">

@@ -2,11 +2,15 @@
 
     namespace common\models;
 
+    use common\components\LangBehavior;
+    use common\components\MultyLangBehavior;
+    use omgdef\multilingual\MultilingualBehavior;
     use Yii;
     use yii\alexposseda\fileManager\FileManager;
     use yii\behaviors\SluggableBehavior;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
+    use yii\helpers\ArrayHelper;
 
     /**
      * This is the model class for table "{{%brand}}".
@@ -36,6 +40,17 @@
                     'slugAttribute' => 'slug',
                 ],
                 TimestampBehavior::className(),
+                'langs' => [
+                    'class'         => LangBehavior::className(),
+                    'langModels'    => LanguageModel::find()
+                                                    ->all(),
+                    'langModelName' => BrandLangModel::className(),
+                    'relationFieldName' => 'brand_id',
+                    'attributes'    => [
+                        'title',
+                        'description'
+                    ]
+                ],
             ];
         }
 
@@ -131,6 +146,22 @@
          * @return string
          */
         public function getLogo(){
-            return FileManager::getInstance()->getStorageUrl().json_decode($this->cover)[0];
+            return FileManager::getInstance()
+                              ->getStorageUrl().json_decode($this->cover)[0];
+        }
+
+        public function beforeDelete(){
+            parent::beforeDelete();
+
+            if(!empty($this->cover)){
+                FileManager::getInstance()
+                           ->removeFile(json_decode($this->cover)[0]);
+            }
+
+            if($this->seo){
+                $this->seo->delete();
+            }
+
+            return true;
         }
     }
