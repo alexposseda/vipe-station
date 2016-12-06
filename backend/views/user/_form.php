@@ -26,7 +26,7 @@ $params = [
                     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
                     <div class="form-group">
-                        <?= Html::dropDownList('role', $rol_user, $roles, ['prompt' =>'Select Role']) ?>
+                        <?= Html::dropDownList('role', $rol_user, $roles, ['prompt' =>Yii::t('system/view','Select').' '. Yii::t('models/user','Role')]) ?>
                     </div>
 
                     <div class="form-group">

@@ -1,23 +1,23 @@
 <?php
 
-    namespace backend\models;
+    namespace backend\models\forms;
 
-    use common\models\BrandModel;
-    use common\models\SeoModel;
     use Yii;
-    use yii\alexposseda\fileManager\FileManager;
     use yii\base\Model;
     use yii\db\Exception;
+    use common\models\CategoryModel;
+    use common\models\SeoModel;
 
     /**
-     * Class BrandForm
-     * @package backend\models
+     * Class CategoryForm
+     * @package backend\models\forms
      *
-     * @property SeoModel   $seo
-     * @property BrandModel $brand
+     * @property SeoModel      $seo
+     * @property CategoryModel $category
      */
-    class  BrandForm extends Model{
-        public $brand;
+    class CategoryForm extends Model{
+
+        public $category;
         public $seo;
         public $error;
 
@@ -27,7 +27,7 @@
          * @return bool
          */
         public function loadData(array $data){
-            if($this->brand->load($data) && $this->seo->load($data)){
+            if($this->category->load($data) && $this->seo->load($data)){
                 return true;
             }
 
@@ -41,26 +41,19 @@
             $transaction = Yii::$app->db->beginTransaction();
             try{
                 if($this->seo->canSave()){
-                    if(!$this->seo->save()){
+                    if($this->seo->save()){
                         throw new Exception('error to save seo');
                     }
-                    $this->brand->seo_id = $this->seo->id;
+                    $this->category->seo_id = $this->seo->id;
                 }else{
-                    $this->brand->seo_id = null;
+                    $this->category->seo_id = null;
                 }
 
-
-                if(!$this->brand->save()){
-                    throw new Exception('error to save brand');
-                }
-
-                if(!empty($this->brand->cover)){
-                    FileManager::getInstance()
-                               ->removeFromSession(json_decode($this->brand->cover)[0]);
+                if(!$this->category->save()){
+                    throw new Exception('error to save category');
                 }
 
                 $transaction->commit();
-
                 return true;
             }catch(Exception $e){
                 $this->error = $e->getMessage();
