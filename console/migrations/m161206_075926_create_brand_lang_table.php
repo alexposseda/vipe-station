@@ -20,6 +20,8 @@
                 'id' => $this->primaryKey(),
                 'brand_id' => $this->integer()->notNull(),
                 'language' => $this->string(4)->notNull(),
+                'title'       => $this->string(),
+                'description' => $this->text(),
                 'created_at' => $this->integer(),
                 'updated_at' => $this->integer(),
             ], $tableOptions);

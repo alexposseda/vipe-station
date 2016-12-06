@@ -2,6 +2,7 @@
 
     namespace common\models;
 
+    use common\components\LanguageBehavior;
     use Yii;
     use yii\alexposseda\fileManager\FileManager;
     use yii\behaviors\SluggableBehavior;
@@ -36,6 +37,15 @@
                     'slugAttribute' => 'slug',
                 ],
                 TimestampBehavior::className(),
+                [
+                    'class'         => LanguageBehavior::className(),
+                    'langModelName' => BrandLangModel::className(),
+                    'relationFieldName' => 'brand_id',
+                    'attributes'    => [
+                        'title',
+                        'description'
+                    ],
+                ]
             ];
         }
 
@@ -131,6 +141,11 @@
          * @return string
          */
         public function getLogo(){
-            return FileManager::getInstance()->getStorageUrl().json_decode($this->cover)[0];
+            return FileManager::getInstance()
+                              ->getStorageUrl().json_decode($this->cover)[0];
         }
+
+//        public function getLangs(){
+//            return $this->hasMany(BrandLangModel::className(), ['brand_id' => 'id']);
+//        }
     }
