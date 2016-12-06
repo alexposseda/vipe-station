@@ -45,7 +45,7 @@
             ], $tableOptions);
 
             $this->addForeignKey('FK_Product_TO_Seo', $this->tableName, 'seo_id', '{{%seo}}', 'id', 'SET NULL', 'CASCADE');
-            $this->addForeignKey('FK_Product_TO_Manufacturer', $this->tableName, 'manufacturer_id', '{{%manufacturer}}', 'id', 'SET NULL', 'CASCADE');
+
         }
 
         /**

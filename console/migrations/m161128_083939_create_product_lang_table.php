@@ -21,7 +21,7 @@ class m161128_083939_create_product_lang_table extends Migration
         $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
             'product_id' => $this->integer()->notNull(),
-            'language' => $this->integer()->notNull(),
+            'language' => $this->string(4)->notNull(),
             'title' => $this->string(),
             'description' => $this->text(),
 
@@ -30,7 +30,7 @@ class m161128_083939_create_product_lang_table extends Migration
         ], $tableOptions);
 
         $this->addForeignKey('FK_Product_Lang_TO_Product', $this->tableName, 'product_id', '{{%product}}', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('FK_Product_Lang_TO_Language', $this->tableName, 'language', '{{%language}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('FK_Product_Lang_TO_Language', $this->tableName, 'language', '{{%language}}', 'code', 'CASCADE', 'CASCADE');
 
     }
 

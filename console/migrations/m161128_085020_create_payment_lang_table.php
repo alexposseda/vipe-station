@@ -21,7 +21,7 @@ class m161128_085020_create_payment_lang_table extends Migration
         $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
             'payment_id' => $this->integer()->notNull(),
-            'language' => $this->integer()->notNull(),
+            'language' => $this->string(4)->notNull(),
 
             'name' => $this->string(),
             'description' => $this->text(),
@@ -31,7 +31,7 @@ class m161128_085020_create_payment_lang_table extends Migration
         ], $tableOptions);
 
         $this->addForeignKey('FK_Payment_Lang_TO_Payment', $this->tableName, 'payment_id', '{{%payment}}', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('FK_Payment_Lang_TO_Language', $this->tableName, 'language', '{{%language}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('FK_Payment_Lang_TO_Language', $this->tableName, 'language', '{{%language}}', 'code', 'CASCADE', 'CASCADE');
     }
 
     /**
