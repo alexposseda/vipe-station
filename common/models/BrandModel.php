@@ -2,15 +2,12 @@
 
     namespace common\models;
 
-    use common\components\LangBehavior;
-    use common\components\MultyLangBehavior;
-    use omgdef\multilingual\MultilingualBehavior;
+    use common\components\LanguageBehavior;
     use Yii;
     use yii\alexposseda\fileManager\FileManager;
     use yii\behaviors\SluggableBehavior;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
-    use yii\helpers\ArrayHelper;
 
     /**
      * This is the model class for table "{{%brand}}".
@@ -40,17 +37,15 @@
                     'slugAttribute' => 'slug',
                 ],
                 TimestampBehavior::className(),
-                'langs' => [
-                    'class'         => LangBehavior::className(),
-                    'langModels'    => LanguageModel::find()
-                                                    ->all(),
+                [
+                    'class'         => LanguageBehavior::className(),
                     'langModelName' => BrandLangModel::className(),
                     'relationFieldName' => 'brand_id',
                     'attributes'    => [
                         'title',
                         'description'
-                    ]
-                ],
+                    ],
+                ]
             ];
         }
 
@@ -121,10 +116,10 @@
                 'title'       => Yii::t('models/brand', 'Brand Title'),
                 'cover'       => Yii::t('models/brand', 'Logo'),
                 'description' => Yii::t('models/brand', 'Brand Description'),
-                'slug'        => Yii::t('models/brand', 'Slug'),
+                'slug'        => Yii::t('models', 'Slug'),
                 'seo_id'      => 'Seo ID',
-                'created_at'  => 'Created At',
-                'updated_at'  => Yii::t('models/brand', 'Last Update'),
+                'created_at'  => Yii::t('models', 'Created'),
+                'updated_at'  => Yii::t('models', 'Last Update'),
             ];
         }
 
@@ -150,18 +145,7 @@
                               ->getStorageUrl().json_decode($this->cover)[0];
         }
 
-        public function beforeDelete(){
-            parent::beforeDelete();
-
-            if(!empty($this->cover)){
-                FileManager::getInstance()
-                           ->removeFile(json_decode($this->cover)[0]);
-            }
-
-            if($this->seo){
-                $this->seo->delete();
-            }
-
-            return true;
-        }
+//        public function getLangs(){
+//            return $this->hasMany(BrandLangModel::className(), ['brand_id' => 'id']);
+//        }
     }

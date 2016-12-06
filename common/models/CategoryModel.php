@@ -108,12 +108,12 @@
         public function attributeLabels(){
             return [
                 'id'         => 'ID',
-                'title'      => 'Title',
-                'parent'     => 'Parent',
-                'slug'       => 'Slug',
+                'title'      => Yii::t('models/category','Category Title'),
+                'parent'     => Yii::t('models/category','Parent'),
+                'slug'       => Yii::t('models','Slug'),
                 'seo_id'     => 'SeoModel ID',
-                'created_at' => 'Created At',
-                'updated_at' => 'Updated At',
+                'created_at' => Yii::t('models', 'Created'),
+                'updated_at' => Yii::t('models', 'Last Update'),
             ];
         }
 

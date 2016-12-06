@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\DeliveryModel */
 
-$this->title = 'Create Delivery Model';
-$this->params['breadcrumbs'][] = ['label' => 'Delivery Models', 'url' => ['index']];
+$this->title = Yii::t('system/views', 'Create').' '.Yii::t('models/delivery', 'Delivery');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Delivery'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="delivery-model-create">

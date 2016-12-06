@@ -1,38 +1,14 @@
 <?php
 
     use backend\widgets\FileManagerWidget\FileManagerWidget;
-    use common\models\LanguageModel;
-    use yii\bootstrap\Tabs;
+    use backend\widgets\LanguageWidget;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\ActiveForm;
 
-    function getLanguageInputs($form, $model, $attributes){
-        $items = [];
-        /**
-         * @var LanguageModel[]
-         */
-        $languages = LanguageModel::find()
-                                  ->all();
-
-        foreach($languages as $lang){
-            $content = '';
-            foreach($attributes as $attributeName => $fieldData){
-                $content .= $form->field($model, $attributeName.'_'.$lang->code)->{$fieldData['type']}($fieldData['options']);
-            }
-            $items[] = [
-                'label' => $lang->title,
-                'content' => $content
-            ];
-        }
-
-        return $items;
-    }
-
     /* @var $this yii\web\View */
     /* @var $model backend\models\BrandForm */
     /* @var $form yii\widgets\ActiveForm */
-
 ?>
 
 <div class="brand-model-form">
@@ -41,18 +17,22 @@
         <div class="col-sm-12 col-md-9 col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <?= Tabs::widget([
-                                         'items' => getLanguageInputs($form, $model->brand, [
-                                             'title'       => [
-                                                 'type'    => 'textInput',
-                                                 'options' => ['maxlength' => true]
-                                             ],
-                                             'description' => [
-                                                 'type'    => 'textarea',
-                                                 'options' => ['rows' => 6]
-                                             ]
-                                         ])
-                                     ]); ?>
+                    <?= LanguageWidget::widget([
+                            'form' => $form,
+                            'model' => $model->brand,
+                            'attributes' => [
+                                    [
+                                            'name' => 'title',
+                                            'type' => 'textInput',
+                                            'options' => ['maxlength' => true]
+                                    ],
+                                    [
+                                            'name' => 'description',
+                                            'type' => 'textarea',
+                                            'options' => ['rows' => 6]
+                                    ]
+                            ]
+                                                                ])?>
                 </div>
             </div>
         </div>
@@ -60,16 +40,16 @@
             <div class="panel panel-success">
                 <div class="panel-heading"><?= Yii::t('system/view', 'Seo') ?></div>
                 <div class="panel-body">
-                    <?= $form->field($model->seo, 'title') ?>
-                    <?= $form->field($model->seo, 'keywords') ?>
-                    <?= $form->field($model->seo, 'description') ?>
+                    <?= $form->field($model->seo, 'title')?>
+                    <?= $form->field($model->seo, 'keywords')?>
+                    <?= $form->field($model->seo, 'description')?>
                 </div>
             </div>
             <?= Html::activeHiddenInput($model->brand, 'cover', ['id' => 'logo-input']) ?>
             <?= FileManagerWidget::widget([
                                               'uploadUrl'     => Url::to(['brand/upload-logo']),
                                               'removeUrl'     => Url::to(['brand/remove-logo']),
-                                              'files'         => ($model->brand->isNewRecord) ? [] : $model->brand->cover,
+                                              'files'         => [],
                                               'maxFiles'      => 1,
                                               'title'         => Yii::t('models/brand', 'Logo'),
                                               'targetInputId' => 'logo-input'

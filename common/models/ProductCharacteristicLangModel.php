@@ -49,7 +49,7 @@ class ProductCharacteristicLangModel extends ActiveRecord
             [['product_characteristic_id', 'language'], 'required'],
             [['product_characteristic_id', 'language', 'created_at', 'updated_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],
             [['product_characteristic_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductCharacteristicModel::className(), 'targetAttribute' => ['product_characteristic_id' => 'id']],
         ];
     }

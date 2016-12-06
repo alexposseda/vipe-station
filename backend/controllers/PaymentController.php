@@ -2,12 +2,16 @@
 
 namespace backend\controllers;
 
+use common\models\search\PaymentSearchModel;
+use Faker\Provider\ar_SA\Payment;
 use Yii;
 use common\models\PaymentModel;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UnauthorizedHttpException;
 
 /**
  * PaymentController implements the CRUD actions for PaymentModel model.
@@ -20,6 +24,18 @@ class PaymentController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'denyCallback' => function($rule, $action){
+                    throw new UnauthorizedHttpException(Yii::t('system/error', 'You do not have access to this page'));
+                },
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -35,11 +51,13 @@ class PaymentController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new PaymentSearchModel();
         $dataProvider = new ActiveDataProvider([
             'query' => PaymentModel::find(),
         ]);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

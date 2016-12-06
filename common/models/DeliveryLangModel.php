@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property integer $delivery_id
- * @property integer $language
+ * @property string $language
  * @property string $name
  * @property string $description
  * @property integer $created_at
@@ -52,7 +52,7 @@ class DeliveryLangModel extends ActiveRecord
             [['description'], 'string'],
             [['name'], 'string', 'max' => 255],
             [['delivery_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryModel::className(), 'targetAttribute' => ['delivery_id' => 'id']],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],
         ];
     }
 

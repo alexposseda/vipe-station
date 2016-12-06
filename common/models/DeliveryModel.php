@@ -60,11 +60,11 @@ class DeliveryModel extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'price' => 'Price',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'name' => Yii::t('models/delivery', 'Delivery Name'),
+            'description' => Yii::t('models/delivery', 'Delivery Description'),
+            'price' => Yii::t('models/delivery', 'Price'),
+            'created_at' => Yii::t('models', 'Created'),
+            'updated_at' => Yii::t('models', 'Last Update'),
         ];
     }
 
