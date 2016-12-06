@@ -1,3 +1,5 @@
-/**
- * Created by gektorgit on 06.12.16.
- */
+(function ($) {
+    $('div.category-parent').change(function(){
+      $('div.product-characteristic').text('Hello');
+    })
+})(jQuery);
