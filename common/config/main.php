@@ -3,6 +3,7 @@
         'sourceLanguage' => 'en',
         'language'       => 'ru',
         'vendorPath'     => dirname(dirname(__DIR__)).'/vendor',
+        'bootstrap' => ['logger'],
         'components'     => [
             'cache'       => [
                 'class' => 'yii\caching\FileCache',
@@ -20,6 +21,10 @@
                 ],
                 'enablePrettyUrl' => true,
                 'showScriptName'  => false,
+            ],
+            'logger' => [
+                'class'=>\common\components\LogComponent::className(),
+                'a' => 3
             ],
             'i18n'        => [
                 'translations' => [

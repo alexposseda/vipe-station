@@ -8,6 +8,7 @@
                 'password'    => '',
                 'charset'     => 'utf8',
                 'tablePrefix' => '',
+                'enableSchemaCache'=>true,
             ],
             'mailer' => [
                 'class'            => 'yii\swiftmailer\Mailer',

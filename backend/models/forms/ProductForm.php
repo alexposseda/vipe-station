@@ -2,6 +2,7 @@
 
     namespace backend\models\forms;
 
+    use common\components\LogComponent;
     use common\models\BrandModel;
     use common\models\CategoryModel;
     use common\models\ProductCharacteristicItemModel;
@@ -12,8 +13,10 @@
     use Exception;
     use Yii;
     use yii\alexposseda\fileManager\FileManager;
+    use yii\base\Component;
     use yii\base\Model;
     use yii\caching\DbDependency;
+    use yii\db\ActiveRecord;
     use yii\helpers\ArrayHelper;
 
     /**
@@ -83,11 +86,9 @@
                 }else{
                     $this->product->seo_id = null;
                 }
-
                 if(!$this->product->save()){
                     throw new Exception('error to save product');
                 }
-
                 //region add selected category
                 foreach($this->categories as $category_id){
                     $condition = ['product_id' => $this->product->id, 'category_id' => $category_id];
@@ -125,6 +126,9 @@
                 //endregion
 
                 $characteristic = json_decode($this->characteristic);
+                if(is_null($characteristic)){
+                    $characteristic = [];
+                }
                 foreach($characteristic as $key => $value){
                     $prod_characteristic = new ProductCharacteristicItemModel([
                                                                                   'characteristic_id' => $key,
@@ -137,6 +141,9 @@
                 }
 
                 $options = json_decode($this->options);
+                if(is_null($options)){
+                    $options = [];
+                }
                 foreach($options as $key => $value){
                     $prod_option = new ProductOptionModel([
                                                               'characteristic_id' => $key,
