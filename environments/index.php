@@ -36,6 +36,7 @@ return [
             'admin/assets',
             'frontend/runtime',
             'www/assets',
+            'www/storage',
         ],
         'setExecutable' => [
             'yii',
@@ -52,6 +53,7 @@ return [
             'admin/assets',
             'frontend/runtime',
             'www/assets',
+            'www/storage',
         ],
         'setExecutable' => [
             'yii',

@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\DeliveryModel */
 
-$this->title = 'Update Delivery Model: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Delivery Models', 'url' => ['index']];
+$this->title = Yii::t('system/views', 'Update').' '.Yii::t('models/delivery', 'Delivery').': ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Delivery'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = Yii::t('system/view', 'Update');
 ?>
 <div class="delivery-model-update">
 

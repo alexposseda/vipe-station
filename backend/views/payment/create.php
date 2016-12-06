@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\PaymentModel */
 
-$this->title = 'Create Payment Model';
-$this->params['breadcrumbs'][] = ['label' => 'Payment Models', 'url' => ['index']];
+$this->title = Yii::t('system/views', 'Create').' '.Yii::t('models/payment', 'Payment');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Payment'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="payment-model-create">

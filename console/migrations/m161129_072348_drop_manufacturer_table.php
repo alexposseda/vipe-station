@@ -6,7 +6,7 @@
      * Handles the dropping of table `manufacturer`.
      */
     class m161129_072348_drop_manufacturer_table extends Migration{
-        protected $tableName = '{{%stock_lang}}';
+        protected $tableName = '{{%manufacturer}}';
         /**
          * @inheritdoc
          */
@@ -18,6 +18,7 @@
 
         /**
          * @inheritdoc
+
          */
         public function down(){
             $tableOptions = null;

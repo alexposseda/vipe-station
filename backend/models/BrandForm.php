@@ -16,7 +16,7 @@
      * @property SeoModel   $seo
      * @property BrandModel $brand
      */
-    class BrandForm extends Model{
+    class  BrandForm extends Model{
         public $brand;
         public $seo;
         public $error;

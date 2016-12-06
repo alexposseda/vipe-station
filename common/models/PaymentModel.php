@@ -59,10 +59,10 @@ class PaymentModel extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'name' => Yii::t('models/payment','Payment Name'),
+            'description' => Yii::t('models/payment','Payment Description'),
+            'created_at' => Yii::t('models', 'Created'),
+            'updated_at' => Yii::t('models', 'Last Update'),
         ];
     }
 
