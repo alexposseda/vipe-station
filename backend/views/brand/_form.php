@@ -1,6 +1,7 @@
 <?php
 
     use backend\widgets\FileManagerWidget\FileManagerWidget;
+    use backend\widgets\LanguageWidget;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\ActiveForm;
@@ -8,9 +9,6 @@
     /* @var $this yii\web\View */
     /* @var $model backend\models\BrandForm */
     /* @var $form yii\widgets\ActiveForm */
-
-    var_dump($model->brand->getErrors());
-    var_dump($model->seo->getErrors());
 ?>
 
 <div class="brand-model-form">
@@ -19,10 +17,22 @@
         <div class="col-sm-12 col-md-9 col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <?= $form->field($model->brand, 'title')
-                             ->textInput(['maxlength' => true]) ?>
-                    <?= $form->field($model->brand, 'description')
-                             ->textarea(['rows' => 6]) ?>
+                    <?= LanguageWidget::widget([
+                            'form' => $form,
+                            'model' => $model->brand,
+                            'attributes' => [
+                                    [
+                                            'name' => 'title',
+                                            'type' => 'textInput',
+                                            'options' => ['maxlength' => true]
+                                    ],
+                                    [
+                                            'name' => 'description',
+                                            'type' => 'textarea',
+                                            'options' => ['rows' => 6]
+                                    ]
+                            ]
+                                                                ])?>
                 </div>
             </div>
         </div>

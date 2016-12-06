@@ -2,13 +2,11 @@
 
     namespace common\components;
 
-    use common\models\BrandLangModel;
     use common\models\LanguageModel;
     use Yii;
     use yii\base\Behavior;
     use yii\caching\DbDependency;
     use yii\db\ActiveRecord;
-    use yii\helpers\ArrayHelper;
 
     /**
      * Class LanguageBehavior
@@ -25,6 +23,7 @@
         public    $attributes;
         public    $namespace = '\common\models\\';
         protected $_languages;
+        protected $_langModels = null;
 
         public function init(){
             parent::init();
@@ -68,7 +67,7 @@
                     $availableLangModels[] = new $this->langModelName (['language' => $lang->code]);
                 }
             }else{
-                $currentLangModels = $this->owner->getLangs();
+                $currentLangModels = $this->getLangs();
                 foreach($this->_languages as $lang){
                     foreach($currentLangModels as $langModel){
                         if($langModel->language == $lang->code){
@@ -103,5 +102,30 @@
                                   return $owner->hasMany($className, [$relationFieldName => $owner->primaryKey()[0]])
                                                ->all();
                               }, 3600, $dependency);
+        }
+
+        /**
+         * @param string $langCode
+         *
+         * @return ActiveRecord | null
+         */
+        public function getLangModel($langCode){
+            if(is_null($this->_langModels)){
+                $this->_langModels = $this->getAvailableLangs();
+            }
+            foreach($this->_langModels as $langModel){
+                if($langModel->language == $langCode){
+                    return $langModel;
+                }
+            }
+
+            return null;
+        }
+
+        public function getAllLangModels(){
+            if(is_null($this->_langModels)){
+                $this->_langModels = $this->getAvailableLangs();
+            }
+            return $this->_langModels;
         }
     }
