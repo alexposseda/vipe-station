@@ -162,4 +162,13 @@
 
             return ArrayHelper::map($brands, 'id', 'title');
         }
+
+        public function getAllCharacteristic(){
+            $categories = $this->product->categories;
+            $characteristics = [];
+            foreach($categories as $category){
+                $characteristics[$category->id] = $category->productCharacteristics;
+            }
+            return $characteristics;
+        }
     }

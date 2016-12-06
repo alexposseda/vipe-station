@@ -8,6 +8,8 @@
     /* @var $this yii\web\View */
     /* @var $model \backend\models\forms\ProductForm */
     /* @var $form yii\widgets\ActiveForm */
+
+    var_dump($model->getAllCharacteristic());
 ?>
 
 <div class="product-model-form">
