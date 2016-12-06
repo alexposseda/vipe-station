@@ -9,7 +9,6 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "{{%language}}".
  *
- * @property integer $id
  * @property string $code
  * @property string $title
  * @property integer $created_at
@@ -65,7 +64,6 @@ class LanguageModel extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'code' => 'Code',
             'title' => 'Title',
             'created_at' => 'Created At',
@@ -78,7 +76,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getCategoryLangs()
     {
-        return $this->hasMany(CategoryLangModel::className(), ['language' => 'id']);
+        return $this->hasMany(CategoryLangModel::className(), ['language' => 'code']);
     }
 
     /**
@@ -86,7 +84,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getDeliveryLangs()
     {
-        return $this->hasMany(DeliveryLangModel::className(), ['language' => 'id']);
+        return $this->hasMany(DeliveryLangModel::className(), ['language' => 'code']);
     }
 
     /**
@@ -94,7 +92,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getPaymentLangs()
     {
-        return $this->hasMany(PaymentLangModel::className(), ['language' => 'id']);
+        return $this->hasMany(PaymentLangModel::className(), ['language' => 'code']);
     }
 
     /**
@@ -102,7 +100,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getProductCharacteristicLangs()
     {
-        return $this->hasMany(ProductCharacteristicLangModel::className(), ['language' => 'id']);
+        return $this->hasMany(ProductCharacteristicLangModel::className(), ['language' => 'code']);
     }
 
     /**
@@ -110,7 +108,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getProductLangs()
     {
-        return $this->hasMany(ProductLangModel::className(), ['language' => 'id']);
+        return $this->hasMany(ProductLangModel::className(), ['language' => 'code']);
     }
 
     /**
@@ -118,7 +116,7 @@ class LanguageModel extends ActiveRecord
      */
     public function getProductOptionLangs()
     {
-        return $this->hasMany(ProductOptionLangModel::className(), ['language' => 'id']);
+        return $this->hasMany(ProductOptionLangModel::className(), ['language' => 'code']);
     }
 
     /**
@@ -126,6 +124,14 @@ class LanguageModel extends ActiveRecord
      */
     public function getStockLangs()
     {
-        return $this->hasMany(StockLangModel::className(), ['language' => 'id']);
+        return $this->hasMany(StockLangModel::className(), ['language' => 'code']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBrandLangs()
+    {
+        return $this->hasMany(BrandLangModel::className(), ['language' => 'code']);
     }
 }

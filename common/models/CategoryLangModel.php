@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property integer $category_id
- * @property integer $language
+ * @property string $language
  * @property string $title
  * @property integer $created_at
  * @property integer $updated_at
@@ -50,7 +50,7 @@ class CategoryLangModel extends ActiveRecord
             [['category_id', 'language', 'created_at', 'updated_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CategoryModel::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],
         ];
     }
 

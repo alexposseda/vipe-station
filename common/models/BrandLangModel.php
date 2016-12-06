@@ -7,20 +7,18 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "{{%product_lang}}".
+ * This is the model class for table "{{%brand_lang}}".
  *
  * @property integer $id
- * @property integer $product_id
+ * @property integer $brand_id
  * @property string $language
- * @property string $title
- * @property string $description
  * @property integer $created_at
  * @property integer $updated_at
  *
+ * @property BrandModel $brand
  * @property LanguageModel $language0
- * @property ProductModel $product
  */
-class ProductLangModel extends ActiveRecord
+class BrandLangModel extends ActiveRecord
 {
 
     /**
@@ -38,7 +36,7 @@ class ProductLangModel extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%product_lang}}';
+        return '{{%brand_lang}}';
     }
 
     /**
@@ -47,12 +45,11 @@ class ProductLangModel extends ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'language'], 'required'],
-            [['product_id', 'language', 'created_at', 'updated_at'], 'integer'],
-            [['description'], 'string'],
-            [['title'], 'string', 'max' => 255],
+            [['brand_id', 'language'], 'required'],
+            [['brand_id', 'created_at', 'updated_at'], 'integer'],
+            [['language'], 'string', 'max' => 4],
+            [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['brand_id' => 'id']],
             [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductModel::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
 
@@ -63,10 +60,8 @@ class ProductLangModel extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'product_id' => 'Product ID',
+            'brand_id' => 'Brand ID',
             'language' => 'Language',
-            'title' => 'Title',
-            'description' => 'Description',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -75,16 +70,16 @@ class ProductLangModel extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLanguage0()
+    public function getBrand()
     {
-        return $this->hasOne(LanguageModel::className(), ['id' => 'language']);
+        return $this->hasOne(Brand::className(), ['id' => 'brand_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct()
+    public function getLanguage0()
     {
-        return $this->hasOne(ProductModel::className(), ['id' => 'product_id']);
+        return $this->hasOne(Language::className(), ['code' => 'language']);
     }
 }

@@ -51,7 +51,7 @@ class StockLangModel extends ActiveRecord
             [['stock_id', 'language', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
             [['title'], 'string', 'max' => 255],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],
             [['stock_id'], 'exist', 'skipOnError' => true, 'targetClass' => StockModel::className(), 'targetAttribute' => ['stock_id' => 'id']],
         ];
     }
