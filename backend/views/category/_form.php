@@ -1,13 +1,14 @@
 <?php
 
     use backend\widgets\ProductCharacteristicWidget\ProductCharacteristicWidget;
+    use backend\widgets\ProductCharacteristicWidget\ProductCharacteristicWidgetAsset;
     use yii\helpers\Html;
     use yii\widgets\ActiveForm;
 
     /* @var $this yii\web\View */
     /* @var $model backend\models\forms\CategoryForm */
     /* @var $form yii\widgets\ActiveForm */
-
+    ProductCharacteristicWidgetAsset::register($this);
 ?>
 
 <div class="category-model-form">
@@ -19,10 +20,8 @@
 
                     <?= $form->field($model->category, 'title')
                              ->textInput(['maxlength' => true]) ?>
-                    <div class="category-parent">
                         <?= Html::activeDropDownList($model->category, 'parent', $category_array,
                                                      ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models/category', 'Category')]) ?>
-                    </div>
 
                     <div class="panel-body">
                         <?= Html::submitButton($model->category->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),

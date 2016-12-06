@@ -1,5 +1,5 @@
 (function ($) {
-    $('div.category-parent').change(function(){
-      $('div.product-characteristic').text('Hello');
+    $('select#categorymodel-parent').change(function(){
+      $('div.product-characteristic').text($('#categorymodel-parent').val());
     })
 })(jQuery);
