@@ -49,7 +49,7 @@
             <?= FileManagerWidget::widget([
                                               'uploadUrl'     => Url::to(['brand/upload-logo']),
                                               'removeUrl'     => Url::to(['brand/remove-logo']),
-                                              'files'         => [],
+                                              'files'         => (!empty($model->brand->cover)) ? $model->brand->cover : [],
                                               'maxFiles'      => 1,
                                               'title'         => Yii::t('models/brand', 'Logo'),
                                               'targetInputId' => 'logo-input'

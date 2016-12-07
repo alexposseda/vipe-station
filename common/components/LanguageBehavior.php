@@ -3,8 +3,10 @@
     namespace common\components;
 
     use common\models\LanguageModel;
+    use Exception;
     use Yii;
     use yii\base\Behavior;
+    use yii\base\Model;
     use yii\caching\DbDependency;
     use yii\db\ActiveRecord;
 
@@ -37,38 +39,12 @@
         public $namespace = '\common\models\\';
         public $t_category;
 
-        public function events(){
-            return [
-                ActiveRecord::EVENT_AFTER_FIND => 'findCurrentLang',
-                ActiveRecord::EVENT_AFTER_INSERT => 'saveLangModels',
-            ];
-        }
-
-        /**
-         * метод вызывается при ActiveRecord::EVENT_AFTER_FIND для замены переданных атрибутов
-         */
-        public function findCurrentLang(){
-            $className = $this->langModelName;
-            $langModel = $className::findOne([
-                                                 'language'               => Yii::$app->language,
-                                                 $this->relationFieldName => $this->owner->primaryKey
-                                             ]);
-            if($langModel){
-                foreach($this->attributes as $attr){
-                    if(!empty($langModel->$attr)){
-                        $this->owner->$attr = $langModel->$attr;
-                    }
-                }
-            }
-        }
-
+        protected $_availableLangModels = null;
 
         /**
          * Метод для получения всех возможных языковых моделей
-         *
-         * @return ActiveRecord[]
          */
-        public function getAvailableLangs(){
+        protected function getLangModels(){
             $availableLangModels = [];
             $languages = LanguageModel::getAll();
             if($this->owner->isNewRecord){
@@ -88,7 +64,69 @@
                 }
             }
 
-            return $availableLangModels;
+            $this->_availableLangModels = $availableLangModels;
+        }
+
+        public function events(){
+            return [
+                ActiveRecord::EVENT_AFTER_FIND => 'findCurrentLang',
+                ActiveRecord::EVENT_AFTER_INSERT => 'saveLangModels',
+            ];
+        }
+
+        public function loadAndValidate($langModels){
+            if(!Model::loadMultiple($langModels, Yii::$app->request->post())){
+                return false;
+            }
+            foreach($langModels as $langModel){
+                if($langModel->isNewRecord){
+                    $langModel->{$this->relationFieldName} = $this->owner->getPrimaryKey();
+                }
+            }
+            if(!Model::validateMultiple($langModels)){
+                return false;
+            }
+
+            return true;
+
+        }
+        /**
+         * метод вызывается при ActiveRecord::EVENT_AFTER_FIND для замены переданных атрибутов
+         */
+        public function findCurrentLang(){
+            $className = $this->langModelName;
+            $langModel = $className::findOne([
+                                                 'language'               => Yii::$app->language,
+                                                 $this->relationFieldName => $this->owner->primaryKey
+                                             ]);
+            if($langModel){
+                foreach($this->attributes as $attr){
+                    if(!empty($langModel->$attr)){
+                        $this->owner->$attr = $langModel->$attr;
+                    }
+                }
+            }
+        }
+
+        public function saveLangModels(){
+            $langModels = $this->getAvailableLangs();
+            if($this->loadAndValidate($langModels)){
+                foreach($langModels as $langModel){
+                    if($langModel->canSave()){
+                        $langModel->save(false);
+                    }
+                }
+            }
+        }
+
+        /**
+         * @return ActiveRecord[]
+         */
+        public function getAvailableLangs(){
+            if(is_null($this->_availableLangModels)){
+                $this->getLangModels();
+            }
+            return $this->_availableLangModels;
         }
 
         /**

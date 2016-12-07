@@ -12,6 +12,8 @@
      * @property integer       $id
      * @property integer       $brand_id
      * @property string        $language
+     * @property string        $title
+     * @property string        $description
      * @property integer       $created_at
      * @property integer       $updated_at
      *
@@ -101,5 +103,13 @@
          */
         public function getLanguage0(){
             return $this->hasOne(LanguageModel::className(), ['code' => 'language']);
+        }
+
+        public function canSave(){
+            if(!empty($this->title) || !empty($this->description)){
+                return true;
+            }
+
+            return false;
         }
     }
