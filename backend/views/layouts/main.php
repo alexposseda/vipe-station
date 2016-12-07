@@ -37,37 +37,58 @@
 
         if(Yii::$app->user->isGuest){
             $menuItems[] = [
-                'label' => Yii::t('system/view','Login'),
+                'label' => Yii::t('system/view', 'Login'),
                 'url'   => ['/site/login']
             ];
         }else{
             $menuItems = [
                 [
-                    'label' => Yii::t('system/view','DashBoard'),
+                    'label' => Yii::t('system/view', 'DashBoard'),
                     'url'   => ['/site/index']
                 ],
                 [
-                    'label' => Yii::t('system/view','Catalog'),
+                    'label' => Yii::t('system/view', 'Catalog'),
                     'url'   => ['/catalog/index']
                 ],
                 [
-                    'label' => Yii::t('system/view','Orders'),
+                    'label' => Yii::t('system/view', 'Orders'),
                     'url'   => ['/order/index']
                 ],
                 [
-                    'label' => Yii::t('system/view','Clients'),
+                    'label' => Yii::t('system/view', 'Clients'),
                     'url'   => ['/client/index']
                 ],
                 [
-                    'label' => Yii::t('system/view','Shop Setting'),
-                    'url'   => ['/setting-shop/index']
+                    'label' => Yii::t('system/view', 'Shop Setting'),
+                    'items' => [
+                        [
+                            'label' => Yii::t('system/view', 'Pages Setting'),
+                            'url'   => ['setting-shop/index']
+                        ],
+                        [
+                            'label' => Yii::t('system/view', 'Users'),
+                            'url'   => ['/user/index']
+                        ],
+                        [
+                            'label' => Yii::t('system/view', 'Delivery'),
+                            'url'   => ['delivery/index']
+                        ],
+                        [
+                            'label' => Yii::t('system/view', 'Payment'),
+                            'url'   => ['payment/index']
+                        ],
+                        [
+                            'label' => Yii::t('system/view', 'SEO'),
+                            'url'   => ['seo/index']
+                        ]
+                    ]
                 ],
                 [
-                    'label' => Yii::t('system/view','Cabinet'),
+                    'label' => Yii::t('system/view', 'Cabinet'),
                     'url'   => ['/personal/index']
                 ]
             ];
-            $menuItems[] = '<li>'.Html::beginForm(['/site/logout'], 'post').Html::submitButton(Yii::t('system/view','Logout'),
+            $menuItems[] = '<li>'.Html::beginForm(['/site/logout'], 'post').Html::submitButton(Yii::t('system/view', 'Logout'),
                                                                                                ['class' => 'btn btn-link logout']).Html::endForm().'</li>';
         }
         echo Nav::widget([
