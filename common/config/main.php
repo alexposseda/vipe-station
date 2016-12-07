@@ -50,6 +50,7 @@
                             'models/payment'        => 'models/payment.php',
                             'models/user'           => 'models/user.php',
                             'models/characteristic' => 'models/characteristic.php',
+                            'models/product'        => 'models/product.php',
                         ],
                     ],
                     'shop*'   => [

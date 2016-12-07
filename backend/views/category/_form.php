@@ -43,10 +43,13 @@
             </div>
         </div>
     </div>
+    <?php ActiveForm::end(); ?>
+
+    <?php $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class="col-sm-12 col-md-9 col-lg-8">
             <div class="panel panel-success">
-                <div class="panel-heading"><?= 'Product Characteristic' ?></div>
+                <div class="panel-heading"><?= Yii::t('models','Characteristics').' '.Yii::t('models/product','Product') ?></div>
                 <div class="panel-body product-characteristic">
                     <?= ProductCharacteristicWidget::widget([
                                                                 'id' => $model->category->id,
@@ -57,18 +60,17 @@
         <div class="col-sm-12 col-md-9 col-lg-2">
             <div class="panel panel-success">
                 <div class="panel-body">
-                    <?= Html::button(Yii::t('system/view', 'Create').' '.Yii::t('models/characteristic', 'Characteristic')) ?>
+                    <?= Html::submitButton(Yii::t('system/view', 'Create').' '.Yii::t('models/characteristic', 'Characteristic')) ?>
                 </div>
             </div>
         </div>
         <div class="col-sm-12 col-md-9 col-lg-2">
             <div class="panel panel-success">
                 <div class="panel-body add-characteristic">
-                    <?= Html::textInput('characteristic', null) ?>
+                    <?= Html::textInput('characteristic', null, ['style' => ['width' => '100%']]) ?>
                 </div>
             </div>
         </div>
     </div>
-    <?php ActiveForm::end(); ?>
-
+    <?php ActiveForm::end();?>
 </div>

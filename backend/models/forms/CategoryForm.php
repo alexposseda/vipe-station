@@ -2,19 +2,19 @@
 
     namespace backend\models\forms;
 
-    use common\models\ProductCharacteristicModel;
     use Yii;
     use yii\base\Model;
     use yii\db\Exception;
     use common\models\CategoryModel;
     use common\models\SeoModel;
+    use common\models\ProductCharacteristicModel;
 
     /**
      * Class CategoryForm
      * @package backend\models\forms
      *
-     * @property SeoModel      $seo
-     * @property CategoryModel $category
+     * @property SeoModel                    $seo
+     * @property CategoryModel               $category
      * @property  ProductCharacteristicModel $characteristic
      */
     class CategoryForm extends Model{
@@ -57,11 +57,26 @@
                 }
 
                 $transaction->commit();
+
                 return true;
             }catch(Exception $e){
                 $this->error = $e->getMessage();
                 $transaction->rollBack();
+
                 return false;
+            }
+        }
+        public function saveProduct(){
+            $transaction = Yii::$app->db->beginTransaction();
+            try{
+                if($this->characteristic->save()){
+                    throw new Exception('error to save characteristic');
+                }
+                $transaction->commit();
+                return true;
+            }catch(Exception $e){
+                $this->error = $e->getMessage();
+                $transaction->rollBack();
             }
         }
 

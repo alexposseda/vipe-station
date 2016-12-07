@@ -82,12 +82,12 @@
          */
         public function actionCreate(){
             $model = new CategoryForm([
-                                          'category' => new CategoryModel(),
-                                          'seo'      => new SeoModel(),
-                                          'characteristic' => new ProductCharacteristicModel()
+                                          'category'       => new CategoryModel(),
+                                          'seo'            => new SeoModel()
                                       ]);
 
-            $category_array = ArrayHelper::map(CategoryModel::find()->all(), 'id', 'title');
+            $category_array = ArrayHelper::map(CategoryModel::find()
+                                                            ->all(), 'id', 'title');
 
             if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
@@ -97,7 +97,7 @@
             }else{
                 return $this->render('create', [
                     'category_array' => $category_array,
-                    'model' => $model,
+                    'model'          => $model,
                 ]);
             }
         }
@@ -113,14 +113,18 @@
         public function actionUpdate($id){
             $category = $this->findModel($id);
 
-            $category_array = ArrayHelper::map(CategoryModel::find()->all(), 'id', 'title');
+            $category_array = ArrayHelper::map(CategoryModel::find()
+                                                            ->all(), 'id', 'title');
             ArrayHelper::remove($category_array, $id);
             foreach($category->categoryModels as $temp){
                 ArrayHelper::remove($category_array, $temp->id);
             }
 
             $seo = ($category->seo) ? $category->seo : new SeoModel();
-            $model = new CategoryForm(['category' => $category, 'seo' => $seo]);
+            $model = new CategoryForm([
+                                          'category' => $category,
+                                          'seo'      => $seo
+                                      ]);
 
             if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
@@ -130,7 +134,7 @@
             }else{
                 return $this->render('update', [
                     'category_array' => $category_array,
-                    'model' => $model,
+                    'model'          => $model,
                 ]);
             }
         }
@@ -165,5 +169,9 @@
             }else{
                 throw new NotFoundHttpException('The requested page does not exist.');
             }
+        }
+        public function addCharacteristic(){
+
+            return $this->renderAjax();
         }
     }

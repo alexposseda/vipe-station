@@ -9,7 +9,6 @@
 
     class ProductCharacteristicWidget extends Widget{
         public $id;
-        public $parent;
 
         public function run(){
 
@@ -17,20 +16,25 @@
         }
 
         public function Characteristic($id){
-            $category = CategoryModel::findOne($id);
-            $div = '';
-            if(!empty($category->productCharacteristics)){
-                /** @var ProductCharacteristicModel $characteristic */
-                /** @var ProductCharacteristicModel[] $characteristics */
-                $characteristics = $category->productCharacteristics;
-                foreach($characteristics as $characteristic){
-                    $div .= Html::tag('div', $characteristic->title, ['class' => 'col-md-1 panel  panel-success']);
+            if(!empty($category = CategoryModel::findOne($id))){
+                $div = '';
+                if(!empty($category->productCharacteristics)){
+                    /** @var ProductCharacteristicModel $characteristic */
+                    /** @var ProductCharacteristicModel[] $characteristics */
+                    $characteristics = $category->productCharacteristics;
+                    foreach($characteristics as $characteristic){
+                        $div .= Html::tag('div', $characteristic->title, ['class' => 'col-md-1 panel  panel-success']);
+                    }
+                    $div .= Html::tag('div', '', [
+                        'class' => 'col-md-1 panel  panel-success',
+                        'style' => ['width' => '5%']
+                    ]);
                 }
-            }
-            if($category->parent != null){
-                $div .= $this->Characteristic($category->parent);
-            }
+                if($category->parent != null){
+                    $div .= $this->Characteristic($category->parent);
+                }
 
-            return $div;
+                return $div;
+            }
         }
     }
