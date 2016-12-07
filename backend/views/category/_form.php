@@ -61,6 +61,13 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-12 col-md-9 col-lg-2">
+            <div class="panel panel-success">
+                <div class="panel-body add-characteristic">
+                    <?= Html::textInput('characteristic',null) ?>
+                </div>
+            </div>
+        </div>
     </div>
     <?php ActiveForm::end(); ?>
 

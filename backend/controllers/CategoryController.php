@@ -112,16 +112,14 @@
          */
         public function actionUpdate($id){
             $category = $this->findModel($id);
+
             $category_array = ArrayHelper::map(CategoryModel::find()->all(), 'id', 'title');
             ArrayHelper::remove($category_array, $id);
-            $test = $category->CategoryModels();
-            foreach($category->getCategoryModels() as $temp){
-                ArrayHelper::remove($category_array, $temp->temp);
+            foreach($category->categoryModels as $temp){
+                ArrayHelper::remove($category_array, $temp->id);
             }
 
-
             $seo = ($category->seo) ? $category->seo : new SeoModel();
-
             $model = new CategoryForm(['category' => $category, 'seo' => $seo]);
 
             if($model->loadData(Yii::$app->request->post()) && $model->save()){
