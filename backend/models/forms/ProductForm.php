@@ -2,7 +2,7 @@
 
     namespace backend\models\forms;
 
-    use common\components\LogComponent;
+    use common\components\logger\LoggerEvent;
     use common\models\BrandModel;
     use common\models\CategoryModel;
     use common\models\ProductCharacteristicItemModel;
@@ -13,10 +13,8 @@
     use Exception;
     use Yii;
     use yii\alexposseda\fileManager\FileManager;
-    use yii\base\Component;
     use yii\base\Model;
     use yii\caching\DbDependency;
-    use yii\db\ActiveRecord;
     use yii\helpers\ArrayHelper;
 
     /**
@@ -29,6 +27,8 @@
      * @property mixed        allCategories
      */
     class ProductForm extends Model{
+        const EVENT_LOGGER_MESSAGE = 'loggerMessage';
+
         public $product;
         public $seo;
         public $categories;
@@ -102,6 +102,19 @@
                     if(!$product_in_category->save()){
                         throw new Exception('error to save category '.$category_id.' to product');
                     }
+                    $event = new LoggerEvent([
+                                                 'user_id' => Yii::$app->user->id,
+                                                 'message' => [
+                                                     'action'=>'Add',
+                                                     'chto'=>'сategory'
+                                                 ]
+                                                     .Yii::t('logger','сategory').': '
+                                                     .$product_in_category->category->title.' '
+                                                     .Yii::t('logger','to').' '
+                                                     .Yii::t('logger','product').': '
+                                                     .$this->product->title,
+                                             ]);
+                    $this->trigger(self::EVENT_LOGGER_MESSAGE, $event);
                 }
                 //endregion
 

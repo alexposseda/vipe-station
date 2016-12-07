@@ -3,7 +3,7 @@
         'sourceLanguage' => 'en',
         'language'       => 'ru',
         'vendorPath'     => dirname(dirname(__DIR__)).'/vendor',
-        'bootstrap' => ['logger'],
+        'bootstrap'      => ['logger'],
         'components'     => [
             'cache'       => [
                 'class' => 'yii\caching\FileCache',
@@ -22,9 +22,9 @@
                 'enablePrettyUrl' => true,
                 'showScriptName'  => false,
             ],
-            'logger' => [
-                'class'=>\common\components\LogComponent::className(),
-                'a' => 3
+            'logger'      => [
+                'class' => \common\components\logger\LogComponent::className(),
+                'a'     => 3
             ],
             'i18n'        => [
                 'translations' => [
@@ -37,6 +37,14 @@
                             'system/error'   => 'system/error.php',
                             'system/success' => 'system/success.php',
                             'system/view'    => 'system/view.php',
+                        ],
+                    ],
+                    'logger*' => [
+                        'class'          => 'yii\i18n\PhpMessageSource',
+                        'basePath'       => '@common/translations',
+                        'sourceLanguage' => 'en',
+                        'fileMap'        => [
+                            'logger' => 'system/logger.php',
                         ],
                     ],
                     'models*' => [
