@@ -80,7 +80,7 @@
          * @return mixed
          */
         public function actionCreate(){
-            $category_parent = null;
+//            $category_parent = null;
             $model = new CategoryForm([
                                           'category' => new CategoryModel(),
                                           'seo'      => new SeoModel()
@@ -95,7 +95,7 @@
                                        ]);
             }else{
                 return $this->render('create', [
-                    'category_parent' => $category_parent,
+//                    'category_parent' => $category_parent,
                     'category_array' => $category_array,
                     'model' => $model,
                 ]);
@@ -114,6 +114,11 @@
             $category = $this->findModel($id);
             $category_array = ArrayHelper::map(CategoryModel::find()->all(), 'id', 'title');
             ArrayHelper::remove($category_array, $id);
+            $test = $category->CategoryModels();
+            foreach($category->getCategoryModels() as $temp){
+                ArrayHelper::remove($category_array, $temp->temp);
+            }
+
 
             $seo = ($category->seo) ? $category->seo : new SeoModel();
 
@@ -126,7 +131,7 @@
                                        ]);
             }else{
                 return $this->render('update', [
-                    'category_parent' => !$category->parent ? null : $category->parent0->title,
+//                    'category_parent' => !$category->parent ? null : $category->parent,
                     'category_array' => $category_array,
                     'model' => $model,
                 ]);

@@ -20,8 +20,8 @@
 
                     <?= $form->field($model->category, 'title')
                              ->textInput(['maxlength' => true]) ?>
-                        <?= Html::activeDropDownList($model->category, 'parent', $category_array,
-                                                     ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models/category', 'Category')]) ?>
+                    <?= Html::activeDropDownList($model->category, 'parent', $category_array,
+                                                 ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models/category', 'Category')]) ?>
 
                     <div class="panel-body">
                         <?= Html::submitButton($model->category->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),
@@ -48,6 +48,9 @@
             <div class="panel panel-success">
                 <div class="panel-heading"><?= 'Product Characteristic' ?></div>
                 <div class="panel-body product-characteristic">
+                    <?= ProductCharacteristicWidget::widget([
+                                                                'id' => $model->category->parent,
+                                                            ]) ?>
                 </div>
             </div>
         </div>

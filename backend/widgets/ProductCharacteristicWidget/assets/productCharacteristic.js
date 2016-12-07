@@ -1,5 +1,7 @@
 (function ($) {
-    $('select#categorymodel-parent').change(function(){
-      $('div.product-characteristic').text($('#categorymodel-parent').val());
-    })
+    // $('select#categorymodel-parent').change(function(){
+    //   $('div.product-characteristic').text($('#categorymodel-parent').val());
+    // })
 })(jQuery);
+
+
