@@ -12,6 +12,11 @@
 ?>
 
 <div class="brand-model-form">
+    <?php if($model->hasErrors()):?>
+        <div class="alert alert-danger">
+            <p><?= Yii::t('system/view', 'Check the data for correctness')?>!</p>
+        </div>
+    <?php endif;?>
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class="col-sm-12 col-md-9 col-lg-8">

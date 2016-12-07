@@ -11,6 +11,9 @@
 
     /**
      * Class BrandForm
+     *
+     * модель для Создания | Обновления бренда
+     *
      * @package backend\models
      *
      * @property SeoModel   $seo
@@ -21,6 +24,8 @@
         public    $seo;
 
         /**
+         * Сохраняем бренд
+         *
          * @return bool
          */
         public function save(){
@@ -32,29 +37,39 @@
                 $transaction->commit();
                 return true;
             }catch(Exception $e){
-
                 $transaction->rollBack();
-
+                Yii::$app->session->setFlash('brandFormError', $e->getMessage());
                 return false;
             }
         }
 
+        /**
+         * Сохраняем сео
+         *
+         * @throws Exception
+         */
         protected function saveSeo(){
             if($this->seo->load(Yii::$app->request->post()) && $this->seo->validate()){
                 if($this->seo->canSave()){
                     $this->seo->save(false);
                     $this->brand->seo_id = $this->seo->id;
+                }else if(!$this->seo->isNewRecord){
+                    $this->seo->delete();
+                    $this->brand->seo_id = null;
                 }else{
                     $this->brand->seo_id = null;
                 }
-
             }else{
                 $this->addErrors($this->seo->getErrors());
-                //todo придумать коды ошибок
-                throw new Exception();
+                throw new Exception(Yii::t('system/error', 'Sorry, I can not save the seo data'));
             }
         }
 
+        /**
+         * Сохраняем бренд
+         *
+         * @throws Exception
+         */
         protected function saveBrand(){
             if($this->brand->load(Yii::$app->request->post()) && $this->brand->validate()){
                 $this->brand->save(false);
@@ -63,8 +78,7 @@
                 }
             }else{
                 $this->addErrors($this->brand->getErrors());
-                //todo придумать коды ошибок
-                throw new Exception();
+                throw new Exception(Yii::t('system/error', 'Sorry, I can not save the brand data'));
             }
         }
 

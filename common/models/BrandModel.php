@@ -142,11 +142,23 @@
          * @return string
          */
         public function getLogo(){
-            return FileManager::getInstance()
-                              ->getStorageUrl().json_decode($this->cover)[0];
+            if(!empty($this->cover)){
+                return FileManager::getInstance()
+                                  ->getStorageUrl().json_decode($this->cover)[0];
+            }
+
+            return null;
         }
 
-//        public function getLangs(){
-//            return $this->hasMany(BrandLangModel::className(), ['brand_id' => 'id']);
-//        }
+        public function beforeDelete(){
+            if($this->seo){
+                $this->seo->delete();
+            }
+
+            if(!empty($this->cover)){
+                FileManager::getInstance()->removeFile(json_decode($this->cover)[0]);
+            }
+
+            return true;
+        }
     }

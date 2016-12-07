@@ -31,7 +31,6 @@
      * @property string       $namespace    this is owner class namespace
      * @property string       $t_category   translation category
      */
-
     class LanguageBehavior extends Behavior{
         public $langModelName;
         public $relationFieldName;
@@ -69,11 +68,19 @@
 
         public function events(){
             return [
-                ActiveRecord::EVENT_AFTER_FIND => 'findCurrentLang',
+                ActiveRecord::EVENT_AFTER_FIND   => 'findCurrentLang',
                 ActiveRecord::EVENT_AFTER_INSERT => 'saveLangModels',
+                ActiveRecord::EVENT_AFTER_UPDATE => 'saveLangModels'
             ];
         }
 
+        /**
+         * Метод для загрузки и валидации языковых моделей
+         *
+         * @param ActiveRecord[] $langModels
+         *
+         * @return bool
+         */
         public function loadAndValidate($langModels){
             if(!Model::loadMultiple($langModels, Yii::$app->request->post())){
                 return false;
@@ -88,8 +95,8 @@
             }
 
             return true;
-
         }
+
         /**
          * метод вызывается при ActiveRecord::EVENT_AFTER_FIND для замены переданных атрибутов
          */
@@ -108,14 +115,23 @@
             }
         }
 
+        /**
+         * Метод для сохранения языковых моделей
+         *
+         * @throws Exception
+         */
         public function saveLangModels(){
             $langModels = $this->getAvailableLangs();
             if($this->loadAndValidate($langModels)){
                 foreach($langModels as $langModel){
                     if($langModel->canSave()){
                         $langModel->save(false);
+                    }else if(!$langModel->isNewRecord){
+                        $langModel->delete();
                     }
                 }
+            }else{
+                throw new Exception(Yii::t('system/error', 'Sorry, I can not save the language data'));
             }
         }
 
@@ -126,6 +142,7 @@
             if(is_null($this->_availableLangModels)){
                 $this->getLangModels();
             }
+
             return $this->_availableLangModels;
         }
 

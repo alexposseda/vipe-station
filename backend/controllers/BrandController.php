@@ -131,16 +131,16 @@
 
             $model = new BrandForm(['brand' => $brand, 'seo' => $seo]);
 
-//            if($model->loadData(Yii::$app->request->post()) && $model->save()){
-//                return $this->redirect([
-//                                           'view',
-//                                           'id' => $model->brand->id
-//                                       ]);
-//            }else{
-                return $this->render('update', [
+            if(Yii::$app->request->isPost && $model->save()){
+                return $this->redirect([
+                                           'view',
+                                           'id' => $model->brand->id
+                                       ]);
+            }else{
+                return $this->render('create', [
                     'model' => $model,
                 ]);
-//            }
+            }
         }
 
         /**
