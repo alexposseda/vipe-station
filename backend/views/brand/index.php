@@ -38,6 +38,7 @@
                                          ],
                                          [
                                              'attribute'      => 'title',
+                                             'label' => Yii::t('models/brand', 'Brand Title'),
                                              'headerOptions'  => [
                                                  'style' => 'width: 20%;max-width: 150px;'
                                              ],
@@ -46,6 +47,7 @@
                                          ],
                                          [
                                              'attribute'      => 'cover',
+                                             'label' => Yii::t('models/brand', 'Logo'),
                                              'headerOptions'  => [
                                                  'style' => 'width: 10%;max-width: 80px;'
                                              ],
@@ -63,6 +65,7 @@
                                          ],
                                          [
                                              'attribute'      => 'description',
+                                             'label' => Yii::t('models/brand', 'Brand Description'),
                                              'headerOptions'  => [
                                                  'style' => 'width: 30%;max-width: 280px;'
                                              ],
@@ -71,6 +74,7 @@
                                          ],
                                          [
                                              'attribute'      => 'updated_at',
+                                             'label' => Yii::t('models/brand', 'Last Update'),
                                              'format'         => [
                                                  'date',
                                                  'HH:mm:ss dd.MM.YYYY'

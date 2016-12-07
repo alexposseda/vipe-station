@@ -24,7 +24,7 @@
             <h1><?= Html::encode($this->title) ?></h1>
             <p class="small">
                 <strong><?= Yii::t($model->getTcategory(), $model->getAttributeLabel('updated_at')) ?>:</strong>
-                <?= date("d/m/Y H:i",$model->updated_at) ?>
+                <?= date("d/m/Y H:i", $model->updated_at) ?>
             </p>
             <div class="row">
                 <div class="col-sm-12 col-md-3 col-lg-2">
@@ -41,11 +41,16 @@
                 <div class="col-sm-12 col-md-9 col-lg-10">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Данные бренда</h3>
+                            <h3 class="panel-title"><?= Yii::t($model->getTcategory(), $model->getattributeLabel('description')) ?></h3>
                         </div>
                         <div class="panel-body">
-                            <h3><?= Yii::t($model->getTcategory(), $model->getattributeLabel('description')) ?></h3>
-                            <p><?= $model->description ?></p>
+                            <?php if(empty($model->description)): ?>
+                                <div class="alert alert-info">
+                                    <p><?= Yii::t('system/view', 'Not set') ?></p>
+                                </div>
+                            <?php else: ?>
+                                <p><?= $model->description ?></p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
