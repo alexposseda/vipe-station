@@ -9,23 +9,16 @@
 
     class ProductCharacteristicWidget extends Widget{
         public $id;
+        public $parent;
 
         public function run(){
 
-            if($this->id != null){
-                $div = '';
-                return $div = $this->Characteristic($this->id, $div);
-            }else{
-                return false;
-            }
-
-
+            return $this->Characteristic($this->id);
         }
 
-        public function Characteristic($id, $div){
-            /** @var CategoryModel $category */
+        public function Characteristic($id){
             $category = CategoryModel::findOne($id);
-            $characteristics = $category->productCharacteristics;
+            $div = '';
             if(!empty($category->productCharacteristics)){
                 /** @var ProductCharacteristicModel $characteristic */
                 /** @var ProductCharacteristicModel[] $characteristics */
@@ -33,11 +26,11 @@
                 foreach($characteristics as $characteristic){
                     $div .= Html::tag('div', $characteristic->title, ['class' => 'col-md-1 panel  panel-success']);
                 }
-
-                return $div;
             }
             if($category->parent != null){
-                $this->Characteristic($category->parent, $div);
+                $div .= $this->Characteristic($category->parent);
             }
+
+            return $div;
         }
     }

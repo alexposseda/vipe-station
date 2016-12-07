@@ -160,5 +160,8 @@
                         ->viaTable('{{%product_in_category}}', ['category_id' => 'id']);
         }
 
+        public function addCharacteristic(){
+
+        }
 
     }

@@ -49,7 +49,7 @@
                 <div class="panel-heading"><?= 'Product Characteristic' ?></div>
                 <div class="panel-body product-characteristic">
                     <?= ProductCharacteristicWidget::widget([
-                                                                'id' => $model->category->parent,
+                                                                'id' => $model->category->id,
                                                             ]) ?>
                 </div>
             </div>
@@ -64,7 +64,7 @@
         <div class="col-sm-12 col-md-9 col-lg-2">
             <div class="panel panel-success">
                 <div class="panel-body add-characteristic">
-                    <?= Html::textInput('characteristic',null) ?>
+                    <?= Html::textInput('characteristic', null) ?>
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 
     namespace backend\models\forms;
 
+    use common\models\ProductCharacteristicModel;
     use Yii;
     use yii\base\Model;
     use yii\db\Exception;
@@ -14,12 +15,14 @@
      *
      * @property SeoModel      $seo
      * @property CategoryModel $category
+     * @property  ProductCharacteristicModel $characteristic
      */
     class CategoryForm extends Model{
 
         public $category;
         public $seo;
         public $error;
+        public $characteristic;
 
         /**
          * @param array $data

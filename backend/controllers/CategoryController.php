@@ -3,6 +3,7 @@
     namespace backend\controllers;
 
     use backend\models\forms\CategoryForm;
+    use common\models\ProductCharacteristicModel;
     use common\models\SeoModel;
     use Yii;
     use common\models\CategoryModel;
@@ -80,22 +81,21 @@
          * @return mixed
          */
         public function actionCreate(){
-//            $category_parent = null;
             $model = new CategoryForm([
                                           'category' => new CategoryModel(),
-                                          'seo'      => new SeoModel()
+                                          'seo'      => new SeoModel(),
+                                          'characteristic' => new ProductCharacteristicModel()
                                       ]);
 
             $category_array = ArrayHelper::map(CategoryModel::find()->all(), 'id', 'title');
 
             if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
-                                           'view',
+                                           'update',
                                            'id' => $model->category->id
                                        ]);
             }else{
                 return $this->render('create', [
-//                    'category_parent' => $category_parent,
                     'category_array' => $category_array,
                     'model' => $model,
                 ]);
@@ -129,7 +129,6 @@
                                        ]);
             }else{
                 return $this->render('update', [
-//                    'category_parent' => !$category->parent ? null : $category->parent,
                     'category_array' => $category_array,
                     'model' => $model,
                 ]);
