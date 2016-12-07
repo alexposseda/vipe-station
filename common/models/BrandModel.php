@@ -41,6 +41,7 @@
                     'class'         => LanguageBehavior::className(),
                     'langModelName' => BrandLangModel::className(),
                     'relationFieldName' => 'brand_id',
+                    't_category' => 'models/brand',
                     'attributes'    => [
                         'title',
                         'description'
@@ -113,13 +114,13 @@
         public function attributeLabels(){
             return [
                 'id'          => 'ID',
-                'title'       => Yii::t('models/brand', 'Brand Title'),
-                'cover'       => Yii::t('models/brand', 'Logo'),
-                'description' => Yii::t('models/brand', 'Brand Description'),
-                'slug'        => Yii::t('models', 'Slug'),
+                'title'       => 'Brand Title',
+                'cover'       => 'Logo',
+                'description' => 'Brand Description',
+                'slug'        => 'Slug',
                 'seo_id'      => 'Seo ID',
-                'created_at'  => Yii::t('models', 'Created'),
-                'updated_at'  => Yii::t('models', 'Last Update'),
+                'created_at'  => 'Created',
+                'updated_at'  => 'Last Update',
             ];
         }
 

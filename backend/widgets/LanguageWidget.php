@@ -3,9 +3,12 @@
     namespace backend\widgets;
 
     use common\models\LanguageModel;
+    use Yii;
     use yii\base\ErrorException;
     use yii\base\Widget;
     use yii\bootstrap\Tabs;
+    use yii\helpers\ArrayHelper;
+    use yii\helpers\Html;
 
     class LanguageWidget extends Widget{
         public $form;
@@ -16,24 +19,27 @@
         ];
         public $model;
 
+        protected $_langModels;
         protected $_languages;
 
         public function init(){
             parent::init();
-            $this->_languages = LanguageModel::getAll();
+            $this->_languages = ArrayHelper::map(LanguageModel::getAll(), 'code', 'title');
+            $this->_langModels = $this->model->getAvailableLangs();
         }
 
         public function run(){
             $items = [];
             $items[] = [
-                'label' => $this->baseLang['title'],
+                'label'   => $this->baseLang['title'],
                 'content' => $this->getBaseLangFields()
             ];
 
-            foreach($this->_languages as $lang){
+
+            for($i = 0; $i < count($this->_langModels); $i++){
                 $items[] = [
-                    'label' => $lang->title,
-                    'content' => $this->getLangsFields($lang->code)
+                    'label'   => $this->_languages[$this->_langModels[$i]->language],
+                    'content' => $this->getLangsFields($this->_langModels[$i], $i)
                 ];
             }
 
@@ -42,29 +48,23 @@
                                 ]);
         }
 
-        protected function renderField($model, $attr){
-            return $this->form->field($model, $attr['name'])
-                              ->{$attr['type']}($attr['options']);
-        }
-
         protected function getBaseLangFields(){
             $content = '';
             foreach($this->attributes as $attr){
-                $content .= $this->renderField($this->model, $attr);
+                $content .= $this->form->field($this->model, $attr['name'])
+                                       ->{$attr['type']}($attr['options'])
+                                       ->label(Yii::t('models/brand', $this->model->getAttributeLabel($attr['name']), [], $this->baseLang['code']));
             }
 
             return $content;
         }
 
-        protected function getLangsFields($langCode){
-            $model = $this->model->getLangModel($langCode);
-            if(is_null($model)){
-                throw new ErrorException('Lang Code'.$langCode.' not found!');
-            }
-
-            $content = '';
+        protected function getLangsFields($model, $index){
+            $content = Html::activeHiddenInput($model, '['.$index.']language', ['value' => $model->language]);
             foreach($this->attributes as $attr){
-                $content .= $this->renderField($model, $attr);
+                $content .= $this->form->field($model, '['.$index.']'.$attr['name'])
+                                       ->{$attr['type']}($attr['options'])
+                                       ->label(Yii::t($this->model->getTcategory(), $this->model->getAttributeLabel($attr['name']), [], $model->language));
             }
 
             return $content;

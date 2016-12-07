@@ -10,29 +10,37 @@
 
     /**
      * Class LanguageBehavior
+     *
+     * Класс расширяет модели для работы с дополнительными языками
+     * Использование:
+     *  - Добавить в необходимую (базовую) модель как поведение
+     *
+     * Настройки:
+     *  - 'langModelName'       --- имя языковой модели
+     *  - 'relationFieldName'   --- имя связи между языковой и базовой моделями
+     *  - 't_category'          --- имя категории, хранящей переводы
+     *  - 'attributes'          --- атрибуты базовой модели, которые должны быть переведены
+     *
      * @package common\components
      *
      * @property ActiveRecord $owner
      * @property string       $langModelName
      * @property string       $relationFieldName
      * @property string       $namespace    this is owner class namespace
+     * @property string       $t_category   translation category
      */
-    class LanguageBehavior extends Behavior{
-        public    $langModelName;
-        public    $relationFieldName;
-        public    $attributes;
-        public    $namespace = '\common\models\\';
-        protected $_languages;
-        protected $_langModels = null;
 
-        public function init(){
-            parent::init();
-            $this->_languages = LanguageModel::getAll();
-        }
+    class LanguageBehavior extends Behavior{
+        public $langModelName;
+        public $relationFieldName;
+        public $attributes;
+        public $namespace = '\common\models\\';
+        public $t_category;
 
         public function events(){
             return [
                 ActiveRecord::EVENT_AFTER_FIND => 'findCurrentLang',
+                ActiveRecord::EVENT_AFTER_INSERT => 'saveLangModels',
             ];
         }
 
@@ -62,13 +70,14 @@
          */
         public function getAvailableLangs(){
             $availableLangModels = [];
+            $languages = LanguageModel::getAll();
             if($this->owner->isNewRecord){
-                foreach($this->_languages as $lang){
+                foreach($languages as $lang){
                     $availableLangModels[] = new $this->langModelName (['language' => $lang->code]);
                 }
             }else{
                 $currentLangModels = $this->getLangs();
-                foreach($this->_languages as $lang){
+                foreach($languages as $lang){
                     foreach($currentLangModels as $langModel){
                         if($langModel->language == $lang->code){
                             $availableLangModels[] = $langModel;
@@ -104,28 +113,11 @@
                               }, 3600, $dependency);
         }
 
-        /**
-         * @param string $langCode
+        /**Метод возвращает категорию перевода
          *
-         * @return ActiveRecord | null
+         * @return string
          */
-        public function getLangModel($langCode){
-            if(is_null($this->_langModels)){
-                $this->_langModels = $this->getAvailableLangs();
-            }
-            foreach($this->_langModels as $langModel){
-                if($langModel->language == $langCode){
-                    return $langModel;
-                }
-            }
-
-            return null;
-        }
-
-        public function getAllLangModels(){
-            if(is_null($this->_langModels)){
-                $this->_langModels = $this->getAvailableLangs();
-            }
-            return $this->_langModels;
+        public function getTcategory(){
+            return $this->t_category;
         }
     }
