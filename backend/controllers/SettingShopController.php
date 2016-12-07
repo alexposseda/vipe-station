@@ -70,16 +70,11 @@
          * - Ссылки на соц сети
          * - О нас
          * - Баннер на главной и текст к картинке
+         *
          * @return string
          */
-        public function actionIndex(){
-            $model = new MainSettingShopModel();
-
-            if($model->load(Yii::$app->request->post()) && $model->save()){
-                return $this->goHome();
-            }
-
-            return $this->render('index', ['model' => $model]);
+        public function actionIndex($page = 'main'){
+            return $this->render('index', ['page' => $page]);
         }
 
         public function actionDeliverPay(){

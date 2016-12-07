@@ -3,22 +3,21 @@
      * @var $this  \yii\web\View
      * @var $model \backend\models\MainSettingShopModel
      */
-    use yii\bootstrap\ActiveForm;
-    use yii\bootstrap\Html;
+
+
 
 ?>
 
-<?php $form = ActiveForm::begin() ?>
-    <div class="row">
-        <?= $form->field($model, 'shopName')
-                 ->textInput() ?>
-        <?= $form->field($model, 'socialLink') ?>
-        <?= $form->field($model, 'aboutAs')
-                 ->textarea() ?>
-        <?= $form->field($model, 'bannerLink')
-                 ->textInput() ?>
-        <?= $form->field($model, 'bannerText')
-                 ->textarea() ?>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-9"></div>
+    <div class="visible-lg col-lg-3">
+        <div class="list-group">
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Pages</h4>
+            </div>
+            <a href="#" class="list-group-item active">Главная</a>
+            <a href="#" class="list-group-item">Доставка и оплата</a>
+            <a href="#" class="list-group-item">Контакты</a>
+        </div>
     </div>
-<?= Html::submitButton('Сохранить'/*Yii::t('system', 'Сохранить')*/) ?>
-<?php ActiveForm::end() ?>
+</div>
