@@ -57,6 +57,11 @@
                     $this->seo->delete();
                     $this->brand->seo_id = null;
                 }else{
+                    if(!$this->seo->isNewRecord){
+                        if(!$this->seo->delete()){
+                            throw new Exception('error to delete seo');
+                        }
+                    }
                     $this->brand->seo_id = null;
                 }
             }else{
