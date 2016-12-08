@@ -3,6 +3,7 @@
     namespace backend\controllers;
 
     use backend\models\forms\CategoryForm;
+    use common\models\ProductCharacteristicModel;
     use common\models\SeoModel;
     use Yii;
     use common\models\CategoryModel;
@@ -69,9 +70,9 @@
          * @return mixed
          */
         public function actionView($id){
-            return $this->render('view', [
-                'model' => $this->findModel($id),
-            ]);
+                return $this->render('view', [
+                    'model' => $this->findModel($id),
+                ]);
         }
 
         /**
@@ -80,7 +81,6 @@
          * @return mixed
          */
         public function actionCreate(){
-            $category_parent = null;
             $model = new CategoryForm([
                                           'category' => new CategoryModel(),
                                           'seo'      => new SeoModel()
@@ -91,14 +91,14 @@
 
             if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
-                                           'view',
+                                           'update',
                                            'id' => $model->category->id
                                        ]);
             }else{
                 return $this->render('create', [
                     'category_parent' => $category_parent,
-                    'category_array'  => $category_array,
-                    'model'           => $model,
+                    'category_array' => $category_array,
+                    'model' => $model,
                 ]);
             }
         }
@@ -113,11 +113,21 @@
          */
         public function actionUpdate($id){
             $category = $this->findModel($id);
+
+            /*Gektor Получаем все категории и отсеиваем текущую категорию + дочерние категории */
             $category_array = ArrayHelper::map(CategoryModel::find()
                                                             ->all(), 'id', 'title');
-            $seo = ($category->seo) ? $category->seo : new SeoModel();
+            ArrayHelper::remove($category_array, $id);
+            foreach($category->categoryModels as $temp){
+                ArrayHelper::remove($category_array, $temp->id);
+            }
+            /**/
 
-            $model = new CategoryForm(['category' => $category, 'seo' => $seo]);
+            $seo = ($category->seo) ? $category->seo : new SeoModel();
+            $model = new CategoryForm([
+                                          'category' => $category,
+                                          'seo'      => $seo
+                                      ]);
 
             if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
@@ -126,9 +136,8 @@
                                        ]);
             }else{
                 return $this->render('update', [
-                    'category_parent' => !$category->parent ? null : $category->parent0->title,
-                    'category_array'  => $category_array,
-                    'model'           => $model,
+                    'category_array' => $category_array,
+                    'model'          => $model,
                 ]);
             }
         }
@@ -165,11 +174,14 @@
             }
         }
 
-        public function actionGetCharacteristic($id){
-            $category = $this->findModel($id);
-
-            $characteristic = ArrayHelper::map($category->productCharacteristics, 'id', 'title');
-
-            return json_encode($characteristic);
+        public function addCharacteristic($category_id){
+            $characterisic = new ProductCharacteristicModel();
+            if($characterisic->load(Yii::$app->request->post()) && $characterisic->save()){
+                return $this->redirect([
+                                           'update',
+                                           'id' => $category_id,
+                                       ]);
+            }
+            //            return $this->renderAjax();
         }
     }

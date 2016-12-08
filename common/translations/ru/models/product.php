@@ -1,8 +1,9 @@
 <?php
     return [
-        'Title'         => 'Название',
+        'Product' => 'Продукта',
+        'Title' => 'Название продукта',
+        'Description' => 'Описание',
         'Gallery'       => 'Галерея',
-        'Description'   => 'Описание',
         'Base Price'    => 'Базовая цена',
         'Base Quantity' => 'Базовое количество',
         'Sales'         => 'Количество продаж',
