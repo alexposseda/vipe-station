@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property integer $product_id
- * @property integer $language
+ * @property string $language
  * @property string $title
  * @property string $description
  * @property integer $created_at
@@ -51,7 +51,7 @@ class ProductLangModel extends ActiveRecord
             [['product_id', 'language', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
             [['title'], 'string', 'max' => 255],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductModel::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }

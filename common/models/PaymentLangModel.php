@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property integer $payment_id
- * @property integer $language
+ * @property string $language
  * @property string $name
  * @property string $description
  * @property integer $created_at
@@ -51,7 +51,7 @@ class PaymentLangModel extends ActiveRecord
             [['payment_id', 'language', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 255],
-            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'id']],
+            [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],
             [['payment_id'], 'exist', 'skipOnError' => true, 'targetClass' => PaymentModel::className(), 'targetAttribute' => ['payment_id' => 'id']],
         ];
     }

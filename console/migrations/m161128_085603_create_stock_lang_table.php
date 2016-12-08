@@ -21,7 +21,7 @@ class m161128_085603_create_stock_lang_table extends Migration
         $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
             'stock_id' => $this->integer()->notNull(),
-            'language' => $this->integer()->notNull(),
+            'language' => $this->string(4)->notNull(),
 
             'title' => $this->string(),
             'description' => $this->text(),
@@ -31,7 +31,7 @@ class m161128_085603_create_stock_lang_table extends Migration
         ], $tableOptions);
 
         $this->addForeignKey('FK_Stock_Lang_TO_Stock', $this->tableName, 'stock_id', '{{%stock}}', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('FK_Stock_Lang_TO_Language', $this->tableName, 'language', '{{%language}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('FK_Stock_Lang_TO_Language', $this->tableName, 'language', '{{%language}}', 'code', 'CASCADE', 'CASCADE');
     }
 
     /**

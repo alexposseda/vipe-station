@@ -21,7 +21,7 @@ class m161128_085312_create_delivery_lang_table extends Migration
         $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
             'delivery_id' => $this->integer()->notNull(),
-            'language' => $this->integer()->notNull(),
+            'language' => $this->string(4)->notNull(),
 
             'name' => $this->string(),
             'description' => $this->text(),
@@ -31,7 +31,7 @@ class m161128_085312_create_delivery_lang_table extends Migration
         ], $tableOptions);
 
         $this->addForeignKey('FK_Delivery_Lang_TO_Delivery', $this->tableName, 'delivery_id', '{{%delivery}}', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('FK_Delivery_Lang_TO_Language', $this->tableName, 'language', '{{%language}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('FK_Delivery_Lang_TO_Language', $this->tableName, 'language', '{{%language}}', 'code', 'CASCADE', 'CASCADE');
     }
 
     /**

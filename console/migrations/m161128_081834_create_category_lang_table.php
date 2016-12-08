@@ -21,7 +21,7 @@ class m161128_081834_create_category_lang_table extends Migration
         $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
             'category_id' => $this->integer()->notNull(),
-            'language' => $this->integer()->notNull(),
+            'language' => $this->string(4)->notNull(),
             'title' => $this->string(),
 
             'created_at' => $this->integer(),
@@ -29,7 +29,7 @@ class m161128_081834_create_category_lang_table extends Migration
         ], $tableOptions);
 
         $this->addForeignKey('FK_Category_Lang_TO_Category', $this->tableName, 'category_id', '{{%category}}', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('FK_Category_Lang_TO_Language', $this->tableName, 'language', '{{%language}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('FK_Category_Lang_TO_Language', $this->tableName, 'language', '{{%language}}', 'code', 'CASCADE', 'CASCADE');
     }
 
     /**

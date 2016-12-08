@@ -1,21 +1,22 @@
 <?php
     return [
-        'sourceLanguage' => 'en',
+        'sourceLanguage' => 'ru',
         'language'       => 'ru',
         'vendorPath'     => dirname(dirname(__DIR__)).'/vendor',
         'bootstrap'      => ['logger'],
         'components'     => [
             'cache'       => [
                 'class' => 'yii\caching\FileCache',
-
             ],
             'authManager' => [
                 'class' => 'yii\rbac\DbManager',
             ],
+            'db' => [
+                'enableSchemaCache' => true,
+            ],
             'urlManager'  => [
                 'class'           => 'codemix\localeurls\UrlManager',
                 'languages'       => [
-                    'en',
                     'ru',
                     'ua'
                 ],

@@ -105,7 +105,7 @@
                                        'seo'   => new SeoModel()
                                    ]);
 
-            if($model->loadData(Yii::$app->request->post()) && $model->save()){
+            if(Yii::$app->request->isPost && $model->save()){
                 return $this->redirect([
                                            'view',
                                            'id' => $model->brand->id
@@ -129,15 +129,18 @@
             $brand = $this->findModel($id);
             $seo = ($brand->seo) ? $brand->seo : new SeoModel();
 
-            $model = new BrandForm(['brand' => $brand, 'seo' => $seo]);
+            $model = new BrandForm([
+                                       'brand' => $brand,
+                                       'seo'   => $seo
+                                   ]);
 
-            if($model->loadData(Yii::$app->request->post()) && $model->save()){
+            if(Yii::$app->request->isPost && $model->save()){
                 return $this->redirect([
                                            'view',
                                            'id' => $model->brand->id
                                        ]);
             }else{
-                return $this->render('update', [
+                return $this->render('create', [
                     'model' => $model,
                 ]);
             }
