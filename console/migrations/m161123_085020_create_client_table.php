@@ -31,15 +31,15 @@
 
         $this->addForeignKey('FK_Client_TO_User', $this->tableName, 'user_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
 
-        $this->insert($this->tableName, [
-            'user_id' => 1,
-            'name' => 'admin',
-            'phones' => json_encode(['066 388 5455']),
-            'birthday' => strtotime('29/09/1979'),
-            'delivery_data' => '{{"city":"kiev"}}',
-            'created_at' => time(),
-            'updated_at' => time()
-        ]);
+//        $this->insert($this->tableName, [
+//            'user_id' => 1,
+//            'name' => 'admin',
+//            'phones' => json_encode(['066 388 5455']),
+//            'birthday' => strtotime('29/09/1979'),
+//            'delivery_data' => '{{"city":"kiev"}}',
+//            'created_at' => time(),
+//            'updated_at' => time()
+//        ]);
     }
 
     /**
