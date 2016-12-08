@@ -118,3 +118,9 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+label.no-pad{
+    padding: 0;
+}
+label.btn img.social-icon{
+    height: 32px;
+}
