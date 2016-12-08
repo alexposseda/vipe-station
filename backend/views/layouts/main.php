@@ -62,7 +62,7 @@
                     'label' => Yii::t('system/view', 'Shop Setting'),
                     'items' => [
                         [
-                            'label' => Yii::t('system/view', 'Pages Setting'),
+                            'label' => Yii::t('system/view', 'General Setting'),
                             'url'   => ['setting-shop/index']
                         ],
                         [
