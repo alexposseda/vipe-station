@@ -1,6 +1,6 @@
 <?php
 
-    namespace backend\widgets\ProductCharacteristicWidget;
+    namespace backend\widgets\ProductWidget;
 
     use common\models\CategoryModel;
     use common\models\ProductCharacteristicModel;

@@ -11,6 +11,8 @@
         'Deliveries'      => 'Доставки',
         'Payment'         => 'Оплата',
         'Payments'        => 'Оплаты',
+        'Product'         => 'Продукт',
+        'Products'        => 'Продукты',
         'Category'        => 'Категория',
         'Categories'      => 'Категории',
         'Characteristics' => 'Характеристики',

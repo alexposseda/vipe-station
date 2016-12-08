@@ -1,10 +1,13 @@
+// Требуется реализация
 function addCharacteristic(url) {
     $.ajax({
         data: '',
         method: 'POST',
         url: url,
-        success: function (data) {
-
+        success: function ($data) {
+            debugger;
+            $('div.product-characteristic').append($data)();
+            return false;
         }
     })
     // var text = $('div.add-characteristic').val();
@@ -14,6 +17,10 @@ function addCharacteristic(url) {
     //   $('div.product-characteristic').text($('#categorymodel-parent').val());
     // })
 }
+
+$('div.panel-body button').click(addCharacteristic('dfssf/sdfds/dsf'));
+
+
 
 
 

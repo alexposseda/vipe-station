@@ -22,7 +22,6 @@
         public $category;
         public $seo;
         public $error;
-        public $characteristic;
 
         /**
          * @param array $data

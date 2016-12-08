@@ -1,7 +1,7 @@
 <?php
 
-    use backend\widgets\ProductCharacteristicWidget\ProductCharacteristicWidget;
-    use backend\widgets\ProductCharacteristicWidget\ProductCharacteristicWidgetAsset;
+    use backend\widgets\ProductWidget\ProductCharacteristicWidget;
+    use backend\widgets\ProductWidget\ProductCharacteristicWidgetAsset;
     use yii\helpers\Html;
     use yii\widgets\ActiveForm;
 
@@ -49,7 +49,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-9 col-lg-8">
             <div class="panel panel-success">
-                <div class="panel-heading"><?= Yii::t('models','Characteristics').' '.Yii::t('models/product','Product') ?></div>
+                <div class="panel-heading"><?= Yii::t('models', 'Characteristics').' '.Yii::t('models/product', 'Product') ?></div>
                 <div class="panel-body product-characteristic">
                     <?= ProductCharacteristicWidget::widget([
                                                                 'id' => $model->category->id,
@@ -72,5 +72,5 @@
             </div>
         </div>
     </div>
-    <?php ActiveForm::end();?>
+    <?php ActiveForm::end(); ?>
 </div>

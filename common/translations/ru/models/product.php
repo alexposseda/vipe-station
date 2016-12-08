@@ -1,4 +1,6 @@
 <?php
     return [
-        'Product' => 'Продукта'
+        'Product' => 'Продукта',
+        'Title' => 'Название продукта',
+        'Description' => 'Описание',
     ];
