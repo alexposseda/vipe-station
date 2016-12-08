@@ -159,4 +159,9 @@
             return $this->hasMany(ProductModel::className(), ['id' => 'product_id'])
                         ->viaTable('{{%product_in_category}}', ['category_id' => 'id']);
         }
+
+        public function addCharacteristic(){
+
+        }
+
     }
