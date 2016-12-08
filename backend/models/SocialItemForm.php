@@ -43,6 +43,15 @@
             ];
         }
 
+        public function attributeLabels(){
+            return [
+                'link' => 'Link',
+                'iconFile' => 'Icon',
+                'icon' => 'Icon',
+                'title' => 'Title'
+            ];
+        }
+
         public function beforeValidate(){
             $this->iconFile = UploadedFile::getInstance($this, '['.$this->index.']iconFile');
 
