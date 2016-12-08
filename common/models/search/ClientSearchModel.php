@@ -25,9 +25,9 @@
 
         public function attributeLabels(){
             return [
-                'name'   => Yii::t('models/client', 'name'),
-                'phones' => Yii::t('models/client', 'phone'),
-                'email'  => Yii::t('models/client', 'email')
+                'name'   => Yii::t('models/client', 'Name'),
+                'phones' => Yii::t('models/client', 'Phone'),
+                'email'  => Yii::t('models/client', 'Email')
             ];
         }
 

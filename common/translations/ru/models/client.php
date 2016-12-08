@@ -6,7 +6,7 @@
         'Phones'              => 'Телефоны',
         'Phone'               => 'Телефон',
         'Birthday'            => 'Дата рождения',
-        'Delivery data'       => 'Данные доставки',
+        'Delivery Data'       => 'Данные доставки',
         'Contact Information' => 'Контактная информация',
         'History of orders'   => 'История заказов',
         'Shipping addresses'  => 'Адреса доставки',
