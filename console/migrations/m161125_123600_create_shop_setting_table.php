@@ -17,15 +17,13 @@
                 $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
             }
             $this->createTable($this->tableName, [
-                'id'         => $this->primaryKey(),
-                'key'        => $this->string()
-                                     ->unique()
-                                     ->notNull(),
-                'value'      => $this->text()
-                                     ->notNull(),
+                'key'        => $this->string(20),
+                'value'      => $this->text(),
                 'created_at' => $this->integer(),
                 'updated_at' => $this->integer(),
             ], $tableOptions);
+
+            $this->addPrimaryKey('PK_ShopSetting', $this->tableName, 'key');
         }
 
         /**
