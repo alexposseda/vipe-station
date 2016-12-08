@@ -9,7 +9,6 @@
     /**
      * This is the model class for table "{{%setting}}".
      *
-     * @property integer $id
      * @property integer $key
      * @property string  $value
      * @property integer $created_at
@@ -40,8 +39,7 @@
             return [
                 [
                     [
-                        'key',
-                        'value'
+                        'key'
                     ],
                     'required'
                 ],
@@ -71,7 +69,6 @@
          */
         public function attributeLabels(){
             return [
-                'id'         => 'ID',
                 'key'        => 'Key',
                 'value'      => 'Value',
                 'created_at' => 'Created At',
@@ -79,15 +76,36 @@
             ];
         }
 
+        /**
+         * метод возвращает экземпляр класса
+         *
+         * @param string $setting
+         *
+         * @return ShopSettingTable
+         */
         public static function getSetting($setting){
-            $set = self::find()
-                       ->where(['key' => $setting])
-                       ->one();
+            $set = self::findOne($setting);
             if(!$set){
                 $set = new self();
                 $set->key = $setting;
             }
 
             return $set;
+        }
+
+        /**
+         * Метод возвращает значение переданной настройки
+         *
+         * @param string $key
+         *
+         * @return null|string
+         */
+        public static function getSettingValue($key){
+            $setting = self::getSetting($key);
+            if(is_null($setting)){
+                return null;
+            }
+
+            return $setting->value;
         }
     }

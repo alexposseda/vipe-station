@@ -5,7 +5,11 @@
     use backend\models\AddressSettingModel;
     use backend\models\DeliverPayModel;
     use backend\models\MainSettingShopModel;
+    use backend\models\ShopSettingForm;
+    use backend\models\SocialItemForm;
+    use backend\models\SocialModel;
     use backend\models\UploadCover;
+    use common\models\ShopSettingTable;
     use Yii;
     use yii\alexposseda\fileManager\actions\RemoveAction;
     use yii\alexposseda\fileManager\actions\UploadAction;
@@ -20,11 +24,11 @@
         public function behaviors(){
             return [
                 'access' => [
-                    'class' => AccessControl::className(),
+                    'class'        => AccessControl::className(),
                     'denyCallback' => function($rule, $action){
                         throw new UnauthorizedHttpException(Yii::t('system/error', 'You do not have access to this page'));
                     },
-                    'rules' => [
+                    'rules'        => [
                         [
                             'allow' => true,
                             'roles' => ['admin'],
@@ -73,8 +77,36 @@
          *
          * @return string
          */
-        public function actionIndex($page = 'main'){
-            return $this->render('index', ['page' => $page]);
+        public function actionIndex(){
+            $shopSettingModel = new ShopSettingForm();
+            $socialSettingModel = new SocialModel();
+            if(empty($socialSettingModel->socialForms)){
+                $socialSettingModel->socialForms[] = new SocialItemForm();
+            }
+
+            if(Yii::$app->request->isPost){
+                $formName = Yii::$app->request->post('form');
+                $model = null;
+                switch($formName){
+                    case 'shopSetting':
+                        $model = $shopSettingModel;
+                        break;
+
+                    case 'socialSetting':
+                        $model = $socialSettingModel;
+                        break;
+                }
+                if(!is_null($model)){
+                    if($model->load(Yii::$app->request->post()) && $model->validate()){
+                        $model->save();
+                    }
+                }
+            }
+
+            return $this->render('index', [
+                'shopSettingModel'   => $shopSettingModel,
+                'socialSettingModel' => $socialSettingModel
+            ]);
         }
 
         public function actionDeliverPay(){
@@ -93,7 +125,8 @@
             if($model->load(Yii::$app->request->post()) && $model->save()){
                 return $this->goHome();
             }
-            return $this->render('address-setting',['model'=>$model]);
+
+            return $this->render('address-setting', ['model' => $model]);
         }
 
 
