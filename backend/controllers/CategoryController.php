@@ -96,7 +96,6 @@
                                        ]);
             }else{
                 return $this->render('create', [
-                    'category_parent' => $category_parent,
                     'category_array' => $category_array,
                     'model' => $model,
                 ]);
