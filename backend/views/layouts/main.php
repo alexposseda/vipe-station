@@ -59,6 +59,10 @@
                     'url'   => ['/client/index']
                 ],
                 [
+                    'label' => Yii::t('system/view','Clients'),
+                    'url'   => ['/user/index']
+                ],
+                [
                     'label' => Yii::t('system/view','Shop Setting'),
                     'url'   => ['/setting-shop/index']
                 ],
