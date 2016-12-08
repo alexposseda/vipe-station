@@ -52,9 +52,7 @@ class PaymentController extends Controller
     public function actionIndex()
     {
         $searchModel = new PaymentSearchModel();
-        $dataProvider = new ActiveDataProvider([
-            'query' => PaymentModel::find(),
-        ]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
