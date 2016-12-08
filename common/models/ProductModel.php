@@ -17,7 +17,7 @@
      * @property double                           $base_price
      * @property integer                          $base_quantity
      * @property string                           $slug
-     * @property integer                          $manufacturer_id
+     * @property integer                          $brand_id
      * @property integer                          $sales
      * @property integer                          $views
      * @property integer                          $seo_id
@@ -84,7 +84,7 @@
                 [
                     [
                         'base_quantity',
-                        'manufacturer_id',
+                        'brand_id',
                         'sales',
                         'views',
                         'seo_id',
@@ -110,11 +110,11 @@
                     'unique'
                 ],
                 [
-                    ['manufacturer_id'],
+                    ['brand_id'],
                     'exist',
                     'skipOnError'     => true,
                     'targetClass'     => BrandModel::className(),
-                    'targetAttribute' => ['manufacturer_id' => 'id']
+                    'targetAttribute' => ['brand_id' => 'id']
                 ],
                 [
                     ['seo_id'],
@@ -131,19 +131,19 @@
          */
         public function attributeLabels(){
             return [
-                'id'              => 'ID',
-                'title'           => 'Title',
-                'gallery'         => 'Gallery',
-                'description'     => 'Description',
-                'base_price'      => 'Base Price',
-                'base_quantity'   => 'Base Quantity',
-                'slug'            => 'Slug',
-                'manufacturer_id' => 'Manufacturer ID',
-                'sales'           => 'Sales',
-                'views'           => 'Views',
-                'seo_id'          => 'Seo ID',
-                'created_at'      => 'Created At',
-                'updated_at'      => 'Updated At',
+                'id'            => 'ID',
+                'title'         => Yii::t('models/product', 'Title'),
+                'gallery'       => Yii::t('models/product', 'Gallery'),
+                'description'   => Yii::t('models/product', 'Description'),
+                'base_price'    => Yii::t('models/product', 'Base Price'),
+                'base_quantity' => Yii::t('models/product', 'Base Quantity'),
+                'slug'          => Yii::t('models', 'Slug'),
+                'brand_id'      => Yii::t('models', 'Brand'),
+                'sales'         => Yii::t('models/product', 'Sales'),
+                'views'         => Yii::t('models/product', 'Views'),
+                'seo_id'        => 'Seo ID',
+                'created_at'    => 'Created At',
+                'updated_at'    => 'Updated At',
             ];
         }
 
@@ -158,7 +158,7 @@
          * @return \yii\db\ActiveQuery
          */
         public function getBrand(){
-            return $this->hasOne(BrandModel::className(), ['id' => 'manufacturer_id']);
+            return $this->hasOne(BrandModel::className(), ['id' => 'brand_id']);
         }
 
         /**

@@ -121,17 +121,21 @@
          * @throws Exception
          */
         public function saveLangModels(){
-            $langModels = $this->getAvailableLangs();
-            if($this->loadAndValidate($langModels)){
-                foreach($langModels as $langModel){
-                    if($langModel->canSave()){
-                        $langModel->save(false);
-                    }else if(!$langModel->isNewRecord){
-                        $langModel->delete();
+            try{
+                $langModels = $this->getAvailableLangs();
+                if($this->loadAndValidate($langModels)){
+                    foreach($langModels as $langModel){
+                        if($langModel->canSave()){
+                            $langModel->save(false);
+                        }else if(!$langModel->isNewRecord){
+                            $langModel->delete();
+                        }
                     }
+                }else{
+                    throw new Exception(Yii::t('system/error', 'Sorry, I can not save the language data'));
                 }
-            }else{
-                throw new Exception(Yii::t('system/error', 'Sorry, I can not save the language data'));
+            }catch(Exception $e){
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
         }
 

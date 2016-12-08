@@ -51,9 +51,8 @@ class DeliveryController extends Controller
     public function actionIndex()
     {
         $searchModel = new DeliverySearchModel();
-        $dataProvider = new ActiveDataProvider([
-            'query' => DeliveryModel::find(),
-        ]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

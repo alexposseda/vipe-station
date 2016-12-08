@@ -1,5 +1,6 @@
 <?php
 
+    use common\models\BrandModel;
     use yii\helpers\Html;
     use yii\grid\GridView;
     use yii\widgets\Pjax;
@@ -10,6 +11,10 @@
 
     $this->title = Yii::t('models', 'Clients');
     $this->params['breadcrumbs'][] = $this->title;
+
+
+    $rec = new BrandModel();
+//    $rec = $rec->pri;
 ?>
 <div class="client-model-index">
 
@@ -32,6 +37,7 @@
 
                                          [
                                              'attribute' => 'email',
+                                             'label'      => Yii::t('models/client', 'Email'),
                                              'content'   => function($data){
                                                  return $data->user->email;
                                              }

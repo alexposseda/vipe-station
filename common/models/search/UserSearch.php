@@ -1,75 +1,90 @@
 <?php
 
-namespace common\models\search;
+    namespace common\models\search;
 
-use Yii;
-use yii\base\Model;
-use yii\data\ActiveDataProvider;
-use common\models\User;
-
-/**
- * UserSearch represents the model behind the search form of `common\models\User`.
- */
-class UserSearch extends User
-{
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['auth_key', 'password_hash', 'password_reset_token', 'email'], 'safe'],
-        ];
-    }
+    use common\models\UserIdentity;
+    use PDO;
+    use Yii;
+    use yii\base\Model;
+    use yii\data\ActiveDataProvider;
+    use common\models\User;
+    use yii\data\Sort;
 
     /**
-     * @inheritdoc
+     * UserSearch represents the model behind the search form of `common\models\User`.
      */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
-    }
+    class UserSearch extends UserIdentity{
+        public $role;
 
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
-    public function search($params)
-    {
-        $query = User::find();
-
-        // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
+        /**
+         * @inheritdoc
+         */
+        public function rules(){
+            return [
+                [
+                    [
+                        'email',
+                        'role'
+                    ],
+                    'safe'
+                ],
+            ];
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
+        /**
+         * @inheritdoc
+         */
+        public function scenarios(){
+            // bypass scenarios() implementation in the parent class
+            return Model::scenarios();
+        }
 
-        $query->andFilterWhere(['like', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
-            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
-            ->andFilterWhere(['like', 'email', $this->email]);
+        /**
+         * Creates data provider instance with search query applied
+         *
+         * @param array $params
+         *
+         * @return ActiveDataProvider
+         */
+        public function search($params){
+            $query = UserIdentity::find();
 
-        return $dataProvider;
+            // add conditions that should always apply here
+
+            $dataProvider = new ActiveDataProvider([
+                                                       'query' => $query,
+                                                       'sort'  => new Sort([
+                                                                               'attributes' => [
+                                                                                   'id',
+                                                                                   'email',
+                                                                               ]
+                                                                           ])
+                                                   ]);
+
+            $this->load($params);
+
+            if(!$this->validate()){
+                // uncomment the following line if you do not want to return any records when validation fails
+                // $query->where('0 = 1');
+                return $dataProvider;
+            }
+
+            // grid filtering conditions
+            $query->andFilterWhere([
+                                       'id'    => $this->id,
+                                       'email' => $this->email
+                                   ]);
+
+            $query->andFilterWhere(['like', 'email', $this->email]);
+            if(!empty($this->role)){
+                $ids = (Yii::$app->db->createCommand('SELECT `user_id` FROM {{%auth_assignment}} WHERE `item_name` LIKE \'%'.$this->role."%'")
+                                     ->queryAll(PDO::FETCH_COLUMN, 1));
+                if(empty($ids)){
+                    $query->where('0=1');
+                }
+                $query->andFilterWhere(['in', 'id', $ids]);
+            }
+
+            return $dataProvider;
+        }
     }
-}

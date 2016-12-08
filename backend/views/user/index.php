@@ -1,44 +1,71 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
+    use yii\helpers\Html;
+    use yii\grid\GridView;
+    use yii\widgets\Pjax;
 
-/* @var $this yii\web\View */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+    /* @var $this yii\web\View */
+    /* @var $dataProvider yii\data\ActiveDataProvider
+     * @var $searchModel  common\models\search\UserSearch
+     */
 
-$this->title = Yii::t('models','Users');
-$this->params['breadcrumbs'][] = $this->title;
+    $this->title = Yii::t('models', 'Users');
+    $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php Pjax::begin(); ?>
+    <div class="row">
+        <div class="col-md-12 col-lg-3">
+            <p>
+                <?= Html::a(Yii::t('system/view', 'Create').' '.Yii::t('models/user', 'User'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= $this->render('_search', ['model' => $searchModel]); ?>
+            </p>
+        </div>
+        <div class="col-md-12 col-lg-9">
+            <?= GridView::widget([
+                                     'dataProvider' => $dataProvider,
+                                     'filterModel'  => null,
+                                     'layout'       => "{summary}\n<div class='table-responsive'>\n{items}\n</div>\n{pager}",
+                                     'columns'      => [
+                                         [
+                                             'attribute'      => 'id',
+                                             'headerOptions'  => [
+                                                 'style' => 'width: 2%;max-width: 50px;'
+                                             ],
+                                             'contentOptions' => ['style' => 'vertical-align:middle;']
 
-    <p>
-        <?= Html::a(Yii::t('system/view', 'Create').' '.Yii::t('models/user', 'User'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+                                         ],
+                                         'email:email',
+                                         [
+                                             'attribute'      => 'created_at',
+                                             'format'         => [
+                                                 'date',
+                                                 'HH:mm:ss dd.MM.YYYY'
+                                             ],
+                                             'headerOptions'  => [
+                                                 'style' => 'width: 10%;max-width: 100px;'
+                                             ],
+                                             'contentOptions' => ['style' => 'vertical-align:middle;']
+                                         ],
+                                         [
+                                             'attribute'      => 'updated_at',
+                                             'format'         => [
+                                                 'date',
+                                                 'HH:mm:ss dd.MM.YYYY'
+                                             ],
+                                             'headerOptions'  => [
+                                                 'style' => 'width: 10%;max-width: 100px;'
+                                             ],
+                                             'contentOptions' => ['style' => 'vertical-align:middle;']
+                                         ],
+                                         'role',
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-//            'auth_key',
-//            'password_hash',
-//            'password_reset_token',
-            'email:email',
-            // 'status',
-            'created_at:datetime',
-            'updated_at:datetime',
-            [
-                'label'=>Yii::t('models/user', 'Role'),
-                'content'=>function($data){
-                    return current(Yii::$app->authManager->getRolesByUser($data->id))->name;
-                },
-            ],
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]);
-    ?>
+                                         ['class' => 'yii\grid\ActionColumn'],
+                                     ],
+                                 ]); ?>
+        </div>
+    </div>
+    <?php Pjax::end(); ?>
 </div>

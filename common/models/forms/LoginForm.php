@@ -32,9 +32,9 @@
 
         public function attributeLabels(){
             return [
-                'email'      => Yii::t('models/authorize', 'email'),
-                'rememberMe' => Yii::t('models/authorize', 'rememberMe'),
-                'password'   => Yii::t('models/authorize', 'password')
+                'email'      => Yii::t('models/authorize', 'Email'),
+                'rememberMe' => Yii::t('models/authorize', 'Remember Me'),
+                'password'   => Yii::t('models/authorize', 'Password')
             ];
         }
 

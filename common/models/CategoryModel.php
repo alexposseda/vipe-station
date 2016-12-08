@@ -108,9 +108,9 @@
         public function attributeLabels(){
             return [
                 'id'         => 'ID',
-                'title'      => Yii::t('models/category','Category Title'),
-                'parent'     => Yii::t('models/category','Parent'),
-                'slug'       => Yii::t('models','Slug'),
+                'title'      => Yii::t('models/category', 'Category Title'),
+                'parent'     => Yii::t('models/category', 'Parent'),
+                'slug'       => Yii::t('models', 'Slug'),
                 'seo_id'     => 'SeoModel ID',
                 'created_at' => Yii::t('models', 'Created'),
                 'updated_at' => Yii::t('models', 'Last Update'),
@@ -159,4 +159,9 @@
             return $this->hasMany(ProductModel::className(), ['id' => 'product_id'])
                         ->viaTable('{{%product_in_category}}', ['category_id' => 'id']);
         }
+
+        public function addCharacteristic(){
+
+        }
+
     }

@@ -16,7 +16,6 @@ $this->params['breadcrumbs'][] = Yii::t('system/view','Update');
 
     <?= $this->render('_form', [
         'model' => $model,
-        'rol_user' => $rol_user,
     ]) ?>
 
 </div>

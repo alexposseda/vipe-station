@@ -171,7 +171,7 @@
          * @throws NotFoundHttpException if the model cannot be found
          */
         protected function findModel($id){
-            if(($model = BrandModel::findOne($id)) !== null){
+                if(($model = BrandModel::findOne($id)) !== null){
                 return $model;
             }else{
                 throw new NotFoundHttpException('The requested page does not exist.');
