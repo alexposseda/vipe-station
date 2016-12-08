@@ -49,9 +49,7 @@
          */
         public function actionIndex(){
             $searchModel = new UserSearch();
-            $dataProvider = new ActiveDataProvider([
-                                                       'query' => User::find(),
-                                                   ]);
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
                 'searchModel'  => $searchModel,
@@ -78,20 +76,16 @@
          * @return mixed
          */
         public function actionCreate(){
-            $model = new User();
-            $rol_user = 'user';
+            $model = new UserIdentity();
+            $model->generateAuthKey();
+            $model->setPassword(Yii::$app->security->generateRandomString(8));
+            $model->status = UserIdentity::STATUS_ACTIVE;
 
-            if($model->load(Yii::$app->request->post()) && $model->save() && $model->setUserRole(Yii::$app->request->post('role'))){
-                return $this->redirect([
-                                           'view',
-                                           'id' => $model->id
-                                       ]);
-            }else{
-                return $this->render('create', [
-                    'model'    => $model,
-                    'rol_user' => $rol_user,
-                ]);
+            if($model->load(Yii::$app->request->post()) && $model->saveUser()){
+                return $this->redirect(['view', 'id' => $model->id]);
             }
+
+            return $this->render('create', ['model' => $model]);
         }
 
         /**
@@ -104,9 +98,8 @@
          */
         public function actionUpdate($id){
             $model = $this->findModel($id);
-            $rol_user = current(Yii::$app->authManager->getRolesByUser($model->id))->name;
 
-            if($model->load(Yii::$app->request->post()) && $model->save() && $model->setUserRole(Yii::$app->request->post('role'))){
+            if($model->load(Yii::$app->request->post()) && $model->saveUser()){
                 return $this->redirect([
                                            'view',
                                            'id' => $model->id
@@ -114,7 +107,6 @@
             }else{
                 return $this->render('update', [
                     'model'    => $model,
-                    'rol_user' => $rol_user,
                 ]);
             }
         }
@@ -144,11 +136,11 @@
          *
          * @param integer $id
          *
-         * @return User the loaded model
+         * @return UserIdentity the loaded model
          * @throws NotFoundHttpException if the model cannot be found
          */
         protected function findModel($id){
-            if(($model = User::findOne($id)) !== null){
+            if(($model = UserIdentity::findOne($id)) !== null){
                 return $model;
             }else{
                 throw new NotFoundHttpException('The requested page does not exist.');

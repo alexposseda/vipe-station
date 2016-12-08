@@ -2,6 +2,8 @@
 
     namespace common\models\search;
 
+    use common\models\UserIdentity;
+    use PDO;
     use Yii;
     use yii\base\Model;
     use yii\data\ActiveDataProvider;
@@ -11,7 +13,9 @@
     /**
      * UserSearch represents the model behind the search form of `common\models\User`.
      */
-    class UserSearch extends User{
+    class UserSearch extends UserIdentity{
+        public $role;
+
         /**
          * @inheritdoc
          */
@@ -19,19 +23,8 @@
             return [
                 [
                     [
-                        'id',
-                        'status',
-                        'created_at',
-                        'updated_at'
-                    ],
-                    'integer'
-                ],
-                [
-                    [
-                        'auth_key',
-                        'password_hash',
-                        'password_reset_token',
-                        'email'
+                        'email',
+                        'role'
                     ],
                     'safe'
                 ],
@@ -54,7 +47,7 @@
          * @return ActiveDataProvider
          */
         public function search($params){
-            $query = User::find();
+            $query = UserIdentity::find();
 
             // add conditions that should always apply here
 
@@ -63,7 +56,7 @@
                                                        'sort'  => new Sort([
                                                                                'attributes' => [
                                                                                    'id',
-                                                                                   'email'
+                                                                                   'email',
                                                                                ]
                                                                            ])
                                                    ]);
@@ -72,7 +65,7 @@
 
             if(!$this->validate()){
                 // uncomment the following line if you do not want to return any records when validation fails
-                // $query->where('0=1');
+                // $query->where('0 = 1');
                 return $dataProvider;
             }
 
@@ -82,16 +75,15 @@
                                        'email' => $this->email
                                    ]);
 
-            $query->andFilterWhere([
-                                       'like',
-                                       'id',
-                                       $this->id
-                                   ])
-                  ->andFilterWhere([
-                                       'like',
-                                       'email',
-                                       $this->email
-                                   ]);
+            $query->andFilterWhere(['like', 'email', $this->email]);
+            if(!empty($this->role)){
+                $ids = (Yii::$app->db->createCommand('SELECT `user_id` FROM {{%auth_assignment}} WHERE `item_name` LIKE \'%'.$this->role."%'")
+                                     ->queryAll(PDO::FETCH_COLUMN, 1));
+                if(empty($ids)){
+                    $query->where('0=1');
+                }
+                $query->andFilterWhere(['in', 'id', $ids]);
+            }
 
             return $dataProvider;
         }

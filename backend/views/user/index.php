@@ -60,12 +60,7 @@
                                              ],
                                              'contentOptions' => ['style' => 'vertical-align:middle;']
                                          ],
-                                         [
-                                             'label'   => Yii::t('models/user', 'Role'),
-                                             'content' => function($data){
-                                                 return current(Yii::$app->authManager->getRolesByUser($data->id))->name;
-                                             },
-                                         ],
+                                         'role',
 
                                          ['class' => 'yii\grid\ActionColumn'],
                                      ],

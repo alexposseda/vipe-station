@@ -25,6 +25,8 @@
 
             <?= $form->field($model, 'email') ?>
 
+            <?= $form->field($model, 'role') ?>
+
         </div>
     </div>
 

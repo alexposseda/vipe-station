@@ -1,19 +1,19 @@
-    <?php
+<?php
     use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View
-* @var $model common\models\User
- * @var $form yii\widgets\ActiveForm
- */
+    /* @var $this yii\web\View
+     * @var $model common\models\UserIdentity
+     * @var $form  yii\widgets\ActiveForm
+     */
 
-$auth = Yii::$app->authManager;
-$roles = ArrayHelper::map($auth->getRoles(),'name','name');
+    $auth = Yii::$app->authManager;
+    $roles = ArrayHelper::map($auth->getRoles(), 'name', 'name');
 
-$params = [
-    'prompt' => ''
-];
+    $params = [
+        'prompt' => ''
+    ];
 ?>
 
 <div class="user-form">
@@ -23,14 +23,17 @@ $params = [
                 <div class="panel-body">
                     <?php $form = ActiveForm::begin(); ?>
 
-                    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'email')
+                             ->textInput(['maxlength' => true]) ?>
 
                     <div class="form-group">
-                        <?= Html::dropDownList('role', $rol_user, $roles, ['prompt' =>Yii::t('system/view','Select').' '. Yii::t('models/user','Role')]) ?>
+                        <?= Html::activeDropDownList($model, 'role', $roles,
+                                                     ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models/user', 'Role')]) ?>
                     </div>
 
                     <div class="form-group">
-                        <?= Html::submitButton($model->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'), ['class' =>                               $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                        <?= Html::submitButton($model->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),
+                                               ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                     </div>
                 </div>
             </div>
