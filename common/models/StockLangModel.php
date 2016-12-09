@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\components\LangModelsBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -30,7 +31,10 @@ class StockLangModel extends ActiveRecord
     {
         return [
             TimestampBehavior::className(),
-            ];
+            [
+                'class'      => LangModelsBehavior::class,
+                'attributes' => ['description', 'title']
+            ]];
     }
 
     /**
@@ -48,8 +52,8 @@ class StockLangModel extends ActiveRecord
     {
         return [
             [['stock_id', 'language'], 'required'],
-            [['stock_id', 'language', 'created_at', 'updated_at'], 'integer'],
-            [['description'], 'string'],
+            [['stock_id', 'created_at', 'updated_at'], 'integer'],
+            [['description', 'language'], 'string'],
             [['title'], 'string', 'max' => 255],
             [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],
             [['stock_id'], 'exist', 'skipOnError' => true, 'targetClass' => StockModel::className(), 'targetAttribute' => ['stock_id' => 'id']],

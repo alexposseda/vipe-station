@@ -12,32 +12,32 @@
 ?>
 
 <div class="brand-model-form">
-    <?php if($model->hasErrors()):?>
+    <?php if($model->hasErrors()): ?>
         <div class="alert alert-danger">
-            <p><?= Yii::t('system/view', 'Check the data for correctness')?>!</p>
+            <p><?= Yii::t('system/view', 'Check the data for correctness') ?>!</p>
         </div>
-    <?php endif;?>
+    <?php endif; ?>
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class="col-sm-12 col-md-9 col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <?= LanguageWidget::widget([
-                            'form' => $form,
-                            'model' => $model->brand,
-                            'attributes' => [
-                                    [
-                                            'name' => 'title',
-                                            'type' => 'textInput',
-                                            'options' => ['maxlength' => true]
-                                    ],
-                                    [
-                                            'name' => 'description',
-                                            'type' => 'textarea',
-                                            'options' => ['rows' => 6]
-                                    ]
-                            ]
-                                                                ])?>
+                                                   'form'       => $form,
+                                                   'model'      => $model->brand,
+                                                   'attributes' => [
+                                                       [
+                                                           'name'    => 'title',
+                                                           'type'    => 'textInput',
+                                                           'options' => ['maxlength' => true]
+                                                       ],
+                                                       [
+                                                           'name'    => 'description',
+                                                           'type'    => 'textarea',
+                                                           'options' => ['rows' => 6]
+                                                       ]
+                                                   ]
+                                               ]) ?>
                 </div>
             </div>
         </div>
@@ -45,9 +45,9 @@
             <div class="panel panel-success">
                 <div class="panel-heading"><?= Yii::t('system/view', 'Seo') ?></div>
                 <div class="panel-body">
-                    <?= $form->field($model->seo, 'title')?>
-                    <?= $form->field($model->seo, 'keywords')?>
-                    <?= $form->field($model->seo, 'description')?>
+                    <?= $form->field($model->seo, 'title') ?>
+                    <?= $form->field($model->seo, 'keywords') ?>
+                    <?= $form->field($model->seo, 'description') ?>
                 </div>
             </div>
             <?= Html::activeHiddenInput($model->brand, 'cover', ['id' => 'logo-input']) ?>

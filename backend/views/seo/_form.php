@@ -3,9 +3,12 @@
     use yii\helpers\Html;
     use yii\widgets\ActiveForm;
 
-    /* @var $this yii\web\View */
-    /* @var $model common\models\SeoModel */
-    /* @var $form yii\widgets\ActiveForm */
+    /**
+     * @var $this  yii\web\View
+     * @var $model common\models\SeoModel
+     * @var $form  yii\widgets\ActiveForm
+     */
+
 ?>
 
 <div class="seo-model-form">
@@ -13,10 +16,10 @@
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'title')
-        ->textarea(['rows' => 4]) ?>
+             ->textarea(['rows' => 4]) ?>
 
     <?= $form->field($model, 'keywords')
-        ->textarea(['rows' => 4]) ?>
+             ->textarea(['rows' => 4]) ?>
 
     <?= $form->field($model, 'description')
              ->textarea(['rows' => 4]) ?>
