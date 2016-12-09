@@ -8,6 +8,7 @@
     use common\models\CategoryModel;
     use common\models\SeoModel;
     use common\models\ProductCharacteristicModel;
+    use yii\helpers\ArrayHelper;
 
     /**
      * Class CategoryForm
@@ -23,13 +24,22 @@
         public $seo;
         public $error;
 
+        public $characteristic;
+
+        public function rules(){
+            return [
+                ['characteristic', 'safe']
+            ];
+        }
+
+
         /**
          * @param array $data
          *
          * @return bool
          */
         public function loadData(array $data){
-            if($this->category->load($data) && $this->seo->load($data)){
+            if($this->load($data) && $this->category->load($data) && $this->seo->load($data)){
                 return true;
             }
 
@@ -55,6 +65,8 @@
                     throw new Exception('error to save category');
                 }
 
+                //todo сохранение характеристик
+
                 $transaction->commit();
 
                 return true;
@@ -65,18 +77,14 @@
                 return false;
             }
         }
-        public function saveProduct(){
-            $transaction = Yii::$app->db->beginTransaction();
-            try{
-                if($this->characteristic->save()){
-                    throw new Exception('error to save characteristic');
-                }
-                $transaction->commit();
-                return true;
-            }catch(Exception $e){
-                $this->error = $e->getMessage();
-                $transaction->rollBack();
-            }
+
+        public function getAllCategory(){
+            $id = (!empty($this->category)) ? $this->category->id : null;
+
+            return ArrayHelper::map(CategoryModel::find()
+                                                 ->where(['!=', 'id', $id])
+                                                 ->andWhere(['!=', 'parent', $id])
+                                                 ->all(), 'id', 'title');
         }
 
     }

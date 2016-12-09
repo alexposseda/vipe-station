@@ -21,6 +21,7 @@ use yii\widgets\ActiveForm;
     <div class="panel panel-default">
         <div class="panel-heading"><?= Yii::t('system/view','Filter')?></div>
         <div class="panel-body">
+            <?= $form->field($model, 'id') ?>
             <?= $form->field($model, 'name') ?>
         </div>
     </div>
