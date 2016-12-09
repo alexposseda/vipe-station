@@ -38,6 +38,30 @@
             ActiveForm::end();
             Pjax::end();
         ?>
+
+        <?php
+            Pjax::begin();
+            $bannerForm = ActiveForm::begin();
+        ?>
+        <div class="panel panel-default">
+            <div class="panel-heading">Banner setting</div>
+            <div class="panel-body">
+                <?= $bannerForm->field($bannerModel, 'bannerTitle') ?>
+                <?= $bannerForm->field($bannerModel, 'bannerFile')
+                               ->fileInput() ?>
+            </div>
+            <div class="panel-footer text-right">
+                <?= Html::submitButton('Save', [
+                    'class' => 'btn btn-success',
+                    'name'  => 'form',
+                    'value' => 'bannerSetting'
+                ]) ?>
+            </div>
+        </div>
+        <?php
+            ActiveForm::end();
+            Pjax::end();
+        ?>
     </div>
     <div class="col-sm-12 col-md-12 col-lg-8">
         <?php
@@ -92,15 +116,11 @@
                 ]) ?>
             </div>
         </div>
-
         <?php
             ActiveForm::end();
             Pjax::end();
         ?>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-6">
+
         <?php
             Pjax::begin();
             $aboutForm = ActiveForm::begin();
@@ -108,7 +128,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">About us</div>
             <div class="panel-body">
-                <?= $aboutForm->field($aboutUsModel, 'about')->textarea(['rows' => 8])?>
+                <?= $aboutForm->field($aboutUsModel, 'about')
+                              ->textarea(['rows' => 6]) ?>
             </div>
             <div class="panel-footer text-right">
                 <?= Html::submitButton('Save', [
@@ -123,30 +144,6 @@
             Pjax::end();
         ?>
     </div>
-    <div class="col-sm-12 col-md-6 col-lg-6">
-        <?php
-            Pjax::begin();
-            $bannerForm = ActiveForm::begin();
-        ?>
-        <div class="panel panel-default">
-            <div class="panel-heading">Banner setting</div>
-            <div class="panel-body">
-                <?= $bannerForm->field($bannerModel, 'bannerTitle') ?>
-                <?= $bannerForm->field($bannerModel, 'bannerFile')
-                               ->fileInput() ?>
-            </div>
-            <div class="panel-footer text-right">
-                <?= Html::submitButton('Save', [
-                    'class' => 'btn btn-success',
-                    'name'  => 'form',
-                    'value' => 'bannerSetting'
-                ]) ?>
-            </div>
-        </div>
-        <?php
-            ActiveForm::end();
-            Pjax::end();
-        ?>
-    </div>
 </div>
+
 

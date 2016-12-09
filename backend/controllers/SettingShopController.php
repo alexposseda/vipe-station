@@ -102,7 +102,7 @@
                         $model = $bannerModel;
                         break;
                     case 'aboutSetting':
-                        $model = $bannerModel;
+                        $model = $aboutUsModel;
                         break;
                 }
                 if(!is_null($model)){

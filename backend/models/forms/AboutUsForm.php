@@ -35,6 +35,10 @@
         }
 
         public function save(){
-            // TODO: Implement save() method.
+            $model = ShopSettingTable::getSetting('aboutUs');
+            $model->value = $this->about;
+            if(!$model->save()){
+                $this->addErrors($model->getErrors());
+            }
         }
     }
