@@ -2,6 +2,7 @@
 
     namespace common\models;
 
+    use common\components\LangModelsBehavior;
     use Yii;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
@@ -28,6 +29,10 @@
         public function behaviors(){
             return [
                 TimestampBehavior::className(),
+                [
+                    'class'      => LangModelsBehavior::class,
+                    'attributes' => ['description', 'title']
+                ]
             ];
         }
 
@@ -103,12 +108,5 @@
          */
         public function getLanguage0(){
             return $this->hasOne(LanguageModel::className(), ['code' => 'language']);
-        }
-
-        public function canSave(){
-            if(!empty($this->title) || !empty($this->description)){
-                return true;
-            }
-            return false;
         }
     }
