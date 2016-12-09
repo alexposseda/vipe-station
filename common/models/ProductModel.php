@@ -2,6 +2,7 @@
 
     namespace common\models;
 
+    use common\components\LanguageBehavior;
     use Yii;
     use yii\behaviors\SluggableBehavior;
     use yii\behaviors\TimestampBehavior;
@@ -47,6 +48,16 @@
                     'slugAttribute' => 'slug',
                 ],
                 TimestampBehavior::className(),
+                [
+                    'class'             => LanguageBehavior::className(),
+                    'langModelName'     => ProductLangModel::className(),
+                    'relationFieldName' => 'product_id',
+                    't_category'        => 'models/product',
+                    'attributes'        => [
+                        'title',
+                        'description'
+                    ],
+                ],
             ];
         }
 
