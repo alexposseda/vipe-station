@@ -48,8 +48,8 @@ class DeliveryLangModel extends ActiveRecord
     {
         return [
             [['delivery_id', 'language'], 'required'],
-            [['delivery_id', 'language', 'created_at', 'updated_at'], 'integer'],
-            [['description'], 'string'],
+            [['delivery_id',  'created_at', 'updated_at'], 'integer'],
+            [['language','description'], 'string'],
             [['name'], 'string', 'max' => 255],
             [['delivery_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryModel::className(), 'targetAttribute' => ['delivery_id' => 'id']],
             [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],

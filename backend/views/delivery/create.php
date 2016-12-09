@@ -5,7 +5,7 @@
     /* @var $this yii\web\View */
     /* @var $model common\models\DeliveryModel */
 
-    $this->title = Yii::t('system/views', 'Create').' '.Yii::t('models/delivery', 'Delivery');
+    $this->title = Yii::t('system/view', 'Create').' '.Yii::t('models/delivery', 'Delivery');
     $this->params['breadcrumbs'][] = [
         'label' => Yii::t('models', 'Delivery'),
         'url'   => ['index']

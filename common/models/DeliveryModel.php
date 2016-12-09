@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\components\LanguageBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -28,6 +29,16 @@ class DeliveryModel extends ActiveRecord
     {
         return [
             TimestampBehavior::className(),
+            [
+                'class'         => LanguageBehavior::className(),
+                'langModelName' => DeliveryLangModel::className(),
+                'relationFieldName' => 'delivery_id',
+                't_category' => 'models/delivery',
+                'attributes'    => [
+                    'name',
+                    'description'
+                ],
+            ]
             ];
     }
 

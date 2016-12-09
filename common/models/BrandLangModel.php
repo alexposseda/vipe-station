@@ -109,7 +109,6 @@
             if(!empty($this->title) || !empty($this->description)){
                 return true;
             }
-
             return false;
         }
     }
