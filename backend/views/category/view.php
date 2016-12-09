@@ -31,7 +31,7 @@
         ], [
                         'class' => 'btn btn-danger',
                         'data'  => [
-                            'confirm' => Yii::t('system/views', 'Are you sure you want to delete this item?'),
+                            'confirm' => Yii::t('system/view', 'Are you sure you want to delete this item?'),
                             'method'  => 'post',
                         ],
                     ]) ?>
