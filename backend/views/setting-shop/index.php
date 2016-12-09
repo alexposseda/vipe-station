@@ -1,9 +1,11 @@
 <?php
     /**
-     * @var $this               \yii\web\View
-     * @var $model              \backend\models\MainSettingShopModel
-     * @var $shopSettingModel   \backend\models\ShopSettingForm
-     * @var $socialSettingModel \backend\models\SocialModel
+     * @var $this                \yii\web\View
+     * @var $model               \backend\models\MainSettingShopModel
+     * @var $shopSettingModel    \backend\models\forms\ShopSettingForm
+     * @var $socialSettingModel  \backend\models\forms\SocialModel
+     * @var $bannerModel         \backend\models\forms\BannerForm
+     * @var $aboutUsModel        \backend\models\forms\AboutUsForm
      */
     use yii\alexposseda\fileManager\FileManager;
     use yii\bootstrap\Html;
@@ -22,6 +24,7 @@
             <div class="panel-heading">Shop Settings</div>
             <div class="panel-body">
                 <?= $shopSettingForm->field($shopSettingModel, 'shopName') ?>
+
             </div>
             <div class="panel-footer text-right">
                 <?= Html::submitButton('Save', [
@@ -48,12 +51,13 @@
                     foreach($socialSettingModel->socialForms as $index => $socialForm):
                         if(empty($socialForm->icon)){
                             $label = [
-                                'title' => '<span class="glyphicon glyphicon-plus"></span>',
+                                'title'   => '<span class="glyphicon glyphicon-plus"></span>',
                                 'options' => ['class' => 'btn btn-success'],
                             ];
                         }else{
                             $label = [
-                                'title' => Html::img(FileManager::getInstance()->getStorageUrl().$socialForm->icon, ['class' => 'social-icon']),
+                                'title'   => Html::img(FileManager::getInstance()
+                                                                  ->getStorageUrl().$socialForm->icon, ['class' => 'social-icon']),
                                 'options' => ['class' => 'btn btn-default no-pad'],
                             ];
                         }
@@ -72,7 +76,8 @@
                                                   ->input('url', ['placeholder' => $socialForm->getAttributeLabel('link')])
                                                   ->label(false) ?>
                             <?= $socialSettingForm->field($socialForm, '['.$index.']iconFile', ['options' => ['class' => 'col-lg-2']])
-                                                  ->fileInput(['class' => 'hidden'])->label($label['title'], $label['options']) ?>
+                                                  ->fileInput(['class' => 'hidden'])
+                                                  ->label($label['title'], $label['options']) ?>
                         </div>
                         <?php
                     endforeach;
@@ -96,16 +101,52 @@
 </div>
 <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-6">
+        <?php
+            Pjax::begin();
+            $aboutForm = ActiveForm::begin();
+        ?>
         <div class="panel panel-default">
             <div class="panel-heading">About us</div>
-            <div class="panel-body"></div>
+            <div class="panel-body">
+                <?= $aboutForm->field($aboutUsModel, 'about')->textarea(['rows' => 8])?>
+            </div>
+            <div class="panel-footer text-right">
+                <?= Html::submitButton('Save', [
+                    'class' => 'btn btn-success',
+                    'name'  => 'form',
+                    'value' => 'aboutSetting'
+                ]) ?>
+            </div>
         </div>
+        <?php
+            ActiveForm::end();
+            Pjax::end();
+        ?>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-6">
+        <?php
+            Pjax::begin();
+            $bannerForm = ActiveForm::begin();
+        ?>
         <div class="panel panel-default">
             <div class="panel-heading">Banner setting</div>
-            <div class="panel-body"></div>
+            <div class="panel-body">
+                <?= $bannerForm->field($bannerModel, 'bannerTitle') ?>
+                <?= $bannerForm->field($bannerModel, 'bannerFile')
+                               ->fileInput() ?>
+            </div>
+            <div class="panel-footer text-right">
+                <?= Html::submitButton('Save', [
+                    'class' => 'btn btn-success',
+                    'name'  => 'form',
+                    'value' => 'bannerSetting'
+                ]) ?>
+            </div>
         </div>
+        <?php
+            ActiveForm::end();
+            Pjax::end();
+        ?>
     </div>
 </div>
 
