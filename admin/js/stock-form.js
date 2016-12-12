@@ -25,10 +25,10 @@ function initStockVal(police, stock_value) {
     }
 }
 
-$(document).submit(function () {
-    var gift = $('input [name=products]').val();
+$('#stock-form').submit(function () {
+    var gift = $('#products-gift').val();
     if (gift) {
-        var json = {'gift': $('input [name=products]').val()};
+        var json = JSON.encode({'gift': gift});
         $('#stockmodel-stock_value').val(json);
     }
 });

@@ -12,5 +12,6 @@
 <div class="form-group">
     <p><?= Yii::t('models/stock', 'Gift product') ?></p>
     <?= Html::dropDownList('products', $stock_value->gift, ArrayHelper::map($all_products, 'id', 'title'),
-                           ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models/stock', 'Gift product')]) ?>
+                           ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models/stock', 'Gift product'),
+                           'id'=>'products-gift']) ?>
 </div>

@@ -130,7 +130,7 @@
 
             switch($police_id){
                 case '1':
-                    return $this->renderAjax('police/discount', ['model' => $model, 'stock_value' => $stock_value]);
+                    return $this->renderAjax('policy/discount', ['model' => $model, 'stock_value' => $stock_value]);
                     break;
                 case '2':
                     $all_products = ProductModel::getDb()
@@ -139,7 +139,7 @@
                                                                        ->all();
                                                 }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.ProductModel::tableName()]));
 
-                    return $this->renderAjax('police/gift',
+                    return $this->renderAjax('policy/gift',
                                              ['model' => $model, 'stock_value' => json_decode($stock_value), 'all_products' => $all_products]);
                     break;
             }
@@ -201,4 +201,7 @@
                 throw new NotFoundHttpException(Yii::t('system/error', 'The requested page does not exist.'));
             }
         }
+
+
+
     }

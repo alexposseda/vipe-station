@@ -36,7 +36,7 @@ JS;
 
 <div class="stock-model-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id'=>'stock-form']); ?>
     <?php Pjax::begin() ?>
     <div class="row">
         <div class="col-sm-12 col-md-9 col-lg-8">
