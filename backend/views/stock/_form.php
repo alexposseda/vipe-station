@@ -2,7 +2,6 @@
 
     use backend\widgets\FileManagerWidget\FileManagerWidget;
     use backend\widgets\LanguageWidget;
-    use common\models\ProductModel;
     use common\models\StockPolicyModel;
     use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
@@ -76,15 +75,20 @@
             </div>
             <div class="stock-products">
                 <?= $form->field($model, 'products')
-                         ->checkboxList($model->getAllProducts(),['separator' => '<br>', 'item'=> function($index, $label, $name, $checked, $value) use ($model){
-                             if(key_exists($value, $model->products)){
-                                 return \yii\bootstrap\Html::checkbox($name, true, ['value' => $value]);
-                             }else{
-                                 return \yii\bootstrap\Html::checkbox($name, false, ['value' => $value]);
-                             }
-                             //todo go home
+                         ->checkboxList($model->getAllProducts(), [
+                             'separator' => '<br>',
+                             'item'      => function($index, $label, $name, $checked, $value) use ($model){
+                                 if($model->stock->getProducts()
+                                                 ->where(['id' => $value])
+                                                 ->exists()
+                                 ){
+                                     $checked = !$checked;
+                                 }
 
-                         }]) ?>
+                                 return Html::checkbox($name, $checked, ['value' => $value, 'label' => $label]);
+                                 //todo go home
+                             }
+                         ]) ?>
             </div>
         </div>
     </div>

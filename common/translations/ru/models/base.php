@@ -11,8 +11,6 @@
         'Deliveries'      => 'Доставки',
         'Payment'         => 'Оплата',
         'Payments'        => 'Оплаты',
-        'Product'         => 'Продукт',
-        'Products'        => 'Продукты',
         'Category'        => 'Категория',
         'Categories'      => 'Категории',
         'Characteristics' => 'Характеристики',
@@ -20,6 +18,8 @@
         'Products'        => 'Товары',
         'Options'         => 'Опции',
         'Option'          => 'Опция',
+        'Stock'           => 'Акция',
+        'Stocks'          => 'Акции',
 
         'Last Update' => 'Обновлен',
         'Created'     => 'Создан',

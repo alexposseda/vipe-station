@@ -7,6 +7,8 @@
     use yii\alexposseda\fileManager\FileManager;
     use yii\behaviors\SluggableBehavior;
     use yii\behaviors\TimestampBehavior;
+    use yii\caching\ChainedDependency;
+    use yii\caching\DbDependency;
     use yii\db\ActiveRecord;
 
     /**
@@ -89,17 +91,17 @@
         public function attributeLabels(){
             return [
                 'id'          => 'ID',
-                'policy_id'   => 'Policy ID',
-                'title'       => 'Title',
-                'slug'        => 'Slug',
-                'cover'       => 'Cover',
-                'description' => 'Description',
-                'date_start'  => 'Date Start',
-                'date_end'    => 'Date End',
-                'status'      => 'Status',
-                'stock_value' => 'Stock Value',
-                'created_at'  => 'Created At',
-                'updated_at'  => 'Updated At',
+                'policy_id'   => Yii::t('models/stock', 'Policy'),
+                'title'       => Yii::t('models/stock', 'Title'),
+                'slug'        => Yii::t('models', 'Slug'),
+                'cover'       => Yii::t('models/stock', 'Cover'),
+                'description' => Yii::t('models/stock', 'Description'),
+                'date_start'  => Yii::t('models/stock', 'Date Start'),
+                'date_end'    => Yii::t('models/stock', 'Date End'),
+                'status'      => Yii::t('models/stock', 'Status'),
+                'stock_value' => Yii::t('models/stock', 'Stock Value'),
+                'created_at'  => Yii::t('models', 'Created'),
+                'updated_at'  => Yii::t('models', 'Last Update'),
             ];
         }
 
@@ -107,27 +109,47 @@
          * @return \yii\db\ActiveQuery
          */
         public function getProductInStocks(){
-            return $this->hasMany(ProductInStockModel::className(), ['stock_id' => 'id']);
+            $model = $this;
+
+            return self::getDb()
+                       ->cache(function() use ($model){
+                           return $model->hasMany(ProductInStockModel::className(), ['stock_id' => 'id']);
+                       }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.ProductInStockModel::tableName()]));
         }
 
         /**
          * @return \yii\db\ActiveQuery
          */
         public function getProducts(){
-            return $this->hasMany(ProductModel::className(), ['id' => 'product_id'])
-                        ->viaTable('{{%product_in_stock}}', ['stock_id' => 'id']);
+            $model = $this;
+            return self::getDb()
+                       ->cache(function() use ($model){
+                           return $model->hasMany(ProductModel::className(), ['id' => 'product_id'])
+                                        ->viaTable(ProductInStockModel::tableName(), ['stock_id' => 'id']);
+                       }, 0, new ChainedDependency([
+                                                       'dependencies' => [
+                                                           new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.ProductInStockModel::tableName()]),
+                                                           new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.ProductModel::tableName()]),
+                                                       ]
+                                                   ]));
         }
 
         /**
          * @return \yii\db\ActiveQuery
          */
         public function getPolicy(){
-            return $this->hasOne(StockPolicyModel::className(), ['id' => 'policy_id']);
+            $model = $this;
+
+            return self::getDb()
+                       ->cache(function() use ($model){
+                           return $model->hasOne(StockPolicyModel::className(), ['id' => 'policy_id']);
+                       }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.StockPolicyModel::tableName()]));
         }
 
         public function afterSave($insert, $changedAttributes){
             if(!empty($this->cover)){
-                FileManager::getInstance()->removeFromSession(json_decode($this->cover)[0]);
+                FileManager::getInstance()
+                           ->removeFromSession(json_decode($this->cover)[0]);
             }
         }
     }

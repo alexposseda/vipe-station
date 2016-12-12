@@ -7,6 +7,7 @@
     use common\models\StockModel;
     use Yii;
     use yii\base\Model;
+    use yii\caching\DbDependency;
     use yii\helpers\ArrayHelper;
 
     /**
@@ -25,13 +26,6 @@
             return [
                 [['products', 'categories'], 'safe']
             ];
-        }
-
-        public function init(){
-            if($this->stock){
-                $this->products = ArrayHelper::map($this->stock->products, 'id', 'title');
-
-            }
         }
 
         public function loadData($data, $formName = null){
@@ -66,31 +60,54 @@
                             throw new \Exception('error save product in stock');
                         }
                     }
+                }else{
+                    $all_in_stock = $this->stock->productInStocks;
+                    if(!empty($all_in_stock)){
+                        foreach($all_in_stock as $item){
+                            $item->delete();
+                        }
+                        Yii::$app->cache->flush();
+                    }
+                }
+
+                $diff_prod_in_stock = $this->stock->getProductInStocks()
+                                                  ->where(['not in', 'product_id', $this->products])
+                                                  ->all();
+                if(!empty($diff_prod_in_stock)){
+                    foreach($diff_prod_in_stock as $item){
+                        $item->delete();
+                    }
+                    Yii::$app->cache->flush();
                 }
 
                 $transaction->commit();
+
+                return true;
             }catch(\Exception $e){
                 $transaction->rollBack();
+
+                return false;
             }
         }
 
         public function getAllProducts(){
-            $all_product = ArrayHelper::map(ProductModel::find()
-                                                        ->where([
-                                                                    '!=',
-                                                                    'id',
-                                                                    ProductInStockModel::find()
-                                                                                       ->select(['product_id'])
-                                                                                       ->asArray()
-                                                                ])
-                                                        ->all(), 'id', 'title');
+            $p_in_stock = ProductInStockModel::getDb()
+                                             ->cache(function(){
+                                                 return ProductInStockModel::find()
+                                                                           ->all();
+                                             }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.ProductInStockModel::tableName()]));
 
-            return ArrayHelper::merge($all_product, $this->products);
+            $prod_all = ProductModel::getDb()
+                                    ->cache(function() use ($p_in_stock){
+                                        return ProductModel::find()
+                                                           ->where([
+                                                                       'not in',
+                                                                       'id',
+                                                                       ArrayHelper::getColumn($p_in_stock, 'product_id')
+                                                                   ])
+                                                           ->all();
+                                    });
+
+            return ArrayHelper::merge(ArrayHelper::map($prod_all, 'id', 'title'), ArrayHelper::map($this->stock->products, 'id', 'title'));
         }
-
-        public function checked($index, $label, $name, $checked, $value){
-            $d =5;
-        }
-
-
     }

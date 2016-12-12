@@ -9,7 +9,7 @@
      * @var $dataProvider yii\data\ActiveDataProvider
      */
 
-    $this->title = Yii::t('models', 'Stock');
+    $this->title = Yii::t('models', 'Stocks');
     $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="stock-model-index">
@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-md-12 col-lg-3">
             <p>
-                <?= Html::a(Yii::t('system/view', 'Create').' '.Yii::t('models/payment', 'Stock'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('system/view', 'Create').' '.Yii::t('models/stock', 'Stock'), ['create'], ['class' => 'btn btn-success']) ?>
             </p>
         </div>
         <div class="col-md-12 col-lg-9">
@@ -28,6 +28,12 @@
                                      'layout'       => "{summary}\n<div class='table-responsive'>\n{items}\n</div>\n{pager}",
                                      'columns'      => [
                                          'title',
+                                         [
+                                             'label'   => Yii::t('models/stock', 'Products Count'),
+                                             'content' => function($date){
+                                                 return count($date->products);
+                                             }
+                                         ],
                                          'date_start:datetime',
                                          'date_end:datetime',
                                          [

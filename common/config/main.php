@@ -65,6 +65,7 @@
                             'models/user'           => 'models/user.php',
                             'models/characteristic' => 'models/characteristic.php',
                             'models/product'        => 'models/product.php',
+                            'models/stock'        => 'models/stock.php',
                         ],
                     ],
                     'shop*'   => [
