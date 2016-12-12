@@ -52,6 +52,7 @@
                 [['password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
                 [['email'], 'unique'],
                 [['password_reset_token'], 'unique'],
+                //temp
             ];
         }
 
