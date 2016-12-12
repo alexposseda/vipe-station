@@ -6,6 +6,7 @@
     use backend\models\forms\StockForm;
     use backend\models\UploadCover;
     use common\models\ProductCharacteristicModel;
+    use common\models\ProductModel;
     use common\models\SeoModel;
     use common\models\StockModel;
     use Yii;
@@ -13,6 +14,7 @@
     use common\models\search\CategorySearchModel;
     use yii\alexposseda\fileManager\actions\RemoveAction;
     use yii\alexposseda\fileManager\actions\UploadAction;
+    use yii\caching\DbDependency;
     use yii\data\ActiveDataProvider;
     use yii\filters\AccessControl;
     use yii\web\Controller;
@@ -106,6 +108,7 @@
         /**
          * Creates a new StockModel model.
          * If creation is successful, the browser will be redirected to the 'view' page.
+         *
          * @return mixed
          */
         public function actionCreate(){
@@ -120,6 +123,26 @@
             return $this->render('create', [
                 'model' => $model,
             ]);
+        }
+
+        public function actionRenderAjax($police_id, $stock_value = null){
+            $model = new StockModel();
+
+            switch($police_id){
+                case '1':
+                    return $this->renderAjax('police/discount', ['model' => $model, 'stock_value' => $stock_value]);
+                    break;
+                case '2':
+                    $all_products = ProductModel::getDb()
+                                                ->cache(function(){
+                                                    return ProductModel::find()
+                                                                       ->all();
+                                                }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.ProductModel::tableName()]));
+
+                    return $this->renderAjax('police/gift',
+                                             ['model' => $model, 'stock_value' => json_decode($stock_value), 'all_products' => $all_products]);
+                    break;
+            }
         }
 
         /**

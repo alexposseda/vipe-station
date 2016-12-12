@@ -1,5 +1,6 @@
 <?php
 
+    use backend\assets\StockFormAsset;
     use backend\widgets\FileManagerWidget\FileManagerWidget;
     use backend\widgets\LanguageWidget;
     use common\models\StockPolicyModel;
@@ -7,6 +8,7 @@
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\ActiveForm;
+    use yii\widgets\Pjax;
 
     /**
      * @var $this  yii\web\View
@@ -14,12 +16,28 @@
      * @var $form  yii\widgets\ActiveForm
      */
 
+    StockFormAsset::register($this);
+    if(!$model->stock->isNewRecord){
+        $police_id = $model->stock->policy_id;
+        $stock_value = $model->stock->stock_value;
+        $stockInit == <<<JS
+        alert('hhh');
+        $.ajax({
+            'url': 'http://admin.vipe.local/stock/render-ajax',
+            'data': {'police_id': {$police_id}, 'stock_value': {$stock_value}},
+            'success': function (response) {
+                $('#stock-value-wrapper').html(response);
+            }
+        });
+JS;
+        $this->registerJs($stockInit, \yii\web\View::POS_END);
+    }
 ?>
 
 <div class="stock-model-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+    <?php Pjax::begin() ?>
     <div class="row">
         <div class="col-sm-12 col-md-9 col-lg-8">
             <div class="panel panel-default">
@@ -56,8 +74,7 @@
                         </div>
                     </div>
 
-                    <?= $form->field($model->stock, 'stock_value') ?>
-
+                    <div id="stock-value-wrapper"></div>
                 </div>
             </div>
         </div>
@@ -86,7 +103,6 @@
                                  }
 
                                  return Html::checkbox($name, $checked, ['value' => $value, 'label' => $label]);
-                                 //todo go home
                              }
                          ]) ?>
             </div>
@@ -97,7 +113,7 @@
         <?= Html::submitButton($model->stock->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),
                                ['class' => $model->stock->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-
+    <?php Pjax::end() ?>
     <?php ActiveForm::end(); ?>
 
 </div>
