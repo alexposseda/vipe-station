@@ -15,6 +15,7 @@
     /**
      * ClientController implements the CRUD actions for ClientModel model.
      */
+
     class ClientController extends Controller{
         /**
          * @inheritdoc
