@@ -16,10 +16,9 @@
         'Category'        => 'Категория',
         'Categories'      => 'Категории',
         'Characteristics' => 'Характеристики',
-        'Product'         => 'Товар',
-        'Products'        => 'Товары',
         'Options'         => 'Опции',
         'Option'          => 'Опция',
+        'Cart'            => 'Корзина',
 
         'Last Update' => 'Обновлен',
         'Created'     => 'Создан',
