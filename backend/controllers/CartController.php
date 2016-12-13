@@ -40,19 +40,19 @@
             $cart = new CartModel();
             if(Yii::$app->user->isGuest){
 
-                $guest_id = Yii::$app->request->getCookies()
-                                              ->getValue('guest_id');
+                $cookie_guestId = Yii::$app->request->getCookies()
+                                                    ->getValue('guest_id');
                 $session_guestId = Yii::$app->session->get('guest_id');
                 $cart->guest_id = Yii::$app->security->generateRandomString();
-                if(empty($guest_id && $session_guestId)){
+                if(empty($cookie_guestId && $session_guestId)){
                     Yii::$app->response->cookies->add(new Cookie([
                                                                      'name'  => 'guest_id',
                                                                      'value' => $cart->guest_id
                                                                  ]));
                     Yii::$app->session->set('guest_id', $cart->guest_id);
+                }else{
+                    empty($cookie_guestId) ? $cart->guest_id = $session_guestId : $cart->guest_id = $cookie_guestId;
                 }
-
-                empty($guest_id) ? $cart->guest_id = $session_guestId : $cart->guest_id = $guest_id;
             }else{
                 $cart->user_id = Yii::$app->user->id;
             }
@@ -83,6 +83,7 @@
                 }
             }
         }
+
 
         /**
          * Displays a single CartModel model.
@@ -145,12 +146,12 @@
          *
          * @return mixed
          */
-        //    public function actionDelete($id)
-        //    {
-        //        $this->findModel($id)->delete();
-        //
-        //        return $this->redirect(['index']);
-        //    }
+            public function actionDelete($id)
+            {
+                $this->findModel($id)->delete();
+
+                return $this->redirect(['index']);
+            }
 
         /**
          * Finds the CartModel model based on its primary key value.
