@@ -50,9 +50,9 @@
                                                                      'value' => $cart->guest_id
                                                                  ]));
                     Yii::$app->session->set('guest_id', $cart->guest_id);
-                }else{
-                    $cart->guest_id = $guest_id;
                 }
+
+                empty($guest_id) ? $cart->guest_id = $session_guestId : $cart->guest_id = $guest_id;
             }else{
                 $cart->user_id = Yii::$app->user->id;
             }
