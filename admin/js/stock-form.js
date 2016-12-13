@@ -1,8 +1,9 @@
 $('#stockmodel-policy_id').change(function () {
+    var policy = $(this);
     if ($(this).val()) {
         $.ajax({
             'url': 'http://admin.vipe.local/stock/render-ajax',
-            'data': {'police_id': $(this).val()},
+            'data': {'police_id': policy.val()},
             'success': function (response) {
                 $('#stock-value-wrapper').html(response);
             }
@@ -11,10 +12,7 @@ $('#stockmodel-policy_id').change(function () {
 });
 
 function initStockVal(police, stock_value) {
-    console.log(police);
-    console.log(stock_value);
     if (police && stock_value) {
-        console.log('dfg');
         $.ajax({
             'url': 'http://admin.vipe.local/stock/render-ajax',
             'data': {'police_id': police, 'stock_value': stock_value},
@@ -25,10 +23,11 @@ function initStockVal(police, stock_value) {
     }
 }
 
-$('#stock-form').submit(function () {
+$('#stock-sub').click(function () {
     var gift = $('#products-gift').val();
     if (gift) {
-        var json = JSON.encode({'gift': gift});
+        var json = JSON.stringify({'gift':gift});
+        console.log(json);
         $('#stockmodel-stock_value').val(json);
     }
 });

@@ -7,6 +7,7 @@
     use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     use yii\helpers\Url;
+    use yii\web\View;
     use yii\widgets\ActiveForm;
     use yii\widgets\Pjax;
 
@@ -20,23 +21,14 @@
     if(!$model->stock->isNewRecord){
         $police_id = $model->stock->policy_id;
         $stock_value = $model->stock->stock_value;
-        $stockInit == <<<JS
-        alert('hhh');
-        $.ajax({
-            'url': 'http://admin.vipe.local/stock/render-ajax',
-            'data': {'police_id': {$police_id}, 'stock_value': {$stock_value}},
-            'success': function (response) {
-                $('#stock-value-wrapper').html(response);
-            }
-        });
-JS;
-        $this->registerJs($stockInit, \yii\web\View::POS_END);
+        $stockInit = "initStockVal('$police_id','$stock_value');";
+        $this->registerJs($stockInit, View::POS_END);
     }
 ?>
 
 <div class="stock-model-form">
 
-    <?php $form = ActiveForm::begin(['id'=>'stock-form']); ?>
+    <?php $form = ActiveForm::begin(['id' => 'stock-form']); ?>
     <?php Pjax::begin() ?>
     <div class="row">
         <div class="col-sm-12 col-md-9 col-lg-8">
@@ -111,7 +103,7 @@ JS;
 
     <div class="form-group">
         <?= Html::submitButton($model->stock->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),
-                               ['class' => $model->stock->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                               ['class' => $model->stock->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'stock-sub']) ?>
     </div>
     <?php Pjax::end() ?>
     <?php ActiveForm::end(); ?>

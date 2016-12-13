@@ -130,7 +130,8 @@
 
             switch($police_id){
                 case '1':
-                    return $this->renderAjax('policy/discount', ['model' => $model, 'stock_value' => $stock_value]);
+                    $model->stock_value = $stock_value;
+                    return $this->renderAjax('policy/discount', ['model' => $model]);
                     break;
                 case '2':
                     $all_products = ProductModel::getDb()
@@ -201,7 +202,6 @@
                 throw new NotFoundHttpException(Yii::t('system/error', 'The requested page does not exist.'));
             }
         }
-
 
 
     }

@@ -5,9 +5,8 @@
     use common\models\StockPolicyModel;
 
     class DiscountStockPolicy extends StockPolicyModel{
-        public $valueStock;
 
         public function getStockPrice(){
-            return $this->valueStock;
+
         }
     }
