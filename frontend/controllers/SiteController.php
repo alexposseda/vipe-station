@@ -110,6 +110,23 @@
             $aboutUs = ShopSettingTable::getSettingValue('aboutUs');
             if(is_null($aboutUs))
                 $aboutUs = Yii::t('system/error', 'Sorry, Information is not available');
+
+            $address_setting = ShopSettingTable::getSetting('address');
+            $val = json_decode($address_setting->value);
+            if(!empty($val)){
+                $_count = count($val);
+                for($i = 0; $i < $this->_count; $i++){
+                    $address[$i] = $val[$i]->address;
+                    $schedule[$i] = $val[$i]->schedule;
+                    $phones[$i] = $val[$i]->phones;
+                    $baseAddress[$i] = $val[$i]->baseAddress;
+                    $centerMap[$i] = $val[$i]->centerMap;
+                }
+            }
+
+
+
+
             return $this->render('about',[
                 'aboutUs' => $aboutUs
             ]);
