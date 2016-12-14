@@ -11,9 +11,6 @@
     $auth = Yii::$app->authManager;
     $roles = ArrayHelper::map($auth->getRoles(), 'name', 'name');
 
-    $params = [
-        'prompt' => ''
-    ];
 ?>
 
 <div class="user-form">

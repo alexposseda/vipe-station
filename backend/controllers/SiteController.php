@@ -96,6 +96,10 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        if(Yii::$app->request->getCookies()->has('guest_id'))
+            Yii::$app->request->getCookies()->remove('guest_id');
+        if(Yii::$app->session->has('guest_id'))
+            Yii::$app->session->remove('guest_id');
         Yii::$app->user->logout();
 
         return $this->goHome();

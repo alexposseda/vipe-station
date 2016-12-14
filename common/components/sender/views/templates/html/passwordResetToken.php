@@ -7,7 +7,9 @@
 ?>
 <div class="password-reset">
     <p><?= Yii::t('mailer/messages', 'Hello') ?>
-    <?php if($user->client != null) {echo 'Html::encode($user->client->name)';}?>,</p>
+    <?php if($user->client != null) :?>
+        <?=Html::encode($user->client->name)?>
+    <?php endif;?>,</p>
     <p><?=Yii::t('mailer/messages','Follow the link below to reset your password')?>:</p>
 
     <p><?= Html::a(Html::encode($resetLink), $resetLink) ?></p>

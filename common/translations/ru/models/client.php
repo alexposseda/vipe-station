@@ -6,13 +6,15 @@
         'Phones'              => 'Телефоны',
         'Phone'               => 'Телефон',
         'Birthday'            => 'Дата рождения',
-        'Delivery Data'       => 'Данные доставки',
+        'Delivery data'       => 'Данные доставки',
         'Contact Information' => 'Контактная информация',
         'History of orders'   => 'История заказов',
         'Shipping addresses'  => 'Адреса доставки',
         'Edit personal data'  => 'Редактирование личных данных',
         'First name'          => 'Имя',
         'Last name'           => 'Фамилия',
+        'City'                => 'Город',
+        'Address'             => 'Адрес',
 
         'Your orders' => 'Ваши заказы',
         'Total'       => 'Итог'

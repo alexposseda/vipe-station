@@ -86,6 +86,9 @@
                                           'seo'      => new SeoModel()
                                       ]);
 
+            $category_array = ArrayHelper::map(CategoryModel::find()
+                                                            ->all(), 'id', 'title');
+
             if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
                                            'update',
@@ -93,6 +96,7 @@
                                        ]);
             }else{
                 return $this->render('create', [
+                    'category_array' => $category_array,
                     'model' => $model,
                 ]);
             }
@@ -109,6 +113,15 @@
         public function actionUpdate($id){
             $category = $this->findModel($id);
 
+            /*Gektor Получаем все категории и отсеиваем текущую категорию + дочерние категории */
+            $category_array = ArrayHelper::map(CategoryModel::find()
+                                                            ->all(), 'id', 'title');
+            ArrayHelper::remove($category_array, $id);
+            foreach($category->categoryModels as $temp){
+                ArrayHelper::remove($category_array, $temp->id);
+            }
+            /**/
+
             $seo = ($category->seo) ? $category->seo : new SeoModel();
             $model = new CategoryForm([
                                           'category' => $category,
@@ -122,6 +135,7 @@
                                        ]);
             }else{
                 return $this->render('update', [
+                    'category_array' => $category_array,
                     'model'          => $model,
                 ]);
             }

@@ -102,19 +102,19 @@
                     if(!$product_in_category->save()){
                         throw new Exception('error to save category '.$category_id.' to product');
                     }
-                    $event = new LoggerEvent([
-                                                 'user_id' => Yii::$app->user->id,
-                                                 'message' => [
-                                                     'action'=>'Add',
-                                                     'chto'=>'сategory'
-                                                 ]
-                                                     .Yii::t('logger','сategory').': '
-                                                     .$product_in_category->category->title.' '
-                                                     .Yii::t('logger','to').' '
-                                                     .Yii::t('logger','product').': '
-                                                     .$this->product->title,
-                                             ]);
-                    $this->trigger(self::EVENT_LOGGER_MESSAGE, $event);
+//                    $event = new LoggerEvent([
+//                                                 'user_id' => Yii::$app->user->id,
+//                                                 'message' => [
+//                                                     'action'=>'Add',
+//                                                     'chto'=>'сategory'
+//                                                 ]
+//                                                     .Yii::t('logger','сategory').': '
+//                                                     .$product_in_category->category->title.' '
+//                                                     .Yii::t('logger','to').' '
+//                                                     .Yii::t('logger','product').': '
+//                                                     .$this->product->title,
+//                                             ]);
+//                    $this->trigger(self::EVENT_LOGGER_MESSAGE, $event);
                 }
                 //endregion
 
