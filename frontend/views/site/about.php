@@ -29,7 +29,7 @@
                     </div>
                     <div class="col l6 about-adress">
                         <span class="fs25 fc-orange">Адреса</span><br>
-                        <span class="fs20 fc-dark-brown">97999 Okland Street <br> Lorem ipsum dolor. <br> 502-22-22 <br> 12.00 do 21.00</span>
+                        <span class="fs20 fc-dark-brown">Воздвиженская 48 <br> Lorem ipsum dolor. <br> 502-22-22 <br> 12.00 do 21.00</span>
                     </div>
                 </div>
 
