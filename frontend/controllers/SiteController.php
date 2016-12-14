@@ -106,6 +106,15 @@
             ]);
         }
 
+        public function actionAbout(){
+            $aboutUs = ShopSettingTable::getSettingValue('aboutUs');
+            if(is_null($aboutUs))
+                $aboutUs = Yii::t('system/error', 'Sorry, Information is not available');
+            return $this->render('about',[
+                'aboutUs' => $aboutUs
+            ]);
+        }
+
         /**
          * Logs in a user.
          *
@@ -207,8 +216,5 @@
             ]);
         }
 
-        public function actionAbout(){
-            $aboutUs =
-            return $this->render('about');
-        }
+
     }

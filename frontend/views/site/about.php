@@ -19,13 +19,8 @@
                     <div class="col l6 s12 fs20 about-content ">
                         <span class="delivery-title fs25 fc-orange">О нас</span>
 
+                        <p><?= $aboutUs?></p>
 
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                            I am convenient because I require little markup to use effectively.</p>
-                        <hr>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                            I am convenient because I require little markup to use effectively.</p>
-                        <hr>
                     </div>
                     <div class="col l6 about-adress">
                         <span class="fs25 fc-orange">Адреса</span><br>
