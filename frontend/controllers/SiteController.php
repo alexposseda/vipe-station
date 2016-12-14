@@ -8,6 +8,7 @@
     use common\models\forms\ResetPasswordForm;
     use common\models\forms\SignupForm;
     use common\models\search\BrandSearchModel;
+    use common\models\ShopSettingTable;
     use Yii;
     use yii\base\InvalidParamException;
     use yii\web\BadRequestHttpException;
@@ -27,7 +28,10 @@
             return [
                 'access' => [
                     'class' => AccessControl::className(),
-                    'only'  => ['logout', 'signup'],
+                    'only'  => [
+                        'logout',
+                        'signup'
+                    ],
                     'rules' => [
                         [
                             'actions' => ['signup'],
@@ -85,7 +89,21 @@
          * @return mixed
          */
         public function actionIndex(){
-            return $this->render('index');
+
+            $bannerTitle = ShopSettingTable::getSettingValue('bannerTitle');
+            if(is_null($bannerTitle))
+                $bannerTitle =  'Lorem ipsum dolor sit amet, consectetur adipisicing elit';
+            $tmp = strrpos($bannerTitle, ",");
+            if($tmp !== false){
+                $bannerTitle = substr($bannerTitle, 0, $tmp + 1)."<br> ".substr($bannerTitle, $tmp + 1);
+            }
+
+            $bannerFile = ShopSettingTable::getSettingValue('bannerFile');
+
+            return $this->render('index', [
+                'bannerTitle' => $bannerTitle,
+                'bannerFile'  => $bannerFile
+            ]);
         }
 
         /**

@@ -84,7 +84,9 @@
          * @return ShopSettingTable
          */
         public static function getSetting($setting){
-            $set = self::findOne($setting);
+            $set = self::find()
+                       ->where(['key' => $setting])
+                       ->one();
             if(!$set){
                 $set = new self();
                 $set->key = $setting;
