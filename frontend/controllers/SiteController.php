@@ -206,4 +206,8 @@
                 'model' => $model,
             ]);
         }
+
+        public function actionAbout(){
+            return $this->render('about');
+        }
     }
