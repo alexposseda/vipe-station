@@ -34,6 +34,8 @@
      * @property ProductInStockModel[]            $productInStocks
      * @property StockModel[]                     $stocks
      * @property ProductOptionModel[]             $productOptions
+     *
+     * @property string                           $cover
      */
     class ProductModel extends ActiveRecord{
 
@@ -221,5 +223,9 @@
          */
         public function getProductOptions(){
             return $this->hasMany(ProductOptionModel::className(), ['product_id' => 'id']);
+        }
+
+        public function getCover(){
+            return ($this->gallery) ? json_decode($this->gallery)[0] : '';
         }
     }

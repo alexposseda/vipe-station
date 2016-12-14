@@ -18,7 +18,7 @@ class ProductSearchModel extends ProductModel
     public function rules()
     {
         return [
-            [['id', 'base_quantity', 'sales', 'views', 'seo_id', 'created_at', 'updated_at', 'brand_id'], 'integer'],
+            [['id', 'base_quantity', 'sales', 'views', 'created_at', 'updated_at', 'brand_id'], 'integer'],
             [['title', 'gallery', 'description', 'slug'], 'safe'],
             [['base_price'], 'number'],
         ];
@@ -48,6 +48,17 @@ class ProductSearchModel extends ProductModel
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => $params['pageSize'],
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'sales' => SORT_DESC,
+                    'base_price' => SORT_DESC,
+                    'created_at' => SORT_DESC,
+                    'title' => SORT_ASC,
+                ]
+            ],
         ]);
 
         $this->load($params);
@@ -65,16 +76,15 @@ class ProductSearchModel extends ProductModel
             'base_quantity' => $this->base_quantity,
             'sales' => $this->sales,
             'views' => $this->views,
-            'seo_id' => $this->seo_id,
+//            'seo_id' => $this->seo_id,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+//            'updated_at' => $this->updated_at,
             'brand_id' => $this->brand_id,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'gallery', $this->gallery])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'slug', $this->slug]);
+//            ->andFilterWhere(['like', 'gallery', $this->gallery])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }
