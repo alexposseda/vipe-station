@@ -208,6 +208,7 @@
         }
 
         public function actionAbout(){
+            $aboutUs =
             return $this->render('about');
         }
     }
