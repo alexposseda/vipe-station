@@ -131,6 +131,10 @@
             ]);
         }
 
+        public function actionShippingPayment(){
+            return $this->render('sipping-payment');
+        }
+
         /**
          * Logs in a user.
          *
