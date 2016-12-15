@@ -21,13 +21,11 @@
 
             $popular = ProductModel::find()
                                    ->orderBy(['sales' => SORT_DESC])
-                                   ->limit(10)
-                                   ->all();
+                                   ->limit(10);
 
             $newest = ProductModel::find()
                                   ->orderBy(['created_at' => SORT_DESC])
-                                  ->limit(10)
-                                  ->all();
+                                  ->limit(10);
 
             return $this->render('catalog', ['popular' => $popular, 'newest' => $newest]);
         }

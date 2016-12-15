@@ -6,6 +6,7 @@
     use yii\alexposseda\fileManager\FileManager;
     use yii\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\ListView;
 
     CatalogAsset::register($this);
 ?>
@@ -17,39 +18,14 @@
     <div class="content">
         <div class="catalog-background">
             <div class="catalog-wrap-content product-carousel">
-                <?php foreach($popular as $product): ?>
-                <div class="wrap-overflow product">
-                    <div class="wrap-items">
-                        <div class="wrap-items-first-section left center-align">
-                            <div class="product-img">
-                                <img src="<?= FileManager::getInstance()
-                                                         ->getStorageUrl().$product->cover ?>">
-                            </div>
-                            <div class="wrap-text-block">
-                                <div class="product-title fs20 fc-orange"><?= Html::encode($product->title) ?></div>
-                                <div class="product-brand fs15 fc-dark-brown"><?= Html::encode($product->brand->title) ?></div>
-                                <div class="product-price fs20 fc-light-brown"><?= $product->base_price.' '.Yii::t('models/product', 'UAH') ?></div>
-                            </div>
-
-                        </div>
-                        <div class="wrap-items-second-section left">
-                            <div class="product-title">
-                                <a href="<?= Url::to(['shop/product', 'id' => $product->id]) ?>"
-                                   class="fs20 fc-orange"><?= Html::encode($product->title) ?></a></div>
-                            <div class="product-price">
-                                <span class="right fs20 fc-light-brown"><?= $product->base_price.' '.Yii::t('models/product', 'UAH') ?></span>
-                                <div class="clearfix"></div>
-                            </div>
-
-                            <div class="product-description fs15 fc-dark-brown"><p><?= Html::encode($product->description) ?></p></div>
-                            <div class="btn-buy center-align fs15 fc">
-                                <button data-target="buyproduct" class="modal-trigger"><?=Yii::t('models/product','Buy')?></button>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-                <?php endforeach; ?>
+                <?= ListView::widget([
+                                         'dataProvider' => $popular,
+                                         'itemView'     => '_catalog_item',
+                                         'itemOptions'  => ['class' => 'wrap-overflow product'],
+                                         'options'      => ['class' => 'content products-wrapper-isotope valign'],
+                                         'layout'       => "{items}",
+//                                         'summary'      => '<div class="count-page fs25">{page} / {pageCount}</div>',
+                                     ]) ?>
             </div>
             <div class="clear"></div>
         </div>

@@ -12,15 +12,6 @@
     $sorting = Yii::$app->request->get('sort');
 ?>
 <div class="col s12 page-main ">
-    <ul class="sort sub-title white-text">
-        <li class="border-r">
-            <a href="">Сортировать по</a>
-        </li>
-        <li><a href="<?= Url::to(['catalog-all', 'sort' => isset($sorting) ? '-created_at' : 'created_at']) ?>">Новинкам</a></li>
-        <li><a href="<?= Url::to(['catalog-all', 'sort' => isset($sorting) ? '-sales' : 'sales']) ?>">Популярности</a></li>
-        <li><a href="<?= Url::to(['catalog-all', 'sort' => isset($sorting) ? '-stock' : 'stock']) ?>">Скидкам</a></li>
-        <li><a href="<?= Url::to(['catalog-all', 'sort' => isset($sorting) ? '-base_price' : 'base_price']) ?>">Цене</a></li>
-    </ul>
     <div class="page-device-modal valign-wrapper hide">
         <div class="img-wrap-device valign">
             <img src="../images/catalog1.png" alt="" class="modalImage">
@@ -72,8 +63,8 @@
                              'dataProvider' => $catalog,
                              'itemView'     => '_catalog_item',
                              'itemOptions'  => ['class' => 'wrap-overflow product'],
-                             'options'      => ['class' => 'content products-wrapper-isotope valign'],
-                             'layout'       => "{items}\n{summary}",
+                             'layout'       => "<div class='sort-wraper sub-title white-text'><span class='sorted-by border-r'>".Yii::t('models/product','Sort by')."</span>{sorter}</div>\n<div class='content products-wrapper-isotope valign'>{items}</div>\n{summary}",
+                             'sorter'       => ['options' => ['class'=>'sort ']],
                              'summary'      => '<div class="count-page fs25">{page} / {pageCount}</div>',
                          ]) ?>
 </div>

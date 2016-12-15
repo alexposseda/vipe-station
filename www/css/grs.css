@@ -1822,3 +1822,12 @@ main .page-main {
 
 .irs-grid-text {
   color: #99a4ac; }
+
+.sort-wraper{
+  display: inline-block;
+  width: auto;
+  margin: 79.25px;
+}
+.sorted-by{
+  display: inline-block;
+}
