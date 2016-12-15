@@ -5,5 +5,6 @@
         'Sorry, I can not save the brand data'    => 'Извините, не возможно сохранить данные бренда',
         'Sorry, I can not save the seo data'      => 'Извините, не возможно сохранить данные SEO',
         'Sorry, I can not save the language data' => 'Извините, не возможно сохранить языковые данные',
-        'The requested page does not exist.'      => 'Данная страница не существует.'
+        'The requested page does not exist.'      => 'Данная страница не существует.',
+        'Sorry, information is not available'     => 'Извените, информация временно отсутствует'
     ];
