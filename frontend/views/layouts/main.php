@@ -173,10 +173,10 @@
                                                 class="material-icons large">menu</i></a>
                                 </li>
                                 <li class="col s10 m10 l12 left-align page-title">
-                                    <a href="<?= Url::to(['site/shipping-payment']) ?>" class="fc-orange fs20"><?= Yii::t('system/view',
+                                    <a href="<?= Url::to(['site/shipping-payment']) ?>" class="fc-orange fs20"><?= Yii::t('shop/setting',
                                                                                                                           'Shipping and payment') ?></a>
                                     <a href="<?= Url::home() ?>" class="border-l back hide-on-small-and-down"><span
-                                                class="white-text fs15"><?= Yii::t('system/view', 'In Shop') ?></span></a>
+                                                class="white-text fs15"><?= Yii::t('shop/setting', 'In Shop') ?></span></a>
                                 </li>
                             </ul>
                         </li>
@@ -196,10 +196,10 @@
             </li>
             <li class="menu">
                 <ul class="col 112 nav-menu fs25 center-align">
-                    <li><a href="<?= Url::to(['site/about']) ?>"><?= Yii::t('system/view', 'About as') ?></a></li>
+                    <li><a href="<?= Url::to(['site/about']) ?>"><?= Yii::t('shop/setting', 'About as') ?></a></li>
                     <li><a href="<?= Url::to(['shop/catalog']) ?>"><?= Yii::t('system/view', 'Catalog') ?></a></li>
-                    <li><a href="<?= Url::to(['site/shipping-payment']) ?>"><?= Yii::t('system/view', 'Shipping and payment') ?></a></li>
-                    <li><a href="<?= Url::to(['site/shops']) ?>"><?= Yii::t('system/view', 'All Shop`s') ?></a></li>
+                    <li><a href="<?= Url::to(['site/shipping-payment']) ?>"><?= Yii::t('shop/setting', 'Shipping and payment') ?></a></li>
+                    <li><a href="<?= Url::to(['site/shops']) ?>"><?= Yii::t('shop/setting', 'All Shop`s') ?></a></li>
                     <li>
                         <hr>
                     </li>
@@ -247,6 +247,39 @@
 <main class="">
     <?= $content ?>
 </main>
+<!-- Modal Structure -->
+<div id="buyproduct" class="modal popup-bottom popup-fixed-footer">
+    <div class="modal-content">
+        <h4>Заполните форму</h4>
+        <div class="">
+            <form id="buy">
+                <div class="input-field col s12">
+                    <input id="buy_name" placeholder="Placeholder" type="text"
+                           class="validate input-form">
+                    <label for="buy_name" class="label-form">Имя</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="buy_email" placeholder="Placeholder" type="text"
+                           class="validate input-form">
+                    <label for="buy_email" class="label-form">Email</label>
+                </div>
+                <div id="buy_phone" class="input-field col s12">
+                    <input placeholder="Placeholder" type="text"
+                           class="validate input-form">
+                    <label for="buy_phone" class="label-form">Телефон</label>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" style="padding: 4px 24px;">
+        <div class="col s12">
+            <div class="btn-buy right">
+                <button type="submit" form="buy">Отправить</button>
+            </div>
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat left">Отмена</a>
+        </div>
+    </div>
+</div>
 <?php $this->endBody() ?>
 </body>
 </html>
