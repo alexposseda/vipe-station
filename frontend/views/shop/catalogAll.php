@@ -3,13 +3,13 @@
      * @var $this    \yii\web\View
      * @var $catalog \yii\data\ActiveDataProvider
      */
-    use yii\alexposseda\fileManager\FileManager;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+    use common\models\ProductCharacteristicItemModel;
+    use common\models\ProductInCategoryModel;
+    use common\models\ProductInStockModel;
+    use common\models\ProductModel;
+    use yii\caching\ChainedDependency;
     use yii\widgets\ListView;
-    use yii\widgets\Pjax;
 
-    $sorting = Yii::$app->request->get('sort');
 ?>
 <div class="col s12 page-main ">
     <div class="page-device-modal valign-wrapper hide">
@@ -59,12 +59,28 @@
 
         </div>
     </div>
-    <?= ListView::widget([
-                             'dataProvider' => $catalog,
-                             'itemView'     => '_catalog_item',
-                             'itemOptions'  => ['class' => 'wrap-overflow product'],
-                             'layout'       => "<div class='sort-wraper sub-title white-text'><span class='sorted-by border-r'>".Yii::t('models/product','Sort by')."</span>{sorter}</div>\n<div class='content products-wrapper-isotope valign'>{items}</div>\n{summary}",
-                             'sorter'       => ['options' => ['class'=>'sort ']],
-                             'summary'      => '<div class="count-page fs25">{page} / {pageCount}</div>',
-                         ]) ?>
+    <?php $dependency = [
+        'class'        => ChainedDependency::className(),
+        'dependencies' => [
+            new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductModel::tableName()]),
+            new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInCategoryModel::tableName()]),
+            new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInStockModel::tableName()]),
+            new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductCharacteristicItemModel::tableName()]),
+        ]
+
+    ];
+        if($this->beginCache('brandCache', ['duration' => 3600, 'dependency' => $dependency])):
+            ?>
+            <?= ListView::widget([
+                                     'dataProvider' => $catalog,
+                                     'itemView'     => '_catalog_item',
+                                     'itemOptions'  => ['class' => 'wrap-overflow product'],
+                                     'layout'       => "<div class='sort-wraper sub-title white-text'><span class='sorted-by border-r'>".Yii::t('models/product',
+                                                                                                                                                'Sort by')."</span>{sorter}</div>\n<div class='content products-wrapper-isotope valign'>{items}</div>\n{summary}",
+                                     'sorter'       => ['options' => ['class' => 'sort ']],
+                                     'summary'      => '<div class="count-page fs25">{page} / {pageCount}</div>',
+                                 ]) ?>
+
+            <?php $this->endCache();
+        endif; ?>
 </div>
