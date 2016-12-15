@@ -238,16 +238,8 @@
             </li>
             <li>
                 <div class="row">
-                    <div class="col s12 m12 l12 center-align">
-                        <?php
-                            $socialSetting = ShopSettingTable::getSettingValue('social');
-                            $socialSetting = (is_null($socialSetting)) ? [] : json_decode($socialSetting);
-                            foreach($socialSetting as $social):?>
-                                <img src="<?= FileManager::getInstance()
-                                                         ->getStorageUrl().$social->img ?>" alt="<?= $social->name ?>">
-                            <?php endforeach; ?>
-                    </div>
-                </div>
+                    <?=$this->render('social')?>
+                </div><!--Social Link-->
             </li>
         </ul>
     </div>
