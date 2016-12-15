@@ -69,7 +69,7 @@
         ]
 
     ];
-        if($this->beginCache('brandCache', ['duration' => 3600, 'dependency' => $dependency])):
+        if($this->beginCache('brandCache', ['duration' => 0, 'dependency' => $dependency])):
             ?>
             <?= ListView::widget([
                                      'dataProvider' => $catalog,
