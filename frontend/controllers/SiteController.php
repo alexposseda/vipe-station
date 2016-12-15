@@ -113,21 +113,20 @@
 
             $address_setting = ShopSettingTable::getSetting('address');
             $val = json_decode($address_setting->value);
+            $listAddress = [];
             if(!empty($val)){
                 $_count = count($val);
-                for($i = 0; $i < $this->_count; $i++){
-                    $address[$i] = $val[$i]->address;
-                    $schedule[$i] = $val[$i]->schedule;
-                    $phones[$i] = $val[$i]->phones;
-                    $baseAddress[$i] = $val[$i]->baseAddress;
-                    $centerMap[$i] = $val[$i]->centerMap;
+                for($i = 0; $i < $_count; $i++){
+                    $listAddress[$i]['address'] = $val[$i]->address;
+                    $listAddress[$i]['schedule'] = $val[$i]->schedule;
+                    $listAddress[$i]['phones'] = $val[$i]->phones;
+                    $listAddress[$i]['baseAddress'] = $val[$i]->baseAddress;
+                    $listAddress[$i]['centerMap'] = $val[$i]->centerMap;
                 }
             }
 
-
-
-
             return $this->render('about',[
+                'listAddress' => $listAddress,
                 'aboutUs' => $aboutUs
             ]);
         }
