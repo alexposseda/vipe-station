@@ -19,7 +19,6 @@
     </div>
     <div class="content">
         <div class="catalog-background">
-            <div class="catalog-wrap-content product-carousel">
                 <?php $dependency = [
                     'class'        => ChainedDependency::className(),
                     'dependencies' => [
@@ -39,8 +38,6 @@
                                              ]) ?>
                         <?php $this->endCache();
                     endif; ?>
-            </div>
-            <div class="clear"></div>
         </div>
     </div>
     <div class="sub-title">
@@ -48,7 +45,6 @@
     </div>
     <div class="content">
         <div class="catalog-background">
-            <div class="catalog-wrap-content brand-carousel">
                 <?php $dependency = [
                     'class'        => ChainedDependency::className(),
                     'dependencies' => [
@@ -63,13 +59,11 @@
                         <?= ListView::widget([
                                                  'dataProvider' => $newest,
                                                  'itemView'     => '_catalog_item',
-                                                 'itemOptions'  => ['class' => 'wrap-overflow product'],
-                                                 'layout'       => "<div class='catalog-wrap-content product-carousel'>{items}<div class='clear'></div></div>",
+                                                 'itemOptions'  => ['class' => 'wrap-overflow brand'],
+                                                 'layout'       => "<div class='catalog-wrap-content brand-carousel'>{items}<div class='clear'></div></div>",
                                              ]) ?>
                         <?php $this->endCache();
                     endif; ?>
-            </div>
-            <div class="clear"></div>
         </div>
     </div>
 </div>
