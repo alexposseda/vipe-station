@@ -66,6 +66,10 @@
                             'url'   => ['setting-shop/index']
                         ],
                         [
+                            'label' => Yii::t('system/view', 'Address Setting'),
+                            'url'   => ['setting-shop/address-setting']
+                        ],
+                        [
                             'label' => Yii::t('system/view', 'Users'),
                             'url'   => ['/user/index']
                         ],

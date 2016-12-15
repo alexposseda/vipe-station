@@ -1,6 +1,6 @@
 <?php
 
-    namespace backend\models;
+    namespace backend\models\forms;
 
     use yii\alexposseda\fileManager\FileManager;
     use yii\base\Model;
