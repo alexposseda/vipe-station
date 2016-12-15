@@ -35,4 +35,5 @@
         'Delivery'        => 'Доставка',
         'Payment'         => 'Способ оплаты',
         'Brands'          => 'Бренды',
+        'Address Setting' => 'Адреса'
     ];

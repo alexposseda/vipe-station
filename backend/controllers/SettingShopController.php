@@ -4,12 +4,12 @@
 
     use backend\models\AddressSettingModel;
     use backend\models\DeliverPayModel;
-    use backend\models\MainSettingShopModel;
-    use backend\models\ShopSettingForm;
-    use backend\models\SocialItemForm;
-    use backend\models\SocialModel;
+    use backend\models\forms\AboutUsForm;
+    use backend\models\forms\BannerForm;
+    use backend\models\forms\ShopSettingForm;
+    use backend\models\forms\SocialItemForm;
+    use backend\models\forms\SocialModel;
     use backend\models\UploadCover;
-    use common\models\ShopSettingTable;
     use Yii;
     use yii\alexposseda\fileManager\actions\RemoveAction;
     use yii\alexposseda\fileManager\actions\UploadAction;
@@ -80,6 +80,9 @@
         public function actionIndex(){
             $shopSettingModel = new ShopSettingForm();
             $socialSettingModel = new SocialModel();
+            $bannerModel = new BannerForm();
+            $aboutUsModel = new AboutUsForm();
+
             if(empty($socialSettingModel->socialForms)){
                 $socialSettingModel->socialForms[] = new SocialItemForm();
             }
@@ -95,6 +98,12 @@
                     case 'socialSetting':
                         $model = $socialSettingModel;
                         break;
+                    case 'bannerSetting':
+                        $model = $bannerModel;
+                        break;
+                    case 'aboutSetting':
+                        $model = $aboutUsModel;
+                        break;
                 }
                 if(!is_null($model)){
                     if($model->load(Yii::$app->request->post()) && $model->validate()){
@@ -105,7 +114,9 @@
 
             return $this->render('index', [
                 'shopSettingModel'   => $shopSettingModel,
-                'socialSettingModel' => $socialSettingModel
+                'socialSettingModel' => $socialSettingModel,
+                'bannerModel'        => $bannerModel,
+                'aboutUsModel'        => $aboutUsModel,
             ]);
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-    namespace backend\models;
+    namespace backend\models\forms;
 
     use common\models\ShopSettingTable;
     use yii\base\Model;
