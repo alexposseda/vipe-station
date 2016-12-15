@@ -39,5 +39,5 @@
         'Shipping and payment' => 'Доставка и оплата',
         'In Shop'              => 'В магазин',
         'About as'             => 'О нас',
-        'All Shop`s'=>'Наши магазины',
+        'All Shop`s'           => 'Наши магазины',
     ];

@@ -6,18 +6,20 @@
     use yii\alexposseda\fileManager\FileManager;
     use yii\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\ListView;
+    use yii\widgets\Pjax;
 
+    $sorting = Yii::$app->request->get('sort');
 ?>
-
 <div class="col s12 page-main ">
     <ul class="sort sub-title white-text">
         <li class="border-r">
             <a href="">Сортировать по</a>
         </li>
-        <li><a href="<?= Url::to(['catalog', 'sort' => 'created_at']) ?>">Новинкам</a></li>
-        <li><a href="<?= Url::to(['catalog', 'sort' => 'sales']) ?>">Популярности</a></li>
-        <li><a href="<?= Url::to(['catalog', 'sort' => 'stock']) ?>">Скидкам</a></li>
-        <li><a href="<?= Url::to(['catalog', 'sort' => 'base_price']) ?>">Цене</a></li>
+        <li><a href="<?= Url::to(['catalog-all', 'sort' => isset($sorting) ? '-created_at' : 'created_at']) ?>">Новинкам</a></li>
+        <li><a href="<?= Url::to(['catalog-all', 'sort' => isset($sorting) ? '-sales' : 'sales']) ?>">Популярности</a></li>
+        <li><a href="<?= Url::to(['catalog-all', 'sort' => isset($sorting) ? '-stock' : 'stock']) ?>">Скидкам</a></li>
+        <li><a href="<?= Url::to(['catalog-all', 'sort' => isset($sorting) ? '-base_price' : 'base_price']) ?>">Цене</a></li>
     </ul>
     <div class="page-device-modal valign-wrapper hide">
         <div class="img-wrap-device valign">
@@ -66,48 +68,12 @@
 
         </div>
     </div>
-
-    <div class="content products-wrapper-isotope valign">
-        <?php foreach($catalog->models as $product): ?>
-            <div class="wrap-overflow product">
-                <div class="wrap-items">
-                    <div class="wrap-items-first-section left center-align">
-                        <div class="product-img">
-                            <img src="<?= FileManager::getInstance()
-                                                     ->getStorageUrl().$product->cover ?>">
-                        </div>
-                        <div class="wrap-text-block">
-                            <div class="product-title fs20 fc-orange"><?= Html::encode($product->title) ?></div>
-                            <div class="product-brand fs15 fc-dark-brown"><?= Html::encode($product->brand->title) ?></div>
-                            <div class="product-price fs20 fc-light-brown"><?= $product->base_price.' '.Yii::t('models/cart', 'UAH') ?></div>
-                        </div>
-
-                    </div>
-                    <div class="wrap-items-second-section left">
-                        <div class="product-title">
-                            <a href="<?= Url::to(['shop/product', 'id' => $product->id]) ?>"
-                               class="fs20 fc-orange"><?= Html::encode($product->title) ?></a></div>
-                        <div class="product-price">
-                            <span class="right fs20 fc-light-brown"><?= $product->base_price.' '.Yii::t('models/cart', 'UAH') ?></span>
-                            <div class="clearfix"></div>
-                        </div>
-
-                        <div class="product-description fs15 fc-dark-brown"><p><?= Html::encode($product->description) ?></p></div>
-                        <div class="btn-buy center-align fs15 fc">
-                            <button data-target="buyproduct" class="modal-trigger">Купить</button>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-
-    <div class="count-page fs25">
-        <span><?= $catalog->pagination->page ? $catalog->pagination->page : 1 ?> / </span>
-        <span><?= $catalog->pagination->pageCount ?></span>
-        <div></div>
-    </div>
-    <!--</div>-->
+    <?= ListView::widget([
+                             'dataProvider' => $catalog,
+                             'itemView'     => '_catalog_item',
+                             'itemOptions'  => ['class' => 'wrap-overflow product'],
+                             'options'      => ['class' => 'content products-wrapper-isotope valign'],
+                             'layout'       => "{items}\n{summary}",
+                             'summary'      => '<div class="count-page fs25">{page} / {pageCount}</div>',
+                         ]) ?>
 </div>
-

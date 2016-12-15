@@ -12,6 +12,7 @@
         public function actionCatalogAll(){
             $catalogSearch = new ProductSearchModel();
             $catalog = $catalogSearch->search(Yii::$app->request->queryParams);
+            $catalog->pagination->pageSize = 8;
 
             return $this->render('catalogAll', ['catalog' => $catalog]);
         }
@@ -20,12 +21,12 @@
 
             $popular = ProductModel::find()
                                    ->orderBy(['sales' => SORT_DESC])
-                                   ->limit(4)
+                                   ->limit(10)
                                    ->all();
 
             $newest = ProductModel::find()
                                   ->orderBy(['created_at' => SORT_DESC])
-                                  ->limit(4)
+                                  ->limit(10)
                                   ->all();
 
             return $this->render('catalog', ['popular' => $popular, 'newest' => $newest]);
