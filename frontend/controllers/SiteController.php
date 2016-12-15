@@ -34,7 +34,7 @@
                     ],
                     'rules' => [
                         [
-                            'actions' => ['signup'],
+                            'actions' => ['signup','send-mail'],
                             'allow'   => true,
                             'roles'   => ['?'],
                         ],
@@ -53,6 +53,7 @@
                 ],
             ];
         }
+
 
         /**
          * @inheritdoc

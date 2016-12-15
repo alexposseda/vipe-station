@@ -254,17 +254,17 @@
         <div class="">
             <form id="buy">
                 <div class="input-field col s12">
-                    <input id="buy_name" placeholder="Placeholder" type="text"
+                    <input id="buy_name" name="buy_name" placeholder="Placeholder" type="text"
                            class="validate input-form">
                     <label for="buy_name" class="label-form">Имя</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="buy_email" placeholder="Placeholder" type="text"
+                    <input id="buy_email" name="buy_email" placeholder="Placeholder" type="text"
                            class="validate input-form">
                     <label for="buy_email" class="label-form">Email</label>
                 </div>
-                <div id="buy_phone" class="input-field col s12">
-                    <input placeholder="Placeholder" type="text"
+                <div id="buy_phone"  class="input-field col s12">
+                    <input placeholder="Placeholder" name="buy_phone" type="text"
                            class="validate input-form">
                     <label for="buy_phone" class="label-form">Телефон</label>
                 </div>
