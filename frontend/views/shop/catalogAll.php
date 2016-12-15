@@ -3,22 +3,15 @@
      * @var $this    \yii\web\View
      * @var $catalog \yii\data\ActiveDataProvider
      */
-    use yii\alexposseda\fileManager\FileManager;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+    use common\models\ProductCharacteristicItemModel;
+    use common\models\ProductInCategoryModel;
+    use common\models\ProductInStockModel;
+    use common\models\ProductModel;
+    use yii\caching\ChainedDependency;
+    use yii\widgets\ListView;
 
 ?>
-
 <div class="col s12 page-main ">
-    <ul class="sort sub-title white-text">
-        <li class="border-r">
-            <a href="">Сортировать по</a>
-        </li>
-        <li><a href="<?= Url::to(['catalog', 'sort' => 'created_at']) ?>">Новинкам</a></li>
-        <li><a href="<?= Url::to(['catalog', 'sort' => 'sales']) ?>">Популярности</a></li>
-        <li><a href="<?= Url::to(['catalog', 'sort' => 'stock']) ?>">Скидкам</a></li>
-        <li><a href="<?= Url::to(['catalog', 'sort' => 'base_price']) ?>">Цене</a></li>
-    </ul>
     <div class="page-device-modal valign-wrapper hide">
         <div class="img-wrap-device valign">
             <img src="../images/catalog1.png" alt="" class="modalImage">
@@ -66,48 +59,28 @@
 
         </div>
     </div>
+    <?php $dependency = [
+        'class'        => ChainedDependency::className(),
+        'dependencies' => [
+            new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductModel::tableName()]),
+            new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInCategoryModel::tableName()]),
+            new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInStockModel::tableName()]),
+            new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductCharacteristicItemModel::tableName()]),
+        ]
 
-    <div class="content products-wrapper-isotope valign">
-        <?php foreach($catalog->models as $product): ?>
-            <div class="wrap-overflow product">
-                <div class="wrap-items">
-                    <div class="wrap-items-first-section left center-align">
-                        <div class="product-img">
-                            <img src="<?= FileManager::getInstance()
-                                                     ->getStorageUrl().$product->cover ?>">
-                        </div>
-                        <div class="wrap-text-block">
-                            <div class="product-title fs20 fc-orange"><?= Html::encode($product->title) ?></div>
-                            <div class="product-brand fs15 fc-dark-brown"><?= Html::encode($product->brand->title) ?></div>
-                            <div class="product-price fs20 fc-light-brown"><?= $product->base_price.' '.Yii::t('models/cart', 'UAH') ?></div>
-                        </div>
+    ];
+        if($this->beginCache('brandCache', ['duration' => 0, 'dependency' => $dependency])):
+            ?>
+            <?= ListView::widget([
+                                     'dataProvider' => $catalog,
+                                     'itemView'     => '_catalog_item',
+                                     'itemOptions'  => ['class' => 'wrap-overflow product'],
+                                     'layout'       => "<div class='sort-wraper sub-title white-text'><span class='sorted-by border-r'>".Yii::t('models/product',
+                                                                                                                                                'Sort by')."</span>{sorter}</div>\n<div class='content products-wrapper-isotope valign'>{items}</div>\n{summary}",
+                                     'sorter'       => ['options' => ['class' => 'sort ']],
+                                     'summary'      => '<div class="count-page fs25">{page} / {pageCount}</div>',
+                                 ]) ?>
 
-                    </div>
-                    <div class="wrap-items-second-section left">
-                        <div class="product-title">
-                            <a href="<?= Url::to(['shop/product', 'id' => $product->id]) ?>"
-                               class="fs20 fc-orange"><?= Html::encode($product->title) ?></a></div>
-                        <div class="product-price">
-                            <span class="right fs20 fc-light-brown"><?= $product->base_price.' '.Yii::t('models/cart', 'UAH') ?></span>
-                            <div class="clearfix"></div>
-                        </div>
-
-                        <div class="product-description fs15 fc-dark-brown"><p><?= Html::encode($product->description) ?></p></div>
-                        <div class="btn-buy center-align fs15 fc">
-                            <button data-target="buyproduct" class="modal-trigger">Купить</button>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-
-    <div class="count-page fs25">
-        <span><?= $catalog->pagination->page ? $catalog->pagination->page : 1 ?> / </span>
-        <span><?= $catalog->pagination->pageCount ?></span>
-        <div></div>
-    </div>
-    <!--</div>-->
+            <?php $this->endCache();
+        endif; ?>
 </div>
-

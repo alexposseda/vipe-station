@@ -6,6 +6,7 @@
 
     class CatalogAsset extends AssetBundle{
         public $js       = [
+            'js/slick.js',
             'js/catalog_slick.js'
         ];
         public $depends  = [

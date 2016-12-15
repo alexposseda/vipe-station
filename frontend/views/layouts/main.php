@@ -247,6 +247,39 @@
 <main class="">
     <?= $content ?>
 </main>
+<!-- Modal Structure -->
+<div id="buyproduct" class="modal popup-bottom popup-fixed-footer">
+    <div class="modal-content">
+        <h4>Заполните форму</h4>
+        <div class="">
+            <form id="buy">
+                <div class="input-field col s12">
+                    <input id="buy_name" name="buy_name" placeholder="Placeholder" type="text"
+                           class="validate input-form">
+                    <label for="buy_name" class="label-form">Имя</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="buy_email" name="buy_email" placeholder="Placeholder" type="text"
+                           class="validate input-form">
+                    <label for="buy_email" class="label-form">Email</label>
+                </div>
+                <div id="buy_phone"  class="input-field col s12">
+                    <input placeholder="Placeholder" name="buy_phone" type="text"
+                           class="validate input-form">
+                    <label for="buy_phone" class="label-form">Телефон</label>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" style="padding: 4px 24px;">
+        <div class="col s12">
+            <div class="btn-buy right">
+                <button type="submit" form="buy">Отправить</button>
+            </div>
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat left">Отмена</a>
+        </div>
+    </div>
+</div>
 <?php $this->endBody() ?>
 </body>
 </html>
