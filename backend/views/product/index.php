@@ -13,18 +13,23 @@
 ?>
 <div class="product-model-index">
 
+
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a(Yii::t('system/view', 'Create').' '.Yii::t('models', 'Product'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= ListView::widget([
-                             'dataProvider' => $dataProvider,
-                             'itemOptions'  => ['class' => 'item'],
-                             'itemView'     => '_itemProduct',
-                         ]) ?>
-    <?php Pjax::end(); ?>
+    <div class="row">
+        <div class="col-md-12 col-lg-3">
+            <p>
+                <?= Html::a(Yii::t('system/view', 'Create').' '.Yii::t('models', 'Product'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= $this->render('_search', ['model' => $searchModel]); ?>
+            </p>
+        </div>
+        <div class="col-md-12 col-lg-9">
+            <?= ListView::widget([
+                                     'dataProvider' => $dataProvider,
+                                     'itemOptions'  => ['class' => 'item'],
+                                     'itemView'     => '_itemProduct',
+                                 ]) ?>
+            <?php Pjax::end(); ?>
+        </div>
+    </div>
 </div>

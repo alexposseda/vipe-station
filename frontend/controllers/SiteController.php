@@ -8,6 +8,7 @@
     use common\models\forms\ResetPasswordForm;
     use common\models\forms\SignupForm;
     use common\models\search\BrandSearchModel;
+    use common\models\ShopSettingTable;
     use Yii;
     use yii\base\InvalidParamException;
     use yii\web\BadRequestHttpException;
@@ -27,7 +28,10 @@
             return [
                 'access' => [
                     'class' => AccessControl::className(),
-                    'only'  => ['logout', 'signup'],
+                    'only'  => [
+                        'logout',
+                        'signup'
+                    ],
                     'rules' => [
                         [
                             'actions' => ['signup'],
@@ -85,7 +89,46 @@
          * @return mixed
          */
         public function actionIndex(){
-            return $this->render('index');
+
+            $bannerTitle = ShopSettingTable::getSettingValue('bannerTitle');
+            if(is_null($bannerTitle))
+                $bannerTitle =  'Lorem ipsum dolor sit amet, consectetur adipisicing elit';
+            $tmp = strrpos($bannerTitle, ",");
+            if($tmp !== false){
+                $bannerTitle = substr($bannerTitle, 0, $tmp + 1)."<br> ".substr($bannerTitle, $tmp + 1);
+            }
+
+            $bannerFile = ShopSettingTable::getSettingValue('bannerFile');
+
+            return $this->render('index', [
+                'bannerTitle' => $bannerTitle,
+                'bannerFile'  => $bannerFile
+            ]);
+        }
+
+        public function actionAbout(){
+            $aboutUs = ShopSettingTable::getSettingValue('aboutUs');
+            if(is_null($aboutUs))
+                $aboutUs = Yii::t('system/error', 'Sorry, Information is not available');
+
+            $address_setting = ShopSettingTable::getSetting('address');
+            $val = json_decode($address_setting->value);
+            $listAddress = [];
+            if(!empty($val)){
+                $_count = count($val);
+                for($i = 0; $i < $_count; $i++){
+                    $listAddress[$i]['address'] = $val[$i]->address;
+                    $listAddress[$i]['schedule'] = $val[$i]->schedule;
+                    $listAddress[$i]['phones'] = $val[$i]->phones;
+                    $listAddress[$i]['baseAddress'] = $val[$i]->baseAddress;
+                    $listAddress[$i]['centerMap'] = $val[$i]->centerMap;
+                }
+            }
+
+            return $this->render('about',[
+                'listAddress' => $listAddress,
+                'aboutUs' => $aboutUs
+            ]);
         }
 
         /**
@@ -188,4 +231,6 @@
                 'model' => $model,
             ]);
         }
+
+
     }

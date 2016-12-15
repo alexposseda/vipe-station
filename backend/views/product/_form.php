@@ -1,6 +1,7 @@
 <?php
 
     use backend\widgets\FileManagerWidget\FileManagerWidget;
+    use backend\widgets\LanguageWidget;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\ActiveForm;
@@ -36,13 +37,22 @@
             </div><!--Brand-->
             <div class="panel panel-default">
                 <div class="panel-body">
-
-                    <?= $form->field($model->product, 'title')
-                             ->textInput(['maxlength' => true]) ?>
-
-                    <?= $form->field($model->product, 'description')
-                             ->textarea(['rows' => 6]) ?>
-
+                    <?= LanguageWidget::widget([
+                                                   'form'       => $form,
+                                                   'model'      => $model->product,
+                                                   'attributes' => [
+                                                       [
+                                                           'name'    => 'title',
+                                                           'type'    => 'textInput',
+                                                           'options' => ['maxlength' => true]
+                                                       ],
+                                                       [
+                                                           'name'    => 'description',
+                                                           'type'    => 'textarea',
+                                                           'options' => ['rows' => 6]
+                                                       ]
+                                                   ]
+                                               ]) ?>
                     <div class="row">
                         <?= $form->field($model->product, 'base_price', ['options' => ['class' => 'col-lg-6']])
                                  ->input('number') ?>

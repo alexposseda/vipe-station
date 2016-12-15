@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\components\LangModelsBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -29,6 +30,10 @@ class CategoryLangModel extends ActiveRecord
     {
         return [
             TimestampBehavior::className(),
+            [
+                'class'      => LangModelsBehavior::class,
+                'attributes' => ['title']
+            ]
             ];
     }
 
@@ -47,8 +52,8 @@ class CategoryLangModel extends ActiveRecord
     {
         return [
             [['category_id', 'language'], 'required'],
-            [['category_id', 'language', 'created_at', 'updated_at'], 'integer'],
-            [['title'], 'string', 'max' => 255],
+            [['category_id', 'created_at', 'updated_at'], 'integer'],
+            [['title', 'language'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CategoryModel::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],
         ];

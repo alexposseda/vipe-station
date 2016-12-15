@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\components\LanguageBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -29,7 +30,15 @@ class ProductCharacteristicModel extends ActiveRecord
     {
         return [
             TimestampBehavior::className(),
-            ];
+            [
+                'class'             => LanguageBehavior::className(),
+                'langModelName'     => ProductCharacteristicLangModel::className(),
+                'relationFieldName' => 'product_characteristic_id',
+                't_category'        => 'models/characteristic',
+                'attributes'        => [
+                    'title',
+                ],
+            ],];
     }
 
     /**

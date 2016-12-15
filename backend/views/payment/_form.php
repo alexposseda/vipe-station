@@ -1,27 +1,49 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+    use backend\widgets\LanguageWidget;
+    use yii\helpers\Html;
+    use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\PaymentModel */
-/* @var $form yii\widgets\ActiveForm */
+    /**
+     * @var $this  yii\web\View
+     * @var $model common\models\PaymentModel
+     * @var $form  yii\widgets\ActiveForm
+     */
+
 ?>
 
 <div class="payment-model-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+    <div class="row">
+        <div class="col-sm-12 col-md-9 col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <?= LanguageWidget::widget([
+                                                   'form'       => $form,
+                                                   'model'      => $model,
+                                                   'attributes' => [
+                                                       [
+                                                           'name'    => 'name',
+                                                           'type'    => 'textInput',
+                                                           'options' => ['maxlength' => true]
+                                                       ],
+                                                       [
+                                                           'name'    => 'description',
+                                                           'type'    => 'textarea',
+                                                           'options' => ['rows' => 6]
+                                                       ]
+                                                   ]
+                                               ]) ?>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view','Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),
+                               ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

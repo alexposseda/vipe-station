@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\components\LangModelsBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -30,6 +31,10 @@ class PaymentLangModel extends ActiveRecord
     {
         return [
             TimestampBehavior::className(),
+            [
+                'class'      => LangModelsBehavior::class,
+                'attributes' => ['description', 'name']
+            ]
             ];
     }
 
@@ -48,8 +53,8 @@ class PaymentLangModel extends ActiveRecord
     {
         return [
             [['payment_id', 'language'], 'required'],
-            [['payment_id', 'language', 'created_at', 'updated_at'], 'integer'],
-            [['description'], 'string'],
+            [['payment_id', 'created_at', 'updated_at'], 'integer'],
+            [['description', 'language'], 'string'],
             [['name'], 'string', 'max' => 255],
             [['language'], 'exist', 'skipOnError' => true, 'targetClass' => LanguageModel::className(), 'targetAttribute' => ['language' => 'code']],
             [['payment_id'], 'exist', 'skipOnError' => true, 'targetClass' => PaymentModel::className(), 'targetAttribute' => ['payment_id' => 'id']],

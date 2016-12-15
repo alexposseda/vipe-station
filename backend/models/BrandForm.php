@@ -38,7 +38,7 @@
                 return true;
             }catch(Exception $e){
                 $transaction->rollBack();
-                Yii::$app->session->setFlash('brandFormError', $e->getMessage());
+                Yii::$app->session->setFlash('error', $e->getMessage());
                 return false;
             }
         }

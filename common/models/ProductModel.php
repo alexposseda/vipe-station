@@ -2,6 +2,7 @@
 
     namespace common\models;
 
+    use common\components\LanguageBehavior;
     use Yii;
     use yii\behaviors\SluggableBehavior;
     use yii\behaviors\TimestampBehavior;
@@ -33,6 +34,8 @@
      * @property ProductInStockModel[]            $productInStocks
      * @property StockModel[]                     $stocks
      * @property ProductOptionModel[]             $productOptions
+     *
+     * @property string                           $cover
      */
     class ProductModel extends ActiveRecord{
 
@@ -47,6 +50,16 @@
                     'slugAttribute' => 'slug',
                 ],
                 TimestampBehavior::className(),
+                [
+                    'class'             => LanguageBehavior::className(),
+                    'langModelName'     => ProductLangModel::className(),
+                    'relationFieldName' => 'product_id',
+                    't_category'        => 'models/product',
+                    'attributes'        => [
+                        'title',
+                        'description'
+                    ],
+                ],
             ];
         }
 
@@ -210,5 +223,9 @@
          */
         public function getProductOptions(){
             return $this->hasMany(ProductOptionModel::className(), ['product_id' => 'id']);
+        }
+
+        public function getCover(){
+            return ($this->gallery) ? json_decode($this->gallery)[0] : '';
         }
     }

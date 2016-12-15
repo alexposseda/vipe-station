@@ -138,7 +138,7 @@
             if(($model = SeoModel::findOne($id)) !== null){
                 return $model;
             }else{
-                throw new NotFoundHttpException('The requested page does not exist.');
+                throw new NotFoundHttpException(Yii::t('system/error', 'The requested page does not exist.'));
             }
         }
     }

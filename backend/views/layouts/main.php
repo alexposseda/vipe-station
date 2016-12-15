@@ -78,6 +78,10 @@
                             'url'   => ['payment/index']
                         ],
                         [
+                            'label' => Yii::t('system/view', 'Brands'),
+                            'url'   => ['brand/index']
+                        ],
+                        [
                             'label' => Yii::t('system/view', 'SEO'),
                             'url'   => ['seo/index']
                         ]
