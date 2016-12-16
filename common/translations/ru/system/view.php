@@ -3,6 +3,7 @@
         'Filter' => 'Фильтр',
         'Search' => 'Поиск',
         'Reset'  => 'Сброс',
+        'Сancel' => 'Отмена',
 
         'Create' => 'Создать',
         'Update' => 'Обновить',
@@ -13,6 +14,8 @@
         'Are you sure you want to delete this item?' => 'Вы уверены, что хотите удалить эту запись?',
         'Check the data for correctness'             => 'Проверьте данные на корректность',
         'Not set'                                    => 'Не задано',
+
+        'Fill the form' => 'Заполните форму',
 
         'Login'  => 'Вход',
         'Logout' => 'Выход',

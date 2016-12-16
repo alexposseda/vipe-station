@@ -45,7 +45,7 @@
             $dataProvider = new ActiveDataProvider([
                                                        'query'      => $query,
                                                        'pagination' => [
-                                                           'pageSize' => $params['pageSize'],
+                                                           'pageSize' => isset($params['pageSize']) ? $params['pageSize'] : 4,
                                                        ],
                                                        'sort'       => [
                                                            'attributes' => [

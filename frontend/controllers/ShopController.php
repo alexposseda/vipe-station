@@ -4,6 +4,7 @@
 
     use common\models\ProductModel;
     use common\models\search\ProductSearchModel;
+    use frontend\models\SendMailForm;
     use Yii;
     use yii\web\Controller;
 
@@ -29,4 +30,11 @@
             return $this->render('catalog', ['popular' => $popular, 'newest' => $newest]);
         }
 
+        public function actionSendMail(){
+            $model = new SendMailForm();
+            if($model->load(Yii::$app->request->post())&&$model->send()){
+
+            }
+            return $this->goBack(Yii::$app->request->post('submit'));
+        }
     }

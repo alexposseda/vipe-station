@@ -35,7 +35,7 @@
                     ],
                     'rules' => [
                         [
-                            'actions' => ['signup','send-mail'],
+                            'actions' => ['signup'],
                             'allow'   => true,
                             'roles'   => ['?'],
                         ],
@@ -64,25 +64,7 @@
                 'error'   => [
                     'class' => 'yii\web\ErrorAction',
                 ],
-                'captcha' => [
-                    'class'           => 'yii\captcha\CaptchaAction',
-                    'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-                ],
             ];
-        }
-
-        public function actionTest(){
-            $search = new BrandSearchModel();
-            $dataProvider = $search->search(Yii::$app->request->queryParams);
-
-            return $this->render('test_cache', ['dataProvider' => $dataProvider]);
-
-            //        $mailer = new Sender();
-            //        if(!$mailer->sendMail('alexposseda@gmail.com', 'test sender', 'test')){
-            //            echo '<pre>'.$mailer->getErrors()[0].'</pre>';
-            //        }else{
-            //            var_dump('Success');
-            //        }
         }
 
         /**
@@ -147,6 +129,10 @@
             ]);
         }
 
+        public function actionShops(){
+            return $this->render('shops');
+        }
+
         /**
          * Logs in a user.
          *
@@ -177,7 +163,6 @@
 
             return $this->goHome();
         }
-
 
         /**
          * Signs user up.
