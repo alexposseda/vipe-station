@@ -2,12 +2,14 @@
 /**
  * @var $this \yii\web\View
  */
+    use common\models\BrandModel;
     use common\models\ProductCharacteristicItemModel;
     use common\models\ProductInCategoryModel;
     use common\models\ProductInStockModel;
     use common\models\ProductModel;
     use frontend\assets\CatalogAsset;
     use yii\caching\ChainedDependency;
+    use yii\caching\DbDependency;
     use yii\widgets\ListView;
 
     CatalogAsset::register($this);
@@ -22,10 +24,10 @@
                 <?php $dependency = [
                     'class'        => ChainedDependency::className(),
                     'dependencies' => [
-                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductModel::tableName()]),
-                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInCategoryModel::tableName()]),
-                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInStockModel::tableName()]),
-                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductCharacteristicItemModel::tableName()]),
+                        new DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductModel::tableName()]),
+                        new DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInCategoryModel::tableName()]),
+                        new DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInStockModel::tableName()]),
+                        new DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductCharacteristicItemModel::tableName()]),
                     ]
                 ];
                     if($this->beginCache('popularCache', ['duration' => 0, 'dependency' => $dependency])):
@@ -41,24 +43,21 @@
         </div>
     </div>
     <div class="sub-title">
-        <a href="#" class="fs30 white-text title-catalog"><?=Yii::t('models/product','New goods')?></a>
+        <a href="#" class="fs30 white-text title-catalog"><?=Yii::t('models','Brands')?></a>
     </div>
     <div class="content">
         <div class="catalog-background">
                 <?php $dependency = [
                     'class'        => ChainedDependency::className(),
                     'dependencies' => [
-                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductModel::tableName()]),
-                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInCategoryModel::tableName()]),
-                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInStockModel::tableName()]),
-                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductCharacteristicItemModel::tableName()]),
+                        new DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.BrandModel::tableName()]),
                     ]
                 ];
-                    if($this->beginCache('newestCache', ['duration' => 0, 'dependency' => $dependency])):
+                    if($this->beginCache('brandCatalogCache', ['duration' => 0, 'dependency' => $dependency])):
                         ?>
                         <?= ListView::widget([
-                                                 'dataProvider' => $newest,
-                                                 'itemView'     => '_catalog_item',
+                                                 'dataProvider' => $brands,
+                                                 'itemView'     => '_brand_item',
                                                  'itemOptions'  => ['class' => 'wrap-overflow brand'],
                                                  'layout'       => "<div class='catalog-wrap-content brand-carousel'>{items}<div class='clear'></div></div>",
                                              ]) ?>
