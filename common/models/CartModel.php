@@ -97,5 +97,51 @@
             return $price;
         }
 
+        public function actionAddToCart($product_id, $options, $quantity){
+            $cart = new CartModel();
+            if(Yii::$app->user->isGuest){
 
+                $cookie_guestId = Yii::$app->request->getCookies()
+                                                    ->getValue('guest_id');
+                $session_guestId = Yii::$app->session->get('guest_id');
+                $cart->guest_id = Yii::$app->security->generateRandomString();
+                if(empty($cookie_guestId && $session_guestId)){
+                    Yii::$app->response->cookies->add(new Cookie([
+                                                                     'name'  => 'guest_id',
+                                                                     'value' => $cart->guest_id
+                                                                 ]));
+                    Yii::$app->session->set('guest_id', $cart->guest_id);
+                }else{
+                    empty($cookie_guestId) ? $cart->guest_id = $session_guestId : $cart->guest_id = $cookie_guestId;
+                }
+            }else{
+                $cart->user_id = Yii::$app->user->id;
+            }
+            $cart->product_id = $product_id;
+            $cart->options = $options;
+            $cart->quantity = $quantity;
+            if($cart->save()){
+                return true;
+            }
+            Yii::$app->session->setFlash('error', 'Error save cart');
+        }
+
+        public function actionLogin(){
+            /** @var CartModel[] $cart */
+            $cart = CartModel::find()
+                             ->Where(['guest_id' => Yii::$app->session->get('guest_id')])
+                             ->all();
+
+            if(!empty($cart)){
+                $id = Yii::$app->user->id;
+                foreach($cart as $obj){
+                    $obj->user_id = $id;
+                    $obj->guest_id = null;
+                    if($obj->save()){
+                        return true;
+                    }
+                    Yii::$app->session->setFlash('error', 'Not save cart');
+                }
+            }
+        }
     }
