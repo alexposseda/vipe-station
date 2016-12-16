@@ -7,7 +7,7 @@
     use yii\imagine\Image;
 
     class UploadCover extends FileManagerModel{
-        public $coverSize = ['width' => 100, 'height' => 100];
+        public $coverSize = ['width' => 300, 'height' => 300];
         public function uploadFile($directory){
             $fileName = uniqid(time(), true);
             $this->savePath = $directory.DIRECTORY_SEPARATOR.$fileName.'.'.$this->file->extension;

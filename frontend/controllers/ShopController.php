@@ -33,7 +33,7 @@
         public function actionSendMail(){
             $model = new SendMailForm();
             if($model->load(Yii::$app->request->post())&&$model->send()){
-
+                //todo сделать оповещение пользователя об успешном заказе
             }
             return $this->goBack(Yii::$app->request->post('submit'));
         }
