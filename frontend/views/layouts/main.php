@@ -5,7 +5,12 @@
      * @var $content string
      */
 
+    use common\models\BrandModel;
+    use common\models\CategoryModel;
+    use common\models\search\ProductSearchModel;
     use frontend\models\SendMailForm;
+    use yii\caching\DbDependency;
+    use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use frontend\assets\AppAsset;
@@ -14,6 +19,20 @@
 
     AppAsset::register($this);
     $send_Mail_model = new SendMailForm();
+
+    $product_search = new ProductSearchModel();
+    $allCategory = CategoryModel::getDb()
+                                ->cache(function(){
+                                    return CategoryModel::find()
+                                                        ->all();
+                                }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM'.CategoryModel::tableName()]));
+
+    $allBrand = BrandModel::getDb()
+                          ->cache(function(){
+                              return BrandModel::find()
+                                               ->all();
+                          }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM'.BrandModel::tableName()]));
+    $allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -169,19 +188,53 @@
                             </ul>
                         </li>
                         <li class="col l7 m12 s12 pull-l5 valign">
-                            <ul class="row mt-10">
-                                <li class="col s2 m2 l3 hide-on-large-only">
-                                    <a href="#" data-activates="nav-mobile"
-                                       class="button-collapse top-nav full hide-on-large-only"><i
-                                                class="material-icons large">menu</i></a>
-                                </li>
-                                <li class="col s10 m10 l12 left-align page-title">
-                                    <a href="<?= Url::to(['site/shipping-payment']) ?>" class="fc-orange fs20"><?= Yii::t('shop/setting',
-                                                                                                                          'Shipping and payment') ?></a>
-                                    <a href="<?= Url::home() ?>" class="border-l back hide-on-small-and-down"><span
-                                                class="white-text fs15"><?= Yii::t('shop/setting', 'In Shop') ?></span></a>
-                                </li>
-                            </ul>
+                            <?php if(Yii::$app->controller->action->id == 'catalog-all'): ?>
+                                <ul class="row">
+                                    <li class="col s2 m2 l3 hide-on-large-only">
+                                        <a href="#" data-activates="nav-mobile"
+                                           class="button-collapse top-nav full hide-on-large-only"><i
+                                                    class="material-icons large">menu</i></a>
+                                    </li>
+                                    <?php $search = ActiveForm::begin(['id' => 'catalog-search', 'method' => 'get']) ?>
+                                    <li class="col s4 m4 l3">
+                                        <div class="border-r left-align">
+                                            <?php foreach($allCategory as $category): ?>
+                                                <?php /** @var CategoryModel $category */ ?>
+                                                <?= Html::a($category->title,
+                                                            ['shop/catalog-all', 'ProductSearchModel[category_id]' => $category->id],
+                                                            ['class' => 'white-text fs15', 'data-pjax' => 0]) ?>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </li>
+                                    <li class="col s6 m6 l4">
+                                        <span class="white-text title-range">Цена</span>
+                                        <?= $search->field($product_search, 'price')
+                                                   ->label(false)
+                                                   ->textInput(['id' => 'range-filter']) ?>
+                                    </li>
+                                    <li class="col s4 l5 radio-form-catalog hide-on-med-and-down">
+                                        <div class="input-field col s12">
+                                            <label>Бренд</label>
+                                            <?= Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, ['prompt' => 'Выберите бренд']) ?>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <?php ActiveForm::end() ?>
+                            <?php else: ?>
+                                <ul class="row mt-10">
+                                    <li class="col s2 m2 l3 hide-on-large-only">
+                                        <a href="#" data-activates="nav-mobile"
+                                           class="button-collapse top-nav full hide-on-large-only"><i
+                                                    class="material-icons large">menu</i></a>
+                                    </li>
+                                    <li class="col s10 m10 l12 left-align page-title">
+                                        <a href="<?= Url::to(['site/shipping-payment']) ?>" class="fc-orange fs20"><?= Yii::t('shop/setting',
+                                                                                                                              'Shipping and payment') ?></a>
+                                        <a href="<?= Url::home() ?>" class="border-l back hide-on-small-and-down"><span
+                                                    class="white-text fs15"><?= Yii::t('shop/setting', 'In Shop') ?></span></a>
+                                    </li>
+                                </ul>
+                            <?php endif; ?>
                         </li>
                     </ul>
                 </div>
