@@ -195,7 +195,7 @@
                                            class="button-collapse top-nav full hide-on-large-only"><i
                                                     class="material-icons large">menu</i></a>
                                     </li>
-                                    <?php $search = ActiveForm::begin(['id'=>'catalog-search','method'=>'get']) ?>
+                                    <?php $search = ActiveForm::begin(['id' => 'catalog-search', 'method' => 'get']) ?>
                                     <li class="col s4 m4 l3">
                                         <div class="border-r left-align">
                                             <?php foreach($allCategory as $category): ?>
@@ -208,7 +208,9 @@
                                     </li>
                                     <li class="col s6 m6 l4">
                                         <span class="white-text title-range">Цена</span>
-                                        <?=$search->field($product_search,'price')->textInput(['id'=>'range-filter'])?>
+                                        <?= $search->field($product_search, 'price')
+                                                   ->label(false)
+                                                   ->textInput(['id' => 'range-filter']) ?>
                                     </li>
                                     <li class="col s4 l5 radio-form-catalog hide-on-med-and-down">
                                         <div class="input-field col s12">
