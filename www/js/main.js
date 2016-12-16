@@ -65,17 +65,46 @@ function popupToModal(toModal) {
     }
 }
 
-function updateSpinner(obj)
-{
+function updateSpinner(obj) {
+    debugger;
     var contentObj = document.getElementById("count");
     var value = parseInt(contentObj.value);
-    if(obj.id == "down") {
-        value--;
+    if (obj.id == "down") {
+        if (value != 0)
+            value--;
     } else {
         value++;
     }
     contentObj.value = value;
 }
+
+$('div.count-yoy-order a').on('click', function () {
+    var input = $(this).siblings('input');
+    var count = parseInt(input.val());
+    var base_quantity = parseInt(input.data('base_quantity'));
+
+    var price = parseFloat($(this).parents('.product-total').find('.all_price').data('base_price'));
+    if ($(this).hasClass('down')) {
+        if (count != 1)
+            count--;
+    } else {
+        if(count < base_quantity)
+        count++;
+    }
+    price = price * count;
+    $(this).parents('.product-total').find('.all_price').text(price);
+    input.val(count);
+    TotalCount();
+})
+
+function TotalCount() {
+    var total_price = 0;
+    $('.product-total').each(function(){
+        total_price += parseFloat($(this).find('span.all_price').text());
+    });
+    $('span#total-price').text(total_price);
+}
+
 
 $(document).ready(function () {
     $('.button-collapse').sideNav({
@@ -148,7 +177,7 @@ $(document).ready(function () {
             contentWidth = self.width(),
             itemsPerRow = contentWidth / itemWidth;
 
-        self.width(Math.floor(itemsPerRow)*itemWidth);
+        self.width(Math.floor(itemsPerRow) * itemWidth);
 
         if (divs.parent().hasClass("items-row")) {
             $('.items-row').unwrap();
@@ -161,10 +190,10 @@ $(document).ready(function () {
         }
 
         var biggestHeight = 0;
-        $(".items-row").each(function(){
+        $(".items-row").each(function () {
             var items = $(this).find('.wrap-overflow');
             items.each(function () {
-                if ($(this).outerHeight() > biggestHeight ) {
+                if ($(this).outerHeight() > biggestHeight) {
                     biggestHeight = $(this).outerHeight();
                 }
             });

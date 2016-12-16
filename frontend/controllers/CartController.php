@@ -9,8 +9,11 @@
     class CartController extends Controller{
 
         public function actionIndex(){
-            $carts = CartModel::find()->orderBy(['product_id' => SORT_DESC])->all();
-            return $this->render('index');
+            $carts = CartModel::find()->orderBy(['product_id' => SORT_ASC])->all();
+
+            return $this->render('index',[
+                'carts' => $carts,
+            ]);
         }
 
     }
