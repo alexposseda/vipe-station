@@ -9,6 +9,7 @@
     use common\models\forms\SignupForm;
     use common\models\search\BrandSearchModel;
     use common\models\ShopSettingTable;
+    use frontend\models\AddressForm;
     use Yii;
     use yii\base\InvalidParamException;
     use yii\web\BadRequestHttpException;
@@ -54,6 +55,7 @@
             ];
         }
 
+
         /**
          * @inheritdoc
          */
@@ -62,25 +64,7 @@
                 'error'   => [
                     'class' => 'yii\web\ErrorAction',
                 ],
-                'captcha' => [
-                    'class'           => 'yii\captcha\CaptchaAction',
-                    'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-                ],
             ];
-        }
-
-        public function actionTest(){
-            $search = new BrandSearchModel();
-            $dataProvider = $search->search(Yii::$app->request->queryParams);
-
-            return $this->render('test_cache', ['dataProvider' => $dataProvider]);
-
-            //        $mailer = new Sender();
-            //        if(!$mailer->sendMail('alexposseda@gmail.com', 'test sender', 'test')){
-            //            echo '<pre>'.$mailer->getErrors()[0].'</pre>';
-            //        }else{
-            //            var_dump('Success');
-            //        }
         }
 
         /**
@@ -91,8 +75,9 @@
         public function actionIndex(){
 
             $bannerTitle = ShopSettingTable::getSettingValue('bannerTitle');
-            if(is_null($bannerTitle))
-                $bannerTitle =  'Lorem ipsum dolor sit amet, consectetur adipisicing elit';
+            if(is_null($bannerTitle)){
+                $bannerTitle = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit';
+            }
             $tmp = strrpos($bannerTitle, ",");
             if($tmp !== false){
                 $bannerTitle = substr($bannerTitle, 0, $tmp + 1)."<br> ".substr($bannerTitle, $tmp + 1);
@@ -104,6 +89,48 @@
                 'bannerTitle' => $bannerTitle,
                 'bannerFile'  => $bannerFile
             ]);
+        }
+
+        public function actionAbout(){
+            $aboutUs = ShopSettingTable::getSettingValue('aboutUs');
+            if(is_null($aboutUs)){
+                $aboutUs = Yii::t('system/error', 'Sorry, Information is not available');
+            }
+
+            $addressForm = new AddressForm();
+
+            return $this->render('about', [
+                'listAddress' => $addressForm->getAllAddress(),
+                'aboutUs'     => $aboutUs
+            ]);
+        }
+
+        public function actionShippingPayment(){
+
+            $delivery = json_decode(ShopSettingTable::getSettingValue('delivery_'.Yii::$app->language));
+            $listDelivery = [];
+            if(!empty($delivery)){
+                $listDelivery['logo'] = $delivery[0]->logo;
+                $listDelivery['title'] = $delivery[0]->title;
+                $listDelivery['desc'] = $delivery[0]->desc;
+            }
+
+            $payment = json_decode(ShopSettingTable::getSettingValue('payment_'.Yii::$app->language));
+            $listPayment = [];
+            if(!empty($payment)){
+                $listPayment['logo'] = $payment[0]->logo;
+                $listPayment['title'] = $payment[0]->title;
+                $listPayment['desc'] = $payment[0]->desc;
+            }
+
+            return $this->render('shipping-payment', [
+                'listDelivery' => $listDelivery,
+                'listPayment'  => $listPayment
+            ]);
+        }
+
+        public function actionShops(){
+            return $this->render('shops');
         }
 
         /**
@@ -136,7 +163,6 @@
 
             return $this->goHome();
         }
-
 
         /**
          * Signs user up.
@@ -206,4 +232,6 @@
                 'model' => $model,
             ]);
         }
+
+
     }

@@ -2,7 +2,7 @@
 
     namespace backend\controllers;
 
-    use backend\models\BrandForm;
+    use backend\models\forms\BrandForm;
     use backend\models\UploadCover;
     use common\models\SeoModel;
     use Yii;

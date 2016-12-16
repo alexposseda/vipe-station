@@ -1,16 +1,19 @@
 <?php
 
-    /* @var $this \yii\web\View */
-    /* @var $content string */
+    /**
+     * @var $this    \yii\web\View
+     * @var $content string
+     */
 
-    use common\models\ShopSettingTable;
-    use yii\alexposseda\fileManager\FileManager;
+    use frontend\models\SendMailForm;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use frontend\assets\AppAsset;
+    use yii\widgets\ActiveForm;
+    use yii\widgets\MaskedInput;
 
     AppAsset::register($this);
-
+    $send_Mail_model = new SendMailForm();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -94,7 +97,7 @@
                                 <li class="col l5 pull-m6 m6 pull-s9 s3 header-third-section valign left-align">
                                     <div class="cart-login">
                                         <div class="cart">
-                                            <?=$this->render('cart')?>
+                                            <?= $this->render('cart') ?>
                                         </div>
                                         <div class="login border-l">
                                             <a id="insert-cabinet" class="modal-trigger popup-trigger hide-on-small-and-down" href="#modallogin">
@@ -173,10 +176,10 @@
                                                 class="material-icons large">menu</i></a>
                                 </li>
                                 <li class="col s10 m10 l12 left-align page-title">
-                                    <a href="<?= Url::to(['site/shipping-payment']) ?>" class="fc-orange fs20"><?= Yii::t('system/view',
+                                    <a href="<?= Url::to(['site/shipping-payment']) ?>" class="fc-orange fs20"><?= Yii::t('shop/setting',
                                                                                                                           'Shipping and payment') ?></a>
                                     <a href="<?= Url::home() ?>" class="border-l back hide-on-small-and-down"><span
-                                                class="white-text fs15"><?= Yii::t('system/view', 'In Shop') ?></span></a>
+                                                class="white-text fs15"><?= Yii::t('shop/setting', 'In Shop') ?></span></a>
                                 </li>
                             </ul>
                         </li>
@@ -196,10 +199,10 @@
             </li>
             <li class="menu">
                 <ul class="col 112 nav-menu fs25 center-align">
-                    <li><a href="<?= Url::to(['site/about']) ?>"><?= Yii::t('system/view', 'About as') ?></a></li>
+                    <li><a href="<?= Url::to(['site/about']) ?>"><?= Yii::t('shop/setting', 'About as') ?></a></li>
                     <li><a href="<?= Url::to(['shop/catalog']) ?>"><?= Yii::t('system/view', 'Catalog') ?></a></li>
-                    <li><a href="<?= Url::to(['site/shipping-payment']) ?>"><?= Yii::t('system/view', 'Shipping and payment') ?></a></li>
-                    <li><a href="<?= Url::to(['site/shops']) ?>"><?= Yii::t('system/view', 'All Shop`s') ?></a></li>
+                    <li><a href="<?= Url::to(['site/shipping-payment']) ?>"><?= Yii::t('shop/setting', 'Shipping and payment') ?></a></li>
+                    <li><a href="<?= Url::to(['site/shops']) ?>"><?= Yii::t('shop/setting', 'All Shop`s') ?></a></li>
                     <li>
                         <hr>
                     </li>
@@ -238,7 +241,7 @@
             </li>
             <li>
                 <div class="row">
-                    <?=$this->render('social')?>
+                    <?= $this->render('social') ?>
                 </div><!--Social Link-->
             </li>
         </ul>
@@ -247,6 +250,35 @@
 <main class="">
     <?= $content ?>
 </main>
+<!-- Modal Structure -->
+<div id="buyproduct" class="modal popup-bottom popup-fixed-footer">
+    <div class="modal-content">
+        <h4><?= Yii::t('system/view', 'Fill the form') ?></h4>
+        <?php $mail_form = ActiveForm::begin(['action' => Url::to(['shop/send-mail'])]) ?>
+        <?= $mail_form->field($send_Mail_model, 'buy_name')
+                      ->label(false)
+                      ->textInput(['placeholder' => $send_Mail_model->getAttributeLabel('buy_name')]) ?>
+        <?= $mail_form->field($send_Mail_model, 'buy_email')
+                      ->label(false)
+                      ->textInput(['placeholder' => $send_Mail_model->getAttributeLabel('buy_email')]) ?>
+        <?= $mail_form->field($send_Mail_model, 'buy_phone')
+                      ->widget(MaskedInput::className(), [
+                          'mask' => '999-999-9999',
+                      ])
+                      ->label(false)
+                      ->textInput(['placeholder' => $send_Mail_model->getAttributeLabel('buy_phone')]) ?>
+        <div class="modal-footer" style="padding: 4px 24px;">
+            <div class="col s12">
+                <div class="btn-buy right">
+                    <?= Html::submitButton(Yii::t('models/authorize', 'Send'), ['name' => 'submit', 'value' => Url::to('')]) ?>
+                </div>
+                <?= Html::resetButton(Yii::t('system/view', 'Cancel'),
+                                      ['class' => 'modal-action modal-close waves-effect waves-green btn-flat left']) ?>
+            </div>
+        </div>
+        <?php ActiveForm::end() ?>
+    </div>
+</div>
 <?php $this->endBody() ?>
 </body>
 </html>

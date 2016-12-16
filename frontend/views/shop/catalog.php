@@ -2,99 +2,68 @@
 /**
  * @var $this \yii\web\View
  */
+    use common\models\ProductCharacteristicItemModel;
+    use common\models\ProductInCategoryModel;
+    use common\models\ProductInStockModel;
+    use common\models\ProductModel;
     use frontend\assets\CatalogAsset;
-    use yii\alexposseda\fileManager\FileManager;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+    use yii\caching\ChainedDependency;
+    use yii\widgets\ListView;
 
     CatalogAsset::register($this);
 ?>
 
 <div class="col s12 page-main">
     <div class="sub-title">
-        <a href="#" class="fs30 white-text title-catalog">Товары</a>
+        <a href="#" class="fs30 white-text title-catalog"><?=Yii::t('models/product','Popular goods')?></a>
     </div>
     <div class="content">
         <div class="catalog-background">
-            <div class="catalog-wrap-content product-carousel">
-                <?php foreach($popular as $product): ?>
-                <div class="wrap-overflow product">
-                    <div class="wrap-items">
-                        <div class="wrap-items-first-section left center-align">
-                            <div class="product-img">
-                                <img src="<?= FileManager::getInstance()
-                                                         ->getStorageUrl().$product->cover ?>">
-                            </div>
-                            <div class="wrap-text-block">
-                                <div class="product-title fs20 fc-orange"><?= Html::encode($product->title) ?></div>
-                                <div class="product-brand fs15 fc-dark-brown"><?= Html::encode($product->brand->title) ?></div>
-                                <div class="product-price fs20 fc-light-brown"><?= $product->base_price.' '.Yii::t('models/cart', 'UAH') ?></div>
-                            </div>
-
-                        </div>
-                        <div class="wrap-items-second-section left">
-                            <div class="product-title">
-                                <a href="<?= Url::to(['shop/product', 'id' => $product->id]) ?>"
-                                   class="fs20 fc-orange"><?= Html::encode($product->title) ?></a></div>
-                            <div class="product-price">
-                                <span class="right fs20 fc-light-brown"><?= $product->base_price.' '.Yii::t('models/cart', 'UAH') ?></span>
-                                <div class="clearfix"></div>
-                            </div>
-
-                            <div class="product-description fs15 fc-dark-brown"><p><?= Html::encode($product->description) ?></p></div>
-                            <div class="btn-buy center-align fs15 fc">
-                                <button data-target="buyproduct" class="modal-trigger">Купить</button>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            </div>
-            <div class="clear"></div>
+                <?php $dependency = [
+                    'class'        => ChainedDependency::className(),
+                    'dependencies' => [
+                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductModel::tableName()]),
+                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInCategoryModel::tableName()]),
+                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInStockModel::tableName()]),
+                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductCharacteristicItemModel::tableName()]),
+                    ]
+                ];
+                    if($this->beginCache('popularCache', ['duration' => 0, 'dependency' => $dependency])):
+                        ?>
+                        <?= ListView::widget([
+                                                 'dataProvider' => $popular,
+                                                 'itemView'     => '_catalog_item',
+                                                 'itemOptions'  => ['class' => 'wrap-overflow product'],
+                                                 'layout'       => "<div class='catalog-wrap-content product-carousel'>{items}</div>",
+                                             ]) ?>
+                        <?php $this->endCache();
+                    endif; ?>
         </div>
     </div>
     <div class="sub-title">
-        <a href="#" class="fs30 white-text title-catalog">Бренды</a>
+        <a href="#" class="fs30 white-text title-catalog"><?=Yii::t('models/product','New goods')?></a>
     </div>
     <div class="content">
-
         <div class="catalog-background">
-            <div class="catalog-wrap-content brand-carousel">
-                <?php foreach($newest as $product): ?>
-                <div class="wrap-overflow brand">
-                    <div class="wrap-items">
-                        <div class="wrap-items-first-section left center-align">
-                            <div class="product-img">
-                                <img src="<?= FileManager::getInstance()
-                                                         ->getStorageUrl().$product->cover ?>">
-                            </div>
-                            <div class="wrap-text-block">
-                                <div class="product-title fs20 fc-orange"><?= Html::encode($product->title) ?></div>
-                                <div class="product-brand fs15 fc-dark-brown"><?= Html::encode($product->brand->title) ?></div>
-                                <div class="product-price fs20 fc-light-brown"><?= $product->base_price.' '.Yii::t('models/cart', 'UAH') ?></div>
-                            </div>
-
-                        </div>
-                        <div class="wrap-items-second-section left">
-                            <div class="product-title">
-                                <a href="<?= Url::to(['shop/product', 'id' => $product->id]) ?>"
-                                   class="fs20 fc-orange"><?= Html::encode($product->title) ?></a></div>
-                            <div class="product-price">
-                                <span class="right fs20 fc-light-brown"><?= $product->base_price.' '.Yii::t('models/cart', 'UAH') ?></span>
-                                <div class="clearfix"></div>
-                            </div>
-
-                            <div class="product-description fs15 fc-dark-brown"><p><?= Html::encode($product->description) ?></p></div>
-                            <div class="btn-buy center-align fs15 fc">
-                                <button data-target="buyproduct" class="modal-trigger">Купить</button>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            </div>
+                <?php $dependency = [
+                    'class'        => ChainedDependency::className(),
+                    'dependencies' => [
+                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductModel::tableName()]),
+                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInCategoryModel::tableName()]),
+                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductInStockModel::tableName()]),
+                        new \yii\caching\DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductCharacteristicItemModel::tableName()]),
+                    ]
+                ];
+                    if($this->beginCache('newestCache', ['duration' => 0, 'dependency' => $dependency])):
+                        ?>
+                        <?= ListView::widget([
+                                                 'dataProvider' => $newest,
+                                                 'itemView'     => '_catalog_item',
+                                                 'itemOptions'  => ['class' => 'wrap-overflow brand'],
+                                                 'layout'       => "<div class='catalog-wrap-content brand-carousel'>{items}<div class='clear'></div></div>",
+                                             ]) ?>
+                        <?php $this->endCache();
+                    endif; ?>
         </div>
     </div>
 </div>

@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\DeliveryModel */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Delivery'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Deliveries'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="delivery-model-view">
