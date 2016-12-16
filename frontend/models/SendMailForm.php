@@ -31,16 +31,18 @@
             $sender = new Sender();
             $transaction = Yii::$app->db->beginTransaction();
             try{
-                if(!$sender->sendMail($this->buy_email, Yii::t('system/view', 'Test buy'), 'mail-template-customer', [])){
+                if(!$sender->sendMail($this->buy_email, Yii::t('system/view', 'Test buy'), 'mail-template-customer', ['model'=>$this])){
                     throw new \Exception('error send customer email');
                 }
-                if(!$sender->sendMail(Yii::$app->params['robotEmail'], Yii::t('system/view', 'Test buy'), 'mail-template-manager', $this)){
+                if(!$sender->sendMail(Yii::$app->params['robotEmail'], Yii::t('system/view', 'Test buy'), 'mail-template-manager', ['model'=>$this])){
                     throw new \Exception('error send customer email');
                 }
 
                 $transaction->commit();
+                return true;
             }catch(\Exception $e){
                 $transaction->rollBack();
+                return false;
             }
         }
     }
