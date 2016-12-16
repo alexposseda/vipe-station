@@ -7,7 +7,7 @@
         <div class="row cart-page">
             <div class="col l5 hide-on-med-and-down cart-your-order">
                 <div class="cart-your-order-wrap">
-                    <h2 class="cart-your-order-title fs30 fc-brown">Ваш заказ</h2>
+                    <h2 class="cart-your-order-title fs30 fc-brown"><?= Yii::t('models/cart', 'Your order')?></h2>
                     <div class="row product">
                         <div class="col s3 product-img img-wrap-you-order">
                             <img src="../images/catalog1.png" alt="">
@@ -39,7 +39,7 @@
 
                     <div class="col l12 right-align total-you-order">
                                 <span class="fs20 fc-dark-brown">
-Итого 17 $
+                                    Итого 17 $
                                 </span>
                     </div>
                 </div>
