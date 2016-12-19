@@ -11,13 +11,16 @@
      * ProductSearchModel represents the model behind the search form of `common\models\ProductModel`.
      */
     class ProductSearchModel extends ProductModel{
+        public $category_id;
+        public $price;
+
         /**
          * @inheritdoc
          */
         public function rules(){
             return [
-                [['id', 'base_quantity', 'sales', 'views', 'created_at', 'updated_at', 'brand_id'], 'integer'],
-                [['title', 'gallery', 'description', 'slug'], 'safe'],
+                [['id', 'category_id', 'base_quantity', 'sales', 'views', 'created_at', 'updated_at', 'brand_id'], 'integer'],
+                [['title', 'price', 'gallery', 'description', 'slug'], 'safe'],
                 [['base_price'], 'number'],
             ];
         }
@@ -45,7 +48,7 @@
             $dataProvider = new ActiveDataProvider([
                                                        'query'      => $query,
                                                        'pagination' => [
-                                                           'pageSize' => isset($params['pageSize']) ? $params['pageSize'] : 4,
+                                                           'pageSize' => isset($params['pageSize']) ? $params['pageSize'] : 10,
                                                        ],
                                                        'sort'       => [
                                                            'attributes' => [
@@ -78,6 +81,14 @@
                                        //            'updated_at' => $this->updated_at,
                                        'brand_id'      => $this->brand_id,
                                    ]);
+            if($this->price){
+                $price = explode(';', $this->price);
+                $query->andFilterWhere(['between', 'base_price', $price[0], $price[1]]);
+            }
+            if($this->category_id){
+                $query->joinWith('categories c')
+                      ->andFilterWhere(['c.id' => $this->category_id]);
+            }
 
             $query->andFilterWhere(['like', 'title', $this->title])//            ->andFilterWhere(['like', 'gallery', $this->gallery])
                   ->andFilterWhere(['like', 'description', $this->description]);

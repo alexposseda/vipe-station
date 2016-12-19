@@ -55,7 +55,7 @@
             return [
                 'upload-gallery' => [
                     'class'         => UploadAction::className(),
-                    'uploadPath'    => 'brands',
+                    'uploadPath'    => 'products',
                     'sessionEnable' => true,
                     'uploadModel'   => new UploadCover([
                                                            'validationRules' => [
