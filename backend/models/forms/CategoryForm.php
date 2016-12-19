@@ -16,7 +16,8 @@
      *
      * @property SeoModel                    $seo
      * @property CategoryModel               $category
-     * @property  ProductCharacteristicModel $characteristic
+     * @property  ProductCharacteristicModel [] $characteristic
+     *
      */
     class CategoryForm extends Model{
 
@@ -28,7 +29,10 @@
 
         public function rules(){
             return [
-                ['characteristic', 'safe']
+                [
+                    'characteristic',
+                    'safe'
+                ]
             ];
         }
 
@@ -39,7 +43,7 @@
          * @return bool
          */
         public function loadData(array $data){
-            if($this->load($data) && $this->category->load($data) && $this->seo->load($data)){
+            if( $this->category->load($data) && $this->seo->load($data)){
                 return true;
             }
 
@@ -66,7 +70,32 @@
                 }
 
                 //todo сохранение характеристик
+                $count = count(Yii::$app->request->post('ProductCharacteristicModel'));
+                $characteristicsPost = Yii::$app->request->post('ProductCharacteristicModel');
+                /** @var ProductCharacteristicModel[] $characteristics */
+                if(empty($characteristics = $this->category->productCharacteristics)){
+                    for($i = 0; $i < $count; $i++){
+                        $characteristics[] = new ProductCharacteristicModel(['category_id'=>$this->category->id]);
+                    }
+                }elseif($count != count($characteristics)){
+                    foreach($characteristicsPost as $characteristicPost){
+                        $temp = $characteristics;
+                        foreach($temp as $characteristic){
+                            if($characteristicPost->title == $characteristic->title){
+                            }
+                        }
+                    }
+                }
 
+
+                if(Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
+                    foreach($characteristics as $item){
+                        if(!$item->save(false))
+                            throw new Exception('Error to save characteristic')
+                        ;
+                    }
+                }else
+                    throw new Exception('Error to load characteristics');
                 $transaction->commit();
 
                 return true;
@@ -79,12 +108,22 @@
         }
 
         public function getAllCategory(){
+            $query = CategoryModel::find();
             $id = (!empty($this->category)) ? $this->category->id : null;
+            if(!$this->category->isNewRecord){
+                $query->andWhere([
+                                     '!=',
+                                     'id',
+                                     $this->category->id
+                                 ])
+                      ->andWhere([
+                                     '!=',
+                                     'parent',
+                                     $this->category->id
+                                 ]);
+            }
 
-            return ArrayHelper::map(CategoryModel::find()
-                                                 ->where(['!=', 'id', $id])
-                                                 ->andWhere(['!=', 'parent', $id])
-                                                 ->all(), 'id', 'title');
+            return ArrayHelper::map($query->all(), 'id', 'title');
         }
 
     }
