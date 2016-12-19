@@ -12,6 +12,9 @@
             parent::init();
 
             $this->shopName = ShopSettingTable::getSettingValue('shopName');
+            if(is_null($this->shopName)){
+                $this->shopName = \Yii::$app->name;
+            }
         }
 
         public function rules(){
