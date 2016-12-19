@@ -12,6 +12,7 @@
     use yii\widgets\ActiveForm;
     use yii\widgets\Pjax;
 
+    $this->registerJsFile('/js/setting.js', ['position' => \yii\web\View::POS_END, 'depends' => \backend\assets\AppAsset::className()]);
 ?>
 <h1><?= Yii::t('system/view', 'General Setting') ?></h1>
 <div class="row">
@@ -30,7 +31,7 @@
             <div class="panel-footer text-right">
                 <button type="button" class="btn btn-warning"><?= Yii::t('system/view', 'Edit') ?></button>
                 <?= Html::submitButton('Save', [
-                    'class'    => 'btn btn-success',
+                    'class'    => 'btn btn-success hide',
                     'name'     => 'form',
                     'value'    => 'shopSetting',
                     'disabled' => true
@@ -65,7 +66,7 @@
                     <?php endif; ?>
                 </div>
                 <div class="setting-form hide">
-                    <?= $bannerForm->field($bannerModel, 'bannerTitle') ?>
+                    <?= $bannerForm->field($bannerModel, 'bannerTitle')->textInput() ?>
                     <?= $bannerForm->field($bannerModel, 'bannerFile')
                                    ->fileInput() ?>
                 </div>
@@ -73,7 +74,7 @@
             <div class="panel-footer text-right">
                 <button type="button" class="btn btn-warning"><?= Yii::t('system/view', 'Edit') ?></button>
                 <?= Html::submitButton('Save', [
-                    'class'    => 'btn btn-success',
+                    'class'    => 'btn btn-success hide',
                     'name'     => 'form',
                     'value'    => 'bannerSetting',
                     'disabled' => true
@@ -111,7 +112,7 @@
                         $label['options']['style'] = 'width: 100%';
                         ?>
                         <div class="row">
-                            <?php if($socialForm instanceof \common\models\ShopSettingTable): ?>
+                            <?php if(!empty($socialForm->title)): ?>
                                 <div class="col-lg-1 text-center">
                                     <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
                                 </div>
@@ -137,7 +138,7 @@
             <div class="panel-footer text-right">
                 <button type="button" class="btn btn-warning"><?= Yii::t('system/view', 'Edit') ?></button>
                 <?= Html::submitButton('Save', [
-                    'class'    => 'btn btn-success',
+                    'class'    => 'btn btn-success hide',
                     'name'     => 'form',
                     'value'    => 'socialSetting',
                     'disabled' => true
@@ -165,7 +166,7 @@
             <div class="panel-footer text-right">
                 <button type="button" class="btn btn-warning"><?= Yii::t('system/view', 'Edit') ?></button>
                 <?= Html::submitButton('Save', [
-                    'class'    => 'btn btn-success',
+                    'class'    => 'btn btn-success hide',
                     'name'     => 'form',
                     'value'    => 'aboutSetting',
                     'disabled' => true
