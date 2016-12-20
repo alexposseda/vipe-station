@@ -76,9 +76,16 @@
                 <div class="col-lg-6 option">
                     <?php if(!empty($model->options)): ?>
                         <?php foreach($model->options as $opt_m): ?>
-                            <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']value')
-                                     ->textInput()
-                                     ->label($opt_m->characteristic->title) ?>
+                                <span class="option-label col-lg-12"><?= $opt_m->characteristic->title ?></span>
+                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']value',['options'=>['class'=>'col-lg-4 form-inline']])
+                                             ->textInput(['placeholder' => $opt_m->getAttributeLabel('value')])
+                                             ->label(false) ?>
+                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']delta_price',['options'=>['class'=>'col-lg-4 form-inline']])
+                                             ->input('number', ['placeholder' => $opt_m->getAttributeLabel('delta_price')])
+                                             ->label(false) ?>
+                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']quantity',['options'=>['class'=>'col-lg-4 form-inline']])
+                                             ->input('number', ['placeholder' => $opt_m->getAttributeLabel('quantity')])
+                                             ->label(false) ?>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>

@@ -83,7 +83,7 @@
                 if(!$opt_m){
                     $opt_m = new ProductOptionModel($condition);
                 }
-                $this->options = $opt_m;
+                $this->options[] = $opt_m;
             }
         }
 
@@ -196,7 +196,7 @@
                     }else{
                         $options[$id] = new ProductOptionModel($condition);
                     }
-                    $setChar[] = $id;
+                    $setOp[] = $id;
                 }
                 if(Model::loadMultiple($options, Yii::$app->request->post()) && Model::validateMultiple($options)){
                     foreach($options as $option){
@@ -205,6 +205,9 @@
                         }
                     }
                 }
+                /**
+                 * Выбираем все опции которые есть у продукта и не пришли из формы и удаляем их
+                 */
                 $optTmp = $this->product->getProductOptions()
                                         ->where(['not in', 'characteristic_id', $setOp])
                                         ->all();
