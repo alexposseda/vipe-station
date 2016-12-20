@@ -1,0 +1,86 @@
+<?php
+    /**
+     * @var $this  \yii\web\View
+     * @var $order \backend\models\forms\OrderForm
+     */
+    use common\models\DeliveryModel;
+    use common\models\OrderModel;
+    use common\models\PaymentModel;
+    use yii\alexposseda\fileManager\FileManager;
+    use yii\bootstrap\ActiveForm;
+    use yii\caching\DbDependency;
+    use yii\helpers\ArrayHelper;
+    use yii\helpers\Html;
+
+    $payArr = PaymentModel::getDb()
+                          ->cache(function(){
+                              return PaymentModel::find()
+                                                 ->all();
+                          }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.PaymentModel::tableName()]));
+    $deliverArr = DeliveryModel::getDb()
+                               ->cache(function(){
+                                   return DeliveryModel::find()
+                                                       ->all();
+                               }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.DeliveryModel::tableName()]));
+    $orderStatus = [
+        OrderModel::ORDER_STATUS_ABORTED   => Yii::t('models/order', OrderModel::ORDER_STATUS_ABORTED),
+        OrderModel::ORDER_STATUS_ACTIVE    => Yii::t('models/order', OrderModel::ORDER_STATUS_ACTIVE),
+        OrderModel::ORDER_STATUS_CONFIRMED => Yii::t('models/order', OrderModel::ORDER_STATUS_CONFIRMED),
+        OrderModel::ORDER_STATUS_DELETED   => Yii::t('models/order', OrderModel::ORDER_STATUS_DELETED),
+        OrderModel::ORDER_STATUS_FINISHED  => Yii::t('models/order', OrderModel::ORDER_STATUS_FINISHED),
+        OrderModel::ORDER_STATUS_PAID      => Yii::t('models/order', OrderModel::ORDER_STATUS_PAID),
+        OrderModel::ORDER_STATUS_SENT      => Yii::t('models/order', OrderModel::ORDER_STATUS_SENT),
+    ]
+?>
+
+<?php $orderForm = ActiveForm::begin() ?>
+<div class="row">
+    <div class="col-lg-8">
+        <?= $orderForm->field($order->order, 'payment_id')
+                      ->dropDownList(ArrayHelper::map($payArr, 'id', 'name'), ['prompt' => 'Select Payment']) ?>
+        <?= $orderForm->field($order->order, 'delivery_id')
+                      ->dropDownList(ArrayHelper::map($deliverArr, 'id', 'name'), ['prompt' => 'Select Delivery']) ?>
+        <?= $orderForm->field($order->order, 'status')
+                      ->dropDownList($orderStatus, ['prompt' => 'Select order status']) ?>
+        <div class="panel panel-default order-detail">
+            <p class="panel-heading"><?= Yii::t('models/order', 'Order Data') ?></p>
+            <?php if($order->orderData): ?>
+                <?php foreach($order->orderData as $index=>$od): ?>
+                    <div class="panel-body">
+                        <div class="product-img">
+                            <img src="<?= /** @var \common\models\OrderDataModel $od */
+                                FileManager::getInstance()
+                                           ->getStorageUrl().$od->product->cover ?>">
+                        </div>
+                        <div class="wrap-text-block">
+                            <div class="product-title fs20 fc-orange">
+                                <?= Html::encode($od->product->title) ?>
+                            </div>
+                            <div class="product-brand fs15 fc-dark-brown">
+                                <?= Html::encode($od->product->brand->title) ?>
+                            </div>
+                            <div class="product-price fs20 fc-light-brown">
+                                <?= $od->price.' '.Yii::t('models/cart', 'UAH') ?>
+                            </div>
+                            <?=$orderForm->field($od,'['.$index.']quantity')->input('number')?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-danger delivery-data">
+            <p class="panel-heading"><?= Yii::t('models/order', 'Delivery data') ?></p>
+            <div class="panel-body">
+                <?= $orderForm->field($order->deliveryData, 'firstName') ?>
+                <?= $orderForm->field($order->deliveryData, 'lastName') ?>
+                <?= $orderForm->field($order->deliveryData, 'city') ?>
+                <?= $orderForm->field($order->deliveryData, 'address') ?>
+                <?= $orderForm->field($order->deliveryData, 'phone') ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?= Html::submitButton('Заказать', ['class' => 'btn btn-danger']) ?>
+<?php ActiveForm::end() ?>

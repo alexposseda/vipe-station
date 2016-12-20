@@ -32,7 +32,7 @@
                              ->textInput() ?>
 
                     <div class="panel panel-default">
-                        <h4> <?=Yii::t('models/client', 'Delivery data')?> </h4>
+                        <span class="control-label"> <?=Yii::t('models/client', 'Delivery data')?> </span>
                         <?= Html::activeHiddenInput($model, 'delivery_data')?>
                         <div class="address-input">
                             <?= Html::textInput('firstName', null, [

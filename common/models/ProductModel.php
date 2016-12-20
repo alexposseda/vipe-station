@@ -154,6 +154,7 @@
                 'brand_id'      => Yii::t('models', 'Brand'),
                 'sales'         => Yii::t('models/product', 'Sales'),
                 'views'         => Yii::t('models/product', 'Views'),
+                'cover'        => 'Cover',
                 'seo_id'        => 'Seo ID',
                 'created_at'    => 'Created At',
                 'updated_at'    => 'Updated At',

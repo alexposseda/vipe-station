@@ -5,6 +5,7 @@
     use Yii;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
+    use yii\web\Cookie;
 
     /**
      * This is the model class for table "{{%cart}}".
@@ -20,10 +21,19 @@
      *
      * @property ProductModel $product
      * @property User         $user
+     * @property mixed        price
      */
     class CartModel extends ActiveRecord{
         public static function getCart(){
-            $condition = (Yii::$app->user->isGuest) ? ['guest_id' => Yii::$app->request->cookies->get('guest_id')] : ['user_id' => Yii::$app->user->id];
+            if(!Yii::$app->user->isGuest){
+                $guest_id = Yii::$app->request->cookies->get('guest_id');
+                if($guest_id){
+                    $guest_id = Yii::$app->session->get('guest_id');
+                }
+                $condition = ['guest_id' => $guest_id];
+            }else{
+                $condition = ['user_id' => Yii::$app->user->id];
+            }
 
             return self::findAll($condition);
         }
@@ -89,12 +99,32 @@
         public function getPrice(){
             $price = $this->product->base_price;
             if($this->options){
-                foreach(json_decode($this->options) as $option){
-                    $price += $option->delta_price;
-                }
+//                foreach(json_decode($this->options) as $option){
+//                    $price += $option->delta_price;
+//                }
             }
 
             return $price;
+        }
+
+        public function setID(){
+            if(Yii::$app->user->isGuest){
+
+                $cookie_guestId = Yii::$app->request->cookies->getValue('guest_id');
+                $session_guestId = Yii::$app->session->get('guest_id');
+                if(empty($cookie_guestId) && empty($session_guestId)){
+                    $this->guest_id = Yii::$app->security->generateRandomString();
+                    Yii::$app->response->cookies->add(new Cookie([
+                                                                     'name'  => 'guest_id',
+                                                                     'value' => $this->guest_id
+                                                                 ]));
+                    Yii::$app->session->set('guest_id', $this->guest_id);
+                }else{
+                    $this->guest_id = empty($cookie_guestId) ? $session_guestId : $cookie_guestId;
+                }
+            }else{
+                $this->user_id = Yii::$app->user->id;
+            }
         }
 
 
