@@ -36,6 +36,11 @@
             $this->email = $this->user->email;
         }
 
+        public function beforeValidate(){
+            $this->name = $this->f_name.' '.$this->l_name;
+            return parent::beforeValidate();
+        }
+
         /**
          * @inheritdoc
          */

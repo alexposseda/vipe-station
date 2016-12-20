@@ -5,11 +5,12 @@
     use yii\base\Model;
 
     class DeliveryAddressForm extends Model{
-        public $firstName;
-        public $lastName;
+        public $f_name;
+        public $l_name;
         public $city;
         public $address;
         public $phone;
+        public $email;
 
         public function rules(){
             return [
@@ -19,7 +20,7 @@
                         'lastName',
                         'city',
                         'address',
-                        'phone'
+                        'phone',
                     ],
                     'required'
                 ],
@@ -29,7 +30,8 @@
                         'lastName',
                         'city',
                         'address',
-                        'phone'
+                        'phone',
+                        'email'
                     ],
                     'string'
                 ]

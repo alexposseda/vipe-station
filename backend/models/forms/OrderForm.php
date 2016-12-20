@@ -3,10 +3,12 @@
     namespace backend\models\forms;
 
     use common\models\CartModel;
+    use common\models\ClientModel;
     use common\models\forms\DeliveryAddressForm;
     use common\models\OrderClientDataModel;
     use common\models\OrderDataModel;
     use common\models\OrderModel;
+    use common\models\UserIdentity;
     use Yii;
     use yii\base\Model;
 
@@ -35,22 +37,28 @@
                 $this->orderData = [];
                 foreach($this->carts as $cart){
                     $order_data = new OrderDataModel();
-                    /** @var CartModel $cart */
                     $order_data->product_id = $cart->product_id;
                     $order_data->price = $cart->price;
                     $order_data->quantity = $cart->quantity;
                     $order_data->options = $cart->options;
                     $this->orderData[] = $order_data;
                 }
+                $this->client = OrderClientDataModel::findAll(['order_id' => $this->order->id]);
             }else{
                 $this->orderData = $this->order->orderDatas;
             }
+            $this->client = new OrderClientDataModel();
             $del_data = json_decode($this->order->delivery_data);
             $this->deliveryData = new DeliveryAddressForm($del_data ? $del_data : null);
+            $this->deliveryData->f_name = $this->client->client->f_name;
+            $this->deliveryData->l_name = $this->client->client->l_name;
+            $this->deliveryData->email = $this->client->client->email;
         }
 
         public function loadAll($post){
-            if($this->order->load($post) && $this->deliveryData->load($post)){
+            if($this->order->load($post) && $this->deliveryData->load($post) && $this->client->load(Yii::$app->request->post(),
+                                                                                                    $this->deliveryData->formName())
+            ){
                 return true;
             }
 
@@ -66,7 +74,12 @@
                 $this->order->delivery_data = json_encode($this->deliveryData);
 
                 if(!$this->order->save()){
-                    throw new \Exception('error save order');
+                    throw new \Exception('error save order '.$this->order->getErrors()[0]);
+                }
+
+                $this->client->order_id = $this->order->id;
+                if(!$this->client->save()){
+                    throw new \Exception('error save client data '.$this->client->getErrors()[0]);
                 }
 
                 foreach($this->orderData as $od){

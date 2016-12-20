@@ -45,7 +45,7 @@
         <div class="panel panel-default order-detail">
             <p class="panel-heading"><?= Yii::t('models/order', 'Order Data') ?></p>
             <?php if($order->orderData): ?>
-                <?php foreach($order->orderData as $index=>$od): ?>
+                <?php foreach($order->orderData as $index => $od): ?>
                     <div class="panel-body">
                         <div class="product-img">
                             <img src="<?= /** @var \common\models\OrderDataModel $od */
@@ -62,7 +62,8 @@
                             <div class="product-price fs20 fc-light-brown">
                                 <?= $od->price.' '.Yii::t('models/cart', 'UAH') ?>
                             </div>
-                            <?=$orderForm->field($od,'['.$index.']quantity')->input('number')?>
+                            <?= $orderForm->field($od, '['.$index.']quantity')
+                                          ->input('number') ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -73,11 +74,20 @@
         <div class="panel panel-danger delivery-data">
             <p class="panel-heading"><?= Yii::t('models/order', 'Delivery data') ?></p>
             <div class="panel-body">
-                <?= $orderForm->field($order->deliveryData, 'firstName') ?>
-                <?= $orderForm->field($order->deliveryData, 'lastName') ?>
+                <?= $orderForm->field($order->deliveryData, 'f_name') ?>
+                <?= $orderForm->field($order->deliveryData, 'l_name') ?>
                 <?= $orderForm->field($order->deliveryData, 'city') ?>
                 <?= $orderForm->field($order->deliveryData, 'address') ?>
                 <?= $orderForm->field($order->deliveryData, 'phone') ?>
+                <?= $orderForm->field($order->deliveryData, 'email') ?>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <p class="panel-heading"><?= $order->order->getAttributeLabel('comment') ?></p>
+            <div class="panel-body">
+                <?= $orderForm->field($order->order, 'comment')
+                              ->textarea()
+                              ->label(false) ?>
             </div>
         </div>
     </div>

@@ -9,4 +9,6 @@
         OrderModel::ORDER_STATUS_FINISHED  => 'выполнен',
         OrderModel::ORDER_STATUS_PAID      => 'оплачен',
         OrderModel::ORDER_STATUS_SENT      => 'отправлен',
+
+        'Cart is empty' => 'Корзина пуста',
     ];
