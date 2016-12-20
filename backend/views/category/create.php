@@ -21,7 +21,7 @@
 
     <?= $this->render('_form', [
         'model'           => $model,
-        'characteristics' => $characteristics,
+
     ]) ?>
 
 </div>

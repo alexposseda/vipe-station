@@ -53,7 +53,7 @@
                     <?= Html::tag('span', Yii::t('system/view', 'Create').' '.Yii::t('models/characteristic', 'Characteristic'),
                                   ['class' => 'btn btn-primary']) ?>
                     <?php
-                        foreach($characteristics as $index => $characteristic) :?>
+                        foreach($model->characteristics as $index => $characteristic) :?>
                             <?=$form->field($characteristic, "[$index]title")?>
 <!--                            <input type="text" name="ProductCharacteristicModel[0][title]">-->
 <!--                            <input type="text" name="ProductCharacteristicModel[1][title]">-->
