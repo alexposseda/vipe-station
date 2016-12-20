@@ -86,7 +86,6 @@
                                           'seo'      => new SeoModel()
                                       ]);
 
-
             if(Yii::$app->request->isPost && $model->save()){
                 return $this->redirect([
                                            'view',
@@ -95,7 +94,7 @@
             }
 
             return $this->render('create', [
-                'model'           => $model,
+                'model' => $model,
             ]);
         }
 
@@ -110,7 +109,6 @@
         public function actionUpdate($id){
             $category = $this->findModel($id);
 
-
             $seo = ($category->seo) ? $category->seo : new SeoModel();
             $model = new CategoryForm([
                                           'category' => $category,
@@ -124,7 +122,7 @@
                                        ]);
             }else{
                 return $this->render('update', [
-                    'model'           => $model,
+                    'model' => $model,
                 ]);
             }
         }
@@ -161,7 +159,12 @@
             }
         }
 
-        public function addCharacteristic($category_id){
+        public function getParantCharacteristic($id){
+            $parentCategory = $this->findModel($id);
+            $parentCharacteristics = $parentCategory->productCharacteristics ? $parentCategory->productCharacteristics : [];
+            return $parentCharacteristics;
+        }
+        /*public function addCharacteristic($category_id){
             $characterisic = new ProductCharacteristicModel();
             if($characterisic->load(Yii::$app->request->post()) && $characterisic->save()){
                 return $this->redirect([
@@ -170,5 +173,5 @@
                                        ]);
             }
             //            return $this->renderAjax();
-        }
+        }*/
     }

@@ -14,31 +14,18 @@
      * Class CategoryForm
      * @package backend\models\forms
      *
-     * @property SeoModel                       $seo
-     * @property CategoryModel                  $category
-     * @property  ProductCharacteristicModel [] $characteristics
-     *
+     * @property SeoModel                      $seo
+     * @property CategoryModel                 $category
+     * @property ProductCharacteristicModel [] $characteristics
+     * @property ProductCharacteristicModel [] $parentCharacteristics
      */
     class CategoryForm extends Model{
 
         public $category;
         public $seo;
-        public $error;
         public $characteristics;
+        public $parentCharacteristics;
 
-
-        /**
-         * @param array $data
-         *
-         * @return bool
-         */
-        /*public function loadData(array $data){
-            if($this->category->load($data) && $this->seo->load($data)){
-                return true;
-            }
-
-            return false;
-        }*/
 
         public function save(){
             $transaction = Yii::$app->db->beginTransaction();
@@ -127,7 +114,8 @@
                 }
             }
 
-            if(Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
+
+            if(!empty($characteristics) && Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
                 foreach($characteristics as $item){
                     if(!$item->save(false)){
                         throw new Exception(Yii::t('system/error', 'Sorry, I can not save the characteristic data'));
@@ -138,61 +126,6 @@
             }
         }
 
-
-        /*public function save(){
-            $transaction = Yii::$app->db->beginTransaction();
-            try{
-                if($this->seo->canSave()){
-                    if(!$this->seo->save()){
-                        throw new Exception(Yii::t('system/error', 'Sorry, I can not save the seo data'));
-                    }
-                    $this->category->seo_id = $this->seo->id;
-                }else{
-                    $this->category->seo_id = null;
-                }
-
-                if(!$this->category->save()){
-                    throw new Exception(Yii::t('system/error', 'Sorry, I can not save the category data'));
-                }
-
-                //todo сохранение характеристик
-                $characteristicsPost = Yii::$app->request->post('ProductCharacteristicModel');
-                $oldId = [];
-                $characteristics=[];
-                foreach($characteristicsPost as $index=>$item){
-                    $characteristics[$index] = ProductCharacteristicModel::findOne($item['id']);
-
-                    if(!$characteristics[$index]){
-                        $characteristics[$index]=new ProductCharacteristicModel(['category_id' => $this->category->id]);
-                    }else{
-                        $oldId[] = $item['id'];
-                    }
-                }
-                $deleteCharacteristic = $this->category->getProductCharacteristics()->where(['not in', 'id', $oldId])->all();
-                if(!empty($deleteCharacteristic)){
-                    foreach($deleteCharacteristic as $item)
-                        $item->delete();
-                }
-
-                if(Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
-                    foreach($characteristics as $item){
-                        if(!$item->save(false)){
-                            throw new Exception(Yii::t('system/error', 'Sorry, I can not save the characteristic data'));
-                        }
-                    }
-                }else{
-                    throw new Exception('Error to load characteristics');
-                }
-                $transaction->commit();
-
-                return true;
-            }catch(Exception $e){
-                $this->error = $e->getMessage();
-                $transaction->rollBack();
-
-                return false;
-            }
-        }*/
 
         public function getAllCategory(){
             $query = CategoryModel::find();
@@ -221,6 +154,12 @@
 
         public function init(){
             $this->characteristics = $this->category->productCharacteristics ? $this->category->productCharacteristics : [];
+            if(!empty($this->category->parent)){
+                $this->parentCharacteristics = $this->category->parent0->productCharacteristics ? $this->category->parent0->productCharacteristics : [];
+            }else{
+                $this->parentCharacteristics = [];
+            }
         }
+
 
     }
