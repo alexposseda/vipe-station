@@ -14,8 +14,8 @@
      * Class CategoryForm
      * @package backend\models\forms
      *
-     * @property SeoModel                    $seo
-     * @property CategoryModel               $category
+     * @property SeoModel                       $seo
+     * @property CategoryModel                  $category
      * @property  ProductCharacteristicModel [] $characteristic
      *
      */
@@ -43,7 +43,7 @@
          * @return bool
          */
         public function loadData(array $data){
-            if( $this->category->load($data) && $this->seo->load($data)){
+            if($this->category->load($data) && $this->seo->load($data)){
                 return true;
             }
 
@@ -70,32 +70,33 @@
                 }
 
                 //todo сохранение характеристик
-                $count = count(Yii::$app->request->post('ProductCharacteristicModel'));
                 $characteristicsPost = Yii::$app->request->post('ProductCharacteristicModel');
-                /** @var ProductCharacteristicModel[] $characteristics */
-                if(empty($characteristics = $this->category->productCharacteristics)){
-                    for($i = 0; $i < $count; $i++){
-                        $characteristics[] = new ProductCharacteristicModel(['category_id'=>$this->category->id]);
-                    }
-                }elseif($count != count($characteristics)){
-                    foreach($characteristicsPost as $characteristicPost){
-                        $temp = $characteristics;
-                        foreach($temp as $characteristic){
-                            if($characteristicPost->title == $characteristic->title){
-                            }
-                        }
+                $oldId = [];
+                $characteristics=[];
+                foreach($characteristicsPost as $index=>$item){
+                    $characteristics[$index] = ProductCharacteristicModel::findOne($item['id']);
+
+                    if(!$characteristics[$index]){
+                        $characteristics[$index]=new ProductCharacteristicModel(['category_id' => $this->category->id]);
+                    }else{
+                        $oldId[] = $item['id'];
                     }
                 }
-
+                $deleteCharacteristic = $this->category->getProductCharacteristics()->where(['not in', 'id', $oldId])->all();
+                if(!empty($deleteCharacteristic)){
+                    foreach($deleteCharacteristic as $item)
+                        $item->delete();
+                }
 
                 if(Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
                     foreach($characteristics as $item){
-                        if(!$item->save(false))
-                            throw new Exception('Error to save characteristic')
-                        ;
+                        if(!$item->save(false)){
+                            throw new Exception('Error to save characteristic');
+                        }
                     }
-                }else
+                }else{
                     throw new Exception('Error to load characteristics');
+                }
                 $transaction->commit();
 
                 return true;
