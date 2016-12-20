@@ -23,8 +23,9 @@
 
         public $category;
         public $seo;
-        public $characteristics;
         public $error;
+
+        public $characteristic;
 
         public function rules(){
             return [
@@ -42,7 +43,7 @@
          * @return bool
          */
         public function loadData(array $data){
-            if( $this->category->load($data) && $this->seo->load($data) && Model::loadMultiple($this->characteristics,Yii::$app->request->post())){
+            if( $this->category->load($data) && $this->seo->load($data)){
                 return true;
             }
 
@@ -72,25 +73,23 @@
                 $count = count(Yii::$app->request->post('ProductCharacteristicModel'));
                 $characteristicsPost = Yii::$app->request->post('ProductCharacteristicModel');
                 /** @var ProductCharacteristicModel[] $characteristics */
-                if(empty(/*$characteristics = */$this->category->productCharacteristics)){
+                if(empty($characteristics = $this->category->productCharacteristics)){
                     for($i = 0; $i < $count; $i++){
-                        $this->characteristics[$i]->category_id =$this->category->id;
+                        $characteristics[] = new ProductCharacteristicModel(['category_id'=>$this->category->id]);
                     }
-                }/*elseif($count != count($characteristics)){
+                }elseif($count != count($characteristics)){
                     foreach($characteristicsPost as $characteristicPost){
                         $temp = $characteristics;
-                        $characteristics = null;
                         foreach($temp as $characteristic){
                             if($characteristicPost->title == $characteristic->title){
-                                $characteristics[] = $characteristic;
                             }
                         }
                     }
-                }*/
+                }
 
 
-                if(/*Model::loadMultiple($characteristics, Yii::$app->request->post()) && */Model::validateMultiple($this->characteristics)){
-                    foreach($this->characteristics as $item){
+                if(Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
+                    foreach($characteristics as $item){
                         if(!$item->save(false))
                             throw new Exception('Error to save characteristic')
                         ;

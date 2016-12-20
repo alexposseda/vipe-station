@@ -83,11 +83,10 @@
         public function actionCreate(){
             $model = new CategoryForm([
                                           'category' => new CategoryModel(),
-                                          'seo'      => new SeoModel(),
-                                          'characteristics' => [new ProductCharacteristicModel()]
+                                          'seo'      => new SeoModel()
                                       ]);
 
-
+            $characteristics = [new ProductCharacteristicModel()];
 
             if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
@@ -98,6 +97,7 @@
 
             return $this->render('create', [
                 'model'           => $model,
+                'characteristics' => $characteristics,
             ]);
         }
 
@@ -112,6 +112,7 @@
         public function actionUpdate($id){
             $category = $this->findModel($id);
             $characteristics = $category->productCharacteristics;
+
 
             $seo = ($category->seo) ? $category->seo : new SeoModel();
             $model = new CategoryForm([
