@@ -61,11 +61,17 @@
                 $this->categories[$key] = ['selected' => 'selected'];
             }
 
+            /**
+             * Получаем все характеристики из категорий в которых находиться продукт
+             */
             $characteristics = [];
             foreach($this->product->categories as $category){
                 $characteristics = ArrayHelper::merge($characteristics, $category->productCharacteristics);
             }
 
+            /**
+             * Формируем массив характеристик продукта
+             */
             $this->characteristics = [];
             foreach($characteristics as $characteristic){
                 $condition = ['characteristic_id' => $characteristic->id];
@@ -76,6 +82,9 @@
                 $this->characteristics[] = $char_m;
             }
 
+            /**
+             * Формируем массив опций продукта
+             */
             $this->options = [];
             foreach($characteristics as $characteristic){
                 $condition = ['characteristic_id' => $characteristic->id];
@@ -88,6 +97,7 @@
         }
 
         /**
+         * Загружаем из POST данные в форму, продукт и сео
          * @param array $data
          *
          * @return bool
@@ -101,6 +111,7 @@
         }
 
         /**
+         * Сохраняем в транзакции сео, продукт, категорию продукта, характеристики и опции
          * @return bool
          */
         public function save(){
@@ -142,14 +153,6 @@
                     foreach($diff_categories as $category_delete){
                         $category_delete->delete();
                     }
-                }
-                //endregion
-
-                //region Clear Session gallery
-                $gallery = $this->product->gallery ? json_decode($this->product->gallery) : [];
-                foreach($gallery as $gallery_item){
-                    FileManager::getInstance()
-                               ->removeFromSession($gallery_item);
                 }
                 //endregion
 
@@ -217,6 +220,13 @@
                 //endregion
 
                 $transaction->commit();
+                //region Clear Session gallery
+                $gallery = $this->product->gallery ? json_decode($this->product->gallery) : [];
+                foreach($gallery as $gallery_item){
+                    FileManager::getInstance()
+                               ->removeFromSession($gallery_item);
+                }
+                //endregion
 
                 return true;
             }catch(Exception $e){
@@ -240,7 +250,7 @@
                                        ->cache(function($db){
                                            return CategoryModel::find()
                                                                ->all();
-                                       }, 3600, $dependency);
+                                       }, 0, $dependency);
 
             return ArrayHelper::map($categories, 'id', 'title');
         }
@@ -257,7 +267,7 @@
                                 ->cache(function($db){
                                     return BrandModel::find()
                                                      ->all();
-                                }, 3600, $dependency);
+                                }, 0, $dependency);
 
             return ArrayHelper::map($brands, 'id', 'title');
         }
