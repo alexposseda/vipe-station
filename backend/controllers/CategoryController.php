@@ -88,7 +88,7 @@
 
             $characteristics = [new ProductCharacteristicModel()];
 
-            if($model->loadData(Yii::$app->request->post()) && $model->save()){
+            if(Yii::$app->request->isPost && $model->save()){
                 return $this->redirect([
                                            'view',
                                            'id' => $model->category->id
@@ -120,7 +120,7 @@
                                           'seo'      => $seo
                                       ]);
 
-            if($model->loadData(Yii::$app->request->post()) && $model->save()){
+            if(Yii::$app->request->isPost && $model->save()){
                 return $this->redirect([
                                            'view',
                                            'id' => $model->category->id

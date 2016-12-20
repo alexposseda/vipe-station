@@ -10,7 +10,7 @@
 
     $this->title = Yii::t('system/view', 'Create').' '.Yii::t('models/category', 'Category');
     $this->params['breadcrumbs'][] = [
-        'label' => Yii::t('models/base', 'Category'),
+        'label' => Yii::t('models/base', 'Categories'),
         'url'   => ['index']
     ];
     $this->params['breadcrumbs'][] = $this->title;
