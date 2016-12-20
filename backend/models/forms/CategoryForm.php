@@ -16,7 +16,7 @@
      *
      * @property SeoModel                       $seo
      * @property CategoryModel                  $category
-     * @property  ProductCharacteristicModel [] $characteristic
+     * @property  ProductCharacteristicModel [] $characteristics
      *
      */
     class CategoryForm extends Model{
@@ -24,15 +24,7 @@
         public $category;
         public $seo;
         public $error;
-
-        public function rules(){
-            return [
-                [
-                    'characteristic',
-                    'safe'
-                ]
-            ];
-        }
+        public $characteristics;
 
 
         /**
@@ -48,7 +40,7 @@
             return false;
         }*/
 
-        public function save (){
+        public function save(){
             $transaction = Yii::$app->db->beginTransaction();
             try{
                 $this->saveSeo();
@@ -56,10 +48,12 @@
                 $this->saveCharacteristics();
 
                 $transaction->commit();
+
                 return true;
             }catch(Exception $e){
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('error', $e->getMessage());
+
                 return false;
             }
         }
@@ -108,20 +102,29 @@
         protected function saveCharacteristics(){
             $characteristicsPost = Yii::$app->request->post('ProductCharacteristicModel');
             $oldId = [];
-            $characteristics=[];
-            foreach($characteristicsPost as $index=>$item){
-                $characteristics[$index] = ProductCharacteristicModel::findOne($item['id']);
+            $characteristics = [];
+            if(!empty($characteristicsPost)){
+                foreach($characteristicsPost as $index => $item){
+                    $characteristics[$index] = ProductCharacteristicModel::findOne($item['id']);
 
-                if(!$characteristics[$index]){
-                    $characteristics[$index]=new ProductCharacteristicModel(['category_id' => $this->category->id]);
-                }else{
-                    $oldId[] = $item['id'];
+                    if(!$characteristics[$index]){
+                        $characteristics[$index] = new ProductCharacteristicModel(['category_id' => $this->category->id]);
+                    }else{
+                        $oldId[] = $item['id'];
+                    }
                 }
             }
-            $deleteCharacteristic = $this->category->getProductCharacteristics()->where(['not in', 'id', $oldId])->all();
+            $deleteCharacteristic = $this->category->getProductCharacteristics()
+                                                   ->where([
+                                                               'not in',
+                                                               'id',
+                                                               $oldId
+                                                           ])
+                                                   ->all();
             if(!empty($deleteCharacteristic)){
-                foreach($deleteCharacteristic as $item)
+                foreach($deleteCharacteristic as $item){
                     $item->delete();
+                }
             }
 
             if(Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
@@ -194,20 +197,30 @@
         public function getAllCategory(){
             $query = CategoryModel::find();
             $id = (!empty($this->category)) ? $this->category->id : null;
-            if(!$this->category->isNewRecord){
+            if(!empty($id)){
                 $query->andWhere([
                                      '!=',
                                      'id',
-                                     $this->category->id
+                                     $id
                                  ])
                       ->andWhere([
                                      '!=',
                                      'parent',
-                                     $this->category->id
+                                     $id
+                                 ])
+                      ->orWhere(['parent' => null])
+                      ->andWhere([
+                                     '!=',
+                                     'id',
+                                     $id
                                  ]);
             }
 
             return ArrayHelper::map($query->all(), 'id', 'title');
+        }
+
+        public function init(){
+            $this->characteristics = $this->category->productCharacteristics ? $this->category->productCharacteristics : [];
         }
 
     }

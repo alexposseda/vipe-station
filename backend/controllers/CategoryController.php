@@ -86,7 +86,6 @@
                                           'seo'      => new SeoModel()
                                       ]);
 
-            $characteristics = [new ProductCharacteristicModel()];
 
             if(Yii::$app->request->isPost && $model->save()){
                 return $this->redirect([
@@ -97,7 +96,6 @@
 
             return $this->render('create', [
                 'model'           => $model,
-                'characteristics' => $characteristics,
             ]);
         }
 
@@ -111,7 +109,6 @@
          */
         public function actionUpdate($id){
             $category = $this->findModel($id);
-            $characteristics = $category->productCharacteristics;
 
 
             $seo = ($category->seo) ? $category->seo : new SeoModel();
@@ -128,7 +125,6 @@
             }else{
                 return $this->render('update', [
                     'model'           => $model,
-                    'characteristics' => $characteristics,
                 ]);
             }
         }
