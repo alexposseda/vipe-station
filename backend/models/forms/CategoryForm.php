@@ -14,9 +14,10 @@
      * Class CategoryForm
      * @package backend\models\forms
      *
-     * @property SeoModel                    $seo
-     * @property CategoryModel               $category
-     * @property  ProductCharacteristicModel $characteristic
+     * @property SeoModel                       $seo
+     * @property CategoryModel                  $category
+     * @property  ProductCharacteristicModel [] $characteristic
+     *
      */
     class CategoryForm extends Model{
 
@@ -28,7 +29,10 @@
 
         public function rules(){
             return [
-                ['characteristic', 'safe']
+                [
+                    'characteristic',
+                    'safe'
+                ]
             ];
         }
 
@@ -39,7 +43,7 @@
          * @return bool
          */
         public function loadData(array $data){
-            if($this->load($data) && $this->category->load($data) && $this->seo->load($data)){
+            if($this->category->load($data) && $this->seo->load($data)){
                 return true;
             }
 
@@ -66,7 +70,33 @@
                 }
 
                 //todo сохранение характеристик
+                $characteristicsPost = Yii::$app->request->post('ProductCharacteristicModel');
+                $oldId = [];
+                $characteristics=[];
+                foreach($characteristicsPost as $index=>$item){
+                    $characteristics[$index] = ProductCharacteristicModel::findOne($item['id']);
 
+                    if(!$characteristics[$index]){
+                        $characteristics[$index]=new ProductCharacteristicModel(['category_id' => $this->category->id]);
+                    }else{
+                        $oldId[] = $item['id'];
+                    }
+                }
+                $deleteCharacteristic = $this->category->getProductCharacteristics()->where(['not in', 'id', $oldId])->all();
+                if(!empty($deleteCharacteristic)){
+                    foreach($deleteCharacteristic as $item)
+                        $item->delete();
+                }
+
+                if(Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
+                    foreach($characteristics as $item){
+                        if(!$item->save(false)){
+                            throw new Exception('Error to save characteristic');
+                        }
+                    }
+                }else{
+                    throw new Exception('Error to load characteristics');
+                }
                 $transaction->commit();
 
                 return true;
@@ -79,12 +109,22 @@
         }
 
         public function getAllCategory(){
+            $query = CategoryModel::find();
             $id = (!empty($this->category)) ? $this->category->id : null;
+            if(!$this->category->isNewRecord){
+                $query->andWhere([
+                                     '!=',
+                                     'id',
+                                     $this->category->id
+                                 ])
+                      ->andWhere([
+                                     '!=',
+                                     'parent',
+                                     $this->category->id
+                                 ]);
+            }
 
-            return ArrayHelper::map(CategoryModel::find()
-                                                 ->where(['!=', 'id', $id])
-                                                 ->andWhere(['!=', 'parent', $id])
-                                                 ->all(), 'id', 'title');
+            return ArrayHelper::map($query->all(), 'id', 'title');
         }
 
     }

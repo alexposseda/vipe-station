@@ -70,9 +70,9 @@
          * @return mixed
          */
         public function actionView($id){
-                return $this->render('view', [
-                    'model' => $this->findModel($id),
-                ]);
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
         }
 
         /**
@@ -86,20 +86,19 @@
                                           'seo'      => new SeoModel()
                                       ]);
 
-            $category_array = ArrayHelper::map(CategoryModel::find()
-                                                            ->all(), 'id', 'title');
+            $characteristics = [new ProductCharacteristicModel()];
 
             if($model->loadData(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
-                                           'update',
+                                           'view',
                                            'id' => $model->category->id
                                        ]);
-            }else{
-                return $this->render('create', [
-                    'category_array' => $category_array,
-                    'model' => $model,
-                ]);
             }
+
+            return $this->render('create', [
+                'model'           => $model,
+                'characteristics' => $characteristics,
+            ]);
         }
 
         /**
@@ -112,15 +111,8 @@
          */
         public function actionUpdate($id){
             $category = $this->findModel($id);
+            $characteristics = $category->productCharacteristics;
 
-            /*Gektor Получаем все категории и отсеиваем текущую категорию + дочерние категории */
-            $category_array = ArrayHelper::map(CategoryModel::find()
-                                                            ->all(), 'id', 'title');
-            ArrayHelper::remove($category_array, $id);
-            foreach($category->categoryModels as $temp){
-                ArrayHelper::remove($category_array, $temp->id);
-            }
-            /**/
 
             $seo = ($category->seo) ? $category->seo : new SeoModel();
             $model = new CategoryForm([
@@ -135,8 +127,8 @@
                                        ]);
             }else{
                 return $this->render('update', [
-                    'category_array' => $category_array,
-                    'model'          => $model,
+                    'model'           => $model,
+                    'characteristics' => $characteristics,
                 ]);
             }
         }
