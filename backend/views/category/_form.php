@@ -52,7 +52,7 @@
                     <?= Html::tag('span', Yii::t('models/category', 'Parent Characteristics'),
                                   ['class' => 'panel panel-success panel-heading']) ?>
                     <?php foreach($model->parentCharacteristics as $index => $parentcharacteristic) : ?>
-                        <?= $form->field($parentcharacteristic, '['.$index.']title') ?>
+                        <?= Html::tag('div', $parentcharacteristic->title,['class' => 'panel panel-success panel-heading'])?>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -66,6 +66,8 @@
                                  ->hiddenInput(['value' => $characteristic->id])
                                  ->label(false) ?>
                     <?php endforeach; ?>
+<!--                    <input type="text" name="ProductCharacteristicModel[0][title]">-->
+<!--                    <input type="text" name="ProductCharacteristicModel[0][id]" value="21">-->
                 </div>
             </div>
 

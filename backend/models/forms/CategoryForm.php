@@ -26,7 +26,6 @@
         public $characteristics;
         public $parentCharacteristics;
 
-
         public function save(){
             $transaction = Yii::$app->db->beginTransaction();
             try{
@@ -93,7 +92,6 @@
             if(!empty($characteristicsPost)){
                 foreach($characteristicsPost as $index => $item){
                     $characteristics[$index] = ProductCharacteristicModel::findOne($item['id']);
-
                     if(!$characteristics[$index]){
                         $characteristics[$index] = new ProductCharacteristicModel(['category_id' => $this->category->id]);
                     }else{
@@ -114,15 +112,16 @@
                 }
             }
 
-
-            if(!empty($characteristics) && Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
-                foreach($characteristics as $item){
-                    if(!$item->save(false)){
-                        throw new Exception(Yii::t('system/error', 'Sorry, I can not save the characteristic data'));
+            if(!empty($characteristics)){
+                if(Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
+                    foreach($characteristics as $item){
+                        if(!$item->save(false)){
+                            throw new Exception(Yii::t('system/error', 'Sorry, I can not save the characteristic data'));
+                        }
                     }
+                }else{
+                    throw new Exception('Error to load characteristics');
                 }
-            }else{
-                throw new Exception('Error to load characteristics');
             }
         }
 
