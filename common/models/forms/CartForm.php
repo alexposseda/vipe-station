@@ -3,8 +3,6 @@
     namespace common\models\forms;
 
     use common\models\CartModel;
-    use common\models\ProductCharacteristicItemModel;
-    use common\models\ProductOptionModel;
     use Yii;
     use yii\base\Model;
     use yii\helpers\ArrayHelper;
@@ -15,6 +13,14 @@
         public $product_id;
         public $quantity = 1;
 
+        public function attributeLabels(){
+            return [
+                'characteristic_id' => Yii::t('models', 'Characteristics'),
+                'option_id'         => Yii::t('models', 'Options'),
+                'product_id'        => Yii::t('models', 'Product'),
+                'quantity'          => Yii::t('models/cart', 'Quantity')
+            ];
+        }
 
         public function rules(){
             return [
@@ -33,7 +39,6 @@
             if($cart->save()){
                 return true;
             }
-
 
             return false;
         }
