@@ -3,6 +3,7 @@
     namespace backend\controllers;
 
     use Behat\Gherkin\Exception\Exception;
+    use common\models\forms\CartForm;
     use Yii;
     use common\models\CartModel;
     use yii\data\ActiveDataProvider;
@@ -39,15 +40,12 @@
             return $this->render('index', ['dataProvider' => $cartDataProvider]);
         }
 
-        public function actionAddToCart($product_id, $options, $quantity){
-            $cart = new CartModel();
-            $cart->setID();
+        public function actionAddToCart(){
+            $cartForm = new CartForm();
+            if($cartForm->load(Yii::$app->request->post()) && $cartForm->add()){
+                Yii::$app->session->setFlash('success', 'Добавлено в корзину');
 
-            $cart->product_id = $product_id;
-            $cart->options = $options;
-            $cart->quantity = $quantity;
-            if($cart->save()){
-                return true;
+                return $this->redirect(['/catalog']);
             }
             Yii::$app->session->setFlash('error', 'Error save cart');
 

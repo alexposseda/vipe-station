@@ -29,7 +29,9 @@
                                    ]);
 
             if($order->loadAll(Yii::$app->request->post()) && $order->save()){
-                Yii::$app->session->addFlash('success', 'Заказа оформлен');
+                Yii::$app->session->addFlash('success', 'Заказ №'.$order->order->id.' оформлен');
+
+                return $this->redirect(['index']);
             }
 
             return $this->render('create', ['order' => $order]);
@@ -40,9 +42,11 @@
                                        'order' => OrderModel::findOne($id)
                                    ]);
             if($order->loadAll(Yii::$app->request->post()) && $order->save()){
-                Yii::$app->session->addFlash('success', 'Заказа изменен');
+                Yii::$app->session->addFlash('success', 'Заказ №'.$order->order->id.' изменен');
+
+                return $this->redirect(['index']);
             }
 
-            return $this->render('create', ['order' => $order]);
+            return $this->render('update', ['order' => $order]);
         }
     }

@@ -18,6 +18,8 @@
         'Characteristics' => 'Характеристики',
         'Options'         => 'Опции',
         'Option'          => 'Опция',
+        'Orders'           => 'Заказы',
+        'Order'           => 'Заказ',
         'Stock'           => 'Акция',
         'Stocks'          => 'Акции',
         'Cart'            => 'Корзина',

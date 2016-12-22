@@ -43,11 +43,12 @@
                     $order_data->options = $cart->options;
                     $this->orderData[] = $order_data;
                 }
-                $this->client = OrderClientDataModel::findAll(['order_id' => $this->order->id]);
+                $this->client = new OrderClientDataModel();
             }else{
                 $this->orderData = $this->order->orderDatas;
+                $this->client = OrderClientDataModel::findOne(['order_id' => $this->order->id]);
             }
-            $this->client = new OrderClientDataModel();
+
             $del_data = json_decode($this->order->delivery_data);
             $this->deliveryData = new DeliveryAddressForm($del_data ? $del_data : null);
             $this->deliveryData->f_name = $this->client->client->f_name;
@@ -77,6 +78,7 @@
                     throw new \Exception('error save order '.$this->order->getErrors()[0]);
                 }
 
+                $this->client->name = $this->deliveryData->name;
                 $this->client->order_id = $this->order->id;
                 if(!$this->client->save()){
                     throw new \Exception('error save client data '.$this->client->getErrors()[0]);
@@ -95,8 +97,10 @@
                 }
 
                 $transaction->commit();
-                foreach($this->carts as $cart){
-                    $cart->delete();
+                if($this->order->isNewRecord){
+                    foreach($this->carts as $cart){
+                        $cart->delete();
+                    }
                 }
 
                 return true;

@@ -4,6 +4,9 @@
 
     use yii\base\Model;
 
+    /**
+     * @property string name
+     */
     class DeliveryAddressForm extends Model{
         public $f_name;
         public $l_name;
@@ -12,12 +15,16 @@
         public $phone;
         public $email;
 
+        public function getName(){
+            return $this->f_name.' '.$this->l_name;
+        }
+
         public function rules(){
             return [
                 [
                     [
-                        'firstName',
-                        'lastName',
+                        'f_name',
+                        'l_name',
                         'city',
                         'address',
                         'phone',
@@ -26,8 +33,8 @@
                 ],
                 [
                     [
-                        'firstName',
-                        'lastName',
+                        'f_name',
+                        'l_name',
                         'city',
                         'address',
                         'phone',

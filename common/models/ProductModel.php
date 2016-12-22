@@ -4,6 +4,7 @@
 
     use common\components\LanguageBehavior;
     use Yii;
+    use yii\alexposseda\fileManager\FileManager;
     use yii\behaviors\SluggableBehavior;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
@@ -154,7 +155,7 @@
                 'brand_id'      => Yii::t('models', 'Brand'),
                 'sales'         => Yii::t('models/product', 'Sales'),
                 'views'         => Yii::t('models/product', 'Views'),
-                'cover'        => 'Cover',
+                'cover'         => 'Cover',
                 'seo_id'        => 'Seo ID',
                 'created_at'    => 'Created At',
                 'updated_at'    => 'Updated At',
@@ -227,6 +228,7 @@
         }
 
         public function getCover(){
-            return ($this->gallery) ? json_decode($this->gallery)[0] : '';
+            return ($this->gallery) ? FileManager::getInstance()
+                                                 ->getStorageUrl().json_decode($this->gallery)[0] : '';
         }
     }

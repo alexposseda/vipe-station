@@ -3,14 +3,16 @@
      * @var $this            \yii\web\View
      * @var $productProvider \yii\data\ActiveDataProvider
      */
-    use yii\helpers\Html;
+
     use yii\widgets\ListView;
 
 ?>
-
-<?= ListView::widget([
-                         'dataProvider' => $productProvider,
-                         'itemView'     => '_listItem'
-                     ]) ?>
-
-<?=Html::a('Оформить',[''])?>
+<div class="row">
+    <?php \yii\widgets\Pjax::begin() ?>
+    <?= ListView::widget([
+                             'dataProvider' => $productProvider,
+                             'itemView'     => '_listItem',
+                             'separator'    => ''
+                         ]) ?>
+    <?php \yii\widgets\Pjax::end() ?>
+</div>

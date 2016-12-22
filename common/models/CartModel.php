@@ -99,12 +99,16 @@
         public function getPrice(){
             $price = $this->product->base_price;
             if($this->options){
-//                foreach(json_decode($this->options) as $option){
-//                    $price += $option->delta_price;
-//                }
+                $options = json_decode($this->options);
+                if(isset($options->options)){
+                    foreach($options->options as $option){
+                        $optionModel = ProductOptionModel::findOne($option);
+                        $price += $optionModel->delta_price;
+                    }
+                }
             }
 
-            return $price;
+            return $price * $this->quantity;
         }
 
         public function setID(){

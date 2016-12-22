@@ -33,7 +33,9 @@
         const ORDER_STATUS_FINISHED  = 'finished';
         const ORDER_STATUS_PAID      = 'paid';
 
-
+        public function afterFind(){
+            $this->total_cost = $this->getOrderDatas()->sum('price');
+        }
 
         /**
          * @inheritdoc

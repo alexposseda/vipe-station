@@ -1,6 +1,6 @@
 <?php
 
-    use yii\alexposseda\fileManager\FileManager;
+    use common\models\ProductOptionModel;
     use yii\helpers\Html;
     use yii\grid\GridView;
 
@@ -13,7 +13,7 @@
 <div class="cart-model-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <?= Html::a(Yii::t('models/cart', 'Zakaz'), ['/order/create'], ['class' => 'btn btn-primary']) ?>
     <?= GridView::widget([
                              'dataProvider' => $dataProvider,
                              'columns'      => [
@@ -23,20 +23,28 @@
                                  'user.client.name',
                                  'guest_id',
                                  'product.title',
+                                 'product.cover:image',
+                                 'quantity',
+                                 'product.base_price',
                                  [
-                                     'attribute' => 'product.cover',
-                                     'format'    => 'image',
-                                     'content'   => function($model){
-                                         return Html::img(FileManager::getInstance()
-                                                                     ->getStorageUrl().$model->product->cover, [
-                                                              'class' => 'img-thumbnail',
-                                                              'style' => 'width: 100%; max-width: 80px;'
-                                                          ]);
+                                     'label'   => 'опции',
+                                     'content' => function($data){
+                                         $html = '';
+                                         /** @var \common\models\CartModel $data */
+                                         if($data->options){
+                                             $options = json_decode($data->options);
+                                             if(!empty($options->options)){
+                                                 foreach($options->options as $option){
+                                                     $optionModel = ProductOptionModel::findOne($option);
+                                                     $html .= $optionModel->characteristic->title.' '.$optionModel->delta_price.'<br>';
+                                                 }
+                                             }
+                                         }
+
+                                         return $html;
                                      }
                                  ],
-
-                                 'options',
-                                 'quantity',
+                                 'price',
 
                                  ['class' => 'yii\grid\ActionColumn'],
                              ],
