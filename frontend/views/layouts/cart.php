@@ -62,7 +62,7 @@ JS;
             </div>
             <div class="col s6 m6 l6 center-align">
                 <div class="btn-active-cart btn-active-cart-second btn-buy center-align fs15 fc-light-brown">
-                    <a href="#" class="fc-light-brown">В корзину</a>
+                    <a href="<?= Url::to(['/cart/index']) ?>" class="fc-light-brown">В корзину</a>
                 </div>
             </div>
             <!--</div>-->
