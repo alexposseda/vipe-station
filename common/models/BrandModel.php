@@ -23,6 +23,7 @@
      *
      * @property SeoModel       $seo
      * @property ProductModel[] $products
+     * @property mixed          logo
      */
     class BrandModel extends ActiveRecord{
 

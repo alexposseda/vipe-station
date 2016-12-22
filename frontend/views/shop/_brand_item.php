@@ -28,7 +28,7 @@
             <p><?= Html::encode($model->description) ?></p>
         </div>
         <div class="btn-buy center-align fs15 fc">
-            <a href="<?= Url::to(['shop/catalog-all', 'ProductSearchModel[category_id]' => $model->id]) ?>">Перейти</a>
+            <a href="<?= Url::to(['shop/catalog-all', 'ProductSearchModel[brand_id]' => $model->id]) ?>">Перейти</a>
         </div>
     </div>
     <div class="clearfix"></div>

@@ -49,4 +49,11 @@
 
             return $this->render('update', ['order' => $order]);
         }
+
+        public function actionDelete($id){
+            OrderModel::findOne($id)
+                      ->delete();
+
+            return $this->redirect(['index']);
+        }
     }

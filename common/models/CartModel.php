@@ -4,6 +4,7 @@
 
     use Yii;
     use yii\behaviors\TimestampBehavior;
+    use yii\caching\DbDependency;
     use yii\db\ActiveRecord;
     use yii\web\Cookie;
 
@@ -36,6 +37,13 @@
             }
 
             return self::findAll($condition);
+        }
+
+        public static function findByGuestId($guest_id){
+            return self::getDb()
+                       ->cache(function() use ($guest_id){
+                           return self::findAll(['guest_id' => $guest_id]);
+                       }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.self::tableName()]));
         }
 
         /**
@@ -158,24 +166,7 @@
                 return true;
             }
             Yii::$app->session->setFlash('error', 'Error save cart');
+            return false;
         }
 
-        public function actionLogin(){
-            /** @var CartModel[] $cart */
-            $cart = CartModel::find()
-                             ->Where(['guest_id' => Yii::$app->session->get('guest_id')])
-                             ->all();
-
-            if(!empty($cart)){
-                $id = Yii::$app->user->id;
-                foreach($cart as $obj){
-                    $obj->user_id = $id;
-                    $obj->guest_id = null;
-                    if($obj->save()){
-                        return true;
-                    }
-                    Yii::$app->session->setFlash('error', 'Not save cart');
-                }
-            }
-        }
     }

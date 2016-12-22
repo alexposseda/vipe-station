@@ -12,6 +12,7 @@
      */
     class ProductSearchModel extends ProductModel{
         public $category_id;
+        public $brand_id;
         public $price;
 
         /**
@@ -72,13 +73,8 @@
             // grid filtering conditions
             $query->andFilterWhere([
                                        'id'            => $this->id,
-                                       'base_price'    => $this->base_price,
                                        'base_quantity' => $this->base_quantity,
-                                       'sales'         => $this->sales,
-                                       'views'         => $this->views,
-                                       //            'seo_id' => $this->seo_id,
                                        'created_at'    => $this->created_at,
-                                       //            'updated_at' => $this->updated_at,
                                        'brand_id'      => $this->brand_id,
                                    ]);
             if($this->price){
@@ -90,7 +86,7 @@
                       ->andFilterWhere(['c.id' => $this->category_id]);
             }
 
-            $query->andFilterWhere(['like', 'title', $this->title])//            ->andFilterWhere(['like', 'gallery', $this->gallery])
+            $query->andFilterWhere(['like', 'title', $this->title])
                   ->andFilterWhere(['like', 'description', $this->description]);
 
             return $dataProvider;
