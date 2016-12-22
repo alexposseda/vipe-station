@@ -18,10 +18,16 @@
                              'dataProvider' => $dataProvider,
                              'columns'      => [
                                  ['class' => 'yii\grid\SerialColumn'],
-
-                                 'id',
-                                 'user.client.name',
-                                 'guest_id',
+                                 [
+                                     'label'   => Yii::t('models/cart', 'Name'),
+                                     'content' => function($data){
+                                         if($data->user_id){
+                                             return $data->user->client->name;
+                                         }elseif($data->guest_id){
+                                             return Yii::t('models/cart', 'Guest');
+                                         }
+                                     }
+                                 ],
                                  'product.title',
                                  'product.cover:image',
                                  'quantity',
@@ -29,7 +35,7 @@
                                  [
                                      'label'   => 'опции',
                                      'content' => function($data){
-                                         $html = '';
+                                         $html = ' ';
                                          /** @var \common\models\CartModel $data */
                                          if($data->options){
                                              $options = json_decode($data->options);

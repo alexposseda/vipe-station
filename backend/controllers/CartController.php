@@ -2,13 +2,11 @@
 
     namespace backend\controllers;
 
-    use Behat\Gherkin\Exception\Exception;
     use common\models\forms\CartForm;
     use Yii;
     use common\models\CartModel;
     use yii\data\ActiveDataProvider;
     use yii\web\Controller;
-    use yii\web\Cookie;
     use yii\web\NotFoundHttpException;
     use yii\filters\VerbFilter;
 

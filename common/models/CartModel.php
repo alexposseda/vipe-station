@@ -100,7 +100,7 @@
             $price = $this->product->base_price;
             if($this->options){
                 $options = json_decode($this->options);
-                if(isset($options->options)){
+                if(!empty($options->options)){
                     foreach($options->options as $option){
                         $optionModel = ProductOptionModel::findOne($option);
                         $price += $optionModel->delta_price;

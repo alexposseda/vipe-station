@@ -1,20 +1,17 @@
 <?php
 
-    namespace backend\models\forms;
+    namespace common\models\forms;
 
     use common\models\CartModel;
-    use common\models\ClientModel;
-    use common\models\forms\DeliveryAddressForm;
     use common\models\OrderClientDataModel;
     use common\models\OrderDataModel;
     use common\models\OrderModel;
-    use common\models\UserIdentity;
     use Yii;
     use yii\base\Model;
 
     /**
      * Class OrderForm
-     * @package backend\models\forms
+     * @package common\models\forms
      *
      * @property OrderModel           $order
      * @property CartModel[]          $carts
@@ -74,6 +71,12 @@
             try{
                 $this->order->delivery_data = json_encode($this->deliveryData);
 
+                if($this->order->isNewRecord){
+                    foreach($this->carts as $cart){
+                        $cart->delete();
+                    }
+                }
+
                 if(!$this->order->save()){
                     throw new \Exception('error save order '.$this->order->getErrors()[0]);
                 }
@@ -97,11 +100,6 @@
                 }
 
                 $transaction->commit();
-                if($this->order->isNewRecord){
-                    foreach($this->carts as $cart){
-                        $cart->delete();
-                    }
-                }
 
                 return true;
             }catch(\Exception $e){
