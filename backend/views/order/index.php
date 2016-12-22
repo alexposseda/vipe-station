@@ -33,6 +33,13 @@
                                  'contentOptions' => ['style' => 'vertical-align:middle;']
                              ],
                              [
+                                 'attribute'      => 'delivery.price',
+                                 'headerOptions'  => [
+                                     'style' => 'width: 30%;max-width: 280px;'
+                                 ],
+                                 'contentOptions' => ['style' => 'vertical-align:middle;']
+                             ],
+                             [
                                  'attribute'      => 'payment.name',
                                  'headerOptions'  => [
                                      'style' => 'width: 30%;max-width: 280px;'

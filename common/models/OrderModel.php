@@ -34,7 +34,8 @@
         const ORDER_STATUS_PAID      = 'paid';
 
         public function afterFind(){
-            $this->total_cost = $this->getOrderDatas()->sum('price');
+            $this->total_cost = $this->getOrderDatas()
+                                     ->sum('price') + $this->delivery->price;
         }
 
         /**
