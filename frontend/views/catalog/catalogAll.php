@@ -16,8 +16,10 @@
     CatalogAllAsset::register($this);
 
     $query = $catalog->query;
-    $max = ProductModel::find()->max('base_price');
-    $min = ProductModel::find()->min('base_price');
+    $max = ProductModel::find()
+                       ->max('base_price');
+    $min = ProductModel::find()
+                       ->min('base_price');
     $js = <<<JS
 $("#range-filter").ionRangeSlider({
         type: "double",
@@ -89,7 +91,9 @@ JS;
         ]
 
     ];
-        if($this->beginCache('brandCache', ['duration' => 0, 'dependency' => $dependency])):
+        if($this->beginCache('brandCache',
+                             ['variations' => [Yii::$app->language, Yii::$app->request->queryParams], 'duration' => 0, 'dependency' => $dependency])
+        ):
             ?>
             <?= ListView::widget([
                                      'dataProvider' => $catalog,
