@@ -41,4 +41,19 @@
                 throw new Exception('error save logger');
             }
         }
+        public static function addLog($action, $action_data){
+            $user_id = Yii::$app->user->id;
+            $initializer = current(Yii::$app->authManager->getRolesByUser($user_id))->name;
+            $log = new LogModel([
+                                    'action'      => $action,
+                                    'action_data' => json_encode($action_data),
+                                    'initializer' => $initializer,
+                                    'user_id'     => $user_id
+                                ]);
+            if($log->save()){
+                Yii::$app->session->setFlash('info', 'лог записан');
+            }else{
+                throw new Exception(Yii::t('system/error', 'error save logger'));
+            }
+        }
     }

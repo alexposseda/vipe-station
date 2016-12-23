@@ -8,5 +8,6 @@
         'Sorry, I can not save the category data'       => 'Извините, не возможно сохранить данные категории',
         'Sorry, I can not save the characteristic data' => 'Извините, не возможно сохранить данные характеристики',
         'The requested page does not exist.'            => 'Данная страница не существует.',
-        'Sorry, information is not available'           => 'Извените, информация временно отсутствует'
+        'Sorry, information is not available'           => 'Извените, информация временно отсутствует',
+        'Error save logger'                             => 'Извените не могу сохранить данные в логгер'
     ];

@@ -3,6 +3,7 @@
     namespace common\models;
 
     use common\components\LanguageBehavior;
+    use common\components\logger\LogComponent;
     use Yii;
     use yii\alexposseda\fileManager\FileManager;
     use yii\behaviors\SluggableBehavior;
@@ -38,11 +39,11 @@
                 ],
                 TimestampBehavior::className(),
                 [
-                    'class'         => LanguageBehavior::className(),
-                    'langModelName' => BrandLangModel::className(),
+                    'class'             => LanguageBehavior::className(),
+                    'langModelName'     => BrandLangModel::className(),
                     'relationFieldName' => 'brand_id',
-                    't_category' => 'models/brand',
-                    'attributes'    => [
+                    't_category'        => 'models/brand',
+                    'attributes'        => [
                         'title',
                         'description'
                     ],
@@ -156,18 +157,31 @@
             }
 
             if(!empty($this->cover)){
-                FileManager::getInstance()->removeFile(json_decode($this->cover)[0]);
+                FileManager::getInstance()
+                           ->removeFile(json_decode($this->cover)[0]);
             }
 
             return true;
         }
-        public function afterSave(){
+
+
+        public function afterSave($insert, $changedAttributes){
             $id = Yii::$app->user->id;
-            $initializer = current(Yii::$app->authManager->getRolesByUser($id))->name;
+            $action = $insert ? 'Create' : 'Update';
+            if($action == 'Create'){
+                $action_data = 'This post in table '. $this::tableName(). ' with Id = '.$this->id. ' has Create on '. Yii::$app->formatter->asDatetime('now'). ' user with ID = ' .$id;
+            }else{
+                $action_data = 'This post in table '. $this::tableName(). ' with Id = '.$this->id. ' has Update on '. Yii::$app->formatter->asDatetime('now'). ' user with ID = ' .$id;
+            }
+            LogComponent::addLog($action, $action_data);
+
         }
+
         public function afterDelete(){
             $id = Yii::$app->user->id;
-            $initializer = current(Yii::$app->authManager->getRolesByUser($id))->name;
+            $action = 'Delete';
+            $action_data = 'This post in table '. $this::tableName(). ' with Id = '.$this->id. ' has Deleted on '. Yii::$app->formatter->asDatetime('now'). ' user with ID = ' .$id;
+            LogComponent::addLog($action, $action_data);
             parent::afterDelete();
         }
     }
