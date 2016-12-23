@@ -12,6 +12,7 @@
     use yii\widgets\ActiveForm;
     use yii\widgets\Pjax;
 
+    $this->registerJsFile('/js/setting.js', ['position' => \yii\web\View::POS_END, 'depends' => \backend\assets\AppAsset::className()]);
 ?>
 <h1><?= Yii::t('system/view', 'General Setting') ?></h1>
 <div class="row">
@@ -23,14 +24,17 @@
         <div class="panel panel-default">
             <div class="panel-heading">Shop Settings</div>
             <div class="panel-body">
-                <?= $shopSettingForm->field($shopSettingModel, 'shopName') ?>
+                <?= $shopSettingForm->field($shopSettingModel, 'shopName')
+                                    ->textInput(['disabled' => true]) ?>
 
             </div>
             <div class="panel-footer text-right">
+                <button type="button" class="btn btn-warning"><?= Yii::t('system/view', 'Edit') ?></button>
                 <?= Html::submitButton('Save', [
-                    'class' => 'btn btn-success',
-                    'name'  => 'form',
-                    'value' => 'shopSetting'
+                    'class'    => 'btn btn-success hide',
+                    'name'     => 'form',
+                    'value'    => 'shopSetting',
+                    'disabled' => true
                 ]) ?>
             </div>
         </div>
@@ -46,15 +50,34 @@
         <div class="panel panel-default">
             <div class="panel-heading">Banner setting</div>
             <div class="panel-body">
-                <?= $bannerForm->field($bannerModel, 'bannerTitle') ?>
-                <?= $bannerForm->field($bannerModel, 'bannerFile')
-                               ->fileInput() ?>
+                <div class="setting-data">
+                    <?php if(!empty($bannerModel->bannerTitle)): ?>
+                        <h2><?= $bannerModel->bannerTitle ?></h2>
+                    <?php else: ?>
+                        <div class="alert alert-info"><?= $bannerModel->getAttributeLabel('bannerTitle') ?> <?= Yii::t('system/view',
+                                                                                                                       'Not set') ?></div>
+                    <?php endif; ?>
+                    <?php if(!empty($bannerModel->bannerFile)): ?>
+                        <img src="<?= FileManager::getInstance()
+                                                 ->getStorageUrl().$bannerModel->bannerFile ?>" class="img-responsive img-thumbnail">
+                    <?php else: ?>
+                        <div class="alert alert-info"><?= $bannerModel->getAttributeLabel('bannerFile') ?> <?= Yii::t('system/view',
+                                                                                                                      'Not set') ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="setting-form hide">
+                    <?= $bannerForm->field($bannerModel, 'bannerTitle')->textInput() ?>
+                    <?= $bannerForm->field($bannerModel, 'bannerFile')
+                                   ->fileInput() ?>
+                </div>
             </div>
             <div class="panel-footer text-right">
+                <button type="button" class="btn btn-warning"><?= Yii::t('system/view', 'Edit') ?></button>
                 <?= Html::submitButton('Save', [
-                    'class' => 'btn btn-success',
-                    'name'  => 'form',
-                    'value' => 'bannerSetting'
+                    'class'    => 'btn btn-success hide',
+                    'name'     => 'form',
+                    'value'    => 'bannerSetting',
+                    'disabled' => true
                 ]) ?>
             </div>
         </div>
@@ -87,20 +110,25 @@
                         }
 
                         $label['options']['style'] = 'width: 100%';
-
                         ?>
                         <div class="row">
-                            <div class="col-lg-1 text-center">
-                                <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-                            </div>
+                            <?php if(!empty($socialForm->title)): ?>
+                                <div class="col-lg-1 text-center">
+                                    <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                                </div>
+                            <?php else: ?>
+                                <div class="col-lg-1 text-center">
+
+                                </div>
+                            <?php endif; ?>
                             <?= $socialSettingForm->field($socialForm, '['.$index.']title', ['options' => ['class' => 'col-lg-4']])
-                                                  ->textInput(['placeholder' => $socialForm->getAttributeLabel('title')])
+                                                  ->textInput(['placeholder' => $socialForm->getAttributeLabel('title'), 'disabled' => true])
                                                   ->label(false) ?>
                             <?= $socialSettingForm->field($socialForm, '['.$index.']link', ['options' => ['class' => 'col-lg-5']])
-                                                  ->input('url', ['placeholder' => $socialForm->getAttributeLabel('link')])
+                                                  ->input('url', ['placeholder' => $socialForm->getAttributeLabel('link'), 'disabled' => true])
                                                   ->label(false) ?>
                             <?= $socialSettingForm->field($socialForm, '['.$index.']iconFile', ['options' => ['class' => 'col-lg-2']])
-                                                  ->fileInput(['class' => 'hidden'])
+                                                  ->fileInput(['class' => 'hidden', 'disabled' => true])
                                                   ->label($label['title'], $label['options']) ?>
                         </div>
                         <?php
@@ -108,11 +136,12 @@
                 ?>
             </div>
             <div class="panel-footer text-right">
-                <button type="button" class="btn btn-info">Add Social</button>
+                <button type="button" class="btn btn-warning"><?= Yii::t('system/view', 'Edit') ?></button>
                 <?= Html::submitButton('Save', [
-                    'class' => 'btn btn-success',
-                    'name'  => 'form',
-                    'value' => 'socialSetting'
+                    'class'    => 'btn btn-success hide',
+                    'name'     => 'form',
+                    'value'    => 'socialSetting',
+                    'disabled' => true
                 ]) ?>
             </div>
         </div>
@@ -129,13 +158,18 @@
             <div class="panel-heading">About us</div>
             <div class="panel-body">
                 <?= $aboutForm->field($aboutUsModel, 'about')
-                              ->textarea(['rows' => 6]) ?>
+                              ->textarea([
+                                             'rows'     => 6,
+                                             'disabled' => true
+                                         ]) ?>
             </div>
             <div class="panel-footer text-right">
+                <button type="button" class="btn btn-warning"><?= Yii::t('system/view', 'Edit') ?></button>
                 <?= Html::submitButton('Save', [
-                    'class' => 'btn btn-success',
-                    'name'  => 'form',
-                    'value' => 'aboutSetting'
+                    'class'    => 'btn btn-success hide',
+                    'name'     => 'form',
+                    'value'    => 'aboutSetting',
+                    'disabled' => true
                 ]) ?>
             </div>
         </div>

@@ -5,12 +5,13 @@
     use backend\widgets\ProductWidget\ProductCharacteristicWidgetAsset;
     use yii\helpers\Html;
     use yii\widgets\ActiveForm;
+    use common\models\ProductCharacteristicModel;
 
     /**
-     * @var $this yii\web\View
-     * @var $model backend\models\forms\CategoryForm
-     * @var $form yii\widgets\ActiveForm
-     *
+     * @var                               $this  yii\web\View
+     * @var                               $model backend\models\forms\CategoryForm
+     * @var                               $form  yii\widgets\ActiveForm
+     * @var ProductCharacteristicModel [] $characteristics
      * <div class="panel panel-success">
      * <div class="panel-heading"><?= Yii::t('models', 'Characteristics').' '.Yii::t('models/product', 'Product') ?></div>
      * <div class="panel-body product-characteristic">
@@ -20,6 +21,7 @@
      * </div>
      * </div>
      */
+
     ProductCharacteristicWidgetAsset::register($this);
 ?>
 
@@ -47,8 +49,25 @@
             </div>
             <div class="panel panel-success">
                 <div class="panel-body">
-                    <?= Html::tag('span',Yii::t('system/view', 'Create').' '.Yii::t('models/characteristic', 'Characteristic'),['class'=>'btn btn-primary']) ?>
-                    <?= $form->field($model,'characteristic') ?>
+                    <?= Html::tag('span', Yii::t('models/category', 'Parent Characteristics'),
+                                  ['class' => 'panel panel-success panel-heading']) ?>
+                    <?php foreach($model->parentCharacteristics as $index => $parentcharacteristic) : ?>
+                        <?= Html::tag('div', $parentcharacteristic->title,['class' => 'panel panel-success panel-heading'])?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-body">
+                    <?= Html::tag('span', Yii::t('system/view', 'Create').' '.Yii::t('models/characteristic', 'Characteristic'),
+                                  ['class' => 'btn btn-primary']) ?>
+                    <?php foreach($model->characteristics as $index => $characteristic) : ?>
+                        <?= $form->field($characteristic, '['.$index.']title') ?>
+                        <?= $form->field($characteristic, '['.$index.']id')
+                                 ->hiddenInput(['value' => $characteristic->id])
+                                 ->label(false) ?>
+                    <?php endforeach; ?>
+<!--                    <input type="text" name="ProductCharacteristicModel[0][title]">-->
+<!--                    <input type="text" name="ProductCharacteristicModel[0][id]" value="21">-->
                 </div>
             </div>
 
@@ -65,7 +84,8 @@
                 </div>
             </div>
         </div>
-    </div>        <div class="panel-body">
+    </div>
+    <div class="panel-body">
         <?= Html::submitButton($model->category->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),
                                ['class' => $model->category->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

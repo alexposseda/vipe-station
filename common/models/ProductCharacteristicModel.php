@@ -70,9 +70,9 @@ class ProductCharacteristicModel extends ActiveRecord
         return [
             'id' => 'ID',
             'category_id' => 'Category ID',
-            'title' => 'Title',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'title' => Yii::t('models/characteristic','Title'),
+            'created_at' => Yii::t('models', 'Created'),
+            'updated_at' => Yii::t('models', 'Last Update'),
         ];
     }
 
@@ -99,4 +99,6 @@ class ProductCharacteristicModel extends ActiveRecord
     {
         return $this->hasMany(ProductOptionModel::className(), ['characteristic_id' => 'id']);
     }
+
+
 }

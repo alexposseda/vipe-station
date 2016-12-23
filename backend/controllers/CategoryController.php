@@ -70,9 +70,9 @@
          * @return mixed
          */
         public function actionView($id){
-                return $this->render('view', [
-                    'model' => $this->findModel($id),
-                ]);
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
         }
 
         /**
@@ -86,20 +86,16 @@
                                           'seo'      => new SeoModel()
                                       ]);
 
-            $category_array = ArrayHelper::map(CategoryModel::find()
-                                                            ->all(), 'id', 'title');
-
-            if($model->loadData(Yii::$app->request->post()) && $model->save()){
+            if(Yii::$app->request->isPost && $model->save()){
                 return $this->redirect([
-                                           'update',
+                                           'view',
                                            'id' => $model->category->id
                                        ]);
-            }else{
-                return $this->render('create', [
-                    'category_array' => $category_array,
-                    'model' => $model,
-                ]);
             }
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
 
         /**
@@ -113,30 +109,20 @@
         public function actionUpdate($id){
             $category = $this->findModel($id);
 
-            /*Gektor Получаем все категории и отсеиваем текущую категорию + дочерние категории */
-            $category_array = ArrayHelper::map(CategoryModel::find()
-                                                            ->all(), 'id', 'title');
-            ArrayHelper::remove($category_array, $id);
-            foreach($category->categoryModels as $temp){
-                ArrayHelper::remove($category_array, $temp->id);
-            }
-            /**/
-
             $seo = ($category->seo) ? $category->seo : new SeoModel();
             $model = new CategoryForm([
                                           'category' => $category,
                                           'seo'      => $seo
                                       ]);
 
-            if($model->loadData(Yii::$app->request->post()) && $model->save()){
+            if(Yii::$app->request->isPost && $model->save()){
                 return $this->redirect([
                                            'view',
                                            'id' => $model->category->id
                                        ]);
             }else{
                 return $this->render('update', [
-                    'category_array' => $category_array,
-                    'model'          => $model,
+                    'model' => $model,
                 ]);
             }
         }
@@ -173,7 +159,12 @@
             }
         }
 
-        public function addCharacteristic($category_id){
+        public function getParantCharacteristic($id){
+            $parentCategory = $this->findModel($id);
+            $parentCharacteristics = $parentCategory->productCharacteristics ? $parentCategory->productCharacteristics : [];
+            return $parentCharacteristics;
+        }
+        /*public function addCharacteristic($category_id){
             $characterisic = new ProductCharacteristicModel();
             if($characterisic->load(Yii::$app->request->post()) && $characterisic->save()){
                 return $this->redirect([
@@ -182,5 +173,5 @@
                                        ]);
             }
             //            return $this->renderAjax();
-        }
+        }*/
     }

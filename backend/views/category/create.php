@@ -1,14 +1,19 @@
 <?php
 
-use yii\helpers\Html;
+    use yii\helpers\Html;
+    use common\models\ProductCharacteristicModel;
 
+    /* @var $this yii\web\View */
+    /* @var $model common\models\CategoryModel
+     * @var ProductCharacteristicModel [] $characteristics
+     */
 
-/* @var $this yii\web\View */
-/* @var $model common\models\CategoryModel */
-
-$this->title = Yii::t('system/view','Create').' '.Yii::t('models/category','Category');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models/base','Category'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+    $this->title = Yii::t('system/view', 'Create').' '.Yii::t('models/category', 'Category');
+    $this->params['breadcrumbs'][] = [
+        'label' => Yii::t('models/base', 'Categories'),
+        'url'   => ['index']
+    ];
+    $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-model-create">
 
@@ -16,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'category_array' => $category_array,
     ]) ?>
 
 </div>

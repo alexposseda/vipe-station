@@ -10,7 +10,7 @@
         public $link;
         public $title;
         public $iconFile;
-        public $index;
+        public $index = 0;
 
         public $icon = '';
 

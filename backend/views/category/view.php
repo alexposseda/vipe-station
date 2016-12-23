@@ -11,7 +11,7 @@
 
     $this->title = $model->title;
     $this->params['breadcrumbs'][] = [
-        'label' => 'Category Models',
+        'label' => Yii::t('models/base', 'Categories'),
         'url'   => ['index']
     ];
     $this->params['breadcrumbs'][] = $this->title;
