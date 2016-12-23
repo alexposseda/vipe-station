@@ -1,14 +1,13 @@
 <?php
     /**
      * @var $this  \yii\web\View
-     * @var $order \backend\models\forms\OrderForm
+     * @var $order \common\models\forms\OrderForm
      */
     use common\models\DeliveryModel;
     use common\models\OrderModel;
     use common\models\PaymentModel;
     use common\models\ProductCharacteristicItemModel;
     use common\models\ProductOptionModel;
-    use yii\alexposseda\fileManager\FileManager;
     use yii\bootstrap\ActiveForm;
     use yii\caching\DbDependency;
     use yii\helpers\ArrayHelper;

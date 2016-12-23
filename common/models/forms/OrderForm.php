@@ -2,6 +2,7 @@
 
     namespace common\models\forms;
 
+    use common\components\sender\Sender;
     use common\models\CartModel;
     use common\models\OrderClientDataModel;
     use common\models\OrderDataModel;
@@ -70,12 +71,7 @@
             $transaction = Yii::$app->db->beginTransaction();
             try{
                 $this->order->delivery_data = json_encode($this->deliveryData);
-
-                if($this->order->isNewRecord){
-                    foreach($this->carts as $cart){
-                        $cart->delete();
-                    }
-                }
+                $isNewRecord = $this->order->isNewRecord;
 
                 if(!$this->order->save()){
                     throw new \Exception('error save order '.$this->order->getErrors()[0]);
@@ -91,6 +87,7 @@
                     /** @var OrderDataModel $od */
                     $od->order_id = $this->order->id;
                 }
+
                 if(Model::loadMultiple($this->orderData, Yii::$app->request->post())){
                     foreach($this->orderData as $od){
                         if(!$od->save()){
@@ -99,6 +96,24 @@
                     }
                 }
 
+                if($isNewRecord){
+                    $this->order->total_cost = $this->order->getOrderDatas()->sum('price') + $this->order->delivery->price;
+                    $sender = new Sender();
+                    if(!$sender->sendMail($this->client->email, Yii::t('system/view', 'Test buy'), 'mail-template-customer', ['model' => $this])){
+                        throw new \Exception('error send customer email');
+                    }
+                    if(!$sender->sendMail(Yii::$app->params['robotEmail'], Yii::t('system/view', 'Test buy'), 'mail-template-manager',
+                                          ['model' => $this])
+                    ){
+                        throw new \Exception('error send customer email');
+                    }
+                }
+
+                if($isNewRecord){
+                    foreach($this->carts as $cart){
+                        $cart->delete();
+                    }
+                }
                 $transaction->commit();
 
                 return true;

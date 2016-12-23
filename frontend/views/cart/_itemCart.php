@@ -1,16 +1,16 @@
 <?php
-/**
- * @var $this \yii\web\View
- * @var $model \common\models\CartModel
- */
+    /**
+     * @var $this  \yii\web\View
+     * @var $model \common\models\CartModel
+     */
+
     use yii\helpers\Html;
     use yii\helpers\Url;
 
 ?>
 <div class="row product">
     <div class="col s3 product-img img-wrap-you-order">
-        <?= Html::a(Html::img($model->product->cover), Url::to(['/product/view', 'id' => $model->product_id]),
-                    ['class' => 'product-img']) ?>
+        <?= Html::a(Html::img($model->product->cover), Url::to(['/product/view', 'id' => $model->product_id]), ['class' => 'product-img']) ?>
     </div>
     <div class="col s7 product-description">
         <div class="fs18 fc-orange title mb-5">
@@ -35,10 +35,12 @@
             <a href="#" class="fc-brown up">+</a>
         </div>
         <div class="right price">
-                                            <span class="fc-dark-brown fs20 all_price" data-base_price="<?= $model->price ?>">
-                                                <?= $model->price ?>
-                                            </span>
-            <span class="fc-dark-brown fs20">&nbsp<?= Yii::t('models/cart', 'UAH') ?></span>
+            <span class="fc-dark-brown fs20 all_price" data-base_price="<?= $model->price ?>">
+                <?= $model->price ?>
+            </span>
+            <span class="fc-dark-brown fs20">
+                &nbsp<?= Yii::t('models/cart', 'UAH') ?>
+            </span>
         </div>
         <div class="clearfix"></div>
     </div>

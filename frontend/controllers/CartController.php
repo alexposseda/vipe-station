@@ -3,9 +3,12 @@
     namespace frontend\controllers;
 
     use common\models\forms\CartForm;
+    use common\models\forms\OrderForm;
+    use common\models\OrderModel;
     use Yii;
     use common\models\CartModel;
     use yii\data\ActiveDataProvider;
+    use yii\web\ConflictHttpException;
     use yii\web\Controller;
     use yii\web\NotFoundHttpException;
     use yii\filters\VerbFilter;
@@ -40,7 +43,7 @@
             if($cartForm->load(Yii::$app->request->post()) && $cartForm->add()){
                 Yii::$app->session->setFlash('success', 'Добавлено в корзину');
 
-                return $this->redirect(['/shop/catalog-all']);
+                return $this->redirect(['/catalog']);
             }
             Yii::$app->session->setFlash('error', 'Error save cart');
 
@@ -83,5 +86,24 @@
             }else{
                 throw new NotFoundHttpException(Yii::t('system/view', 'The requested page does not exist.'));
             }
+        }
+
+        public function actionCreateOrder(){
+            $carts = CartModel::getCart();
+            if(empty($carts)){
+                throw new ConflictHttpException(Yii::t('models/order', 'Cart is empty'));
+            }
+            $order = new OrderForm([
+                                       'carts' => CartModel::getCart(),
+                                       'order' => new OrderModel()
+                                   ]);
+
+            if($order->loadAll(Yii::$app->request->post()) && $order->save()){
+                Yii::$app->session->addFlash('success', 'Заказ №'.$order->order->id.' оформлен');
+
+                return $this->redirect(['index']);
+            }
+
+            return $this->render('order_form', ['order' => $order]);
         }
     }

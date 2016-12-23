@@ -4,6 +4,8 @@
      * @var $dataProvider     \yii\data\ActiveDataProvider
      */
 
+    use yii\helpers\Html;
+    use yii\helpers\Url;
     use yii\widgets\ListView;
 
 ?>
@@ -24,6 +26,7 @@
                             <span class="fs20 fc-dark-brown"><?= Yii::t('models/cart', 'UAH') ?></span>
                         </div>
                     </div>
+
                 <?php else: ?>
                     <h2 class="cart-your-order-title fs30 fc-brown"><?= Yii::t('models/cart', 'Cart is empty') ?></h2>
                 <?php endif; ?>
