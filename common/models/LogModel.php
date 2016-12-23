@@ -60,12 +60,12 @@ class LogModel extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'action' => 'Action',
-            'action_data' => 'Action Data',
-            'initializer' => 'Initializer',
+            'action' => Yii::t('models/log', 'Action'),
+            'action_data' => Yii::t('models/log', 'Action Data'),
+            'initializer' => Yii::t('models/log', 'Initializer'),
             'user_id' => 'User ID',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'created_at' => Yii::t('models', 'Created'),
+            'updated_at' => Yii::t('models', 'Last Update'),
         ];
     }
 

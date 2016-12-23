@@ -11,7 +11,7 @@
             'authManager' => [
                 'class' => 'yii\rbac\DbManager',
             ],
-            'db' => [
+            'db'          => [
                 'enableSchemaCache' => true,
             ],
             'urlManager'  => [
@@ -65,7 +65,8 @@
                             'models/user'           => 'models/user.php',
                             'models/characteristic' => 'models/characteristic.php',
                             'models/product'        => 'models/product.php',
-                            'models/stock'        => 'models/stock.php',
+                            'models/stock'          => 'models/stock.php',
+                            'models/log'             => 'models/log.php',
                         ],
                     ],
                     'shop*'   => [

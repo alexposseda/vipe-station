@@ -4,6 +4,7 @@ namespace backend\controllers;
 use common\models\forms\PasswordResetRequestForm;
 use common\models\forms\ResetPasswordForm;
 use common\models\forms\SignupForm;
+use common\models\search\LogSearch;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -11,6 +12,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\forms\LoginForm;
+use yii\web\UnauthorizedHttpException;
 
 /**
  * Site controller
@@ -25,6 +27,9 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'denyCallback' => function($rule, $action){
+                    throw new UnauthorizedHttpException(Yii::t('system/error', 'You do not have access to this page'));
+                },
                 'rules' => [
                     [
                         'actions' => ['login','signup','request-password-reset','reset-password', 'error'],
@@ -35,6 +40,11 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['index-log'],
+                        'allow' => true,
+                        'roles' => ['admin']
+                    ]
                 ],
             ],
             'verbs' => [
@@ -170,6 +180,16 @@ class SiteController extends Controller
 
         return $this->render('resetPassword', [
             'model' => $model,
+        ]);
+    }
+
+    public function actionIndexLog(){
+        $searchModel = new LogSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index-log', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

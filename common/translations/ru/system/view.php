@@ -40,5 +40,6 @@
         'Payment'              => 'Способ оплаты',
         'Brands'               => 'Бренды',
         'Address Setting'      => 'Адреса',
-        'Delivery and Payment' => 'Доставка и оплата'
+        'Delivery and Payment' => 'Доставка и оплата',
+        'Log'                  => 'Логгирования действий',
     ];

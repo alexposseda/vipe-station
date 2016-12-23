@@ -161,4 +161,13 @@
 
             return true;
         }
+        public function afterSave(){
+            $id = Yii::$app->user->id;
+            $initializer = current(Yii::$app->authManager->getRolesByUser($id))->name;
+        }
+        public function afterDelete(){
+            $id = Yii::$app->user->id;
+            $initializer = current(Yii::$app->authManager->getRolesByUser($id))->name;
+            parent::afterDelete();
+        }
     }

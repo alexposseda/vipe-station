@@ -92,6 +92,10 @@
                         [
                             'label' => Yii::t('system/view', 'SEO'),
                             'url'   => ['seo/index']
+                        ],
+                        [
+                            'label' => Yii::t('system/view', 'Log'),
+                            'url'   => ['site/index-log']
                         ]
                     ]
                 ],

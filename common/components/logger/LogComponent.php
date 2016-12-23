@@ -32,7 +32,7 @@
             $log = new LogModel([
                                     'action'      => $event->data['action'],
                                     'action_data' => json_encode($sender->attributes),
-                                    'initializer' => 'admin',
+                                    'initializer' => $initializer,
                                     'user_id'     => $event->data['user_id']
                                 ]);
             if($log->save()){

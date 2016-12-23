@@ -31,7 +31,7 @@
      * @property string       $namespace    this is owner class namespace
      * @property string       $t_category   translation category
      */
-    class LanguageBehavior extends Behavior{
+    class   LanguageBehavior extends Behavior{
         public $langModelName;
         public $relationFieldName;
         public $attributes;
