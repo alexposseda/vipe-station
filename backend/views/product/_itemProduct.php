@@ -11,14 +11,11 @@
 <?= DetailView::widget([
                            'model'      => $model,
                            'attributes' => [
-                               //                               'id',
                                'title',
-                               //                               'gallery:ntext',
+                               'cover:image',
                                'description:ntext',
                                'base_price',
                                'base_quantity',
-                               //                               'sales',
-                               //                               'views',
                                'seo.title',
                                'brand.title',
                            ],

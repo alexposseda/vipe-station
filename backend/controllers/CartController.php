@@ -2,7 +2,7 @@
 
     namespace backend\controllers;
 
-    use Behat\Gherkin\Exception\Exception;
+    use common\models\forms\CartForm;
     use Yii;
     use common\models\CartModel;
     use yii\data\ActiveDataProvider;
@@ -33,60 +33,46 @@
          * @return mixed
          */
         public function actionIndex(){
+            $cartDataProvider = new ActiveDataProvider(['query' => CartModel::find()]);
+
+            return $this->render('index', ['dataProvider' => $cartDataProvider]);
         }
 
-        /**
-         * Displays a single CartModel model.
-         *
-         * @param integer $id
-         *
-         * @return mixed
-         */
-        //    public function actionView($id)
-        //    {
-        //        return $this->render('view', [
-        //            'model' => $this->findModel($id),
-        //        ]);
-        //    }
+        public function actionAddToCart(){
+            $cartForm = new CartForm();
+            if($cartForm->load(Yii::$app->request->post()) && $cartForm->add()){
+                Yii::$app->session->setFlash('success', 'Добавлено в корзину');
 
-        /**
-         * Creates a new CartModel model.
-         * If creation is successful, the browser will be redirected to the 'view' page.
-         * @return mixed
-         */
-        //    public function actionCreate()
-        //    {
-        //        $model = new CartModel();
-        //
-        //        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        //            return $this->redirect(['view', 'id' => $model->id]);
-        //        } else {
-        //            return $this->render('create', [
-        //                'model' => $model,
-        //            ]);
-        //        }
-        //    }
+                return $this->redirect(['/catalog']);
+            }
+            Yii::$app->session->setFlash('error', 'Error save cart');
 
-        /**
-         * Updates an existing CartModel model.
-         * If update is successful, the browser will be redirected to the 'view' page.
-         *
-         * @param integer $id
-         *
-         * @return mixed
-         */
-        //    public function actionUpdate($id)
-        //    {
-        //        $model = $this->findModel($id);
-        //
-        //        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        //            return $this->redirect(['view', 'id' => $model->id]);
-        //        } else {
-        //            return $this->render('update', [
-        //                'model' => $model,
-        //            ]);
-        //        }
-        //    }
+            return false;
+        }
+
+        public function actionLogin(){
+            /** @var CartModel[] $cart */
+            $guest_id = Yii::$app->session->get('guest_id');
+            if(!$guest_id){
+                $guest_id = Yii::$app->request->cookies->getValue('guest_id');
+            }
+            $cart = CartModel::find()
+                             ->Where(['guest_id' => $guest_id])
+                             ->all();
+
+            if(!empty($cart)){
+                $id = Yii::$app->user->id;
+                foreach($cart as $obj){
+                    $obj->user_id = $id;
+                    $obj->guest_id = null;
+                    if($obj->save()){
+                        return true;
+                    }
+                    Yii::$app->session->setFlash('error', 'Not save cart');
+                }
+            }
+        }
+
 
         /**
          * Deletes an existing CartModel model.
@@ -96,12 +82,12 @@
          *
          * @return mixed
          */
-            public function actionDelete($id)
-            {
-                $this->findModel($id)->delete();
+        public function actionDelete($id){
+            $this->findModel($id)
+                 ->delete();
 
-                return $this->redirect(['index']);
-            }
+            return $this->redirect(['index']);
+        }
 
         /**
          * Finds the CartModel model based on its primary key value.

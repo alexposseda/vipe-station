@@ -12,6 +12,9 @@
      */
     class ProductSearchModel extends ProductModel{
         public $category_id;
+        public $catName;
+        public $brand_id;
+        public $brandName;
         public $price;
 
         /**
@@ -20,7 +23,7 @@
         public function rules(){
             return [
                 [['id', 'category_id', 'base_quantity', 'sales', 'views', 'created_at', 'updated_at', 'brand_id'], 'integer'],
-                [['title', 'price', 'gallery', 'description', 'slug'], 'safe'],
+                [['title', 'price', 'brandName', 'catName', 'gallery', 'description', 'slug'], 'safe'],
                 [['base_price'], 'number'],
             ];
         }
@@ -72,15 +75,20 @@
             // grid filtering conditions
             $query->andFilterWhere([
                                        'id'            => $this->id,
-                                       'base_price'    => $this->base_price,
                                        'base_quantity' => $this->base_quantity,
-                                       'sales'         => $this->sales,
-                                       'views'         => $this->views,
-                                       //            'seo_id' => $this->seo_id,
                                        'created_at'    => $this->created_at,
-                                       //            'updated_at' => $this->updated_at,
                                        'brand_id'      => $this->brand_id,
                                    ]);
+
+            $query->andFilterWhere(['title' => $this->title]);
+            if($this->brandName){
+                $query->joinWith('brand b')
+                      ->andFilterWhere(['b.title' => $this->brandName]);
+            }
+            if($this->catName){
+                $query->joinWith('categories c')
+                      ->andFilterWhere(['c.title' => $this->catName]);
+            }
             if($this->price){
                 $price = explode(';', $this->price);
                 $query->andFilterWhere(['between', 'base_price', $price[0], $price[1]]);
@@ -90,7 +98,7 @@
                       ->andFilterWhere(['c.id' => $this->category_id]);
             }
 
-            $query->andFilterWhere(['like', 'title', $this->title])//            ->andFilterWhere(['like', 'gallery', $this->gallery])
+            $query->andFilterWhere(['like', 'title', $this->title])
                   ->andFilterWhere(['like', 'description', $this->description]);
 
             return $dataProvider;

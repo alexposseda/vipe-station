@@ -1,76 +1,35 @@
 <?php
     /**
-     * @var $this \yii\web\View
+     * @var $this             \yii\web\View
+     * @var $dataProvider     \yii\data\ActiveDataProvider
      */
-    use common\models\CartModel;
-    use yii\alexposseda\fileManager\FileManager;
 
-    $js=<<<JS
-TotalCount();
-JS;
-    $this->registerJs($js, \yii\web\View::POS_END);
+    use yii\helpers\Html;
+    use yii\helpers\Url;
+    use yii\widgets\ListView;
+
 ?>
-
-
 <div class="page-main valign-wrapper">
     <div class="content valign">
         <div class="row cart-page">
             <div class="col l5 hide-on-med-and-down cart-your-order">
-                <div class="cart-your-order-wrap">
-                    <h2 class="cart-your-order-title fs30 fc-brown"><?= Yii::t('models/cart', 'Your order') ?></h2>
-                    <?php /** @var CartModel [] $carts */
-                        if(!empty($carts)) : ?>
-                            <?php foreach($carts as $cart): ?>
-                                <div class="row product">
-
-                                    <div class="col s3 product-img img-wrap-you-order">
-                                        <a href="Страничка продукта" class="product-img">
-                                            <img src="<?= FileManager::getInstance()
-                                                                     ->getStorageUrl().$cart->product->cover ?>"
-                                                 alt="" class="">
-                                        </a>
-                                    </div>
-                                    <div class="col s7 product-description">
-                                        <div class="fs18 fc-orange title mb-5">
-                                            <a href="Page Product">
-                                                <?= $cart->product->title ?>
-                                            </a>
-                                        </div>
-                                        <?php if(!empty($cart->product->brand_id)): ?>
-                                            <div class="fs15 fc-dark-brown brand mb-5"><?= $cart->product->brand->title ?></div>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="col s2 right-align">
-                                        <button class="delete-product"></button>
-                                    </div>
-                                    <div class="product-total col s9">
-                                        <div class="count-yoy-order left fc-brown">
-                                            <span><?= Yii::t('models/cart', 'Quantity') ?> </span>
-                                            <a href="#" class="fc-brown down">-</a>
-                                            <input id="count" value="1" type="text" data-base_quantity="<?= $cart->product->base_quantity ?>"/>
-                                            <a href="#" class="fc-brown up">+</a>
-                                        </div>
-                                        <div class="right price">
-                                            <span class="fc-dark-brown fs20 all_price"
-                                                  data-base_price="<?= $cart->getPrice() ?>"><?= $cart->getPrice() ?></span>
-                                            <span class="fc-dark-brown fs20">&nbsp<?= Yii::t('models/cart', 'UAH') ?></span>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="cart-border-bottom col s12"></div>
-                                    </div>
-
-                                </div>
-                            <?php endforeach;
-                            ?>
-                        <?php endif; ?>
-                    <div class="col l12 right-align total-you-order">
-                        <span class="fs20 fc-dark-brown"><?= Yii::t('models/cart', 'Total Price') ?> </span>
-                        <span id="total-price" class="fs20 fc-dark-brown"></span>
-                        <span class="fs20 fc-dark-brown"><?= Yii::t('models/cart', 'UAH') ?></span>
+                <?php if($dataProvider->count > 0): ?>
+                    <div class="cart-your-order-wrap">
+                        <h2 class="cart-your-order-title fs30 fc-brown"><?= Yii::t('models/cart', 'Your order') ?></h2>
+                        <?= ListView::widget([
+                                                 'dataProvider' => $dataProvider,
+                                                 'itemView'     => '_itemCart'
+                                             ]) ?>
+                        <div class="col l12 right-align total-you-order">
+                            <span class="fs20 fc-dark-brown"><?= Yii::t('models/cart', 'Total Price') ?> </span>
+                            <span id="total-price" class="fs20 fc-dark-brown"></span>
+                            <span class="fs20 fc-dark-brown"><?= Yii::t('models/cart', 'UAH') ?></span>
+                        </div>
                     </div>
-                </div>
+
+                <?php else: ?>
+                    <h2 class="cart-your-order-title fs30 fc-brown"><?= Yii::t('models/cart', 'Cart is empty') ?></h2>
+                <?php endif; ?>
             </div>
 
             <div class="col l7 center-align">
@@ -178,7 +137,5 @@ JS;
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>

@@ -6,6 +6,7 @@
     use common\models\BrandModel;
     use common\models\CategoryModel;
     use common\models\ProductCharacteristicItemModel;
+    use common\models\ProductCharacteristicModel;
     use common\models\ProductInCategoryModel;
     use common\models\ProductModel;
     use common\models\ProductOptionModel;
@@ -25,6 +26,7 @@
      * @property ProductModel $product
      * @property int[]        $categories
      * @property mixed        allCategories
+     **
      */
     class ProductForm extends Model{
         const EVENT_LOGGER_MESSAGE = 'loggerMessage';
@@ -34,21 +36,22 @@
         public $categories;
         public $error;
 
-        public $characteristic;
+
+        public $characteristics;
         public $options;
 
         public function rules(){
             return [
                 ['categories', 'required'],
-                [['categories', 'characteristic', 'options'], 'safe'],
+                [['categories', 'characteristics', 'options'], 'safe'],
             ];
         }
 
         public function attributeLabels(){
             return [
-                'categories'     => Yii::t('models', 'Categories'),
-                'characteristic' => Yii::t('models/product', 'Characteristic'),
-                'options'        => Yii::t('models', 'Options')
+                'categories'      => Yii::t('models', 'Categories'),
+                'characteristics' => Yii::t('models/product', 'Characteristic'),
+                'options'         => Yii::t('models', 'Options')
             ];
         }
 
@@ -57,9 +60,44 @@
             foreach($this->categories as $key => $category){
                 $this->categories[$key] = ['selected' => 'selected'];
             }
+
+            /**
+             * Получаем все характеристики из категорий в которых находиться продукт
+             */
+            $characteristics = [];
+            foreach($this->product->categories as $category){
+                $characteristics = ArrayHelper::merge($characteristics, $category->productCharacteristics);
+            }
+
+            /**
+             * Формируем массив характеристик продукта
+             */
+            $this->characteristics = [];
+            foreach($characteristics as $characteristic){
+                $condition = ['characteristic_id' => $characteristic->id];
+                $char_m = ProductCharacteristicItemModel::findOne($condition);
+                if(!$char_m){
+                    $char_m = new ProductCharacteristicItemModel($condition);
+                }
+                $this->characteristics[] = $char_m;
+            }
+
+            /**
+             * Формируем массив опций продукта
+             */
+            $this->options = [];
+            foreach($characteristics as $characteristic){
+                $condition = ['characteristic_id' => $characteristic->id];
+                $opt_m = ProductOptionModel::findOne($condition);
+                if(!$opt_m){
+                    $opt_m = new ProductOptionModel($condition);
+                }
+                $this->options[] = $opt_m;
+            }
         }
 
         /**
+         * Загружаем из POST данные в форму, продукт и сео
          * @param array $data
          *
          * @return bool
@@ -73,6 +111,7 @@
         }
 
         /**
+         * Сохраняем в транзакции сео, продукт, категорию продукта, характеристики и опции
          * @return bool
          */
         public function save(){
@@ -102,19 +141,6 @@
                     if(!$product_in_category->save()){
                         throw new Exception('error to save category '.$category_id.' to product');
                     }
-//                    $event = new LoggerEvent([
-//                                                 'user_id' => Yii::$app->user->id,
-//                                                 'message' => [
-//                                                     'action'=>'Add',
-//                                                     'chto'=>'сategory'
-//                                                 ]
-//                                                     .Yii::t('logger','сategory').': '
-//                                                     .$product_in_category->category->title.' '
-//                                                     .Yii::t('logger','to').' '
-//                                                     .Yii::t('logger','product').': '
-//                                                     .$this->product->title,
-//                                             ]);
-//                    $this->trigger(self::EVENT_LOGGER_MESSAGE, $event);
                 }
                 //endregion
 
@@ -130,6 +156,70 @@
                 }
                 //endregion
 
+                //region Characteristics
+                $characteristics = [];
+                $setChar = [];
+                foreach(Yii::$app->request->post('ProductCharacteristicItemModel') as $id => $item){
+                    $condition = ['characteristic_id' => $id, 'product_id' => $this->product->id];
+                    if(ProductCharacteristicItemModel::find()
+                                                     ->where($condition)
+                                                     ->exists()
+                    ){
+                        $characteristics[$id] = ProductCharacteristicItemModel::findOne($condition);
+                    }else{
+                        $characteristics[$id] = new ProductCharacteristicItemModel($condition);
+                    }
+                    $setChar[] = $id;
+                }
+                if(Model::loadMultiple($characteristics, Yii::$app->request->post()) && Model::validateMultiple($characteristics)){
+                    foreach($characteristics as $characteristic){
+                        if(!$characteristic->save(false)){
+                            throw new Exception('error save characteristic');
+                        }
+                    }
+                }
+                $charTmp = $this->product->getProductCharacteristicItems()
+                                         ->where(['not in', 'characteristic_id', $setChar])
+                                         ->all();
+                foreach($charTmp as $item){
+                    $item->delete();
+                }
+                //endregion
+
+                //region Options
+                $options = [];
+                $setOp = [];
+                foreach(Yii::$app->request->post('ProductOptionModel') as $id => $item){
+                    $condition = ['characteristic_id' => $id, 'product_id' => $this->product->id];
+                    if(ProductOptionModel::find()
+                                         ->where($condition)
+                                         ->exists()
+                    ){
+                        $options[$id] = ProductOptionModel::findOne($condition);
+                    }else{
+                        $options[$id] = new ProductOptionModel($condition);
+                    }
+                    $setOp[] = $id;
+                }
+                if(Model::loadMultiple($options, Yii::$app->request->post()) && Model::validateMultiple($options)){
+                    foreach($options as $option){
+                        if(!$option->save(false)){
+                            throw new Exception('error save characteristic');
+                        }
+                    }
+                }
+                /**
+                 * Выбираем все опции которые есть у продукта и не пришли из формы и удаляем их
+                 */
+                $optTmp = $this->product->getProductOptions()
+                                        ->where(['not in', 'characteristic_id', $setOp])
+                                        ->all();
+                foreach($optTmp as $item){
+                    $item->delete();
+                }
+                //endregion
+
+                $transaction->commit();
                 //region Clear Session gallery
                 $gallery = $this->product->gallery ? json_decode($this->product->gallery) : [];
                 foreach($gallery as $gallery_item){
@@ -137,40 +227,6 @@
                                ->removeFromSession($gallery_item);
                 }
                 //endregion
-
-                $characteristic = json_decode($this->characteristic);
-                if(is_null($characteristic)){
-                    $characteristic = [];
-                }
-                foreach($characteristic as $key => $value){
-                    $prod_characteristic = new ProductCharacteristicItemModel([
-                                                                                  'characteristic_id' => $key,
-                                                                                  'product_id'        => $this->product->id,
-                                                                                  'value'             => $value
-                                                                              ]);
-                    if(!$prod_characteristic->save()){
-                        throw new Exception('error to save characteristic '.$key.' => '.$value);
-                    }
-                }
-
-                $options = json_decode($this->options);
-                if(is_null($options)){
-                    $options = [];
-                }
-                foreach($options as $key => $value){
-                    $prod_option = new ProductOptionModel([
-                                                              'characteristic_id' => $key,
-                                                              'product_id'        => $this->product->id,
-                                                              'value'             => $value->value,
-                                                              'quantity'          => $value->quantity,
-                                                              'delta_price'       => $value->delta_price
-                                                          ]);
-                    if(!$prod_option->save()){
-                        throw new Exception('error to save option '.$key.' => '.$value->value);
-                    }
-                }
-
-                $transaction->commit();
 
                 return true;
             }catch(Exception $e){
@@ -194,7 +250,7 @@
                                        ->cache(function($db){
                                            return CategoryModel::find()
                                                                ->all();
-                                       }, 3600, $dependency);
+                                       }, 0, $dependency);
 
             return ArrayHelper::map($categories, 'id', 'title');
         }
@@ -211,7 +267,7 @@
                                 ->cache(function($db){
                                     return BrandModel::find()
                                                      ->all();
-                                }, 3600, $dependency);
+                                }, 0, $dependency);
 
             return ArrayHelper::map($brands, 'id', 'title');
         }

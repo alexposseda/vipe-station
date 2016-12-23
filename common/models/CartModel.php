@@ -4,6 +4,7 @@
 
     use Yii;
     use yii\behaviors\TimestampBehavior;
+    use yii\caching\DbDependency;
     use yii\db\ActiveRecord;
     use yii\web\Cookie;
 
@@ -21,12 +22,28 @@
      *
      * @property ProductModel $product
      * @property User         $user
+     * @property mixed        price
      */
     class CartModel extends ActiveRecord{
         public static function getCart(){
-            $condition = (Yii::$app->user->isGuest) ? ['guest_id' => Yii::$app->request->cookies->get('guest_id')] : ['user_id' => Yii::$app->user->id];
+            if(!Yii::$app->user->isGuest){
+                $guest_id = Yii::$app->request->cookies->get('guest_id');
+                if($guest_id){
+                    $guest_id = Yii::$app->session->get('guest_id');
+                }
+                $condition = ['guest_id' => $guest_id];
+            }else{
+                $condition = ['user_id' => Yii::$app->user->id];
+            }
 
             return self::findAll($condition);
+        }
+
+        public static function findByGuestId($guest_id){
+            return self::getDb()
+                       ->cache(function() use ($guest_id){
+                           return self::findAll(['guest_id' => $guest_id]);
+                       }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.self::tableName()]));
         }
 
         /**
@@ -90,12 +107,36 @@
         public function getPrice(){
             $price = $this->product->base_price;
             if($this->options){
-                foreach(json_decode($this->options) as $option){
-                    $price += $option->delta_price;
+                $options = json_decode($this->options);
+                if(!empty($options->options)){
+                    foreach($options->options as $option){
+                        $optionModel = ProductOptionModel::findOne($option);
+                        $price += $optionModel->delta_price;
+                    }
                 }
             }
 
-            return $price;
+            return $price * $this->quantity;
+        }
+
+        public function setID(){
+            if(Yii::$app->user->isGuest){
+
+                $cookie_guestId = Yii::$app->request->cookies->getValue('guest_id');
+                $session_guestId = Yii::$app->session->get('guest_id');
+                if(empty($cookie_guestId) && empty($session_guestId)){
+                    $this->guest_id = Yii::$app->security->generateRandomString();
+                    Yii::$app->response->cookies->add(new Cookie([
+                                                                     'name'  => 'guest_id',
+                                                                     'value' => $this->guest_id
+                                                                 ]));
+                    Yii::$app->session->set('guest_id', $this->guest_id);
+                }else{
+                    $this->guest_id = empty($cookie_guestId) ? $session_guestId : $cookie_guestId;
+                }
+            }else{
+                $this->user_id = Yii::$app->user->id;
+            }
         }
 
         public function actionAddToCart($product_id, $options, $quantity){
@@ -125,24 +166,7 @@
                 return true;
             }
             Yii::$app->session->setFlash('error', 'Error save cart');
+            return false;
         }
 
-        public function actionLogin(){
-            /** @var CartModel[] $cart */
-            $cart = CartModel::find()
-                             ->Where(['guest_id' => Yii::$app->session->get('guest_id')])
-                             ->all();
-
-            if(!empty($cart)){
-                $id = Yii::$app->user->id;
-                foreach($cart as $obj){
-                    $obj->user_id = $id;
-                    $obj->guest_id = null;
-                    if($obj->save()){
-                        return true;
-                    }
-                    Yii::$app->session->setFlash('error', 'Not save cart');
-                }
-            }
-        }
     }

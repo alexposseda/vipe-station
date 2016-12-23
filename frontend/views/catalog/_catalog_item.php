@@ -1,17 +1,18 @@
 <?php
     /**
-     * @var $this \yii\web\View
+     * @var $this  \yii\web\View
+     * @var $model \common\models\ProductModel
      */
-    use yii\alexposseda\fileManager\FileManager;
     use yii\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\ActiveForm;
 
+    $cartForm = new \common\models\forms\CartForm();
 ?>
 <div class="wrap-items">
     <div class="wrap-items-first-section left center-align">
         <div class="product-img">
-            <img src="<?= FileManager::getInstance()
-                                     ->getStorageUrl().$model->cover ?>">
+            <img src="<?= $model->cover ?>">
         </div>
         <div class="wrap-text-block">
             <div class="product-title fs20 fc-orange">
@@ -38,6 +39,24 @@
             <p><?= Html::encode($model->description) ?></p>
         </div>
         <div class="btn-buy center-align fs15 fc">
+            <?php $form = ActiveForm::begin(['action' => Url::to(['/cart/add-to-cart'], 1), 'options' => ['data-pjax' => 1]]) ?>
+            <div class="product-characteristics ">
+                <?php if(!empty($characteristicArrayMap = $cartForm->characteristics($model))): ?>
+                    <?= $form->field($cartForm, 'characteristic_id')
+                             ->checkboxList($characteristicArrayMap) ?>
+                <?php endif; ?>
+            </div>
+            <div class="product-options">
+                <?php if(!empty($characteristicArrayMap = $cartForm->options($model))): ?>
+                    <?= $form->field($cartForm, 'option_id')
+                             ->checkboxList($characteristicArrayMap) ?>
+                <?php endif; ?>
+            </div>
+            <?= $form->field($cartForm, 'quantity')
+                     ->input('number') ?>
+            <?= Html::activeHiddenInput($cartForm, 'product_id', ['value' => $model->id]) ?>
+            <?= Html::submitButton('Купить', ['class' => 'btn btn-primary submit']) ?>
+            <?php ActiveForm::end() ?>
             <button data-target="buyproduct" class="modal-trigger">Купить</button>
         </div>
     </div>

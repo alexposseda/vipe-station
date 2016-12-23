@@ -2,6 +2,8 @@
 
     use backend\widgets\FileManagerWidget\FileManagerWidget;
     use backend\widgets\LanguageWidget;
+    use common\models\ProductCharacteristicItemModel;
+    use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\ActiveForm;
@@ -10,18 +12,7 @@
     /* @var $model \backend\models\forms\ProductForm */
     /* @var $form yii\widgets\ActiveForm */
 
-    /*
-     * todo javascript получить характеристики для категорий Url::to(['category/get-characteristic','id'=>$id_category])
-     * сформировать в переменную $model->characteristic массив характеристик [ id_character => value ] или пустой массив
-     *
-     * сформировать в переменную $model->options массив опций [
-     *   id_character =>[
-     *            value         =>значение,
-     *            delta_price   =>значение,
-     *            quantity      =>значение
-     *                    ]
-     * ] или пустой массив
-    */
+    var_dump($model->error);
 ?>
 
 <div class="product-model-form">
@@ -74,10 +65,29 @@
             </div><!--Categories-->
             <div class="row">
                 <div class="col-lg-6 characteristic">
-                    <?= $form->field($model, 'characteristic') ?>
+                    <?php if(!empty($model->characteristics)): ?>
+                        <?php foreach($model->characteristics as $char_m): ?>
+                            <?= $form->field($char_m, '['.$char_m->characteristic->id.']value')
+                                     ->textInput()
+                                     ->label($char_m->characteristic->title) ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
                 <div class="col-lg-6 option">
-                    <?= $form->field($model, 'options') ?>
+                    <?php if(!empty($model->options)): ?>
+                        <?php foreach($model->options as $opt_m): ?>
+                                <span class="option-label col-lg-12"><?= $opt_m->characteristic->title ?></span>
+                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']value',['options'=>['class'=>'col-lg-4 form-inline']])
+                                             ->textInput(['placeholder' => $opt_m->getAttributeLabel('value')])
+                                             ->label(false) ?>
+                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']delta_price',['options'=>['class'=>'col-lg-4 form-inline']])
+                                             ->input('number', ['placeholder' => $opt_m->getAttributeLabel('delta_price')])
+                                             ->label(false) ?>
+                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']quantity',['options'=>['class'=>'col-lg-4 form-inline']])
+                                             ->input('number', ['placeholder' => $opt_m->getAttributeLabel('quantity')])
+                                             ->label(false) ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
