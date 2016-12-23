@@ -12,7 +12,9 @@
      */
     class ProductSearchModel extends ProductModel{
         public $category_id;
+        public $catName;
         public $brand_id;
+        public $brandName;
         public $price;
 
         /**
@@ -21,7 +23,7 @@
         public function rules(){
             return [
                 [['id', 'category_id', 'base_quantity', 'sales', 'views', 'created_at', 'updated_at', 'brand_id'], 'integer'],
-                [['title', 'price', 'gallery', 'description', 'slug'], 'safe'],
+                [['title', 'price', 'brandName', 'catName', 'gallery', 'description', 'slug'], 'safe'],
                 [['base_price'], 'number'],
             ];
         }
@@ -77,6 +79,16 @@
                                        'created_at'    => $this->created_at,
                                        'brand_id'      => $this->brand_id,
                                    ]);
+
+            $query->andFilterWhere(['title' => $this->title]);
+            if($this->brandName){
+                $query->joinWith('brand b')
+                      ->andFilterWhere(['b.title' => $this->brandName]);
+            }
+            if($this->catName){
+                $query->joinWith('categories c')
+                      ->andFilterWhere(['c.title' => $this->catName]);
+            }
             if($this->price){
                 $price = explode(';', $this->price);
                 $query->andFilterWhere(['between', 'base_price', $price[0], $price[1]]);

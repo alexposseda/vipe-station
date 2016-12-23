@@ -188,7 +188,8 @@
                             </ul>
                         </li>
                         <li class="col l7 m12 s12 pull-l5 valign">
-                            <?php if(Yii::$app->controller->action->id == 'catalog-all'): ?>
+                            <?php //todo сделать проверку где представление равно catalogAll?>
+                            <?php if(Yii::$app->controller->id == 'catalog'): ?>
                                 <ul class="row">
                                     <li class="col s2 m2 l3 hide-on-large-only">
                                         <a href="#" data-activates="nav-mobile"
@@ -253,7 +254,7 @@
             <li class="menu">
                 <ul class="col 112 nav-menu fs25 center-align">
                     <li><a href="<?= Url::to(['site/about']) ?>"><?= Yii::t('shop/setting', 'About as') ?></a></li>
-                    <li><a href="<?= Url::to(['shop/catalog']) ?>"><?= Yii::t('system/view', 'Catalog') ?></a></li>
+                    <li><a href="<?= Url::to(['/catalog']) ?>"><?= Yii::t('system/view', 'Catalog') ?></a></li>
                     <li><a href="<?= Url::to(['site/shipping-payment']) ?>"><?= Yii::t('shop/setting', 'Shipping and payment') ?></a></li>
                     <li><a href="<?= Url::to(['site/shops']) ?>"><?= Yii::t('shop/setting', 'All Shop`s') ?></a></li>
                     <li>
