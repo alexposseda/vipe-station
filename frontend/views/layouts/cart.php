@@ -28,24 +28,28 @@ JS;
                         </div>
                         <div class="col s7 m7 l7">
                             <div class="active-cart-name left-align">
-                                <a href=""><span
-                                            class="fs20 fc-orange"><?= $cart_item->product->title ?></span></a>
-                                <a href=""><span
-                                            class="fs15 fc-light-brown"><?= $cart_item->price.' '.Yii::t('models/cart', 'UAH') ?></span></a>
-                                <a href=""><span
-                                            class="fs11 black-text"><?= $cart_item->quantity.' '.Yii::t('models/cart', 'pc') ?></span></a>
+                                <a href="">
+                                    <span class="fs20 fc-orange"><?= $cart_item->product->title ?></span>
+                                </a>
+                                <a href="">
+                                    <span class="fs15 fc-light-brown all_price"><?= $cart_item->price ?></span>
+                                    <span class="fc-light-brown">&nbsp<?= Yii::t('models/cart', 'UAH') ?></span>
+                                </a>
+                                <a href="">
+                                    <span class="fs11 black-text"><?= $cart_item->quantity.' '.Yii::t('models/cart', 'pc') ?></span>
+                                </a>
                             </div>
                         </div>
                         <div class="col s2 m2 l2 right-align">
-                            <?= Html::a('', ['cart/remove', 'id' => $cart_item->id], ['class' => 'delete-product']) ?>
+                            <?= Html::a('', ['cart/delete', 'id' => $cart_item->id], ['data-method' => 'POST', 'class' => 'delete-product']) ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <div>
                 <div class="col s12 m12 l12">
                     <div class="total-price right ">
-                        <span class="fs15 fc-brown">Итого</span>
-                        <span class="fs15 fc-orange" id="total-price">52.52</span>
+                        <span class="fs15 fc-brown"><?= Yii::t('models/cart', 'Total Price') ?></span>
+                        <span class="fs15 fc-orange" id="total-price"></span>
                     </div>
                 </div>
             </div>
@@ -56,13 +60,13 @@ JS;
             <!--<div class="row">-->
             <div class="col s6 m6 l6 center-align">
                 <div class="btn-active-cart btn-active-cart-first btn-buy center-align fs15 fc-light-brown">
-                    <a href="#" class="fc-light-brown">Оформить заказ</a>
+                    <a href="#" class="fc-light-brown"><?= Yii::t('models/cart', 'Zakaz') ?></a>
                 </div>
 
             </div>
             <div class="col s6 m6 l6 center-align">
                 <div class="btn-active-cart btn-active-cart-second btn-buy center-align fs15 fc-light-brown">
-                    <a href="<?= Url::to(['/cart/index']) ?>" class="fc-light-brown">В корзину</a>
+                    <a href="<?= Url::to(['/cart/index']) ?>" class="fc-light-brown"><?= Yii::t('models/cart', 'In Cart') ?></a>
                 </div>
             </div>
             <!--</div>-->

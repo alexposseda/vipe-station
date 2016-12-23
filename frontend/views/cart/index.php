@@ -1,7 +1,7 @@
 <?php
     /**
      * @var $this             \yii\web\View
-     * @var $dataProvider \yii\data\ActiveDataProvider
+     * @var $dataProvider     \yii\data\ActiveDataProvider
      */
 
     use yii\widgets\ListView;
@@ -11,18 +11,22 @@
     <div class="content valign">
         <div class="row cart-page">
             <div class="col l5 hide-on-med-and-down cart-your-order">
-                <div class="cart-your-order-wrap">
-                    <h2 class="cart-your-order-title fs30 fc-brown"><?= Yii::t('models/cart', 'Your order') ?></h2>
-                    <?= ListView::widget([
-                                             'dataProvider' => $dataProvider,
-                                             'itemView'     => '_itemCart'
-                                         ]) ?>
-                    <div class="col l12 right-align total-you-order">
-                        <span class="fs20 fc-dark-brown"><?= Yii::t('models/cart', 'Total Price') ?> </span>
-                        <span id="total-price" class="fs20 fc-dark-brown"></span>
-                        <span class="fs20 fc-dark-brown"><?= Yii::t('models/cart', 'UAH') ?></span>
+                <?php if($dataProvider->count > 0): ?>
+                    <div class="cart-your-order-wrap">
+                        <h2 class="cart-your-order-title fs30 fc-brown"><?= Yii::t('models/cart', 'Your order') ?></h2>
+                        <?= ListView::widget([
+                                                 'dataProvider' => $dataProvider,
+                                                 'itemView'     => '_itemCart'
+                                             ]) ?>
+                        <div class="col l12 right-align total-you-order">
+                            <span class="fs20 fc-dark-brown"><?= Yii::t('models/cart', 'Total Price') ?> </span>
+                            <span id="total-price" class="fs20 fc-dark-brown"></span>
+                            <span class="fs20 fc-dark-brown"><?= Yii::t('models/cart', 'UAH') ?></span>
+                        </div>
                     </div>
-                </div>
+                <?php else: ?>
+                    <h2 class="cart-your-order-title fs30 fc-brown"><?= Yii::t('models/cart', 'Cart is empty') ?></h2>
+                <?php endif; ?>
             </div>
 
             <div class="col l7 center-align">
