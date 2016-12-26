@@ -12,7 +12,7 @@
 
         public function init(){
             parent::init();
-            $models = self::getModels(ShopSettingTable::getSettingValue('address'));
+            $models = self::getModels(AddressForm::className(), ShopSettingTable::getSettingValue('address'));
             if(empty($models)){
                 $models[] = new AddressForm(['index' => 0]);
             }
@@ -20,7 +20,7 @@
         }
 
         public function save(){
-            $model = ShopSettingTable::getSetting('social');
+            $model = ShopSettingTable::getSetting('address');
 
             $model->value = json_encode($this->getAddressData());
             return $model->save();
@@ -43,7 +43,7 @@
 
             return true;
         }
-        protected function getSocialData(){
+        protected function getAddressData(){
             $data = [];
             foreach($this->models as $index => $model){
                 $data[$index] = $model->getDataAsArray();

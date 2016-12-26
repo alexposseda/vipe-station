@@ -15,17 +15,22 @@ function mapInit() {
 
 }
 
-function addMarker(coordInpId, addressInpId) {
+function addMarker(coordInpId, addressInpId, coordinates) {
+    if(coordinates == undefined){
+        coordinates = centerMap;
+    }
+    coordinates.lat = parseFloat(coordinates.lat);
+    coordinates.lng = parseFloat(coordinates.lng);
     var coordInp = document.getElementById(coordInpId);
     var addressInp = document.getElementById(addressInpId);
     var marker = new google.maps.Marker({
         map: map,
         draggable: true,
-        position: centerMap
+        position: coordinates
     });
     markers[coordInpId] = marker;
 
-    coordInp.value = centerMap.lat+';'+centerMap.lng;
+    coordInp.value = coordinates.lat+';'+coordinates.lng;
 
     google.maps.event.addListener(marker, 'drag', function () {
         geocoder.geocode({'location': marker.getPosition()}, function (results, status) {
@@ -44,7 +49,6 @@ function initAutocomplete(coordInpId, addressInpId){
         );
     autocomplete.addListener('place_changed', function(){
         var place = autocomplete.getPlace();
-        console.log(place);
         document.getElementById(coordInpId).value = place.geometry.location.lat()+';'+place.geometry.location.lng();
         map.setCenter({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()});
         markers[coordInpId].setPosition({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()})

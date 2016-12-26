@@ -11,7 +11,7 @@
         public function init(){
             parent::init();
 
-            $this->socialForms = self::getModels(ShopSettingTable::getSettingValue('social'));
+            $this->socialForms = self::getModels(SocialItemForm::className(), ShopSettingTable::getSettingValue('social'));
         }
 
         public function validate($attributeNames = null, $clearErrors = true){
