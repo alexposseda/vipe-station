@@ -44,22 +44,22 @@
             $model->save();
         }
 
-        /**
-         * Метод для получения моделей
-         *
-         * @param string $data json строка полученная из таблицы setting
-         *
-         * @return SocialItemForm[]
-         */
-        public static function getModels($data){
-            $data = (!is_null($data) and !empty($data) and $data !== 'null') ? json_decode($data) : [];
-            $models = [];
-            foreach($data as $item){
-                $models[] = new SocialItemForm($item);
-            }
-
-            return $models;
-        }
+//        /**
+//         * Метод для получения моделей
+//         *
+//         * @param string $data json строка полученная из таблицы setting
+//         *
+//         * @return SocialItemForm[]
+//         */
+//        public static function getModels($data){
+//            $data = (!is_null($data) and !empty($data) and $data !== 'null') ? json_decode($data) : [];
+//            $models = [];
+//            foreach($data as $item){
+//                $models[] = new SocialItemForm($item);
+//            }
+//
+//            return $models;
+//        }
 
         protected function getSocialData(){
             $data = [];

@@ -2,9 +2,9 @@
 
     namespace backend\controllers;
 
-    use backend\models\AddressSettingModel;
     use backend\models\DeliverPayModel;
     use backend\models\forms\AboutUsForm;
+    use backend\models\forms\AddressSettingModel;
     use backend\models\forms\BannerForm;
     use backend\models\forms\ShopSettingForm;
     use backend\models\forms\SocialItemForm;
