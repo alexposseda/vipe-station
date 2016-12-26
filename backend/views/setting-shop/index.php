@@ -9,10 +9,14 @@
      */
     use yii\alexposseda\fileManager\FileManager;
     use yii\bootstrap\Html;
+    use yii\helpers\Url;
     use yii\widgets\ActiveForm;
     use yii\widgets\Pjax;
 
-    $this->registerJsFile('/js/setting.js', ['position' => \yii\web\View::POS_END, 'depends' => \backend\assets\AppAsset::className()]);
+    $this->registerJsFile('/js/setting.js', [
+        'position' => \yii\web\View::POS_END,
+        'depends'  => \backend\assets\AppAsset::className()
+    ]);
 ?>
 <h1><?= Yii::t('system/view', 'General Setting') ?></h1>
 <div class="row">
@@ -66,7 +70,8 @@
                     <?php endif; ?>
                 </div>
                 <div class="setting-form hide">
-                    <?= $bannerForm->field($bannerModel, 'bannerTitle')->textInput() ?>
+                    <?= $bannerForm->field($bannerModel, 'bannerTitle')
+                                   ->textInput() ?>
                     <?= $bannerForm->field($bannerModel, 'bannerFile')
                                    ->fileInput() ?>
                 </div>
@@ -111,10 +116,15 @@
 
                         $label['options']['style'] = 'width: 100%';
                         ?>
-                        <div class="row">
+                        <div class="row" id="soc-line-<?= $index?>">
                             <?php if(!empty($socialForm->title)): ?>
                                 <div class="col-lg-1 text-center">
-                                    <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                                    <button type="button" data-index="<?= $index ?>" data-url="<?= Url::to([
+                                                                                                               'setting-shop/delete-social',
+                                                                                                               'index' => $index
+                                                                                                           ]) ?>"
+                                            class="btn btn-danger del-soc-but"><span
+                                                class="glyphicon glyphicon-remove"></span></button>
                                 </div>
                             <?php else: ?>
                                 <div class="col-lg-1 text-center">
@@ -122,13 +132,22 @@
                                 </div>
                             <?php endif; ?>
                             <?= $socialSettingForm->field($socialForm, '['.$index.']title', ['options' => ['class' => 'col-lg-4']])
-                                                  ->textInput(['placeholder' => $socialForm->getAttributeLabel('title'), 'disabled' => true])
+                                                  ->textInput([
+                                                                  'placeholder' => $socialForm->getAttributeLabel('title'),
+                                                                  'disabled'    => true
+                                                              ])
                                                   ->label(false) ?>
                             <?= $socialSettingForm->field($socialForm, '['.$index.']link', ['options' => ['class' => 'col-lg-5']])
-                                                  ->input('url', ['placeholder' => $socialForm->getAttributeLabel('link'), 'disabled' => true])
+                                                  ->input('url', [
+                                                      'placeholder' => $socialForm->getAttributeLabel('link'),
+                                                      'disabled'    => true
+                                                  ])
                                                   ->label(false) ?>
                             <?= $socialSettingForm->field($socialForm, '['.$index.']iconFile', ['options' => ['class' => 'col-lg-2']])
-                                                  ->fileInput(['class' => 'hidden', 'disabled' => true])
+                                                  ->fileInput([
+                                                                  'class'    => 'hidden',
+                                                                  'disabled' => true
+                                                              ])
                                                   ->label($label['title'], $label['options']) ?>
                         </div>
                         <?php

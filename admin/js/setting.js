@@ -15,5 +15,13 @@ $(document).ready(function(){
         inputs.on('change', function(){
             submitBtn.removeAttr('disabled');
         });
-    })
+    });
+
+    $('.del-soc-but').on('click', function(){
+        console.log('sads');
+       var self = $(this);
+       $.post(self.data('url'), {}, function(){
+            $('#soc-line-'+self.data('index')).remove();
+       })
+    });
 });
