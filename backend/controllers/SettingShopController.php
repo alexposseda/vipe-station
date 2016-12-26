@@ -152,8 +152,13 @@
         public function actionAddressSetting(){
             $model = new AddressSettingModel();
 
-            if($model->load(Yii::$app->request->post()) && $model->save()){
-                return $this->goHome();
+            if($model->load(Yii::$app->request->post()) ){
+                if($model->save()){
+                    Yii::$app->session->setFlash('success', 'Данные успешно обновлены!');
+                }else{
+                    Yii::$app->session->setFlash('error', 'Ошибка сохранения данных...');
+                }
+
             }
 
             return $this->render('address-setting', ['model' => $model]);
