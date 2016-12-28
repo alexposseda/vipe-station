@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'id',
                     'title',
                     [
-                        'label' => 'parent',
+                        'label' => Yii::t('models/seo', 'Parent'),
                         'content' => function ($data) {
                             return Html::a($data->getParent()->title, $data->link);
                         }
