@@ -8,6 +8,7 @@
 use common\models\BrandModel;
 use common\models\CategoryModel;
 use common\models\search\ProductSearchModel;
+use common\models\ShopSettingTable;
 use frontend\models\SendMailForm;
 use yii\caching\DbDependency;
 use yii\helpers\ArrayHelper;
@@ -33,6 +34,15 @@ $allBrand = BrandModel::getDb()
             ->all();
     }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM' . BrandModel::tableName()]));
 $allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
+
+$settingAddress = ShopSettingTable::getSettingValue('address');
+$mainAddress = [];
+if ($settingAddress) {
+    $settingAddress = json_decode($settingAddress);
+    foreach ($settingAddress as $address) {
+        if ($address->isGeneral) $mainAddress = $address;
+    }
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -281,11 +291,12 @@ $allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
             <li class="address-schedule">
                 <div class="row valign-wrapper">
                     <div class="col l6 m12 s12 valign left-align width">
-                        <span class="fs14">Vipe Station <br>New Yor, Balley Sreet</span>
+                        <span class="fs14"><?= ShopSettingTable::getSettingValue('shopName') ? ShopSettingTable::getSettingValue('shopName') : Yii::$app->name ?>
+                            <br><?=$mainAddress->address?></span>
                     </div>
                     <div class="col l6 m12 valignleft-align width schedule">
                         <div class="fs14">
-                            +3805686123 <br>С 12.00 до 20.00
+                            <?=$mainAddress->phones?> <br><?=$mainAddress->schedule?>
                         </div>
                     </div>
                 </div>
