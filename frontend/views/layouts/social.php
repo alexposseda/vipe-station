@@ -14,6 +14,6 @@
         $socialSetting = (is_null($socialSetting)) ? [] : json_decode($socialSetting);
         foreach($socialSetting as $social):?>
             <a href="<?= Url::to($social->link) ?>"><img src="<?= FileManager::getInstance()
-                                                                             ->getStorageUrl().$social->img ?>" alt="<?= $social->title ?>"></a>
+                                                                             ->getStorageUrl().$social->icon ?>" alt="<?= $social->title ?>"></a>
         <?php endforeach; ?>
 </div>
