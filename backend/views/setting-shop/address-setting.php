@@ -6,6 +6,7 @@
     use backend\assets\AddressFormAsset;
     use yii\bootstrap\ActiveForm;
     use yii\bootstrap\Html;
+    use yii\helpers\Url;
 
     AddressFormAsset::register($this);
     $markers = [];
@@ -42,6 +43,28 @@ if(markersData.length > 0){
     addMarker('addressform-0-coordinates','addressform-0-address');
     initAutocomplete('addressform-0-coordinates','addressform-0-address');
 }
+
+$('#add-btn').on('click', addAddress);
+$('.del-address').on('click', function(){
+   var self = $(this);
+   $.post(self.data('url'), {}, function(){
+        removeMarker('addressform-'+self.data('index')+'-coordinates');
+        $('#address-'+self.data('index')).remove();
+   })
+});
+$('.is-general').on('change', function(){
+     if($('.is-general').is(':checked')){
+        $('.is-general').not(this).attr('disabled', 'disabled');
+     }else{
+         $('.is-general').removeAttr('disabled');
+     }
+});
+
+$(document).ready(function(){
+    if($('.is-general').is(':checked')){
+        $('.is-general').not(':checked').attr('disabled', 'disabled');
+    }
+});
 JS;
 
     $this->registerJs($js, \yii\web\View::POS_END);
@@ -56,7 +79,7 @@ JS;
             <div class="panel-body">
                 <div class="panel-group" id="accordion">
                     <?php foreach($model->models as $index => $addressModel): ?>
-                        <div class="panel panel-default">
+                        <div class="panel panel-default" id="address-<?= $index ?>">
                             <div class="panel-heading">
                                 <p class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#address-box-<?= $index ?>">
@@ -66,6 +89,15 @@ JS;
                                             Добавить магазин
                                         <?php endif; ?>
                                     </a>
+                                    <?php if(count($model->models) > 0 and !empty($addressModel->address)): ?>
+                                        <button type="button" data-index="<?= $index ?>" data-url="<?= Url::to([
+                                                                                                                   'setting-shop/delete-address',
+                                                                                                                   'index' => $index
+                                                                                                               ]) ?>"
+                                                class="btn btn-danger del-address pull-right"><span
+                                                    class="glyphicon glyphicon-remove"></span></button>
+                                        <div class="clearfix"></div>
+                                    <?php endif; ?>
                                 </p>
                             </div>
                             <div id="address-box-<?= $index ?>"
@@ -79,16 +111,19 @@ JS;
                                     <?= $form->field($addressModel, '['.$index.']coordinates')
                                              ->textInput(['readonly' => true]) ?>
                                     <?= $form->field($addressModel, '['.$index.']isGeneral')
-                                             ->checkbox(['disabled' => true]) ?>
+                                             ->checkbox([/*'disabled' => true,*/ 'class'=>'is-general']) ?>
                                 </div>
+
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
             </div>
             <div class="panel-footer text-right">
+                <button type="button" class="btn btn-info" id="add-btn">Добавить Магазин</button>
                 <?= Html::submitButton('Save', [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn btn-success',
+                    'id'    => 'save-btn'
                 ]) ?>
             </div>
         </div>

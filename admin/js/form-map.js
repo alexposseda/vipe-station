@@ -10,9 +10,6 @@ function mapInit() {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
     );
-
-
-
 }
 
 function addMarker(coordInpId, addressInpId, coordinates) {
@@ -53,4 +50,9 @@ function initAutocomplete(coordInpId, addressInpId){
         map.setCenter({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()});
         markers[coordInpId].setPosition({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()})
     });
+}
+
+function removeMarker(id){
+    markers[id].setMap(null);
+    delete markers[id];
 }

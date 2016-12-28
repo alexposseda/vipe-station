@@ -98,7 +98,7 @@
         ?>
         <div class="panel panel-primary">
             <div class="panel-heading">Social Links</div>
-            <div class="panel-body">
+            <div class="panel-body" id="social-list">
                 <?php
                     foreach($socialSettingModel->socialForms as $index => $socialForm):
                         if(empty($socialForm->icon)){
@@ -155,6 +155,7 @@
                 ?>
             </div>
             <div class="panel-footer text-right">
+                <button type="button" class="btn btn-info hide" id="add-soc-but">Добавить социалку</button>
                 <button type="button" class="btn btn-warning"><?= Yii::t('system/view', 'Edit') ?></button>
                 <?= Html::submitButton('Save', [
                     'class'    => 'btn btn-success hide',

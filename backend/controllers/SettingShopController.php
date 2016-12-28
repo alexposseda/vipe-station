@@ -139,6 +139,18 @@
             }
         }
 
+        public function actionDeleteAddress($index){
+            $model = ShopSettingTable::getSetting('address');
+            $socials = json_decode($model->value);
+            if(!empty($socials[$index])){
+                unset($socials[$index]);
+                $socials = array_values($socials);
+
+                $model->value = json_encode($socials);
+                $model->save(false);
+            }
+        }
+
         public function actionDeliverPay(){
             $model = new DeliverPayModel();
 
