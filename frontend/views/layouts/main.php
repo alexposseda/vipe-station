@@ -1,38 +1,38 @@
 <?php
 
-    /**
-     * @var $this    \yii\web\View
-     * @var $content string
-     */
+/**
+ * @var $this    \yii\web\View
+ * @var $content string
+ */
 
-    use common\models\BrandModel;
-    use common\models\CategoryModel;
-    use common\models\search\ProductSearchModel;
-    use frontend\models\SendMailForm;
-    use yii\caching\DbDependency;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
-    use frontend\assets\AppAsset;
-    use yii\widgets\ActiveForm;
-    use yii\widgets\MaskedInput;
+use common\models\BrandModel;
+use common\models\CategoryModel;
+use common\models\search\ProductSearchModel;
+use frontend\models\SendMailForm;
+use yii\caching\DbDependency;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use frontend\assets\AppAsset;
+use yii\widgets\ActiveForm;
+use yii\widgets\MaskedInput;
 
-    AppAsset::register($this);
-    $send_Mail_model = new SendMailForm();
+AppAsset::register($this);
+$send_Mail_model = new SendMailForm();
 
-    $product_search = new ProductSearchModel();
-    $allCategory = CategoryModel::getDb()
-                                ->cache(function(){
-                                    return CategoryModel::find()
-                                                        ->all();
-                                }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM'.CategoryModel::tableName()]));
+$product_search = new ProductSearchModel();
+$allCategory = CategoryModel::getDb()
+    ->cache(function () {
+        return CategoryModel::find()
+            ->all();
+    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM' . CategoryModel::tableName()]));
 
-    $allBrand = BrandModel::getDb()
-                          ->cache(function(){
-                              return BrandModel::find()
-                                               ->all();
-                          }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM'.BrandModel::tableName()]));
-    $allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
+$allBrand = BrandModel::getDb()
+    ->cache(function () {
+        return BrandModel::find()
+            ->all();
+    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM' . BrandModel::tableName()]));
+$allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -119,10 +119,13 @@
                                             <?= $this->render('cart') ?>
                                         </div>
                                         <div class="login border-l">
-                                            <a id="insert-cabinet" class="modal-trigger popup-trigger hide-on-small-and-down" href="#modallogin">
+                                            <a id="insert-cabinet"
+                                               class="modal-trigger popup-trigger hide-on-small-and-down"
+                                               href="#modallogin">
                                                 <span class="white-text fs15">Кабинет</span>
                                             </a>
-                                            <div id="modallogin" class="modal popup popup-active center-align remind-pass popup-form">
+                                            <div id="modallogin"
+                                                 class="modal popup popup-active center-align remind-pass popup-form">
                                                 <div class="modal-content">
                                                     <form class="row cabinet-form">
                                                         <div class="input-field col s12">
@@ -189,7 +192,7 @@
                         </li>
                         <li class="col l7 m12 s12 pull-l5 valign">
                             <?php //todo сделать проверку где представление равно catalogAll?>
-                            <?php if(Yii::$app->controller->id == 'catalog'): ?>
+                            <?php if (Yii::$app->controller->id == 'catalog'): ?>
                                 <ul class="row">
                                     <li class="col s2 m2 l3 hide-on-large-only">
                                         <a href="#" data-activates="nav-mobile"
@@ -199,23 +202,24 @@
                                     <?php $search = ActiveForm::begin(['id' => 'catalog-search', 'method' => 'get']) ?>
                                     <li class="col s4 m4 l3">
                                         <div class="border-r left-align">
-                                            <?php foreach($allCategory as $category): ?>
+                                            <?php foreach ($allCategory as $category): ?>
                                                 <?php /** @var CategoryModel $category */ ?>
                                                 <?= Html::a($category->title,
-                                                            ['shop/catalog-all', 'ProductSearchModel[category_id]' => $category->id],
-                                                            ['class' => 'white-text fs15', 'data-pjax' => 0]) ?>
+                                                    ['catalog/category/', 'categoryName' => $category->title],
+                                                    ['class' => 'white-text fs15', 'data-pjax' => 0]) ?>
                                             <?php endforeach; ?>
                                         </div>
                                     </li>
                                     <li class="col s6 m6 l4">
                                         <span class="white-text title-range">Цена</span>
                                         <?= $search->field($product_search, 'price')
-                                                   ->label(false)
-                                                   ->textInput(['id' => 'range-filter']) ?>
+                                            ->label(false)
+                                            ->textInput(['id' => 'range-filter']) ?>
                                     </li>
                                     <li class="col s4 l5 radio-form-catalog hide-on-med-and-down">
                                         <div class="input-field col s12">
                                             <label>Бренд</label>
+                                            <?php //todo сделать так что бы при выборе бренда переходило по ссылке /catalog/brand/имя бренда ?>
                                             <?= Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, ['prompt' => 'Выберите бренд']) ?>
                                         </div>
                                     </li>
@@ -229,8 +233,9 @@
                                                     class="material-icons large">menu</i></a>
                                     </li>
                                     <li class="col s10 m10 l12 left-align page-title">
-                                        <a href="<?= Url::to(['site/shipping-payment']) ?>" class="fc-orange fs20"><?= Yii::t('shop/setting',
-                                                                                                                              'Shipping and payment') ?></a>
+                                        <a href="<?= Url::to(['site/shipping-payment']) ?>"
+                                           class="fc-orange fs20"><?= Yii::t('shop/setting',
+                                                'Shipping and payment') ?></a>
                                         <a href="<?= Url::home() ?>" class="border-l back hide-on-small-and-down"><span
                                                     class="white-text fs15"><?= Yii::t('shop/setting', 'In Shop') ?></span></a>
                                     </li>
@@ -245,7 +250,8 @@
     <div class="valign-wrapper">
 
         <ul id="nav-mobile" class="side-nav fixed white-text valign" style="transform: translateX(0%);">
-            <a href="#" id="close-sidenav" class="hide-on-med-and-up"><img src="../images/close-round-white.svg" width="45px" alt="Закрыть"></a>
+            <a href="#" id="close-sidenav" class="hide-on-med-and-up"><img src="../images/close-round-white.svg"
+                                                                           width="45px" alt="Закрыть"></a>
             <li class="logo">
                 <a id="logo" href="<?= Url::home() ?>" class="brand-logo">
                     <img class="logo" src="../images/logo.png">
@@ -255,13 +261,16 @@
                 <ul class="col 112 nav-menu fs25 center-align">
                     <li><a href="<?= Url::to(['site/about']) ?>"><?= Yii::t('shop/setting', 'About as') ?></a></li>
                     <li><a href="<?= Url::to(['/catalog']) ?>"><?= Yii::t('system/view', 'Catalog') ?></a></li>
-                    <li><a href="<?= Url::to(['site/shipping-payment']) ?>"><?= Yii::t('shop/setting', 'Shipping and payment') ?></a></li>
+                    <li>
+                        <a href="<?= Url::to(['site/shipping-payment']) ?>"><?= Yii::t('shop/setting', 'Shipping and payment') ?></a>
+                    </li>
                     <li><a href="<?= Url::to(['site/shops']) ?>"><?= Yii::t('shop/setting', 'All Shop`s') ?></a></li>
                     <li>
                         <hr>
                     </li>
                     <li class="hide-on-med-and-up">
-                        <a href="#modallogin" class="modal-trigger side-nav-modal"><?= Yii::t('system/view', 'Cabinet') ?></a>
+                        <a href="#modallogin"
+                           class="modal-trigger side-nav-modal"><?= Yii::t('system/view', 'Cabinet') ?></a>
                     </li>
                     <li class="hide-on-med-and-up">
                         <hr>
@@ -310,24 +319,24 @@
         <h4><?= Yii::t('system/view', 'Fill the form') ?></h4>
         <?php $mail_form = ActiveForm::begin(['action' => Url::to(['shop/send-mail'])]) ?>
         <?= $mail_form->field($send_Mail_model, 'buy_name')
-                      ->label(false)
-                      ->textInput(['placeholder' => $send_Mail_model->getAttributeLabel('buy_name')]) ?>
+            ->label(false)
+            ->textInput(['placeholder' => $send_Mail_model->getAttributeLabel('buy_name')]) ?>
         <?= $mail_form->field($send_Mail_model, 'buy_email')
-                      ->label(false)
-                      ->textInput(['placeholder' => $send_Mail_model->getAttributeLabel('buy_email')]) ?>
+            ->label(false)
+            ->textInput(['placeholder' => $send_Mail_model->getAttributeLabel('buy_email')]) ?>
         <?= $mail_form->field($send_Mail_model, 'buy_phone')
-                      ->widget(MaskedInput::className(), [
-                          'mask' => '999-999-9999',
-                      ])
-                      ->label(false)
-                      ->textInput(['placeholder' => $send_Mail_model->getAttributeLabel('buy_phone')]) ?>
+            ->widget(MaskedInput::className(), [
+                'mask' => '999-999-9999',
+            ])
+            ->label(false)
+            ->textInput(['placeholder' => $send_Mail_model->getAttributeLabel('buy_phone')]) ?>
         <div class="modal-footer" style="padding: 4px 24px;">
             <div class="col s12">
                 <div class="btn-buy right">
                     <?= Html::submitButton(Yii::t('models/authorize', 'Send'), ['name' => 'submit', 'value' => Url::to('')]) ?>
                 </div>
                 <?= Html::resetButton(Yii::t('system/view', 'Cancel'),
-                                      ['class' => 'modal-action modal-close waves-effect waves-green btn-flat left']) ?>
+                    ['class' => 'modal-action modal-close waves-effect waves-green btn-flat left']) ?>
             </div>
         </div>
         <?php ActiveForm::end() ?>
