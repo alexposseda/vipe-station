@@ -23,8 +23,7 @@
 
         public $category;
         public $seo;
-        public $characteristics;
-        public $parentCharacteristics;
+        public $characteristics = [];
 
         public function save(){
             $transaction = Yii::$app->db->beginTransaction();
@@ -152,13 +151,21 @@
         }
 
         public function init(){
-            $this->characteristics = $this->category->productCharacteristics ? $this->category->productCharacteristics : [];
-            if(!empty($this->category->parent)){
-                $this->parentCharacteristics = $this->category->parent0->productCharacteristics ? $this->category->parent0->productCharacteristics : [];
-            }else{
-                $this->parentCharacteristics = [];
-            }
+           if(!$this->category->isNewRecord){
+               $parentCharacteristics = $this->category->parent0->productCharacteristics;
+               $selfCharacteristics = $this->category->productCharacteristics;
+               if(is_null($parentCharacteristics)){
+                   $parentCharacteristics = [];
+               }
+
+               if(empty($selfCharacteristics)){
+                   $selfCharacteristics = [];
+               }
+               $this->characteristics = ArrayHelper::merge($parentCharacteristics, $selfCharacteristics);
+           }
+
+           if(empty($this->characteristics)){
+               $this->characteristics[] = new ProductCharacteristicModel();
+           }
         }
-
-
     }

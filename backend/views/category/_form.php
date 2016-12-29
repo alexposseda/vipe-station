@@ -4,6 +4,7 @@
     use backend\widgets\ProductWidget\ProductCharacteristicWidget;
     use backend\widgets\ProductWidget\ProductCharacteristicWidgetAsset;
     use yii\helpers\Html;
+    use yii\helpers\Url;
     use yii\widgets\ActiveForm;
     use common\models\ProductCharacteristicModel;
 
@@ -21,56 +22,88 @@
      * </div>
      * </div>
      */
-
-    ProductCharacteristicWidgetAsset::register($this);
+    //
+    //    ProductCharacteristicWidgetAsset::register($this);
+    \backend\assets\CategoryFormAsset::register($this);
 ?>
 
 <div class="category-model-form">
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class="col-sm-12 col-md-9 col-lg-8">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <?= LanguageWidget::widget([
-                                                   'form'       => $form,
-                                                   'model'      => $model->category,
-                                                   'attributes' => [
-                                                       [
-                                                           'name'    => 'title',
-                                                           'type'    => 'textInput',
-                                                           'options' => ['maxlength' => true]
-                                                       ]
-                                                   ]
-                                               ]) ?>
-                    <?= $form->field($model->category, 'parent')
-                             ->dropDownList($model->getAllCategory(),
-                                            ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models/category', 'Category')]) ?>
-                </div>
-            </div>
-            <div class="panel panel-success">
-                <div class="panel-body">
-                    <?= Html::tag('span', Yii::t('models/category', 'Parent Characteristics'),
-                                  ['class' => 'panel panel-success panel-heading']) ?>
-                    <?php foreach($model->parentCharacteristics as $index => $parentcharacteristic) : ?>
-                        <?= Html::tag('div', $parentcharacteristic->title,['class' => 'panel panel-success panel-heading'])?>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-            <div class="panel panel-success">
-                <div class="panel-body">
-                    <?= Html::tag('span', Yii::t('system/view', 'Create').' '.Yii::t('models/characteristic', 'Characteristic'),
-                                  ['class' => 'btn btn-primary']) ?>
-                    <?php foreach($model->characteristics as $index => $characteristic) : ?>
-                        <?= $form->field($characteristic, '['.$index.']title') ?>
-                        <?= $form->field($characteristic, '['.$index.']id')
-                                 ->hiddenInput(['value' => $characteristic->id])
-                                 ->label(false) ?>
-                    <?php endforeach; ?>
-<!--                    <input type="text" name="ProductCharacteristicModel[0][title]">-->
-<!--                    <input type="text" name="ProductCharacteristicModel[0][id]" value="21">-->
-                </div>
-            </div>
 
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <?= LanguageWidget::widget([
+                                                           'form'       => $form,
+                                                           'model'      => $model->category,
+                                                           'attributes' => [
+                                                               [
+                                                                   'name'    => 'title',
+                                                                   'type'    => 'textInput',
+                                                                   'options' => ['maxlength' => true]
+                                                               ]
+                                                           ]
+                                                       ]) ?>
+                            <?= $form->field($model->category, 'parent', [
+                                'options' => [
+                                    'data-url'     => Url::to([
+                                                                  'category/get-characteristics-from-category'
+                                                              ]),
+                                    'data-current' => $model->category->parent0->id
+                                ]
+                            ])
+                                     ->label('Родительская категория')
+                                     ->dropDownList($model->getAllCategory(),
+                                                    ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models/category', 'Category')]) ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <p class="panel-title">Характеристики</p>
+                        </div>
+                        <div class="panel-body" id="character-list">
+
+                            <?php foreach($model->characteristics as $index => $characteristic) :
+                                $label = false;
+                                if($characteristic->isNewRecord){
+                                    $label = 'Новая характеристика';
+                                }
+                                ?>
+                                <div class="character-line" id="character-<?= $index ?>">
+                                    <?php if($characteristic->category_id == $model->category->parent0->id and !$model->category->isNewRecord): ?>
+                                        <?= $form->field($characteristic, '['.$index.']title',
+                                                         ['template' => '{label}<div class="row no-margin"><div class="col-lg-10 col-md-10 col-sm-9 ">{input}</div><div class="col-sm-3 col-md-2 col-lg-2"></div>{error}{hint}</div>'])
+                                                 ->label($label)
+                                                 ->textInput([
+                                                                 'placeholder' => 'Название',
+                                                                 'readonly'    => true
+                                                             ]) ?>
+                                        <?= Html::activeHiddenInput($characteristic, '['.$index.']id', ['value' => $characteristic->id]) ?>
+                                    <?php else: ?>
+                                        <?= $form->field($characteristic, '['.$index.']title',
+                                                         ['template' => '{label}<div class="row no-margin"><div class="col-lg-10 col-md-10 col-sm-9 ">{input}</div><div class="col-sm-3 col-md-2 col-lg-2"><button type="button" data-url="'.Url::to(['category/del-characteristic', 'id'=>$characteristic->id]).'" class="btn btn-sm btn-danger del-character" data-index="'.$index.'"><span class="glyphicon glyphicon-remove"></span></button></div>{error}{hint}</div>'])
+                                                 ->label($label)
+                                                 ->textInput(['placeholder' => 'Название']) ?>
+                                        <?= Html::activeHiddenInput($characteristic, '['.$index.']id', ['value' => $characteristic->id]) ?>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                            <div id="parent-character-list">
+
+                            </div>
+                            <div id="new-character-list"></div>
+                        </div>
+                        <div class="panel-footer text-right">
+                            <button type="button" class="btn btn-primary" id="add-character">Add Character</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="col-sm-12 col-md-9 col-lg-4">
@@ -85,9 +118,7 @@
             </div>
         </div>
     </div>
-    <div class="panel-body">
-        <?= Html::submitButton($model->category->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),
-                               ['class' => $model->category->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+    <?= Html::submitButton($model->category->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),
+                           ['class' => $model->category->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     <?php ActiveForm::end(); ?>
 </div>

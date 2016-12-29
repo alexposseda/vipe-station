@@ -135,3 +135,7 @@ label.btn img.social-icon{
     display: inline-block;
     padding: 0 15px;
 }
+.row.no-margin{
+    margin-left: 0;
+    margin-right: 0;
+}

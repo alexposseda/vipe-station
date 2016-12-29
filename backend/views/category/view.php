@@ -41,17 +41,42 @@
         <div class="col-sm-12 col-md-9 col-lg-5">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <?= DetailView::widget([
-                                               'model'      => $model,
-                                               'attributes' => [
-                                                   'id',
-                                                   'title',
-                                                   //                                   'slug',
-                                                   //                                   'seo_id',
-                                                   'created_at:datetime',
-                                                   'updated_at:datetime',
-                                               ],
-                                           ]) ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tr>
+                                <td>ID</td>
+                                <td><?= $model->id ?></td>
+                            </tr>
+                            <tr>
+                                <td>Title</td>
+                                <td><?= $model->title ?></td>
+                            </tr>
+                            <tr>
+                                <td>Parent Category</td>
+                                <td><?= ($model->parent0) ? Html::a($model->parent0->title, [
+                                        'category/view',
+                                        'id' => $model->parent0->id
+                                    ]) : 'not set' ?></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-center"><strong>Характеристики</strong></td>
+                            </tr>
+                            <?php if(!empty($model->productCharacteristics)):
+                                foreach($model->productCharacteristics as $p_char):
+                                    ?>
+                                    <tr>
+                                        <td colspan="2" class="text-center"><?= $p_char->title?></td>
+                                    </tr>
+                                    <?php
+                                endforeach;
+                            else:
+                                ?>
+                                <tr class="info">
+                                    <td colspan="2" class="text-center">Не задано...</td>
+                                </tr>
+                            <?php endif; ?>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

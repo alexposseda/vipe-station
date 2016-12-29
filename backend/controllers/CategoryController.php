@@ -42,7 +42,8 @@
                 'verbs'  => [
                     'class'   => VerbFilter::className(),
                     'actions' => [
-                        'delete' => ['POST'],
+                        'delete'                            => ['POST'],
+                        'get-characteristics-from-category' => ['POST'],
                     ],
                 ],
             ];
@@ -159,10 +160,31 @@
             }
         }
 
-        public function getParantCharacteristic($id){
+        public function getParentCharacteristic($id){
             $parentCategory = $this->findModel($id);
             $parentCharacteristics = $parentCategory->productCharacteristics ? $parentCategory->productCharacteristics : [];
+
             return $parentCharacteristics;
+        }
+
+        public function actionGetCharacteristicsFromCategory(){
+            $id = Yii::$app->request->post('category_id');
+            $characteristicModels = ProductCharacteristicModel::find()
+                                                              ->where(['category_id' => $id])
+                                                              ->asArray()
+                                                              ->all();
+
+            return json_encode($characteristicModels);
+        }
+
+        public function actionDelCharacteristic($id){
+            $model = ProductCharacteristicModel::findOne($id);
+            if(!is_null($model)){
+//                $model->delete();
+                return true;
+            }
+
+            return false;
         }
         /*public function addCharacteristic($category_id){
             $characterisic = new ProductCharacteristicModel();

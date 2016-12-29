@@ -83,7 +83,7 @@
                                                            'attributes' => [
                                                                'created_at' => ['label' => Yii::t('models/product', 'Novelty')],
                                                                'sales'      => ['label' => Yii::t('models/product', 'Popularity')],
-                                                               'stock'      => ['label' => Yii::t('models/product', 'Discounts')],
+//                                                               'stock'      => ['label' => Yii::t('models/product', 'Discounts')],
                                                                'base_price' => ['label' => Yii::t('models/product', 'Price')],
                                                            ]
                                                        ]
