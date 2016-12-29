@@ -94,6 +94,14 @@
                             'url'   => ['seo/index']
                         ],
                         [
+                            'label' => Yii::t('system/view', 'Categories'),
+                            'url'   => ['category/index']
+                        ],
+                        [
+                            'label' => Yii::t('system/view', 'Products'),
+                            'url'   => ['product/index']
+                        ],
+                        [
                             'label' => Yii::t('system/view', 'Log'),
                             'url'   => ['site/index-log']
                         ]
