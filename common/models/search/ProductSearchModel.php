@@ -22,9 +22,35 @@
          */
         public function rules(){
             return [
-                [['id', 'category_id', 'base_quantity', 'sales', 'views', 'created_at', 'updated_at', 'brand_id'], 'integer'],
-                [['title', 'price', 'brandName', 'catName', 'gallery', 'description', 'slug'], 'safe'],
-                [['base_price'], 'number'],
+                [
+                    [
+                        'id',
+                        'category_id',
+                        'base_quantity',
+                        'sales',
+                        'views',
+                        'created_at',
+                        'updated_at',
+                        'brand_id'
+                    ],
+                    'integer'
+                ],
+                [
+                    [
+                        'title',
+                        'price',
+                        'brandName',
+                        'catName',
+                        'gallery',
+                        'description',
+                        'slug'
+                    ],
+                    'safe'
+                ],
+                [
+                    ['base_price'],
+                    'number'
+                ],
             ];
         }
 
@@ -91,15 +117,28 @@
             }
             if($this->price){
                 $price = explode(';', $this->price);
-                $query->andFilterWhere(['between', 'base_price', $price[0], $price[1]]);
+                $query->andFilterWhere([
+                                           'between',
+                                           'base_price',
+                                           $price[0],
+                                           $price[1]
+                                       ]);
             }
             if($this->category_id){
                 $query->joinWith('categories c')
                       ->andFilterWhere(['c.id' => $this->category_id]);
             }
 
-            $query->andFilterWhere(['like', 'title', $this->title])
-                  ->andFilterWhere(['like', 'description', $this->description]);
+            $query->andFilterWhere([
+                                       'like',
+                                       'title',
+                                       $this->title
+                                   ])
+                  ->andFilterWhere([
+                                       'like',
+                                       'description',
+                                       $this->description
+                                   ]);
 
             return $dataProvider;
         }

@@ -124,3 +124,14 @@ label.no-pad{
 label.btn img.social-icon{
     height: 32px;
 }
+.sorter-wrap{
+    border-bottom: 1px solid gray;
+    margin-bottom: 10px;
+}
+.sorter{
+    padding: 0;
+}
+.sorter li{
+    display: inline-block;
+    padding: 0 15px;
+}
