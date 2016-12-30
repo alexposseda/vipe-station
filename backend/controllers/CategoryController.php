@@ -180,7 +180,7 @@
         public function actionDelCharacteristic($id){
             $model = ProductCharacteristicModel::findOne($id);
             if(!is_null($model)){
-//                $model->delete();
+                $model->delete();
                 return true;
             }
 
