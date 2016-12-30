@@ -12,7 +12,10 @@
     /* @var $model \backend\models\forms\ProductForm */
     /* @var $form yii\widgets\ActiveForm */
 
-    var_dump($model->error);
+    $this->registerJsFile('js/product_form.js', [
+        'depends'  => '\backend\assets\AppAsset',
+        'position' => \yii\web\View::POS_END
+    ]);
 ?>
 
 <div class="product-model-form">
@@ -20,12 +23,30 @@
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class="col-sm-12 col-md-9 col-lg-8">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <?= $form->field($model->product, 'brand_id')
-                             ->dropDownList($model->getAllBrand(), ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Brand')]) ?>
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <?= $form->field($model, 'categories[]', ['options' => []])
+                                     ->dropDownList($model->allCategories, [
+                                         'multiple' => 'multiple',
+                                         //                                 'prompt'   => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Category'),
+                                         'options'  => $model->categories,
+                                         'data-url' => Url::to(['product/get-characteristics'])
+                                     ]) ?>
+                        </div>
+                    </div><!--Categories-->
                 </div>
-            </div><!--Brand-->
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <?= $form->field($model->product, 'brand_id')
+                                     ->dropDownList($model->getAllBrand(),
+                                                    ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Brand')]) ?>
+                        </div>
+                    </div><!--Brand-->
+                </div>
+            </div>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <?= LanguageWidget::widget([
@@ -53,41 +74,52 @@
                     </div>
                 </div>
             </div><!--Product attributes-->
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <?= $form->field($model, 'categories[]')
-                             ->dropDownList($model->allCategories, [
-                                 'multiple' => 'multiple',
-                                 //                                 'prompt'   => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Category'),
-                                 'options'  => $model->categories
-                             ]) ?>
-                </div>
-            </div><!--Categories-->
             <div class="row">
-                <div class="col-lg-6 characteristic">
-                    <?php if(!empty($model->characteristics)): ?>
-                        <?php foreach($model->characteristics as $char_m): ?>
-                            <?= $form->field($char_m, '['.$char_m->characteristic->id.']value')
-                                     ->textInput()
-                                     ->label($char_m->characteristic->title) ?>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                <div class="col-lg-4 characteristic">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <p class="panel-title">Характеристики</p>
+                        </div>
+                        <div class="panel-body" id="characteristic-list">
+                            <?php if(!empty($model->characteristics)): ?>
+                                <?php foreach($model->characteristics as $char_m): ?>
+                                    <?= $form->field($char_m, '['.$char_m->characteristic->id.']value')
+                                             ->textInput()
+                                             ->label($char_m->characteristic->title) ?>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="alert alert-info">Empty</div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-6 option">
-                    <?php if(!empty($model->options)): ?>
-                        <?php foreach($model->options as $opt_m): ?>
-                                <span class="option-label col-lg-12"><?= $opt_m->characteristic->title ?></span>
-                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']value',['options'=>['class'=>'col-lg-4 form-inline']])
+                <div class="col-lg-8 option">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <p class="panel-title">Опции</p>
+                        </div>
+                        <div class="panel-body" id="characteristic-list">
+                            <?php if(!empty($model->options)): ?>
+                                <?php foreach($model->options as $opt_m): ?>
+                                    <span class="option-label col-lg-12"><?= $opt_m->characteristic->title ?></span>
+                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']value',
+                                                     ['options' => ['class' => 'col-lg-4 form-inline']])
                                              ->textInput(['placeholder' => $opt_m->getAttributeLabel('value')])
                                              ->label(false) ?>
-                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']delta_price',['options'=>['class'=>'col-lg-4 form-inline']])
+                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']delta_price',
+                                                     ['options' => ['class' => 'col-lg-4 form-inline']])
                                              ->input('number', ['placeholder' => $opt_m->getAttributeLabel('delta_price')])
                                              ->label(false) ?>
-                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']quantity',['options'=>['class'=>'col-lg-4 form-inline']])
+                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']quantity',
+                                                     ['options' => ['class' => 'col-lg-4 form-inline']])
                                              ->input('number', ['placeholder' => $opt_m->getAttributeLabel('quantity')])
                                              ->label(false) ?>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="alert alert-info">Empty</div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -110,12 +142,15 @@
                                               'targetInputId' => 'gallery-input'
                                           ]) ?>
         </div><!--Seo & Gallery-->
-
-        <div class="form-group">
-            <?= Html::submitButton($model->product->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),
-                                   ['class' => $model->product->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        </div>
-
-        <?php ActiveForm::end(); ?>
-
     </div>
+    <div class="form-group">
+        <?= Html::submitButton($model->product->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'), [
+            'class' => $model->product->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+            'style' => 'width:100%'
+        ]) ?>
+    </div>
+
+
+    <?php ActiveForm::end(); ?>
+</div>
+

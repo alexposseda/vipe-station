@@ -15,6 +15,8 @@
         'url'   => ['index']
     ];
     $this->params['breadcrumbs'][] = $this->title;
+
+    $allCharacter = \common\models\CategoryModel::allCharacteristics($model->id);
 ?>
 <div class="category-model-view">
 
@@ -61,8 +63,8 @@
                             <tr>
                                 <td colspan="2" class="text-center"><strong>Характеристики</strong></td>
                             </tr>
-                            <?php if(!empty($model->productCharacteristics)):
-                                foreach($model->productCharacteristics as $p_char):
+                            <?php if(!empty($allCharacter)):
+                                foreach($allCharacter as $p_char):
                                     ?>
                                     <tr>
                                         <td colspan="2" class="text-center"><?= $p_char->title?></td>

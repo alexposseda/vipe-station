@@ -14,6 +14,8 @@ function deleteCharacter(){
                 }
             });
 
+        }else{
+            $('#character-'+index).remove();
         }
     }
 }

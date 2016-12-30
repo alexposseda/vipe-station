@@ -4,6 +4,7 @@
 
     use backend\models\forms\ProductForm;
     use backend\models\UploadCover;
+    use common\models\CategoryModel;
     use common\models\SeoModel;
     use Yii;
     use common\models\ProductModel;
@@ -14,6 +15,7 @@
     use yii\web\Controller;
     use yii\web\NotFoundHttpException;
     use yii\filters\VerbFilter;
+    use yii\web\Response;
     use yii\web\UnauthorizedHttpException;
 
     /**
@@ -170,5 +172,33 @@
             }else{
                 throw new NotFoundHttpException(Yii::t('system/error', 'The requested page does not exist.'));
             }
+        }
+
+        public function actionGetCharacteristics(){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $categories = Yii::$app->request->post('categories');
+            $characteristicsModels = [];
+            if(!empty($categories)){
+                foreach($categories as $category_id){
+                    $characteristicsModels[] = CategoryModel::allCharacteristics($category_id);
+                }
+            }
+            $characteristics = [];
+            $unique_els = [];
+            foreach($characteristicsModels as $characteristicsFromCategoryModels){
+                foreach($characteristicsFromCategoryModels as $ch_m){
+                    if(in_array($ch_m->id, $unique_els)){
+                        continue;
+                    }else{
+                        $unique_els[] = $ch_m->id;
+                    }
+                    $characteristics[] = [
+                        'characteristic_id' => $ch_m->id,
+                        'title' => $ch_m->title
+                    ];
+                }
+            }
+
+            return $characteristics;
         }
     }

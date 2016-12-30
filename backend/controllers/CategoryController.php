@@ -168,7 +168,7 @@
         }
 
         public function actionGetCharacteristicsFromCategory(){
-            $id = Yii::$app->request->post('category_id');
+            $id = Yii::$app->request->post('categories');
             $characteristicModels = ProductCharacteristicModel::find()
                                                               ->where(['category_id' => $id])
                                                               ->asArray()

@@ -27,6 +27,7 @@
      * @property ProductModel[]               $products
      */
     class CategoryModel extends ActiveRecord{
+        public $allCharacteristics = [];
 
         /**
          * @inheritdoc
@@ -168,6 +169,20 @@
         public function getProducts(){
             return $this->hasMany(ProductModel::className(), ['id' => 'product_id'])
                         ->viaTable('{{%product_in_category}}', ['category_id' => 'id']);
+        }
+
+        public static function allCharacteristics($id, &$characteristics = []){
+            $model = CategoryModel::findOne($id);
+            foreach($model->productCharacteristics as $productCharacteristic){
+                $characteristics[] = $productCharacteristic;
+            }
+
+            if(!is_null($model->parent0)){
+                return CategoryModel::allCharacteristics($model->parent0->id, $characteristics);
+            }
+
+            return $characteristics;
+
         }
 
     }

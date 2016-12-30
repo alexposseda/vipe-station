@@ -25,6 +25,7 @@
     //
     //    ProductCharacteristicWidgetAsset::register($this);
     \backend\assets\CategoryFormAsset::register($this);
+    $allCharacter = \common\models\CategoryModel::allCharacteristics($model->category->id);
 ?>
 
 <div class="category-model-form">
@@ -68,14 +69,14 @@
                         </div>
                         <div class="panel-body" id="character-list">
 
-                            <?php foreach($model->characteristics as $index => $characteristic) :
+                            <?php foreach($allCharacter as $index => $characteristic) :
                                 $label = false;
                                 if($characteristic->isNewRecord){
                                     $label = 'Новая характеристика';
                                 }
                                 ?>
                                 <div class="character-line" id="character-<?= $index ?>">
-                                    <?php if($characteristic->category_id == $model->category->parent0->id and !$model->category->isNewRecord): ?>
+                                    <?php if($characteristic->category_id != $model->category->id): ?>
                                         <?= $form->field($characteristic, '['.$index.']title',
                                                          ['template' => '{label}<div class="row no-margin"><div class="col-lg-10 col-md-10 col-sm-9 ">{input}</div><div class="col-sm-3 col-md-2 col-lg-2"></div>{error}{hint}</div>'])
                                                  ->label($label)
