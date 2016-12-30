@@ -83,7 +83,7 @@
                                                            'attributes' => [
                                                                'created_at' => ['label' => Yii::t('models/product', 'Novelty')],
                                                                'sales'      => ['label' => Yii::t('models/product', 'Popularity')],
-                                                               'stock'      => ['label' => Yii::t('models/product', 'Discounts')],
+//                                                               'stock'      => ['label' => Yii::t('models/product', 'Discounts')],
                                                                'base_price' => ['label' => Yii::t('models/product', 'Price')],
                                                            ]
                                                        ]
@@ -100,7 +100,7 @@
 
             // grid filtering conditions
             $query->andFilterWhere([
-                                       'id'            => $this->id,
+                                       self::tableName().'.id'            => $this->id,
                                        'base_quantity' => $this->base_quantity,
                                        'created_at'    => $this->created_at,
                                        'brand_id'      => $this->brand_id,
