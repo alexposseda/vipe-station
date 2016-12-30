@@ -1,11 +1,30 @@
 <?php
 
+use common\models\BrandModel;
+use common\models\CategoryModel;
+use yii\caching\DbDependency;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\search\ProductSearchModel */
-/* @var $form yii\widgets\ActiveForm */
+/**
+ * @var $this yii\web\View
+ * @var $model common\models\search\ProductSearchModel
+ * @var $form yii\widgets\ActiveForm
+ */
+$allCategory = CategoryModel::getDb()
+    ->cache(function () {
+        return CategoryModel::find()
+            ->all();
+    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM' . CategoryModel::tableName()]));
+
+$allBrand = BrandModel::getDb()
+    ->cache(function () {
+        return BrandModel::find()
+            ->all();
+    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM' . BrandModel::tableName()]));
+$allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
+$allCategoryMap = ArrayHelper::map($allCategory, 'id', 'title');
 ?>
 
 <div class="product-model-search">
@@ -21,28 +40,13 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'title') ?>
-
-    <?php // echo $form->field($model, 'gallery') ?>
+    <?= $form->field($model, 'category_id')->dropDownList($allCategoryMap,['prompt'=>Yii::t('system/view','Select').' '.Yii::t('models/category','Category')])->label(Yii::t('models', 'Category')) ?>
+    <?= $form->field($model, 'brand_id')->dropDownList($allBrandMap,['prompt'=>Yii::t('system/view','Select').' '.Yii::t('models','Brand')])->label(Yii::t('models', 'Brand')) ?>
 
     <?= $form->field($model, 'description') ?>
 
-    <?= $form->field($model, 'base_price') ?>
+    <?= $form->field($model, 'price')->label($model->getAttributeLabel('base_price'))->textInput(['placeholder'=>'0;100']) ?>
 
-    <?php // echo $form->field($model, 'base_quantity') ?>
-
-    <?php // echo $form->field($model, 'slug') ?>
-
-    <?php // echo $form->field($model, 'sales') ?>
-
-    <?php // echo $form->field($model, 'views') ?>
-
-    <?php // echo $form->field($model, 'seo_id') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <?php // echo $form->field($model, 'brand_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('system/view', 'Search'), ['class' => 'btn btn-primary']) ?>
