@@ -100,7 +100,7 @@
 
             // grid filtering conditions
             $query->andFilterWhere([
-                                       'id'            => $this->id,
+                                       self::tableName().'.id'            => $this->id,
                                        'base_quantity' => $this->base_quantity,
                                        'created_at'    => $this->created_at,
                                        'brand_id'      => $this->brand_id,
