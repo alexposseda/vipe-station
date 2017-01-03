@@ -5,6 +5,7 @@
     use backend\models\forms\ProductForm;
     use backend\models\UploadCover;
     use common\models\CategoryModel;
+    use common\models\ProductInCategoryModel;
     use common\models\SeoModel;
     use Yii;
     use common\models\ProductModel;
@@ -201,4 +202,30 @@
 
             return $characteristics;
         }
+
+        public function actionGetRelatedProducts(){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $categories = Yii::$app->request->post('categories');
+            $productModels = [];
+            $products = [];
+            if(!empty($categories)){
+                foreach($categories as $category_id){
+                    $productModels[] = ProductInCategoryModel::find()->where(['category_id' => $category_id])->all();
+                }
+
+                foreach($productModels as $productModelCollection){
+                    if(!is_array($productModelCollection)){
+                        continue;
+                    }
+                    foreach($productModelCollection as $productModel){
+                        $products[] = [
+                            'id' => $productModel->product->id,
+                            'title' => $productModel->product->title
+                        ];
+                    }
+                }
+            }
+            return $products;
+        }
+
     }

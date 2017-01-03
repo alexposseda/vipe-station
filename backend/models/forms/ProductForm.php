@@ -10,6 +10,7 @@
     use common\models\ProductInCategoryModel;
     use common\models\ProductModel;
     use common\models\ProductOptionModel;
+    use common\models\RelatedProductModel;
     use common\models\SeoModel;
     use Exception;
     use Yii;
@@ -25,7 +26,8 @@
      * @property SeoModel     $seo
      * @property ProductModel $product
      * @property int[]        $categories
-     * @property mixed        allCategories
+     * @property mixed        $allCategories
+     * @property array        $allRelatedProducts
      **
      */
     class ProductForm extends Model{
@@ -36,9 +38,8 @@
         public $categories;
         public $error;
 
-
-        public $characteristics = [];
-        public $options = [];
+        public $characteristics  = [];
+        public $related_products = [];
 
         public function rules(){
             return [
@@ -50,7 +51,7 @@
                     [
                         'categories',
                         'characteristics',
-                        'options'
+                        'related_products'
                     ],
                     'safe'
                 ],
@@ -71,61 +72,60 @@
                 $this->categories[$key] = ['selected' => 'selected'];
             }
 
-//            /**
-//             * Получаем все характеристики из категорий в которых находиться продукт
-//             */
-//            $characteristics = [];
-//            foreach($this->product->categories as $category){
-//                $characteristics = ArrayHelper::merge($characteristics, $category->productCharacteristics);
-//            }
-//
-//            /**
-//             * Формируем массив характеристик продукта
-//             */
-//            $this->characteristics = [];
-//            foreach($characteristics as $characteristic){
-//                $condition = ['characteristic_id' => $characteristic->id];
-//                $char_m = ProductCharacteristicItemModel::findOne($condition);
-//                if(!$char_m){
-//                    $char_m = new ProductCharacteristicItemModel($condition);
-//                }
-//                $this->characteristics[] = $char_m;
-//            }
-//
-//            /**
-//             * Формируем массив опций продукта
-//             */
-//            $this->options = [];
-//            foreach($characteristics as $characteristic){
-//                $condition = ['characteristic_id' => $characteristic->id];
-//                $opt_m = ProductOptionModel::findOne($condition);
-//                if(!$opt_m){
-//                    $opt_m = new ProductOptionModel($condition);
-//                }
-//                $this->options[] = $opt_m;
-//            }
+            //            /**
+            //             * Получаем все характеристики из категорий в которых находиться продукт
+            //             */
+            //            $characteristics = [];
+            //            foreach($this->product->categories as $category){
+            //                $characteristics = ArrayHelper::merge($characteristics, $category->productCharacteristics);
+            //            }
+            //
+            //            /**
+            //             * Формируем массив характеристик продукта
+            //             */
+            //            $this->characteristics = [];
+            //            foreach($characteristics as $characteristic){
+            //                $condition = ['characteristic_id' => $characteristic->id];
+            //                $char_m = ProductCharacteristicItemModel::findOne($condition);
+            //                if(!$char_m){
+            //                    $char_m = new ProductCharacteristicItemModel($condition);
+            //                }
+            //                $this->characteristics[] = $char_m;
+            //            }
+            //
+            //            /**
+            //             * Формируем массив опций продукта
+            //             */
+            //            $this->options = [];
+            //            foreach($characteristics as $characteristic){
+            //                $condition = ['characteristic_id' => $characteristic->id];
+            //                $opt_m = ProductOptionModel::findOne($condition);
+            //                if(!$opt_m){
+            //                    $opt_m = new ProductOptionModel($condition);
+            //                }
+            //                $this->options[] = $opt_m;
+            //            }
 
             if(!$this->product->isNewRecord){
 
-//                $characteristicsFromCategories = [];
-//                foreach($this->product->categories as $category){
-//                    if(!empty($category->parent0->productCharacteristics)){
-//                        foreach($category->parent0->productCharacteristics as $productCharacteristic){
-//                            $characteristicsFromCategories[] = new ProductCharacteristicItemModel(['characteristic_id' => $productCharacteristic->id]);
-//                        }
-//                    }
-//                    if(!empty($category->productCharacteristics)){
-//                        foreach($category->productCharacteristics as $productCharacteristic){
-//                            $characteristicsFromCategories[] = new ProductCharacteristicItemModel(['characteristic_id' => $productCharacteristic->id]);
-//                        }
-//                    }
-//                }
-//
-//                foreach( as $productCharacteristicItem){
-//
-//                }
+                //                $characteristicsFromCategories = [];
+                //                foreach($this->product->categories as $category){
+                //                    if(!empty($category->parent0->productCharacteristics)){
+                //                        foreach($category->parent0->productCharacteristics as $productCharacteristic){
+                //                            $characteristicsFromCategories[] = new ProductCharacteristicItemModel(['characteristic_id' => $productCharacteristic->id]);
+                //                        }
+                //                    }
+                //                    if(!empty($category->productCharacteristics)){
+                //                        foreach($category->productCharacteristics as $productCharacteristic){
+                //                            $characteristicsFromCategories[] = new ProductCharacteristicItemModel(['characteristic_id' => $productCharacteristic->id]);
+                //                        }
+                //                    }
+                //                }
+                //
+                //                foreach( as $productCharacteristicItem){
+                //
+                //                }
                 $this->characteristics = $this->product->productCharacteristicItems;
-                $this->options = $this->product->productOptions;
             }
         }
 
@@ -180,6 +180,22 @@
                     }
                 }
                 //endregion
+
+                foreach($this->related_products as $rel_prod_id){
+                    $condition = [
+                        'base_product'    => $this->product->id,
+                        'related_product' => $rel_prod_id
+                    ];
+                    $relatedProduct = RelatedProductModel::find()
+                                                         ->where($condition)
+                                                         ->one();
+                    if(!$relatedProduct){
+                        $relatedProduct = new RelatedProductModel($condition);
+                    }
+                    if(!$relatedProduct->save()){
+                        throw new Exception('error to save product '.$rel_prod_id.' to related product');
+                    }
+                }
 
                 //region remove diff category
                 /** @var ProductInCategoryModel[] $diff_categories */
@@ -237,49 +253,50 @@
                 //endregion
 
                 //region Options
-                $options = [];
-                $setOp = [];
-                $postOptions = Yii::$app->request->post('ProductOptionModel');
-                $postOptions = $postOptions ? $postOptions : [];
-
-                foreach($postOptions as $id => $item){
-                    $condition = [
-                        'characteristic_id' => $id,
-                        'product_id'        => $this->product->id
-                    ];
-                    if(ProductOptionModel::find()
-                                         ->where($condition)
-                                         ->exists()
-                    ){
-                        $options[$id] = ProductOptionModel::findOne($condition);
-                    }else{
-                        $options[$id] = new ProductOptionModel($condition);
-                    }
-                    $setOp[] = $id;
-                }
-                if(Model::loadMultiple($options, Yii::$app->request->post()) && Model::validateMultiple($options)){
-                    foreach($options as $option){
-                        if(!$option->save(false)){
-                            throw new Exception('error save characteristic');
-                        }
-                    }
-                }
-                /**
-                 * Выбираем все опции которые есть у продукта и не пришли из формы и удаляем их
-                 */
-                $optTmp = $this->product->getProductOptions()
-                                        ->where([
-                                                    'not in',
-                                                    'characteristic_id',
-                                                    $setOp
-                                                ])
-                                        ->all();
-                foreach($optTmp as $item){
-                    $item->delete();
-                }
+                //                $options = [];
+                //                $setOp = [];
+                //                $postOptions = Yii::$app->request->post('ProductOptionModel');
+                //                $postOptions = $postOptions ? $postOptions : [];
+                //
+                //                foreach($postOptions as $id => $item){
+                //                    $condition = [
+                //                        'characteristic_id' => $id,
+                //                        'product_id'        => $this->product->id
+                //                    ];
+                //                    if(ProductOptionModel::find()
+                //                                         ->where($condition)
+                //                                         ->exists()
+                //                    ){
+                //                        $options[$id] = ProductOptionModel::findOne($condition);
+                //                    }else{
+                //                        $options[$id] = new ProductOptionModel($condition);
+                //                    }
+                //                    $setOp[] = $id;
+                //                }
+                //                if(Model::loadMultiple($options, Yii::$app->request->post()) && Model::validateMultiple($options)){
+                //                    foreach($options as $option){
+                //                        if(!$option->save(false)){
+                //                            throw new Exception('error save characteristic');
+                //                        }
+                //                    }
+                //                }
+                //                /**
+                //                 * Выбираем все опции которые есть у продукта и не пришли из формы и удаляем их
+                //                 */
+                //                $optTmp = $this->product->getProductOptions()
+                //                                        ->where([
+                //                                                    'not in',
+                //                                                    'characteristic_id',
+                //                                                    $setOp
+                //                                                ])
+                //                                        ->all();
+                //                foreach($optTmp as $item){
+                //                    $item->delete();
+                //                }
                 //endregion
 
                 $transaction->commit();
+
                 //region Clear Session gallery
                 $gallery = $this->product->gallery ? json_decode($this->product->gallery) : [];
                 foreach($gallery as $gallery_item){
@@ -314,6 +331,30 @@
                                        }, 0, $dependency);
 
             return ArrayHelper::map($categories, 'id', 'title');
+        }
+
+        /**
+         * возвращает сформированный масив всех категорий
+         * @return array
+         */
+        public function getAllRelatedProducts(){
+            $models = RelatedProductModel::find()
+                                         ->where(['base_product' => $this->product->id])
+                                         ->orWhere(['related_product' => $this->product->id])
+                                         ->all();
+            $list = [];
+            if($models){
+                foreach($models as $model){
+                    if($model->baseProduct->id != $this->product->id){
+                        $list[$model->baseProduct->id] = ['selected' => 'selected'];
+                    }
+                    if($model->relatedProduct->id != $this->product->id){
+                        $list[$model->relatedProduct->id] = ['selected' => 'selected'];
+                    }
+                }
+            }
+
+            return $list;
         }
 
         /**

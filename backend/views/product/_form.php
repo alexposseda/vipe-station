@@ -16,6 +16,21 @@
         'depends'  => '\backend\assets\AppAsset',
         'position' => \yii\web\View::POS_END
     ]);
+
+    if(!$model->product->isNewRecord){
+        $productList = [];
+        $categories = [];
+        foreach($model->product->categories as $c){
+            $categories[] = $c->id;
+        }
+        $models = \common\models\ProductInCategoryModel::find()->where(['IN', 'category_id', $categories])->all();
+        foreach($models as $m){
+            if($m->product->id == $model->product->id){
+                continue;
+            }
+            $productList[$m->product->id] = $m->product->title;
+        }
+    }
 ?>
 
 <div class="product-model-form">
@@ -27,13 +42,14 @@
                 <div class="col-sm-12 col-md-6 col-lg-5">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <?= $form->field($model, 'categories[]', ['options' => []])
+                            <?= $form->field($model, 'categories[]')
                                      ->dropDownList($model->allCategories, [
-                                         'multiple' => 'multiple',
+                                         'multiple'              => 'multiple',
                                          //                                 'prompt'   => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Category'),
-                                         'options'  => $model->categories,
-                                         'data-url' => Url::to(['product/get-characteristics']),
-                                         'readonly' => ($model->product->isNewRecord) ? false : true,
+                                         'options'               => $model->categories,
+                                         'data-getCharacter-url' => Url::to(['product/get-characteristics']),
+                                         'data-getRelated-url'   => Url::to(['product/get-related-products']),
+                                         'disabled'              => ($model->product->isNewRecord) ? false : true,
                                      ]) ?>
                             <?= $form->field($model->product, 'brand_id')
                                      ->dropDownList($model->getAllBrand(),
@@ -56,7 +72,16 @@
                     <div class="panel panel-info">
                         <div class="panel-heading"><p class="panel-title">Связанные продукты</p></div>
                         <div class="panel-body">
-                            <div class="alert alert-info">Select the category!</div>
+                            <?php if(!$model->product->isNewRecord): ?>
+                                <?= $form->field($model, 'related_products[]')->dropDownList($productList, [
+                                    'multiple'              => 'multiple',
+                                    'options' => $model->allRelatedProducts
+                                ])?>
+                                <?php else: ?>
+                                <div class="alert alert-info" id="related-alert">Select the category!</div>
+                            <?php endif; ?>
+                            <div id="related"></div>
+
                         </div>
                     </div>
                 </div>
@@ -89,8 +114,9 @@
                 </div>
                 <div class="panel-body" id="characteristic-list">
                     <?php if(!empty($model->characteristics)): ?>
-                        <?php foreach($model->characteristics as $char_m): ?>
-                            <?= $form->field($char_m, '['.$char_m->characteristic->id.']value')
+                        <?php foreach($model->characteristics as $index => $char_m): ?>
+                            <?= $form->field($char_m, '['.$char_m->characteristic->id.']value',
+                                             ['options' => ['class' => 'col-sm-12 col-md-6 col-lg-4']])
                                      ->textInput()
                                      ->label($char_m->characteristic->title) ?>
                         <?php endforeach; ?>
@@ -129,23 +155,4 @@
 
 
     <?php ActiveForm::end(); ?>
-</div>
-<div class="modal fade" id="select-options">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Выберите опцию</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <select class="form-control" id="s-opt"></select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Отменить</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-opt">Добавить</button>
-            </div>
-        </div>
-    </div>
 </div>
