@@ -5,8 +5,7 @@
     use yii\alexposseda\fileManager\FileManager;
     use yii\bootstrap\Html;
 
-    $src = (!empty($model->cover)) ? FileManager::getInstance()
-                                                ->getStorageUrl().json_decode($model->cover)[0] : '/img/noPicture.png';
+    $src = (!empty($model->cover)) ? $model->cover : '/img/noPicture.png';
 ?>
 
 <div class="col-sm-12 col-md-6 col-lg-4 product-wrap">
