@@ -172,31 +172,31 @@
                     $product_in_category = ProductInCategoryModel::find()
                                                                  ->where($condition)
                                                                  ->one();
-                    if(!$product_in_category){
+                    if(is_null($product_in_category)){
                         $product_in_category = new ProductInCategoryModel($condition);
-                    }
-                    if(!$product_in_category->save()){
-                        throw new Exception('error to save category '.$category_id.' to product');
+                        if(!$product_in_category->save()){
+                            throw new Exception('error to save category '.$category_id.' to product');
+                        }
                     }
                 }
                 //endregion
-
-                foreach($this->related_products as $rel_prod_id){
-                    $condition = [
-                        'base_product'    => $this->product->id,
-                        'related_product' => $rel_prod_id
-                    ];
-                    $relatedProduct = RelatedProductModel::find()
-                                                         ->where($condition)
-                                                         ->one();
-                    if(!$relatedProduct){
-                        $relatedProduct = new RelatedProductModel($condition);
-                    }
-                    if(!$relatedProduct->save()){
-                        throw new Exception('error to save product '.$rel_prod_id.' to related product');
+                if(empty(!$this->related_products)){
+                    foreach($this->related_products as $rel_prod_id){
+                        $condition = [
+                            'base_product'    => $this->product->id,
+                            'related_product' => $rel_prod_id
+                        ];
+                        $relatedProduct = RelatedProductModel::find()
+                                                             ->where($condition)
+                                                             ->one();
+                        if(!$relatedProduct){
+                            $relatedProduct = new RelatedProductModel($condition);
+                            if(!$relatedProduct->save()){
+                                throw new Exception('error to save product '.$rel_prod_id.' to related product');
+                            }
+                        }
                     }
                 }
-
                 //region remove diff category
                 /** @var ProductInCategoryModel[] $diff_categories */
                 $diff_categories = $this->product->getProductInCategories()

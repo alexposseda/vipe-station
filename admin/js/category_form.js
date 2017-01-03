@@ -27,6 +27,7 @@ $('#add-character').on('click', function(){
 });
 
 $('#categorymodel-parent').on('change', function(){
+
     var category_id = $(this).val();
     if($(this).parent().data('current') != category_id) {
         var url = $(this).parent().data(url);

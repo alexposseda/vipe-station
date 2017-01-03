@@ -23,7 +23,13 @@
         foreach($model->product->categories as $c){
             $categories[] = $c->id;
         }
-        $models = \common\models\ProductInCategoryModel::find()->where(['IN', 'category_id', $categories])->all();
+        $models = \common\models\ProductInCategoryModel::find()
+                                                       ->where([
+                                                                   'IN',
+                                                                   'category_id',
+                                                                   $categories
+                                                               ])
+                                                       ->all();
         foreach($models as $m){
             if($m->product->id == $model->product->id){
                 continue;
@@ -42,15 +48,30 @@
                 <div class="col-sm-12 col-md-6 col-lg-5">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <?= $form->field($model, 'categories[]')
-                                     ->dropDownList($model->allCategories, [
-                                         'multiple'              => 'multiple',
-                                         //                                 'prompt'   => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Category'),
-                                         'options'               => $model->categories,
-                                         'data-getCharacter-url' => Url::to(['product/get-characteristics']),
-                                         'data-getRelated-url'   => Url::to(['product/get-related-products']),
-                                         'disabled'              => ($model->product->isNewRecord) ? false : true,
-                                     ]) ?>
+                            <?php if($model->product->isNewRecord): ?>
+                                <?= $form->field($model, 'categories[]', ['options' => ['class' => 'disabled']])
+                                         ->dropDownList($model->allCategories, [
+                                             'multiple'              => 'multiple',
+                                             //                                 'prompt'   => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Category'),
+                                             'options'               => $model->categories,
+                                             'data-getCharacter-url' => Url::to(['product/get-characteristics']),
+                                             'data-getRelated-url'   => Url::to(['product/get-related-products']),
+                                             'readonly'              => ($model->product->isNewRecord) ? false : true,
+                                         ]) ?>
+                            <?php else: ?>
+                                <?php foreach($model->categories as $c_id => $other){
+                                    echo Html::hiddenInput($model->formName().'[categories][]', $c_id);
+                                } ?>
+                                <div class="form-group">
+                                    <label for="s1" class="control-label">Категории</label>
+                                <?= Html::dropDownList('', array_keys($model->categories), $model->allCategories, [
+                                    'class'    => 'form-control',
+                                    'multiple' => 'multiple',
+                                    'disabled' => true,
+                                    'id' => 's1'
+                                ]) ?>
+                                </div>
+                            <?php endif; ?>
                             <?= $form->field($model->product, 'brand_id')
                                      ->dropDownList($model->getAllBrand(),
                                                     ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Brand')]) ?>
@@ -73,11 +94,12 @@
                         <div class="panel-heading"><p class="panel-title">Связанные продукты</p></div>
                         <div class="panel-body">
                             <?php if(!$model->product->isNewRecord): ?>
-                                <?= $form->field($model, 'related_products[]')->dropDownList($productList, [
-                                    'multiple'              => 'multiple',
-                                    'options' => $model->allRelatedProducts
-                                ])?>
-                                <?php else: ?>
+                                <?= $form->field($model, 'related_products[]')
+                                         ->dropDownList($productList, [
+                                             'multiple' => 'multiple',
+                                             'options'  => $model->allRelatedProducts
+                                         ]) ?>
+                            <?php else: ?>
                                 <div class="alert alert-info" id="related-alert">Select the category!</div>
                             <?php endif; ?>
                             <div id="related"></div>
