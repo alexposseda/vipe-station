@@ -139,3 +139,7 @@ label.btn img.social-icon{
     margin-left: 0;
     margin-right: 0;
 }
+.product-wrap .panel-body{
+    overflow: auto;
+    height: 300px;
+}

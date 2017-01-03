@@ -9,7 +9,7 @@
                                                 ->getStorageUrl().json_decode($model->cover)[0] : '/img/noPicture.png';
 ?>
 
-<div class="col-sm-12 col-md-6 col-lg-6 product-wrap">
+<div class="col-sm-12 col-md-6 col-lg-4 product-wrap">
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="row">
@@ -24,40 +24,6 @@
                 </div>
             </div>
             <hr>
-            <?php
-                if(!empty($model->productOptions)):
-                    ?>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-condensed">
-                            <caption>Доступные опции</caption>
-                            <tr>
-                                <td>Название</td>
-                                <td>Значение</td>
-                                <td>Цена</td>
-                                <td>Количество</td>
-                            </tr>
-                            <?php
-                                foreach($model->productOptions as $productOption):
-                                    ?>
-                                    <tr>
-                                        <td><?= $productOption->characteristic->title ?></td>
-                                        <td><?= $productOption->value ?></td>
-                                        <td><?= $productOption->delta_price ?></td>
-                                        <td><?= $productOption->quantity ?></td>
-                                    </tr>
-                                    <?php
-                                endforeach;
-                            ?>
-                        </table>
-                    </div>
-                    <?php
-                else:
-                    ?>
-                    <div class="alert alert-info">Опции не найдены</div>
-                    <?php
-                endif;
-            ?>
-            <hr>
             <h4>Описание</h4>
             <p><?= $model->description ?></p>
             <hr>
@@ -67,15 +33,11 @@
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <caption>Характеристики</caption>
-                            <tr>
-                                <td>Название</td>
-                                <td>Значение</td>
-                            </tr>
                             <?php
                                 foreach($model->productCharacteristicItems as $productCharacteristic):
                                     ?>
                                     <tr>
-                                        <td><?= $productCharacteristic->characteristic->title ?></td>
+                                        <td><strong><?= $productCharacteristic->characteristic->title ?></strong></td>
                                         <td><?= $productCharacteristic->value ?></td>
                                     </tr>
                                     <?php
