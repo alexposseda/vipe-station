@@ -37,6 +37,9 @@
      * @property ProductOptionModel[]             $productOptions
      *
      * @property string                           $cover
+     *
+     * @property RelatedProductModel[]            $relatedProducts
+     * @property RelatedProductModel[]            $relatedProducts0
      */
     class ProductModel extends ActiveRecord{
 
@@ -230,5 +233,19 @@
         public function getCover(){
             return ($this->gallery) ? FileManager::getInstance()
                                                  ->getStorageUrl().json_decode($this->gallery)[0] : '';
+        }
+
+        /**
+         * @return \yii\db\ActiveQuery
+         */
+        public function getRelatedProducts(){
+            return $this->hasMany(RelatedProductModel::className(), ['base_product' => 'id']);
+        }
+
+        /**
+         * @return \yii\db\ActiveQuery
+         */
+        public function getRelatedProducts0(){
+            return $this->hasMany(RelatedProductModel::className(), ['related_product' => 'id']);
         }
     }
