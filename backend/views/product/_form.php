@@ -24,7 +24,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-9 col-lg-8">
             <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-6">
+                <div class="col-sm-12 col-md-6 col-lg-5">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <?= $form->field($model, 'categories[]', ['options' => []])
@@ -32,19 +32,33 @@
                                          'multiple' => 'multiple',
                                          //                                 'prompt'   => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Category'),
                                          'options'  => $model->categories,
-                                         'data-url' => Url::to(['product/get-characteristics'])
+                                         'data-url' => Url::to(['product/get-characteristics']),
+                                         'readonly' => ($model->product->isNewRecord) ? false : true,
                                      ]) ?>
-                        </div>
-                    </div><!--Categories-->
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
                             <?= $form->field($model->product, 'brand_id')
                                      ->dropDownList($model->getAllBrand(),
                                                     ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Brand')]) ?>
                         </div>
+                    </div><!--Categories-->
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-7">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <?= $form->field($model->product, 'base_price', ['options' => ['class' => 'col-lg-6']])
+                                         ->input('number') ?>
+
+                                <?= $form->field($model->product, 'base_quantity', ['options' => ['class' => 'col-lg-6']])
+                                         ->input('number') ?>
+                            </div>
+                        </div>
                     </div><!--Brand-->
+                    <div class="panel panel-info">
+                        <div class="panel-heading"><p class="panel-title">Связанные продукты</p></div>
+                        <div class="panel-body">
+                            <div class="alert alert-info">Select the category!</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -65,61 +79,24 @@
                                                        ]
                                                    ]
                                                ]) ?>
-                    <div class="row">
-                        <?= $form->field($model->product, 'base_price', ['options' => ['class' => 'col-lg-6']])
-                                 ->input('number') ?>
 
-                        <?= $form->field($model->product, 'base_quantity', ['options' => ['class' => 'col-lg-6']])
-                                 ->input('number') ?>
-                    </div>
                 </div>
             </div><!--Product attributes-->
-            <div class="row">
-                <div class="col-lg-4 characteristic">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <p class="panel-title">Характеристики</p>
-                        </div>
-                        <div class="panel-body" id="characteristic-list">
-                            <?php if(!empty($model->characteristics)): ?>
-                                <?php foreach($model->characteristics as $char_m): ?>
-                                    <?= $form->field($char_m, '['.$char_m->characteristic->id.']value')
-                                             ->textInput()
-                                             ->label($char_m->characteristic->title) ?>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <div class="alert alert-info">Empty</div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p class="panel-title">Характеристики</p>
                 </div>
-                <div class="col-lg-8 option">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <p class="panel-title">Опции</p>
-                        </div>
-                        <div class="panel-body" id="characteristic-list">
-                            <?php if(!empty($model->options)): ?>
-                                <?php foreach($model->options as $opt_m): ?>
-                                    <span class="option-label col-lg-12"><?= $opt_m->characteristic->title ?></span>
-                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']value',
-                                                     ['options' => ['class' => 'col-lg-4 form-inline']])
-                                             ->textInput(['placeholder' => $opt_m->getAttributeLabel('value')])
-                                             ->label(false) ?>
-                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']delta_price',
-                                                     ['options' => ['class' => 'col-lg-4 form-inline']])
-                                             ->input('number', ['placeholder' => $opt_m->getAttributeLabel('delta_price')])
-                                             ->label(false) ?>
-                                    <?= $form->field($opt_m, '['.$opt_m->characteristic->id.']quantity',
-                                                     ['options' => ['class' => 'col-lg-4 form-inline']])
-                                             ->input('number', ['placeholder' => $opt_m->getAttributeLabel('quantity')])
-                                             ->label(false) ?>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <div class="alert alert-info">Empty</div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
+                <div class="panel-body" id="characteristic-list">
+                    <?php if(!empty($model->characteristics)): ?>
+                        <?php foreach($model->characteristics as $char_m): ?>
+                            <?= $form->field($char_m, '['.$char_m->characteristic->id.']value')
+                                     ->textInput()
+                                     ->label($char_m->characteristic->title) ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="alert alert-info">Empty</div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -153,4 +130,22 @@
 
     <?php ActiveForm::end(); ?>
 </div>
-
+<div class="modal fade" id="select-options">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Выберите опцию</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <select class="form-control" id="s-opt"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отменить</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-opt">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
