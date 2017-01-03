@@ -25,7 +25,10 @@
     //
     //    ProductCharacteristicWidgetAsset::register($this);
     \backend\assets\CategoryFormAsset::register($this);
-    $allCharacter = \common\models\CategoryModel::allCharacteristics($model->category->id);
+    $allCharacter = [];
+    if($model->category->id){
+        $allCharacter = \common\models\CategoryModel::allCharacteristics($model->category->id);
+    }
 ?>
 
 <div class="category-model-form">
