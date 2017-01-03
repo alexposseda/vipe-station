@@ -37,7 +37,7 @@
         <div class="col-sm-12 col-md-9 col-lg-8">
 
             <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-6">
+                <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <?= LanguageWidget::widget([
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-6">
+                <div class="col-sm-12 col-md-12 col-lg-12">
                     <div class="panel panel-success">
                         <div class="panel-heading">
                             <p class="panel-title">Характеристики</p>
@@ -78,21 +78,35 @@
                                     $label = 'Новая характеристика';
                                 }
                                 ?>
-                                <div class="character-line" id="character-<?= $index ?>">
+                                <div class="character-line row" id="character-<?= $index ?>">
                                     <?php if($characteristic->category_id != $model->category->id): ?>
-                                        <?= $form->field($characteristic, '['.$index.']title',
-                                                         ['template' => '{label}<div class="row no-margin"><div class="col-lg-10 col-md-10 col-sm-9 ">{input}</div><div class="col-sm-3 col-md-2 col-lg-2"></div>{error}{hint}</div>'])
+                                        <?= $form->field($characteristic, '['.$index.']title',['options' => ['class' => 'col-lg-6']])
                                                  ->label($label)
                                                  ->textInput([
                                                                  'placeholder' => 'Название',
-                                                                 'readonly'    => true
+                                                                 'disabled'    => true
                                                              ]) ?>
+                                        <div class="col-lg-4">
+                                            <p class="disabled">
+                                                <?= Html::checkbox('', $characteristic->isOption, ['disabled' => true])?>
+                                                is Option
+                                            </p>
+                                        </div>
                                         <?= Html::activeHiddenInput($characteristic, '['.$index.']id', ['value' => $characteristic->id]) ?>
                                     <?php else: ?>
-                                        <?= $form->field($characteristic, '['.$index.']title',
-                                                         ['template' => '{label}<div class="row no-margin"><div class="col-lg-10 col-md-10 col-sm-9 ">{input}</div><div class="col-sm-3 col-md-2 col-lg-2"><button type="button" data-url="'.Url::to(['category/del-characteristic', 'id'=>$characteristic->id]).'" class="btn btn-sm btn-danger del-character" data-index="'.$index.'"><span class="glyphicon glyphicon-remove"></span></button></div>{error}{hint}</div>'])
+                                        <?= $form->field($characteristic, '['.$index.']title', ['options' => ['class' => 'col-lg-6']])
                                                  ->label($label)
                                                  ->textInput(['placeholder' => 'Название']) ?>
+                                        <div class="col-lg-4">
+                                            <?= Html::activeCheckbox($characteristic, '['.$index.']isOption')?>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <button type="button" data-url="<?= Url::to([
+                                                                                            'category/del-characteristic',
+                                                                                            'id' => $characteristic->id
+                                                                                        ]) ?>" class="btn btn-sm btn-danger del-character"
+                                                    data-index="<?= $index ?>"><span class="glyphicon glyphicon-remove"></span></button>
+                                        </div>
                                         <?= Html::activeHiddenInput($characteristic, '['.$index.']id', ['value' => $characteristic->id]) ?>
                                     <?php endif; ?>
                                 </div>
@@ -109,7 +123,13 @@
                 </div>
             </div>
         </div>
-
+        <?php
+            [
+                'template' => '{label}<div class="row no-margin"><div class="col-lg-10 col-md-10 col-sm-9 ">{input}</div><div class="col-sm-3 col-md-2 col-lg-2"><button type="button" data-url="'.Url::to([
+                                                                                                                                                                                                               'category/del-characteristic',
+                                                                                                                                                                                                               'id' => $characteristic->id
+                                                                                                                                                                                                           ]).'" class="btn btn-sm btn-danger del-character" data-index="'.$index.'"><span class="glyphicon glyphicon-remove"></span></button></div>{error}{hint}</div>'
+            ]; ?>
         <div class="col-sm-12 col-md-9 col-lg-4">
             <div class="panel panel-success">
                 <div class="panel-heading"><?= Yii::t('system/view', 'Seo') ?></div>
