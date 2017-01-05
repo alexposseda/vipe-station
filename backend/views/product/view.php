@@ -46,9 +46,12 @@
                                                     'class'     => 'form-inline'
                                                 ]
                                             ]) ?>
-            <?= Html::activeHiddenInput($cartModel, 'product_id', ['value' => $model->id]) ?>
-            <?= Html::activeInput('number', $cartModel, 'quantity', ['class' => 'form-control', 'style'=>'width: 75px;'])?>
-            <?= Html::submitButton('Купить', ['class' => 'btn btn-success']) ?>
+        <?= Html::activeHiddenInput($cartModel, 'product_id', ['value' => $model->id]) ?>
+        <?= Html::activeInput('number', $cartModel, 'quantity', [
+            'class' => 'form-control',
+            'style' => 'width: 75px;'
+        ]) ?>
+        <?= Html::submitButton('Купить', ['class' => 'btn btn-success']) ?>
         <?php ActiveForm::end() ?>
     </div>
     <div class="clearfix"></div>
@@ -87,6 +90,19 @@
                                                 <a class="btn btn-default" href="<?= Url::to([
                                                                                                  'product/view',
                                                                                                  'id' => $rel_product->relatedProduct->id
+                                                                                             ]) ?>">
+                                                    <?= $v ?>
+                                                </a>
+                                                <?php
+                                                $u_chars[] = $v;
+                                            endif;
+                                        endforeach;
+                                        foreach($model->relatedProducts0 as $rel_product):
+                                            $v = $rel_product->baseProduct->characteristicValue($productCharacteristicItem->characteristic->id)->value;
+                                            if(!in_array($v, $u_chars)):?>
+                                                <a class="btn btn-default" href="<?= Url::to([
+                                                                                                 'product/view',
+                                                                                                 'id' => $rel_product->baseProduct->id
                                                                                              ]) ?>">
                                                     <?= $v ?>
                                                 </a>
@@ -187,11 +203,13 @@
                     <p class="panel-title">Галерея</p>
                 </div>
                 <div class="panel-body">
-                    <?php if(!empty($gallery)): foreach($gallery as $pic):?>
-                        <img src="<?= \yii\alexposseda\fileManager\FileManager::getInstance()->getStorageUrl().$pic?>" class="img-thumbnail">
-                    <?php endforeach; else:?>
+                    <?php if(!empty($gallery)): foreach($gallery as $pic): ?>
+                        <img src="<?= \yii\alexposseda\fileManager\FileManager::getInstance()
+                                                                              ->getStorageUrl().$pic ?>" class="img-thumbnail">
+                    <?php endforeach;
+                    else: ?>
                         <div class="alert alert-info">Gallery is empty!</div>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

@@ -143,3 +143,7 @@ label.btn img.social-icon{
     overflow: auto;
     height: 300px;
 }
+.option-name{
+    vertical-align: middle!important;
+    font-weight: bold;
+}
