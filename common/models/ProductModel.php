@@ -248,4 +248,19 @@
         public function getRelatedProducts0(){
             return $this->hasMany(RelatedProductModel::className(), ['related_product' => 'id']);
         }
+
+        /**
+         * @param integer $c_id
+         *
+         * @return ProductCharacteristicItemModel|null
+         */
+        public function characteristicValue($c_id){
+            foreach($this->productCharacteristicItems as $productCharacteristicItem){
+                if($productCharacteristicItem->characteristic->id == $c_id){
+                    return $productCharacteristicItem;
+                }
+            }
+
+            return null;
+        }
     }
