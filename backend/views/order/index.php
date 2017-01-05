@@ -4,7 +4,6 @@
      * @var $orders \yii\data\ActiveDataProvider
      */
     use yii\grid\GridView;
-
 ?>
 <?= GridView::widget([
                          'dataProvider' => $orders,
@@ -85,3 +84,4 @@
                              ],
                          ]
                      ]);
+?>
