@@ -4,6 +4,8 @@
      * @var $orders \yii\data\ActiveDataProvider
      */
     use yii\grid\GridView;
+    use yii\helpers\Url;
+
 ?>
 <?= GridView::widget([
                          'dataProvider' => $orders,
@@ -90,5 +92,7 @@
                                  'contentOptions' => ['style' => 'vertical-align:middle;']
                              ],
                          ]
-                     ]);
-?>
+                     ]); ?>
+<a href="<?= Url::to(['cart/index']) ?>" class="btn btn-sm btn-success pull-right">
+    Перейти в корзину
+</a>
