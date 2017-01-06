@@ -43,7 +43,7 @@
             if($cartForm->load(Yii::$app->request->post()) && $cartForm->add()){
                 Yii::$app->session->setFlash('success', 'Добавлено в корзину');
 
-                return $this->redirect(['/catalog']);
+                return $this->redirect(Yii::$app->request->referrer);
             }
             Yii::$app->session->setFlash('error', 'Error save cart');
 
