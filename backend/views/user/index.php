@@ -42,7 +42,7 @@
                                              'attribute'      => 'created_at',
                                              'format'         => [
                                                  'date',
-                                                 'HH:mm:ss dd.MM.YYYY'
+                                                 'HH:mm:ss dd.MM.Y'
                                              ],
                                              'headerOptions'  => [
                                                  'style' => 'width: 10%;max-width: 100px;'
@@ -53,7 +53,7 @@
                                              'attribute'      => 'updated_at',
                                              'format'         => [
                                                  'date',
-                                                 'HH:mm:ss dd.MM.YYYY'
+                                                 'HH:mm:ss dd.MM.Y'
                                              ],
                                              'headerOptions'  => [
                                                  'style' => 'width: 10%;max-width: 100px;'
