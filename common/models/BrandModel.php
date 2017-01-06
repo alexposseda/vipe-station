@@ -169,7 +169,7 @@
         public function afterSave($insert, $changedAttributes){
             $id = Yii::$app->user->id;
             $action = $insert ? 'Create' : 'Update';
-            if($action == 'Create'){
+            if($insert){
                 $action_data = 'This post in table '. $this::tableName(). ' with Id = '.$this->id. ' has Create on '. Yii::$app->formatter->asDatetime('now'). ' user with ID = ' .$id;
             }else{
                 $action_data = 'This post in table '. $this::tableName(). ' with Id = '.$this->id. ' has Update on '. Yii::$app->formatter->asDatetime('now'). ' user with ID = ' .$id;

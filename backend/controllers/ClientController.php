@@ -126,7 +126,7 @@ class ClientController extends Controller
     {
         $this->findModel($id)
             ->delete();
-
+        Yii::$app->cache->flush();
         return $this->redirect(['index']);
     }
 

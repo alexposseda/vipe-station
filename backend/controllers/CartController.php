@@ -6,9 +6,11 @@
     use Yii;
     use common\models\CartModel;
     use yii\data\ActiveDataProvider;
+    use yii\filters\AccessControl;
     use yii\web\Controller;
     use yii\web\NotFoundHttpException;
     use yii\filters\VerbFilter;
+    use yii\web\UnauthorizedHttpException;
 
     /**
      * CartController implements the CRUD actions for CartModel model.
@@ -25,6 +27,18 @@
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class'        => AccessControl::className(),
+                    'denyCallback' => function($rule, $action){
+                        throw new UnauthorizedHttpException(Yii::t('system/error', 'You do not have access to this page'));
+                    },
+                    'rules'        => [
+                        [
+                            'allow' => true,
+                            'roles' => ['admin','manager']
+                        ]
+                    ]
+                ]
             ];
         }
 
@@ -85,7 +99,7 @@
         public function actionDelete($id){
             $this->findModel($id)
                  ->delete();
-
+            Yii::$app->cache->flush();
             return $this->redirect(['index']);
         }
 

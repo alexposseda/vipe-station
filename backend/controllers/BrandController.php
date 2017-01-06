@@ -157,6 +157,7 @@
         public function actionDelete($id){
             $this->findModel($id)
                  ->delete();
+            Yii::$app->cache->flush();
 
             return $this->redirect(['index']);
         }

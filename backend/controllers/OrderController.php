@@ -7,11 +7,39 @@ use common\models\forms\OrderForm;
 use common\models\OrderModel;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\ConflictHttpException;
 use yii\web\Controller;
+use yii\web\UnauthorizedHttpException;
 
 class OrderController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors(){
+        return [
+            'verbs'  => [
+                'class'   => VerbFilter::className(),
+                'actions' => [
+                    'delete'      => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class'        => AccessControl::className(),
+                'denyCallback' => function($rule, $action){
+                    throw new UnauthorizedHttpException(Yii::t('system/error', 'You do not have access to this page'));
+                },
+                'rules'        => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin','manager']
+                    ]
+                ]
+            ]
+        ];
+    }
 
     public function actionIndex()
     {
@@ -58,7 +86,7 @@ class OrderController extends Controller
     {
         OrderModel::findOne($id)
             ->delete();
-
+        Yii::$app->cache->flush();
         return $this->redirect(['index']);
     }
 }

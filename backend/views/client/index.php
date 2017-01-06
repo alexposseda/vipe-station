@@ -35,13 +35,8 @@
                                      'columns'      => [
                                          ['class' => 'yii\grid\SerialColumn'],
 
-                                         [
-                                             'attribute' => 'email',
-                                             'label'      => Yii::t('models/client', 'Email'),
-                                             'content'   => function($data){
-                                                 return $data->user->email;
-                                             }
-                                         ],
+
+                                         'email',
                                          'name',
                                          'phones',
                                          'birthday:date',

@@ -21,11 +21,33 @@ use yii\helpers\Url;
                 <p class="page-title">Последние заказы</p>
                 <div class="clearfix"></div>
             </div>
-                <?= GridView::widget([
-                    'dataProvider' => new ActiveDataProvider(['query' => OrderModel::find()->orderBy(['created_at' => SORT_DESC])]),
-                    'layout' => '<div class="panel-body"><div class="row">{items}</div></div><div class="panel-footer "><div class="left">{summary}</div><div class="right">{pager}</div><div class="clearfix"></div></div>',
-                    'emptyTextOptions' => ['class' => 'alert alert-warning', 'style' => 'margin: 10px;']
-                ]) ?>
+            <?= GridView::widget([
+                'dataProvider' => new ActiveDataProvider(['query' => OrderModel::find()->orderBy(['created_at' => SORT_DESC])]),
+                'layout' => '<div class="panel-body"><div class="row">{items}</div></div><div class="panel-footer "><div class="left">{summary}</div><div class="right">{pager}</div><div class="clearfix"></div></div>',
+                'emptyTextOptions' => ['class' => 'alert alert-warning', 'style' => 'margin: 10px;'],
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'status',
+                    'orderClientData.client.name',
+                    'total_cost',
+                    [
+                        'attribute' => 'updated_at',
+                        'format' => [
+                            'date',
+                            'H:m:s dd.MM.Y'
+                        ],
+                        'headerOptions' => [
+                            'style' => 'width: 10%;max-width: 100px;'
+                        ],
+                        'contentOptions' => ['style' => 'vertical-align:middle;']
+                    ],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'urlCreator' => function ($action, $model, $key, $index) {
+                            return Url::to(['order/' . $action, 'id' => $model->id]);
+                        }],
+                ]
+            ]) ?>
         </div>
         <div class="panel panel-info clients">
             <div class="panel-heading">
@@ -35,11 +57,33 @@ use yii\helpers\Url;
                 <p class="page-title">Последние клиенты</p>
                 <div class="clearfix"></div>
             </div>
-                <?= GridView::widget([
-                    'dataProvider' => new ActiveDataProvider(['query' => ClientModel::find()->orderBy(['created_at' => SORT_DESC])]),
-                    'layout' => '<div class="panel-body"><div class="row">{items}</div></div><div class="panel-footer "><div class="left">{summary}</div><div class="right">{pager}</div><div class="clearfix"></div></div>',
-                    'emptyTextOptions' => ['class' => 'alert alert-warning', 'style' => 'margin: 10px;']
-                ]) ?>
+            <?= GridView::widget([
+                'dataProvider' => new ActiveDataProvider(['query' => ClientModel::find()->orderBy(['created_at' => SORT_DESC])]),
+                'layout' => '<div class="panel-body"><div class="row">{items}</div></div><div class="panel-footer "><div class="left">{summary}</div><div class="right">{pager}</div><div class="clearfix"></div></div>',
+                'emptyTextOptions' => ['class' => 'alert alert-warning', 'style' => 'margin: 10px;'],
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'email',
+                    'name',
+                    [
+                        'attribute' => 'updated_at',
+                        'format' => [
+                            'date',
+                            'H:m:s dd.MM.Y'
+                        ],
+                        'headerOptions' => [
+                            'style' => 'width: 10%;max-width: 100px;'
+                        ],
+                        'contentOptions' => ['style' => 'vertical-align:middle;']
+                    ],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'urlCreator' => function ($action, $model, $key, $index) {
+                            return Url::to(['client/' . $action, 'id' => $model->id]);
+                        }
+                    ],
+                ]
+            ]) ?>
         </div>
     </div>
     <div class="col-lg-5 logger">
