@@ -23,17 +23,17 @@
      */
     class OrderClientDataModel extends ActiveRecord{
 
-        public function init(){
-            parent::init();
-            if(!Yii::$app->user->isGuest){
-                $this->client_id = UserIdentity::findOne(Yii::$app->user->id)->client->id;
-                if($this->client){
-                    $this->email = $this->client->email;
-                    $this->name = $this->client->name;
-                    $this->phone = $this->client->phones_arr[0];
-                }
-            }
-        }
+//        public function init(){
+//            parent::init();
+//            if(!Yii::$app->user->isGuest){
+//                $this->client_id = UserIdentity::findOne(Yii::$app->user->id)->client->id;
+//                if($this->client){
+//                    $this->email = $this->client->email;
+//                    $this->name = $this->client->name;
+//                    $this->phone = $this->client->phones_arr[0];
+//                }
+//            }
+//        }
 
         /**
          * @inheritdoc
@@ -76,7 +76,7 @@
         public function attributeLabels(){
             return [
                 'id'         => 'ID',
-                'client_id'  => 'Client ID',
+                'client_id'  => Yii::t('models','Client'),
                 'order_id'   => 'Order ID',
                 'name'       => 'Name',
                 'email'      => 'Email',

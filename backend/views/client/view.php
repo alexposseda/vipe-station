@@ -1,15 +1,15 @@
 <?php
 
-    use yii\helpers\Html;
-    use yii\helpers\Url;
-    use yii\widgets\DetailView;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\DetailView;
 
-    /* @var $this yii\web\View */
-    /* @var $model common\models\ClientModel */
+/* @var $this yii\web\View */
+/* @var $model common\models\ClientModel */
 
-    $this->title = $model->name;
-    $this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Clients'), 'url' => ['index']];
-    $this->params['breadcrumbs'][] = $this->title;
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Clients'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="client-model-view">
@@ -17,7 +17,8 @@
     <h1><?= Html::encode($this->title) ?></h1>
 
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#info" data-toggle="tab"><?= Yii::t('models/client', 'Contact Information') ?></a></li>
+        <li class="active"><a href="#info" data-toggle="tab"><?= Yii::t('models/client', 'Contact Information') ?></a>
+        </li>
         <li><a href="#orders" data-toggle="tab"><?= Yii::t('models/client', 'History of orders') ?></a></li>
         <li><a href="#delivers" data-toggle="tab"><?= Yii::t('models/client', 'Shipping addresses') ?></a></li>
     </ul>
@@ -42,9 +43,14 @@
                 </div>
                 <div class="phones">
                     <p><?= Yii::t('models/client', 'Phones') ?></p>
-                    <?php foreach($model->phones_arr as $phone): ?>
-                        <p><?= Html::encode($phone) ?></p>
-                    <?php endforeach; ?>
+                    <?php
+                    if (is_array($model->phones_arr)):
+                        foreach ($model->phones_arr as $phone): ?>
+                            <p><?= Html::encode($phone) ?></p>
+                            <?php
+                        endforeach;
+                    endif; ?>
+
                 </div>
                 <div class="birthday">
                     <p><?= Yii::t('models/client', 'Birthday') ?></p>
@@ -62,13 +68,13 @@
 
         <?= Html::a(Yii::t('system/view', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('system/view', 'Request password reset'),
-                    ['request-password-reset', 'email' => $model->user->email, 'goback' => Url::to(['view', 'id' => $model->id])],
-                    ['class' => 'btn btn-danger']) ?>
+            ['request-password-reset', 'email' => $model->user->email, 'goback' => Url::to(['view', 'id' => $model->id])],
+            ['class' => 'btn btn-danger']) ?>
 
     </div>
     <div class="client-orders tab-pane" id="orders">
         <h4><?= Yii::t('models/client', 'Your orders') ?></h4>
-        <?php foreach($model->orderClientDatas as $orderClientData): ?>
+        <?php foreach ($model->orderClientDatas as $orderClientData): ?>
             <div class="row">
                 <div class="col-lg-2">
                     <?= Html::a($orderClientData->order->id, ['order/view', 'id' => $orderClientData->order->id]) ?>

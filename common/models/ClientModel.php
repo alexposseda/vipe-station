@@ -29,7 +29,7 @@
         public $phones_arr;
         public $email;
 
-        public function afterFind(){$tmp = explode(' ', $this->name);
+        public function afterFind(){$tmp = explode(' ', trim($this->name));
             $this->f_name = $tmp[0];
             $this->l_name = $tmp[1];
             $this->phones_arr = json_decode($this->phones);

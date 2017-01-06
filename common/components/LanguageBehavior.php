@@ -132,7 +132,8 @@
                         }
                     }
                 }else{
-                    throw new Exception(Yii::t('system/error', 'Sorry, I can not save the language data'));
+                    //Gektor нужно будет розкоментировать
+                    //throw new Exception(Yii::t('system/error', 'Sorry, I can not save the language data'));
                 }
             }catch(Exception $e){
                 Yii::$app->session->setFlash('error', $e->getMessage());

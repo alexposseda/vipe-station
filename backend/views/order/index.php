@@ -4,6 +4,8 @@
      * @var $orders \yii\data\ActiveDataProvider
      */
     use yii\grid\GridView;
+    use yii\helpers\Url;
+
 ?>
 <?= GridView::widget([
                          'dataProvider' => $orders,
@@ -19,6 +21,13 @@
                              ],
                              [
                                  'attribute'      => 'status',
+                                 'headerOptions'  => [
+                                     'style' => 'width: 20%;max-width: 150px;'
+                                 ],
+                                 'contentOptions' => ['style' => 'vertical-align:middle;']
+                             ],
+                             [
+                                 'attribute'      => 'orderClientData.client.name',
                                  'headerOptions'  => [
                                      'style' => 'width: 20%;max-width: 150px;'
                                  ],
@@ -56,7 +65,7 @@
                                  'attribute'      => 'created_at',
                                  'format'         => [
                                      'date',
-                                     'HH:mm:ss dd.MM.YYYY'
+                                     'H:m:s dd.MM.Y'
                                  ],
                                  'headerOptions'  => [
                                      'style' => 'width: 10%;max-width: 100px;'
@@ -67,7 +76,7 @@
                                  'attribute'      => 'updated_at',
                                  'format'         => [
                                      'date',
-                                     'HH:mm:ss dd.MM.YYYY'
+                                     'H:m:s dd.MM.Y'
                                  ],
                                  'headerOptions'  => [
                                      'style' => 'width: 10%;max-width: 100px;'
@@ -83,5 +92,7 @@
                                  'contentOptions' => ['style' => 'vertical-align:middle;']
                              ],
                          ]
-                     ]);
-?>
+                     ]); ?>
+<a href="<?= Url::to(['cart/index']) ?>" class="btn btn-sm btn-success pull-right">
+    Перейти в корзину
+</a>
