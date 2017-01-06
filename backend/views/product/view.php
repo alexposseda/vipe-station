@@ -76,45 +76,7 @@
                 <div class="list-group-item text-center"><h3>Опции</h3></div>
                 <?php
                     foreach($model->productCharacteristicItems as $productCharacteristicItem):
-                        if($productCharacteristicItem->characteristic->isOption):
-                            ?>
-                            <div class="list-group-item list-group-item-danger">
-                                <?= $productCharacteristicItem->characteristic->title ?>:
-                                <div class="btn-group">
-                                    <button class="btn btn-primary"><?= $productCharacteristicItem->value ?></button>
-                                    <?php
-                                        $u_chars = [$productCharacteristicItem->value];
-                                        foreach($model->relatedProducts as $rel_product):
-                                            $v = $rel_product->relatedProduct->characteristicValue($productCharacteristicItem->characteristic->id)->value;
-                                            if(!in_array($v, $u_chars)):?>
-                                                <a class="btn btn-default" href="<?= Url::to([
-                                                                                                 'product/view',
-                                                                                                 'id' => $rel_product->relatedProduct->id
-                                                                                             ]) ?>">
-                                                    <?= $v ?>
-                                                </a>
-                                                <?php
-                                                $u_chars[] = $v;
-                                            endif;
-                                        endforeach;
-                                        foreach($model->relatedProducts0 as $rel_product):
-                                            $v = $rel_product->baseProduct->characteristicValue($productCharacteristicItem->characteristic->id)->value;
-                                            if(!in_array($v, $u_chars)):?>
-                                                <a class="btn btn-default" href="<?= Url::to([
-                                                                                                 'product/view',
-                                                                                                 'id' => $rel_product->baseProduct->id
-                                                                                             ]) ?>">
-                                                    <?= $v ?>
-                                                </a>
-                                                <?php
-                                                $u_chars[] = $v;
-                                            endif;
-                                        endforeach;
-                                    ?>
-                                </div>
-                            </div>
-                            <?php
-                        endif;
+
                     endforeach;
                 ?>
             </div>

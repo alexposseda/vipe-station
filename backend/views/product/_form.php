@@ -31,7 +31,7 @@
                                                                ])
                                                        ->all();
         foreach($models as $m){
-            if($m->product->id == $model->product->id){
+            if($m->product->id == $model->product->id or $m->product->isBaseProduct()){
                 continue;
             }
             $productList[$m->product->id] = $m->product->title;
@@ -64,12 +64,12 @@
                                 } ?>
                                 <div class="form-group">
                                     <label for="s1" class="control-label">Категории</label>
-                                <?= Html::dropDownList('', array_keys($model->categories), $model->allCategories, [
-                                    'class'    => 'form-control',
-                                    'multiple' => 'multiple',
-                                    'disabled' => true,
-                                    'id' => 's1'
-                                ]) ?>
+                                    <?= Html::dropDownList('', array_keys($model->categories), $model->allCategories, [
+                                        'class'    => 'form-control',
+                                        'multiple' => 'multiple',
+                                        'disabled' => true,
+                                        'id'       => 's1'
+                                    ]) ?>
                                 </div>
                             <?php endif; ?>
                             <?= $form->field($model->product, 'brand_id')
@@ -97,7 +97,8 @@
                                 <?= $form->field($model, 'related_products[]')
                                          ->dropDownList($productList, [
                                              'multiple' => 'multiple',
-                                             'options'  => $model->allRelatedProducts
+                                             'options'  => $model->allRelatedProducts,
+                                             'disabled' => ($model->product->isRelatedProduct()) ? true : false,
                                          ]) ?>
                             <?php else: ?>
                                 <div class="alert alert-info" id="related-alert">Select the category!</div>

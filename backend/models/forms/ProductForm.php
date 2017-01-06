@@ -338,20 +338,10 @@
          * @return array
          */
         public function getAllRelatedProducts(){
-            $models = RelatedProductModel::find()
-                                         ->where(['base_product' => $this->product->id])
-                                         ->orWhere(['related_product' => $this->product->id])
-                                         ->all();
+            $models = $this->product->rProducts();
             $list = [];
-            if($models){
-                foreach($models as $model){
-                    if($model->baseProduct->id != $this->product->id){
-                        $list[$model->baseProduct->id] = ['selected' => 'selected'];
-                    }
-                    if($model->relatedProduct->id != $this->product->id){
-                        $list[$model->relatedProduct->id] = ['selected' => 'selected'];
-                    }
-                }
+            foreach($models as $m){
+                $list[$m->id] = ['selected'=>'selected'];
             }
 
             return $list;
