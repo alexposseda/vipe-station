@@ -43,7 +43,6 @@
      */
     class ProductModel extends ActiveRecord{
 
-        public $rProducts = [];
         /**
          * @inheritdoc
          */
@@ -166,6 +165,9 @@
             ];
         }
 
+        /**
+         * @return array|self[]
+         */
         public function rProducts(){
             $tmp = [];
             if($this->isBaseProduct()){

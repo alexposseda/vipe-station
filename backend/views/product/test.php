@@ -1,7 +1,7 @@
 <?php
     /**
-     * @var $this yii\web\View
-     * @var $model common\models\ProductModel
+     * @var $this            yii\web\View
+     * @var $model           common\models\ProductModel
      *
      * @var $relatedProducts \common\models\RelatedProductModel[]
      */
@@ -16,7 +16,14 @@
     }else{
         echo 'oops';
     }
-
-    foreach($model->rProducts() as $rp){
-        var_dump($rp->id);
+    echo '<br>';
+    /**
+     * @var $rp \common\models\ProductModel
+     */
+    $options = [];
+    foreach($model->productCharacteristicItems as $prodCharItem){
+        if($prodCharItem->characteristic->isOption){
+            $options[] = $prodCharItem->characteristic;
+        }
     }
+?>

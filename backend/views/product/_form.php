@@ -31,7 +31,7 @@
                                                                ])
                                                        ->all();
         foreach($models as $m){
-            if($m->product->id == $model->product->id){
+            if($m->product->id == $model->product->id or $m->product->isBaseProduct()){
                 continue;
             }
             $productList[$m->product->id] = $m->product->title;
