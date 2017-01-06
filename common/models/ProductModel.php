@@ -43,6 +43,7 @@
      */
     class ProductModel extends ActiveRecord{
 
+        public $rProducts = [];
         /**
          * @inheritdoc
          */
@@ -165,6 +166,26 @@
             ];
         }
 
+        public function rProducts(){
+            $tmp = [];
+            if($this->isBaseProduct()){
+                foreach($this->relatedProducts as $rp){
+                    $tmp[] = $rp->relatedProduct;
+                }
+            }else if($this->isRelatedProduct()){
+                $baseP = $this->relatedProducts0[0];
+                $tmp[] = $baseP->baseProduct;
+                foreach($baseP->baseProduct->relatedProducts as $rp){
+                    if($rp->relatedProduct->id == $this->id){
+                        continue;
+                    }
+                    $tmp[] = $rp->relatedProduct;
+                }
+            }
+
+            return $tmp;
+        }
+
         /**
          * @return \yii\db\ActiveQuery
          */
@@ -262,5 +283,29 @@
             }
 
             return null;
+        }
+
+        public function isBaseProduct(){
+            if(!empty($this->relatedProducts) and empty($this->relatedProducts0)){
+                return true;
+            }
+
+            return false;
+        }
+
+        public function isSingleProduct(){
+            if(empty($this->relatedProducts) and empty($this->relatedProducts0)){
+                return true;
+            }
+
+            return false;
+        }
+
+        public function isRelatedProduct(){
+            if(empty($this->relatedProducts) and !empty($this->relatedProducts0)){
+                return true;
+            }
+
+            return false;
         }
     }

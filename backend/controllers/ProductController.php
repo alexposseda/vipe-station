@@ -94,7 +94,7 @@
          * @return mixed
          */
         public function actionView($id){
-            return $this->render('view', [
+            return $this->render('test', [
                 'model' => $this->findModel($id),
             ]);
         }
