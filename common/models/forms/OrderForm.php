@@ -55,7 +55,7 @@
         }
 
         public function loadAll($post){
-            if($this->order->load($post) && $this->deliveryData->load($post) && $this->client->load(Yii::$app->request->post(),
+            if($this->order->load($post) && $this->client->load($post) && $this->deliveryData->load($post) && $this->client->load(Yii::$app->request->post(),
                                                                                                     $this->deliveryData->formName())
             ){
                 return true;

@@ -148,6 +148,12 @@ class ClientController extends Controller
         }
     }
 
+    public function actionGetClientData($client_id)
+    {
+        $client = $this->findModel($client_id);
+        return json_encode($client);
+    }
+
     public function actionRequestPasswordReset($email, $goback)
     {
         $model = new PasswordResetRequestForm(['email' => $email]);

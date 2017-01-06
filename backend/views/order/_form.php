@@ -1,53 +1,81 @@
 <?php
-    /**
-     * @var $this  \yii\web\View
-     * @var $order \common\models\forms\OrderForm
-     */
-    use common\models\DeliveryModel;
-    use common\models\OrderModel;
-    use common\models\PaymentModel;
-    use common\models\ProductCharacteristicItemModel;
-    use common\models\ProductOptionModel;
-    use yii\bootstrap\ActiveForm;
-    use yii\caching\DbDependency;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Html;
+/**
+ * @var $this  \yii\web\View
+ * @var $order \common\models\forms\OrderForm
+ */
+use common\models\ClientModel;
+use common\models\DeliveryModel;
+use common\models\OrderModel;
+use common\models\PaymentModel;
+use common\models\ProductCharacteristicItemModel;
+use common\models\ProductOptionModel;
+use yii\bootstrap\ActiveForm;
+use yii\caching\DbDependency;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\web\View;
 
-    $payArr = PaymentModel::getDb()
-                          ->cache(function(){
-                              return PaymentModel::find()
-                                                 ->all();
-                          }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.PaymentModel::tableName()]));
-    $deliverArr = DeliveryModel::getDb()
-                               ->cache(function(){
-                                   return DeliveryModel::find()
-                                                       ->all();
-                               }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.DeliveryModel::tableName()]));
-    $orderStatus = [
-        OrderModel::ORDER_STATUS_ABORTED   => Yii::t('models/order', OrderModel::ORDER_STATUS_ABORTED),
-        OrderModel::ORDER_STATUS_ACTIVE    => Yii::t('models/order', OrderModel::ORDER_STATUS_ACTIVE),
-        OrderModel::ORDER_STATUS_CONFIRMED => Yii::t('models/order', OrderModel::ORDER_STATUS_CONFIRMED),
-        OrderModel::ORDER_STATUS_DELETED   => Yii::t('models/order', OrderModel::ORDER_STATUS_DELETED),
-        OrderModel::ORDER_STATUS_FINISHED  => Yii::t('models/order', OrderModel::ORDER_STATUS_FINISHED),
-        OrderModel::ORDER_STATUS_PAID      => Yii::t('models/order', OrderModel::ORDER_STATUS_PAID),
-        OrderModel::ORDER_STATUS_SENT      => Yii::t('models/order', OrderModel::ORDER_STATUS_SENT),
-    ]
+$payArr = PaymentModel::getDb()
+    ->cache(function () {
+        return PaymentModel::find()
+            ->all();
+    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM ' . PaymentModel::tableName()]));
+$deliverArr = DeliveryModel::getDb()
+    ->cache(function () {
+        return DeliveryModel::find()
+            ->all();
+    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM ' . DeliveryModel::tableName()]));
+$clientArr = ClientModel::getDb()
+    ->cache(function () {
+        return ClientModel::find()
+            ->all();
+    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM ' . ClientModel::tableName()]));
+$orderStatus = [
+    OrderModel::ORDER_STATUS_ABORTED => Yii::t('models/order', OrderModel::ORDER_STATUS_ABORTED),
+    OrderModel::ORDER_STATUS_ACTIVE => Yii::t('models/order', OrderModel::ORDER_STATUS_ACTIVE),
+    OrderModel::ORDER_STATUS_CONFIRMED => Yii::t('models/order', OrderModel::ORDER_STATUS_CONFIRMED),
+    OrderModel::ORDER_STATUS_DELETED => Yii::t('models/order', OrderModel::ORDER_STATUS_DELETED),
+    OrderModel::ORDER_STATUS_FINISHED => Yii::t('models/order', OrderModel::ORDER_STATUS_FINISHED),
+    OrderModel::ORDER_STATUS_PAID => Yii::t('models/order', OrderModel::ORDER_STATUS_PAID),
+    OrderModel::ORDER_STATUS_SENT => Yii::t('models/order', OrderModel::ORDER_STATUS_SENT),
+];
+$url = Url::to(['client/get-client-data']);
+$js = <<<JS
+$('#orderclientdatamodel-client_id').on('change',function(){
+    $.get({
+        'url':'{$url}',
+        'data':{'client_id':$(this).val()},
+        'success':function(response){
+            var client = JSON.parse(response);
+            $('#deliveryaddressform-f_name').val(client.f_name);
+            $('#deliveryaddressform-l_name').val(client.l_name);
+            $('#deliveryaddressform-city').val(client.city);
+            $('#deliveryaddressform-address').val(client.address);
+            $('#deliveryaddressform-phone').val(client.phones_arr);
+            $('#deliveryaddressform-email').val(client.email);
+        }
+    });
+});
+JS;
+
+$this->registerJs($js, View::POS_END);
 ?>
 
 <?php $orderForm = ActiveForm::begin() ?>
 <div class="row">
     <div class="col-lg-8 left-panel">
         <?= $orderForm->field($order->order, 'payment_id')
-                      ->dropDownList(ArrayHelper::map($payArr, 'id', 'name'), ['prompt' => 'Select Payment']) ?>
+            ->dropDownList(ArrayHelper::map($payArr, 'id', 'name'), ['prompt' => 'Select Payment']) ?>
         <?= $orderForm->field($order->order, 'delivery_id')
-                      ->dropDownList(ArrayHelper::map($deliverArr, 'id', 'name'), ['prompt' => 'Select Delivery']) ?>
+            ->dropDownList(ArrayHelper::map($deliverArr, 'id', 'name'), ['prompt' => 'Select Delivery']) ?>
         <?= $orderForm->field($order->order, 'status')
-                      ->dropDownList($orderStatus, ['prompt' => 'Select order status']) ?>
+            ->dropDownList($orderStatus, ['prompt' => 'Select order status']) ?>
         <div class="panel panel-default order-detail">
             <p class="panel-heading"><?= Yii::t('models/order', 'Order Data') ?></p>
             <div class="row">
-                <?php if($order->orderData): ?>
-                    <?php foreach($order->orderData as $index => $od): ?>
+                <?php if ($order->orderData): ?>
+                    <?php foreach ($order->orderData as $index => $od): ?>
                         <div class="panel-body col-lg-4">
                             <div class="product-img">
                                 <img src="<?= $od->product->cover ?>">
@@ -62,12 +90,12 @@
                                 </div>
                                 <div class="product-characteristics ">
                                     <p><?= Yii::t('models', 'Characteristics') ?></p>
-                                    <?php if($od->options){
+                                    <?php if ($od->options) {
                                         $options = json_decode($od->options);
-                                        if(!empty($options->characteristics)){
-                                            foreach($options->characteristics as $character){
+                                        if (!empty($options->characteristics)) {
+                                            foreach ($options->characteristics as $character) {
                                                 $characterModel = ProductCharacteristicItemModel::findOne($character);
-                                                echo $characterModel->characteristic->title.' '.$characterModel->value.'<br>';
+                                                echo $characterModel->characteristic->title . ' ' . $characterModel->value . '<br>';
                                             }
                                         }
                                     }
@@ -75,12 +103,12 @@
                                 </div>
                                 <div class="product-options">
                                     <p><?= Yii::t('models', 'Options') ?></p>
-                                    <?php if($od->options){
+                                    <?php if ($od->options) {
                                         $options = json_decode($od->options);
-                                        if(!empty($options->options)){
-                                            foreach($options->options as $option){
+                                        if (!empty($options->options)) {
+                                            foreach ($options->options as $option) {
                                                 $optionModel = ProductOptionModel::findOne($option);
-                                                echo $optionModel->characteristic->title.' '.$optionModel->value.' '.$optionModel->delta_price.'<br>';
+                                                echo $optionModel->characteristic->title . ' ' . $optionModel->value . ' ' . $optionModel->delta_price . '<br>';
                                             }
                                         }
                                     }
@@ -88,10 +116,10 @@
                                 </div>
                                 <div class="product-price fs20 fc-light-brown">
                                     <p><?= Yii::t('models/order', 'Price') ?></p>
-                                    <?= $od->price.' '.Yii::t('models/cart', 'UAH') ?>
+                                    <?= $od->price . ' ' . Yii::t('models/cart', 'UAH') ?>
                                 </div>
-                                <?= $orderForm->field($od, '['.$index.']quantity')
-                                              ->input('number') ?>
+                                <?= $orderForm->field($od, '[' . $index . ']quantity')
+                                    ->input('number') ?>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -104,6 +132,8 @@
         <div class="panel panel-danger delivery-data">
             <p class="panel-heading"><?= Yii::t('models/order', 'Delivery data') ?></p>
             <div class="panel-body">
+                <?= $orderForm->field($order->client, 'client_id')
+                    ->dropDownList(ArrayHelper::map($clientArr, 'id', 'name'), ['prompt' => 'Select Client']) ?>
                 <?= $orderForm->field($order->deliveryData, 'f_name') ?>
                 <?= $orderForm->field($order->deliveryData, 'l_name') ?>
                 <?= $orderForm->field($order->deliveryData, 'city') ?>
@@ -116,12 +146,12 @@
             <p class="panel-heading"><?= $order->order->getAttributeLabel('comment') ?></p>
             <div class="panel-body">
                 <?= $orderForm->field($order->order, 'comment')
-                              ->textarea()
-                              ->label(false) ?>
+                    ->textarea()
+                    ->label(false) ?>
             </div>
         </div>
     </div>
 </div>
 <?= Html::submitButton($order->order->isNewRecord ? Yii::t('system/view', 'Create') : Yii::t('system/view', 'Update'),
-                       ['class' => $order->order->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    ['class' => $order->order->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 <?php ActiveForm::end() ?>

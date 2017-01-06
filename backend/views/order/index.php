@@ -25,6 +25,13 @@
                                  'contentOptions' => ['style' => 'vertical-align:middle;']
                              ],
                              [
+                                 'attribute'      => 'orderClientData.client.name',
+                                 'headerOptions'  => [
+                                     'style' => 'width: 20%;max-width: 150px;'
+                                 ],
+                                 'contentOptions' => ['style' => 'vertical-align:middle;']
+                             ],
+                             [
                                  'attribute'      => 'delivery.name',
                                  'headerOptions'  => [
                                      'style' => 'width: 30%;max-width: 280px;'
@@ -56,7 +63,7 @@
                                  'attribute'      => 'created_at',
                                  'format'         => [
                                      'date',
-                                     'HH:mm:ss dd.MM.YYYY'
+                                     'H:m:s dd.MM.Y'
                                  ],
                                  'headerOptions'  => [
                                      'style' => 'width: 10%;max-width: 100px;'
@@ -67,7 +74,7 @@
                                  'attribute'      => 'updated_at',
                                  'format'         => [
                                      'date',
-                                     'HH:mm:ss dd.MM.YYYY'
+                                     'H:m:s dd.MM.Y'
                                  ],
                                  'headerOptions'  => [
                                      'style' => 'width: 10%;max-width: 100px;'
