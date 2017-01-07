@@ -91,7 +91,7 @@
 
             $this->load($params);
             if(empty($this->id) and Yii::$app->controller->id != 'product'){
-                $query->joinWith('relatedProducts')->where(['is not', 'related_product', null]);
+                $query->joinWith('relatedProducts0')->where(['is', 'related_product', null]);
             }
             if(!$this->validate()){
                 // uncomment the following line if you do not want to return any records when validation fails
