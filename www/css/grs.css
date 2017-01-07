@@ -2709,3 +2709,6 @@ main .page-main .content {
 .side-nav{
     width: 380px;
 }
+.full-width{
+    width: 100%;
+}
