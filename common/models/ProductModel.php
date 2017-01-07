@@ -310,4 +310,31 @@
 
             return false;
         }
+
+        public static function getOptions($model){
+            $options = [];
+
+            foreach($model->productCharacteristicItems as $prodCharItem){
+                if($prodCharItem->characteristic->isOption){
+                    $options[$model->id][] = [
+                        'id'    => $prodCharItem->characteristic->id,
+                        'title' => $prodCharItem->characteristic->title,
+                        'value' => $prodCharItem->value
+                    ];
+                }
+            }
+            foreach($model->rProducts() as $rp){
+                foreach($rp->productCharacteristicItems as $prodCharItem){
+                    if($prodCharItem->characteristic->isOption){
+                        $options[$rp->id][] = [
+                            'id'    => $prodCharItem->characteristic->id,
+                            'title' => $prodCharItem->characteristic->title,
+                            'value' => $prodCharItem->value
+                        ];
+                    }
+                }
+            }
+
+            return $options;
+        }
     }
