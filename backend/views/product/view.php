@@ -40,7 +40,7 @@
     </p>
     <div class="pull-right">
         <?php $cartForm = ActiveForm::begin([
-                                                'action'  => Url::to(['/cart/add-to-cart'], 1),
+                                                'action' => Url::to(['/cart/add-to-cart'], 1),
                                                 'options' => [
                                                     'data-pjax' => 1,
                                                     'class'     => 'form-inline'
@@ -75,10 +75,34 @@
                 <?php endforeach; ?>
                 <div class="list-group-item text-center"><h3>Опции</h3></div>
                 <?php
-                    foreach($model->productCharacteristicItems as $productCharacteristicItem):
-
-                    endforeach;
-                ?>
+                    $options = \common\models\ProductModel::getOptions($model);
+                    if(!empty($options)):
+                        foreach($options as $product_id => $option_list):
+                            if($product_id == $model->id):
+                                ?>
+                                <div class="list-group-item active">
+                                    <?php foreach($option_list as $option):
+                                        echo $option['title'].': '.$option['value'].'<br>';
+                                    endforeach; ?>
+                                </div>
+                                <?php
+                            else:
+                                ?>
+                                <a class="list-group-item" href="<?= Url::to([
+                                                                                 'product/view',
+                                                                                 'id' => $product_id
+                                                                             ]) ?>">
+                                    <?php foreach($option_list as $option):
+                                        echo $option['title'].': '.$option['value'].'<br>';
+                                    endforeach; ?>
+                                </a>
+                                <?php
+                            endif;
+                        endforeach;
+                    else:
+                        ?>
+                        <div class="list-group-item list-group-item-danger">Нет опции</div>
+                    <?php endif; ?>
             </div>
             <div class="panel panel-success">
                 <div class="panel-heading">
