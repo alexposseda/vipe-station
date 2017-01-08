@@ -1229,7 +1229,8 @@ main .page-main .content {
 }
 
 .delivery-wrap .delivery-img {
-    margin-bottom: 20px;
+    padding-bottom: 20px;
+    background: #fff;
 }
 
 .delivery-wrap img {

@@ -86,26 +86,12 @@
         }
 
         public function actionShippingPayment(){
-
             $delivery = json_decode(ShopSettingTable::getSettingValue('delivery_'.Yii::$app->language));
-            $listDelivery = [];
-            if(!empty($delivery)){
-                $listDelivery['logo'] = $delivery[0]->logo;
-                $listDelivery['title'] = $delivery[0]->title;
-                $listDelivery['desc'] = $delivery[0]->desc;
-            }
-
             $payment = json_decode(ShopSettingTable::getSettingValue('payment_'.Yii::$app->language));
-            $listPayment = [];
-            if(!empty($payment)){
-                $listPayment['logo'] = $payment[0]->logo;
-                $listPayment['title'] = $payment[0]->title;
-                $listPayment['desc'] = $payment[0]->desc;
-            }
 
             return $this->render('shipping-payment', [
-                'listDelivery' => $listDelivery,
-                'listPayment'  => $listPayment
+                'delivery' => $delivery,
+                'payment'  => $payment
             ]);
         }
 
