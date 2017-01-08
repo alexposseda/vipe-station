@@ -52,6 +52,7 @@
 <?php $this->beginBody() ?>
 <header>
     <?php if(Yii::$app->controller->action->id != 'index'):?>
+
     <nav class="top-nav static">
         <div class="container">
             <div class="nav-wrapper">
@@ -78,6 +79,9 @@
     <?php endif;?>
     <div class="valign-wrapper">
         <ul id="nav-mobile" class="side-nav fixed white-text valign" style="transform: translateX(0%);">
+            <?php if(Yii::$app->controller->action->id != 'index'):?>
+            <a href="#" id="close-sidenav" class="hide-on-med-and-up"><img src="../images/close-round-white.svg" width="45px" alt="Закрыть"></a>
+            <?php endif;?>
             <li class="logo">
                 <a id="logo" href="<?= Url::to(['site/index']) ?>" class="brand-logo">
                     <img class="logo" src="<?= Url::to('/images/logo.png', true) ?>">
