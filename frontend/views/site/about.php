@@ -11,11 +11,13 @@
     if(!empty($shopAddresses)){
         $shopAddresses = json_decode($shopAddresses);
         foreach($shopAddresses as $s_a){
-            $c = explode(';', $s_a->coordinates);
-            $markers[] = [
-                'lat' => $c[0],
-                'lng' => $c[1]
-            ];
+            if($s_a->isGeneral == 1){
+                $c = explode(';', $s_a->coordinates);
+                $markers[] = [
+                    'lat' => $c[0],
+                    'lng' => $c[1]
+                ];
+            }
         }
         $markers = json_encode($markers);
     }
@@ -47,7 +49,7 @@ JS;
                         }?>
                     </div>
                     <div class="col l6 about-adress">
-                        <span class="fs25 fc-orange">Адреса</span><hr>
+                        <span class="fs25 fc-orange">Адрес</span><hr>
                         <?php foreach($shopAddresses as $address):?>
                         <span class="fs20 fc-dark-brown"><?= $address->address?><br><?= nl2br($address->phones)?><br><?= $address->schedule?></span>
                         <?php endforeach;?>
