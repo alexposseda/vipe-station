@@ -79,14 +79,8 @@
 
         public function actionAbout(){
             $aboutUs = ShopSettingTable::getSettingValue('aboutUs');
-            if(empty($aboutUs)){
-                $aboutUs = Yii::t('system/error', 'Sorry, Information is not available');
-            }
-
-            $addressForm = new AddressForm();
 
             return $this->render('about', [
-                'listAddress' => $addressForm->getAllAddress(),
                 'aboutUs'     => $aboutUs
             ]);
         }

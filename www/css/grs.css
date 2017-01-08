@@ -1377,12 +1377,12 @@ main .page-main .content {
 
 @media only screen and (min-width: 992px) {
     .page-wrap-content .about-adress {
-        padding: 50px 0 0 100px;
+        /*padding: 50px 0 0 100px;*/
     }
 }
 
 .page-wrap-content .about-text {
-    padding: 70px;
+    padding: 40px;
 }
 
 .page-wrap .margin-center {
@@ -1395,8 +1395,12 @@ main .page-main .content {
 
 .page-wrap .mapBox {
     padding: 0;
+    height: 250px;
 }
-
+#map{
+    height: 100%;
+    width: 100%;
+}
 .thanks-wrap {
     background: -moz-linear-gradient(51deg, #654B2E 0%, #3F2B17 55%, #3C2815 59%, #201003 100%);
     background: -webkit-linear-gradient(51deg, #654B2E 0%, #3F2B17 55%, #3C2815 59%, #201003 100%);
