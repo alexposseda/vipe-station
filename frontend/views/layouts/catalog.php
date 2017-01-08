@@ -110,7 +110,8 @@ JS;
                                 </li>
                                 <?php $search = ActiveForm::begin([
                                                                       'id'     => 'catalog-search',
-                                                                      'method' => 'get'
+                                                                      'method' => 'get',
+                                                                      'action' => ['catalog/category']
                                                                   ]) ?>
                                 <li class="col s4 m4 l3">
                                     <div class="border-r left-align">
