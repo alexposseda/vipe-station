@@ -96,8 +96,8 @@
                                         <?php foreach($allCategory as $category): ?>
                                             <?php /** @var CategoryModel $category */ ?>
                                             <?= Html::a($category->title, [
-                                                'catalog/category/',
-                                                'categoryName' => $category->title
+                                                'catalog/category',
+                                                'slug' => $category->slug
                                             ], [
                                                             'class'     => 'white-text fs15',
                                                             'data-pjax' => 0

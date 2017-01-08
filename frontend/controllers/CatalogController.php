@@ -33,9 +33,9 @@
             return $this->render('index', ['popular' => $popular, 'brands' => $brands]);
         }
 
-        public function actionBrand($brandName = null){
-            if(!is_null($brandName)){
-                $this->_search->brandName = $brandName;
+        public function actionBrand($slug = null){
+            if(!is_null($slug)){
+                $this->_search->brandSlug = $slug;
                 $catalog = $this->_search->search(Yii::$app->request->queryParams);
                 $catalog->pagination->pageSize = 8;
 
@@ -55,7 +55,7 @@
             return $this->render('_catalog_item', ['model' => $catalog->models[0]]);
         }
 
-        public function actionCategory($categoryName = null){
+        public function actionCategory($slug = null){
             $this->_search->catName = $categoryName;
             $catalog = $this->_search->search(Yii::$app->request->queryParams);
             $catalog->pagination->pageSize = 8;

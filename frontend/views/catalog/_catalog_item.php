@@ -21,7 +21,7 @@
         </div>
         <div class="wrap-items-second-section left">
             <div class="product-title">
-                <a href="<?= \yii\helpers\Url::to(['/catalog/product', 'slug' => $model->slug])?>" class="fs20 fc-orange"><?= $model->title?></a></div>
+                <a href="<?= \yii\helpers\Url::to(['catalog/product', 'slug' => $model->slug])?>" class="fs20 fc-orange"><?= $model->title?></a></div>
             <div class="product-price">
                 <span class="right fs20 fc-light-brown"><?= $model->base_price?> UAH</span>
                 <div class="clearfix"></div>

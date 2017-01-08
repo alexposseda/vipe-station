@@ -14,7 +14,7 @@
         public $category_id;
         public $catName;
         public $brand_id;
-        public $brandName;
+        public $brandSlug;
         public $price;
 
         /**
@@ -108,9 +108,9 @@
                                    ]);
 
             $query->andFilterWhere(['title' => $this->title]);
-            if($this->brandName){
+            if($this->brandSlug){
                 $query->joinWith('brand b')
-                      ->andFilterWhere(['b.title' => $this->brandName]);
+                      ->andFilterWhere(['b.slug' => $this->brandSlug]);
             }
             if($this->catName){
                 $query->joinWith('categories c')
