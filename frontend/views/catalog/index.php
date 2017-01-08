@@ -18,10 +18,10 @@
 ?>
 <div class="col s12 page-main">
     <div class="sub-title">
-        <a href="#" class="fs30 white-text title-catalog"><?=Yii::t('models/product','Popular goods')?></a>
+        <span class="fs30 white-text title-catalog"><?=Yii::t('models/product','Popular goods')?></span>
     </div>
     <div class="content">
-        <div class="catalog-background">
+<!--        <div class="catalog-background">-->
             <?php $dependency = [
                 'class'        => ChainedDependency::className(),
                 'dependencies' => [
@@ -38,13 +38,14 @@
                                              'itemView'     => '_catalog_item',
                                              'itemOptions'  => ['class' => 'wrap-overflow product'],
                                              'layout'       => "<div class='catalog-wrap-content product-carousel'>{items}</div>",
+                                             'options' => ['class' => 'catalog-background']
                                          ]) ?>
                     <?php $this->endCache();
                 endif; ?>
-        </div>
+<!--        </div>-->
     </div>
     <div class="sub-title">
-        <a href="#" class="fs30 white-text title-catalog"><?=Yii::t('models','Brands')?></a>
+        <span class="fs30 white-text title-catalog"><?=Yii::t('models','Brands')?></span>
     </div>
     <div class="content">
         <div class="catalog-background">
