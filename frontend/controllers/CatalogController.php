@@ -48,15 +48,15 @@
             return $this->render('brands', ['brands' => $brands]);
         }
 
-        public function actionProduct($productName){
-            $this->_search->title = $productName;
+        public function actionProduct($slug){
+            $this->_search->slug = $slug;
             $catalog = $this->_search->search(Yii::$app->request->queryParams);
 
             return $this->render('_catalog_item', ['model' => $catalog->models[0]]);
         }
 
         public function actionCategory($slug = null){
-            $this->_search->catName = $categoryName;
+            $this->_search->catSlug = $slug;
             $catalog = $this->_search->search(Yii::$app->request->queryParams);
             $catalog->pagination->pageSize = 8;
 

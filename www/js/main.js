@@ -120,17 +120,12 @@ $(document).ready(function () {
     });
 
     //range
-    $("#range-filter").ionRangeSlider({
-        type: "double",
-        min: $(this).data('min'),
-        max: $(this).data('max'),
-        postfix: "uah"
-    });
-
-    $('#form_filter').find('#brand_select').on('change', function () {
-        form = this.form;
-        $(form).submit();
-    });
+    //
+    //
+    // $('#form_filter').find('#brand_select').on('change', function () {
+    //     form = this.form;
+    //     $(form).submit();
+    // });
 
     $(window).on('load resize', function () {
         $('.section-title').fullHeight(-$('header').height());

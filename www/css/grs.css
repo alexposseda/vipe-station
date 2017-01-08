@@ -2711,9 +2711,15 @@ main .page-main .content {
 .social-icon img{
     width: 100%;
 }
-.side-nav{
-    width: 380px;
-}
 .full-width{
     width: 100%;
+}
+.sorted-by{
+    padding-right: 10px;
+    margin-right: 10px;
+    display: inline-block;
+}
+.sort{
+    display: inline-block;
+    width: auto;
 }
