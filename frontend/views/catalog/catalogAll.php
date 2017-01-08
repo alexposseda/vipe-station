@@ -11,7 +11,6 @@
     use yii\caching\DbDependency;
     use yii\web\View;
     use yii\widgets\ListView;
-
 ?>
 <div class="col s12 page-main ">
     <div class="page-device-modal valign-wrapper hide">

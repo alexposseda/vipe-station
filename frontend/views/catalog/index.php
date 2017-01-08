@@ -13,8 +13,6 @@
     use yii\caching\ChainedDependency;
     use yii\caching\DbDependency;
     use yii\widgets\ListView;
-
-    CatalogAsset::register($this);
 ?>
 <div class="col s12 page-main">
     <div class="sub-title">

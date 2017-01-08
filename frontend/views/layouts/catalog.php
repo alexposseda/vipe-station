@@ -16,7 +16,7 @@
     use yii\helpers\Url;
     use yii\widgets\ActiveForm;
 
-    AppAsset::register($this);
+    \frontend\assets\CatalogAsset::register($this);
 
     $shopName = ShopSettingTable::getSettingValue('shopName');
     if(empty($shopName)){
@@ -58,7 +58,28 @@
                           }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM'.BrandModel::tableName()]));
     $allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
 
-    $price = (new \yii\db\Query())->select(['MIN(base_price) as min, MAX(base_price) as max'])->from(\common\models\ProductModel::tableName())->one();
+    $price = (new \yii\db\Query())->select(['MIN(base_price) as min, MAX(base_price) as max'])
+                                  ->from(\common\models\ProductModel::tableName())
+                                  ->one();
+    $searchQuery = Yii::$app->request->get('ProductSearchModel');
+    if(!empty($searchQuery['price'])){
+        $p = explode(';', $searchQuery['price']);
+        $minP = $p[0];
+        $maxP = $p[1];
+        $js = <<<JS
+rangeFrom = {$minP};
+rangeTo = {$maxP};
+rangeInit();
+JS;
+        $this->registerJs($js, \yii\web\View::POS_END);
+    }else{
+        $js = <<<JS
+rangeInit();
+JS;
+        $this->registerJs($js, \yii\web\View::POS_END);
+    }
+
+    $selectedBrandId = (int)Yii::$app->request->get('ProductSearchModel')['brand_id'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -109,13 +130,15 @@
                                     <span class="white-text title-range">Цена</span>
                                     <?= $search->field($product_search, 'price')
                                                ->label(false)
-                                               ->textInput(['id' => 'range-filter', 'data-min'=>$price['min'], 'data-max' => $price['max']]) ?>
+                                               ->textInput(['id'       => 'range-filter',
+                                                            'data-min' => $price['min'],
+                                                            'data-max' => $price['max']
+                                                           ]) ?>
                                 </li>
                                 <li class="col s4 l5 radio-form-catalog hide-on-med-and-down">
                                     <div class="input-field col s12">
                                         <label>Бренд</label>
-                                        <?php //todo сделать так что бы при выборе бренда переходило по ссылке /catalog/brand/имя бренда ?>
-                                        <?= Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, ['prompt' => 'Выберите бренд']) ?>
+                                        <?= Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, ['prompt' => 'Выберите бренд', 'options' => [$selectedBrandId => ['selected' => true]]]) ?>
                                     </div>
                                 </li>
                             </ul>
