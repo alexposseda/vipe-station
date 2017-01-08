@@ -243,5 +243,10 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionOffline(){
+        $this->layout = false;
+        return $this->render('offline');
+    }
+
 
 }
