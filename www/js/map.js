@@ -1,4 +1,4 @@
-var map, markers = {};
+var map, markers = [];
 var centerMap = {lat: 50.4501, lng: 30.5234};
 function mapInit() {
     map = new google.maps.Map(

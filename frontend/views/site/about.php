@@ -4,6 +4,8 @@
      */
     use common\models\ShopSettingTable;
 
+    $this->params['headerTitle'] = 'О нас';
+
     $shopAddresses = ShopSettingTable::getSettingValue('address');
     $markers = [];
     if(!empty($shopAddresses)){
