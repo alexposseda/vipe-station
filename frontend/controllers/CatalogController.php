@@ -52,7 +52,7 @@
             $this->_search->slug = $slug;
             $catalog = $this->_search->search(Yii::$app->request->queryParams);
 
-            return $this->render('_catalog_item', ['model' => $catalog->models[0]]);
+            return $this->render('product', ['model' => $catalog->models[0]]);
         }
 
         public function actionCategory($slug = null){

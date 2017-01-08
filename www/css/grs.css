@@ -2723,3 +2723,45 @@ main .page-main .content {
     display: inline-block;
     width: auto;
 }
+.count-inp{
+    text-align: center;
+    line-height: 39px;
+}
+.count-inp span{
+    color: #8E5D36;
+    font-size: 28px;
+    font-family: 'MuseoCyrl';
+    cursor: pointer;
+    vertical-align: middle;
+}
+.count-inp input{
+    border: none;
+    border-left: 1px solid #8E5D36;
+    border-right: 1px solid #8E5D36;
+    padding: 5px 10px;
+    height: auto;
+    width: 20%;
+    text-align: center;
+    margin: 0 10px;
+}
+.product-gallery-wrap{
+}
+.product-gallery-item{
+    height: 380px;
+    overflow: hidden;
+}
+.product-gallery-item img{
+    width: 100%;
+}
+.slick-dots li{
+    width: 10px;
+    height: 10px;
+    border-radius: 50px;
+    border: 1px solid #201003;
+}
+.slick-dots li button{
+    display: none;
+}
+.slick-dots .slick-active{
+    background: #201003;
+}
