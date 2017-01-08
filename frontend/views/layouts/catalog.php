@@ -4,11 +4,17 @@
      * @var $content string
      */
 
+    use common\models\BrandModel;
+    use common\models\CategoryModel;
+    use common\models\search\ProductSearchModel;
     use common\models\ShopSettingTable;
     use frontend\assets\AppAsset;
     use yii\alexposseda\fileManager\FileManager;
+    use yii\caching\DbDependency;
+    use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\ActiveForm;
 
     AppAsset::register($this);
 
@@ -37,6 +43,22 @@
     if(!empty($socials)){
         $socials = json_decode($socials);
     }
+
+    $product_search = new ProductSearchModel();
+    $allCategory = CategoryModel::getDb()
+                                ->cache(function(){
+                                    return CategoryModel::find()
+                                                        ->all();
+                                }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM'.CategoryModel::tableName()]));
+
+    $allBrand = BrandModel::getDb()
+                          ->cache(function(){
+                              return BrandModel::find()
+                                               ->all();
+                          }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM'.BrandModel::tableName()]));
+    $allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
+
+    $price = (new \yii\db\Query())->select(['MIN(base_price) as min, MAX(base_price) as max'])->from(\common\models\ProductModel::tableName())->one();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -51,37 +73,62 @@
 <body>
 <?php $this->beginBody() ?>
 <header>
-    <?php if(Yii::$app->controller->action->id != 'index'):?>
 
     <nav class="top-nav static">
         <div class="container">
             <div class="nav-wrapper">
                 <div class="page-header">
                     <ul class="row mb-0">
-                        <li class="col l7 m12 s12">
-                            <ul class="row mt-10 mb-0">
+                        <li class="col l7 m12 s12 valign">
+                            <?php //todo сделать проверку где представление равно catalogAll?>
+                            <ul class="row">
                                 <li class="col s2 m2 l3 hide-on-large-only">
                                     <a href="#" data-activates="nav-mobile"
                                        class="button-collapse top-nav full hide-on-large-only"><i
                                                 class="material-icons large">menu</i></a>
                                 </li>
-                                <li class="col s10 m10 l12 left-align page-title">
-                                    <a href="#" class="fc-orange fs20 border-r"><?= $this->params['headerTitle']?></a>
+                                <?php $search = ActiveForm::begin([
+                                                                      'id'     => 'catalog-search',
+                                                                      'method' => 'get'
+                                                                  ]) ?>
+                                <li class="col s4 m4 l3">
+                                    <div class="border-r left-align">
+                                        <?php foreach($allCategory as $category): ?>
+                                            <?php /** @var CategoryModel $category */ ?>
+                                            <?= Html::a($category->title, [
+                                                'catalog/category/',
+                                                'categoryName' => $category->title
+                                            ], [
+                                                            'class'     => 'white-text fs15',
+                                                            'data-pjax' => 0
+                                                        ]) ?>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </li>
-
+                                <li class="col s6 m6 l4">
+                                    <span class="white-text title-range">Цена</span>
+                                    <?= $search->field($product_search, 'price')
+                                               ->label(false)
+                                               ->textInput(['id' => 'range-filter', 'data-min'=>$price['min'], 'data-max' => $price['max']]) ?>
+                                </li>
+                                <li class="col s4 l5 radio-form-catalog hide-on-med-and-down">
+                                    <div class="input-field col s12">
+                                        <label>Бренд</label>
+                                        <?php //todo сделать так что бы при выборе бренда переходило по ссылке /catalog/brand/имя бренда ?>
+                                        <?= Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, ['prompt' => 'Выберите бренд']) ?>
+                                    </div>
+                                </li>
                             </ul>
+                            <?php ActiveForm::end() ?>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
-    <?php endif;?>
     <div class="valign-wrapper">
         <ul id="nav-mobile" class="side-nav fixed white-text valign" style="transform: translateX(0%);">
-            <?php if(Yii::$app->controller->action->id != 'index'):?>
             <a href="#" id="close-sidenav" class="hide-on-med-and-up"><img src="../images/close-round-white.svg" width="45px" alt="Закрыть"></a>
-            <?php endif;?>
             <li class="logo">
                 <a id="logo" href="<?= Url::to(['site/index']) ?>" class="brand-logo">
                     <img class="logo" src="<?= Url::to('/images/logo.png', true) ?>">
@@ -151,3 +198,4 @@
 </body>
 </html>
 <?php $this->endPage() ?>
+

@@ -16,6 +16,7 @@
     class CatalogController extends Controller{
 
         protected $_search;
+        public $layout = 'catalog';
 
         public function init(){
             parent::init();
