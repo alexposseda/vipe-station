@@ -30,20 +30,22 @@ $('#productform-categories').on('change', function () {
 
 });
 
-$('#cartform-quantity').on('change', function () {
-    var input = $(this).siblings('input');
-    var count = parseInt($(this).val());
-    var base_quantity = parseInt($(this).data('base_quantity'));
+$(function () {
+    var jSelect = $('#cartform-quantity');
+    oldVal = parseInt(jSelect.val());
+});
 
-    if ($(this).hasClass('down')) {
-        if (count != 1) {
-            console.log(count);
-            count--;
-            console.log(count);
-        }
-    } else {
-        if (count < base_quantity)
-            count++;
+$('#cartform-quantity').on('click', function () {
+    var input = $(this);
+    var count = parseInt(input.val());
+    var base_quantity = parseInt(input.data('base_quantity'));
+
+    if (count >= 1 && count <= base_quantity) {
+        oldVal = count;
     }
-    $(this).val(count);
+    else{
+        alert('Invalid value');
+    }
+
+    input.val(oldVal);
 })
