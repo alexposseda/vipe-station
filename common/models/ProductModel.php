@@ -324,6 +324,7 @@
                 if($prodCharItem->characteristic->isOption){
                     $options[$model->id][] = [
                         'id'    => $prodCharItem->characteristic->id,
+                        'itemId' => $prodCharItem->id,
                         'title' => $prodCharItem->characteristic->title,
                         'value' => $prodCharItem->value
                     ];
@@ -334,6 +335,7 @@
                     if($prodCharItem->characteristic->isOption){
                         $options[$rp->id][] = [
                             'id'    => $prodCharItem->characteristic->id,
+                            'itemId' => $prodCharItem->id,
                             'title' => $prodCharItem->characteristic->title,
                             'value' => $prodCharItem->value
                         ];

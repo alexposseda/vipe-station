@@ -6,6 +6,8 @@
 
     use yii\alexposseda\fileManager\FileManager;
 
+    \frontend\assets\ProductAsset::register($this);
+
     $gallery = $model->gallery;
     if(!empty($gallery)){
         $gallery = json_decode($gallery);
@@ -13,27 +15,12 @@
         $gallery = [];
     }
 
-    $js = <<<JS
-$('.product-gallery-wrap').slick({
-    dots: true,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    arrows: false
-});
-JS;
-
-    $this->registerJs($js);
-
     $optionsList = \common\models\ProductModel::getOptions($model);
 
     $options = [];
     foreach($optionsList as $prod_id => $opts){
         foreach($opts as $opt){
-            $options[$opt['id']][$prod_id] = $opt['value'];
+            $options[$opt['id']][$opt['value']] = $opt['value'];
         }
     }
 
@@ -49,8 +36,11 @@ JS;
     }
 
 ?>
-
-<div class="col s12 page-main valign-wrapper">
+<?php \yii\widgets\Pjax::begin([
+    'id' => 'productPjaxContainer',
+    'enablePushState' => true,
+                               ]);?>
+<div class="col s12 page-main valign-wrapper" id="product" data-url="<?= \yii\helpers\Url::to(['/catalog/product', 'slug' => $model->slug])?>">
     <div class="content valign">
         <div class="row">
             <div class="col s12 m12 l6">
@@ -96,18 +86,30 @@ JS;
 
                 <div class="row options">
                     <?php
+                        $selectForm = \yii\widgets\ActiveForm::begin([
+                                'action' => '/catalog/get-product',
+                                'method' => 'get',
+                                'options' => [
+                                        'data-pjax' => true,
+                                        'id' => 'selectOptionForm'
+                                ]
+                                                                     ]);
                         foreach($model->productCharacteristicItems as $productCharacteristicItem):
                             if($productCharacteristicItem->characteristic->isOption):
+                                $selectedItems = $selectedOptions[$productCharacteristicItem->characteristic_id];
+                                $items = $options[$productCharacteristicItem->characteristic_id];
                                 ?>
                                 <div class="input-field">
                                     <span class="fs20 fc-dark-brown label-for-select"><?= $productCharacteristicItem->characteristic->title?></span>
                                     <div class="option-select">
-                                        <?= \yii\helpers\Html::dropDownList('test', $selectedOptions[$productCharacteristicItem->characteristic_id], $options[$productCharacteristicItem->characteristic_id], [])?>
+                                        <?= \yii\helpers\Html::dropDownList('options['.$productCharacteristicItem->characteristic_id.']', $selectedItems, $items, [])?>
                                     </div>
                                 </div>
                                 <?php
                             endif;
-                        endforeach; ?>
+                        endforeach;
+                        \yii\widgets\ActiveForm::end();
+                        ?>
                 </div>
                 <div class="row">
                     <div class="col s12 m12 l4 push-l4 offset-l2">
@@ -125,3 +127,4 @@ JS;
         </div>
     </div>
 </div>
+<?php \yii\widgets\Pjax::end();?>
