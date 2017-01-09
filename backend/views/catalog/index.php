@@ -22,12 +22,12 @@
             </div>
             <div class="panel-body">
                 <?php $form = ActiveForm::begin([
-                        'method' => 'get'
+                                                    'method' => 'get'
                                                 ]) ?>
                 <?= $form->field($searchProduct, 'id')
                          ->label('Код товара') ?>
-                <?= Html::submitButton('Поиск', ['class' => 'btn btn-sm btn-success pull-right'])?>
-                    <div class="clearfix"></div>
+                <?= Html::submitButton('Поиск', ['class' => 'btn btn-sm btn-success pull-right']) ?>
+                <div class="clearfix"></div>
                 <?php ActiveForm::end() ?>
             </div>
         </div>
@@ -92,15 +92,18 @@
                 <a href="<?= Url::to(['product/create']) ?>" class="btn btn-sm btn-success pull-right">
                     Добавить продукт <span class="glyphicon glyphicon-plus"></span>
                 </a>
-                <p class="panel-title">Все
-                    товары <?= (!is_null($currentCategory)) ? '| категория: '.$currentCategory->title : ''; ?><?= (!is_null($currentBrand)) ? ' | бренд: '.$currentBrand->title : '' ?></p>
+                <p class="panel-title"><?= Yii::t('models/product', 'All goods'); ?>
+                    <?= (!is_null($currentCategory)) ? '| категория: '.$currentCategory->title : ''; ?><?= (!is_null($currentBrand)) ? ' | бренд: '.$currentBrand->title : '' ?></p>
                 <div class="clearfix"></div>
             </div>
             <?= ListView::widget([
-                                     'dataProvider' => $productProvider,
-                                     'itemView'     => '_listItem_v2',
-                                     'layout'       => '<div class="panel-body"><div class="sorter-wrap">{sorter}</div><div class="row">{items}</div></div><div class="panel-footer "><div class="left">{summary}</div><div class="right">{pager}</div><div class="clearfix"></div></div>',
-                                     'emptyTextOptions' => ['class'=>'alert alert-warning', 'style'=> 'margin: 10px;']
+                                     'dataProvider'     => $productProvider,
+                                     'itemView'         => '_listItem_v2',
+                                     'layout'           => '<div class="panel-body"><div class="sorter-wrap">{sorter}</div><div class="row">{items}</div></div><div class="panel-footer "><div class="left">{summary}</div><div class="right">{pager}</div><div class="clearfix"></div></div>',
+                                     'emptyTextOptions' => [
+                                         'class' => 'alert alert-warning',
+                                         'style' => 'margin: 10px;'
+                                     ]
                                  ]) ?>
         </div>
 
