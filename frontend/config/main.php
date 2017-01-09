@@ -38,11 +38,7 @@ return [
         ],
         'urlManager' => [
             'rules' => [
-                'categories' => 'catalog/category',
-                'category/<categoryName:\w+>' => 'catalog/category',
-                'brands' => 'catalog/brand',
-                'brand/<brandName:\w+>' => 'catalog/brand',
-                'product/<productName:\w+>' => 'catalog/product',
+                'catalog/<action:(brand|category|product)>/<slug:\w+>'=>'catalog/<action>',
             ],
         ],
 

@@ -1,43 +1,58 @@
 <?php
+    /**
+     * @var $this \yii\web\View
+     */
+    use common\models\ShopSettingTable;
 
-/* @var $this yii\web\View */
+    $this->params['headerTitle'] = 'О нас';
 
-use yii\helpers\Html;
+    $shopAddresses = ShopSettingTable::getSettingValue('address');
+    $markers = [];
+    if(!empty($shopAddresses)){
+        $shopAddresses = json_decode($shopAddresses);
+        foreach($shopAddresses as $s_a){
+            if($s_a->isGeneral == 1){
+                $c = explode(';', $s_a->coordinates);
+                $markers[] = [
+                    'lat' => $c[0],
+                    'lng' => $c[1]
+                ];
+            }
+        }
+        $markers = json_encode($markers);
+    }
+    $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAUYPzaG4lQCw-v_7JUodo1mgWDlztuD0s', ['position' => \yii\web\View::POS_HEAD]);
+    $this->registerJsFile('js/map.js', ['depends' => 'frontend\assets\AppAsset']);
+    $js = <<<JS
+mapInit();
+var ms = {$markers};
+for(var i = 0; i < ms.length; i++){
+    addMarker(ms[i]);
+}
+JS;
+    $this->registerJs($js, \yii\web\View::POS_END);
 
-$this->title = Yii::t('system/view', 'About as');
 ?>
 <div class="col s12 page-main valign-wrapper">
     <div class="content valign">
         <div class="page-wrap">
             <div class="row page-wrap-content">
-                <div class="mapBox">
-                    <!--                    Карты нуждаются в реализации с помощью java script-->
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2539.9823433814877!2d30.52011891610936!3d50.460053479476635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4ce46a355fd4f%3A0x9bb1b5375abbc47!2zR29vZ2xlINCj0LrRgNCw0ZfQvdCw!5e0!3m2!1suk!2sua!4v1478639386682"
-                            height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
-
+                <div class="mapBox" id="mapBox">
+                    <div id="map"></div>
                 </div>
-
-
-                <div class="about-text">
+                <div class="about-text row">
                     <div class="col l6 s12 fs20 about-content ">
-                        <span class="delivery-title fs25 fc-orange"><?= Yii::t('shop/setting', 'About as') ?></span>
-
-                        <p><?= $aboutUs ?></p>
-
+                        <span class="delivery-title fs25 fc-orange">О нас</span>
+                        <hr>
+                        <?php if(!empty($aboutUs)){
+                            echo nl2br($aboutUs);
+                        }?>
                     </div>
                     <div class="col l6 about-adress">
-                        <?php if (!empty($listAddress)): ?>
-                            <?php for ($i = 0; $i < count($listAddress); $i++): ?>
-                                <div class="address-item">
-                                    <span class="fs25 fc-orange"><?= Yii::t('shop/setting', 'Address') ?></span><br>
-                                    <span class="fs20 fc-dark-brown">
-                                    <?= $listAddress[$i]['address'] ?><br>
-                                        <?= Yii::t('models/client', 'Phones') . ': ' . $listAddress[$i]['phones'] ?><br>
-                                        <?= Yii::t('shop/setting', 'schedule') . ': ' . $listAddress[$i]['schedule'] ?>
-                                </span>
-                                </div>
-                            <?php endfor; ?>
-                        <?php endif; ?>
+                        <span class="fs25 fc-orange">Адрес</span><hr>
+                        <?php foreach($shopAddresses as $address):?>
+                        <span class="fs20 fc-dark-brown"><?= $address->address?><br><?= nl2br($address->phones)?><br><?= $address->schedule?></span>
+                        <?php endforeach;?>
                     </div>
                 </div>
 

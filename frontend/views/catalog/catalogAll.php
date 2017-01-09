@@ -7,31 +7,10 @@
     use common\models\ProductInCategoryModel;
     use common\models\ProductInStockModel;
     use common\models\ProductModel;
-    use frontend\assets\CatalogAllAsset;
     use yii\caching\ChainedDependency;
     use yii\caching\DbDependency;
     use yii\web\View;
     use yii\widgets\ListView;
-
-    CatalogAllAsset::register($this);
-
-    $query = $catalog->query;
-    $max = ProductModel::find()
-                       ->max('base_price');
-    $min = ProductModel::find()
-                       ->min('base_price');
-    $js = <<<JS
-$("#range-filter").ionRangeSlider({
-        type: "double",
-        min: {$min},
-        max: {$max},
-        postfix: "uah",
-        onFinish: function(){
-            $('#catalog-search').submit()
-        }
-    });
-JS;
-    $this->registerJs($js, View::POS_END);
 ?>
 <div class="col s12 page-main ">
     <div class="page-device-modal valign-wrapper hide">
