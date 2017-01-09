@@ -10,6 +10,10 @@
 
     $src = (!empty($model->cover)) ? $model->cover : '/img/noPicture.png';
     $cartModel = new CartForm();
+    $this->registerJsFile('/js/product_form.js', [
+        'position' => \yii\web\View::POS_END,
+        'depends'  => \backend\assets\AppAsset::className()
+    ]);
 ?>
 
 <div class="col-sm-12 col-md-6 col-lg-4 product-wrap">
@@ -18,7 +22,7 @@
             <h3 class="panel-title"><?= $model->title ?></h3>
             <br>
             <div class="btn-group btn-group-justified">
-                <?= Html::a(Yii::t('system/view', 'View'), [
+                    <?= Html::a(Yii::t('system/view', 'View'), [
                     'product/view',
                     'id' => $model->id
                 ], ['class' => 'btn btn-sm btn-primary']) ?>
@@ -126,7 +130,8 @@
                 <?= Html::activeHiddenInput($cartModel, 'product_id', ['value' => $model->id]) ?>
                 <?= Html::activeInput('number', $cartModel, 'quantity', [
                     'class' => 'form-control',
-                    'style' => 'width: 75px;'
+                    'style' => 'width: 75px;',
+                    'data-base_quantity' => $model->base_quantity
                 ]) ?>
                 <?= Html::submitButton('Купить', ['class' => 'btn btn-success']) ?>
                 <?php ActiveForm::end() ?>

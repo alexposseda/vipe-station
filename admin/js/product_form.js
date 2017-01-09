@@ -30,22 +30,20 @@ $('#productform-categories').on('change', function () {
 
 });
 
-$(function () {
-    var jSelect = $('#cartform-quantity');
-    oldVal = parseInt(jSelect.val());
-});
-
-$('#cartform-quantity').on('click', function () {
+$('form #cartform-quantity').on('click', function () {
+    console.log('Hello');
     var input = $(this);
     var count = parseInt(input.val());
     var base_quantity = parseInt(input.data('base_quantity'));
 
-    if (count >= 1 && count <= base_quantity) {
-        oldVal = count;
-    }
-    else{
-        alert('Invalid value');
+    if (count < 1) {
+        count = 1;
+        alert('Invalid: value = 0');
+    } else if (count > base_quantity) {
+        count = base_quantity;
+        alert('Invalid: value > base_quantity');
     }
 
-    input.val(oldVal);
+
+    input.val(count);
 })
