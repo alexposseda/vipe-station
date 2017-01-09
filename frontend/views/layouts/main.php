@@ -58,7 +58,8 @@
             <div class="nav-wrapper">
                 <div class="page-header">
                     <ul class="row mb-0">
-                        <li class="col l7 m12 s12">
+                        <?= $this->render('_header')?>
+                        <li class="col l7 m12 s12 pull-l5">
                             <ul class="row mt-10 mb-0">
                                 <li class="col s2 m2 l3 hide-on-large-only">
                                     <a href="#" data-activates="nav-mobile"

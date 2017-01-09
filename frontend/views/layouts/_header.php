@@ -1,4 +1,6 @@
 <?php
+    $loginModel = new \common\models\forms\LoginForm();
+    $remindModel = new \common\models\forms\PasswordResetRequestForm();
 ?>
 <li class="col l5 m12 s12 push-l7 valign">
     <ul class="row valign-wrapper mt-25">
@@ -73,16 +75,24 @@
                     <div id="modallogin" class="modal popup popup-active center-align remind-pass popup-form">
                         <div class="modal-content">
                             <div class="center-align remind-pass popup-form hide-on-med-and-down" id="loginbox">
-                                <form class="row cabinet-form">
+                                <?php $loginForm = \yii\widgets\ActiveForm::begin([
+                                        'action' => \yii\helpers\Url::to(['site/login']),
+                                        'method' =>'post',
+                                        'options' => [
+                                                'class' => 'row cabinet-form'
+                                        ]
+                                                                                  ])?>
                                     <div class="input-field col s12">
                                         <label for="email"
                                                class="fs15 fc-brown left-align">Email</label>
                                         <div class="input-gradient">
-                                            <input placeholder="Placeholder" id="email" required
-                                                   type="text"
-                                                   class="validate input-form"
-                                                   onFocus="$(this).parent().addClass('focus')"
-                                                   onBlur="$(this).parent().removeClass('focus')">
+                                            <?= \yii\helpers\Html::activeInput('email', $loginModel, 'email', [
+                                                    'placeholder' => 'email@example.com',
+                                                    'class' => 'validate input-form',
+                                                    'id' => 'email',
+                                                    'onFocus' => "$(this).parent().addClass('focus')",
+                                                    'onBlur'=>"$(this).parent().removeClass('focus')"
+                                            ])?>
                                         </div>
                                     </div>
                                     <div class="input-field col s12">
@@ -90,11 +100,13 @@
                                         <a href="#remindpassbox" id="remindPassBtn" class="fs12 fc-dark-brown right">Забыли пароль?</a>
                                         <div class="clear"></div>
                                         <div class="input-gradient">
-                                            <input placeholder="Placeholder" id="password"
-                                                   type="password"
-                                                   class="validate input-form"
-                                                   onFocus="$(this).parent().addClass('focus')"
-                                                   onBlur="$(this).parent().removeClass('focus')">
+                                            <?= \yii\helpers\Html::activeInput('password', $loginModel, 'password', [
+                                                'placeholder' => 'password',
+                                                'class' => 'validate input-form',
+                                                'id' => 'password',
+                                                'onFocus' => "$(this).parent().addClass('focus')",
+                                                'onBlur'=>"$(this).parent().removeClass('focus')"
+                                            ])?>
                                         </div>
                                     </div>
                                     <div class="input-field col s12">
@@ -104,18 +116,26 @@
                                             </button>
                                         </div>
                                     </div>
-                                </form>
+                                <?php \yii\widgets\ActiveForm::end()?>
                             </div>
                             <div class="center-align remind-pass popup-form hide-on-med-and-down hide" id="remindpassbox">
-                                <form class="row cabinet-form">
+                                <?php $loginForm = \yii\widgets\ActiveForm::begin([
+                                                                                      'action' => \yii\helpers\Url::to(['site/request-password-reset']),
+                                                                                      'method' =>'post',
+                                                                                      'options' => [
+                                                                                          'class' => 'row cabinet-form'
+                                                                                      ]
+                                                                                  ])?>
                                     <div class="input-field col s12">
                                         <label for="first_name" class="fs15 fc-brown">Email</label>
                                         <div class="input-gradient">
-                                            <input placeholder="Placeholder" id="first_name"
-                                                   type="email"
-                                                   class="validate input-form"
-                                                   onFocus="$(this).parent().addClass('focus')"
-                                                   onBlur="$(this).parent().removeClass('focus')">
+                                            <?= \yii\helpers\Html::activeInput('email', $remindModel, 'email', [
+                                                'placeholder' => 'email@example.com',
+                                                'class' => 'validate input-form',
+                                                'id' => 'first_name',
+                                                'onFocus' => "$(this).parent().addClass('focus')",
+                                                'onBlur'=>"$(this).parent().removeClass('focus')"
+                                            ])?>
                                         </div>
                                         <a href="#loginbox" id="loginBtn" class="fs10 col s12 fc-brown">Вспомнили?</a>
                                         <div class="col s12">
@@ -124,7 +144,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                </form>
+                                <?php \yii\widgets\ActiveForm::end()?>
                                 <div class="clear"></div>
                             </div>
                         </div>
