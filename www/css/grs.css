@@ -2765,3 +2765,20 @@ main .page-main .content {
 .slick-dots .slick-active{
     background: #201003;
 }
+.label-for-select{
+    display: inline-block;
+    width: 40%;
+    vertical-align: middle;
+    text-align: center;
+}
+.option-select{
+    display: inline-block;
+    width: 50%;
+}
+.option-select .caret{
+    color: #201003!important;
+    top:0!important;
+}
+.option-select .select-dropdown{
+    margin-bottom: 0!important;
+}
