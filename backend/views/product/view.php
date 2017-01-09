@@ -49,7 +49,8 @@
         <?= Html::activeHiddenInput($cartModel, 'product_id', ['value' => $model->id]) ?>
         <?= Html::activeInput('number', $cartModel, 'quantity', [
             'class' => 'form-control',
-            'style' => 'width: 75px;'
+            'style' => 'width: 75px;',
+            'data-base_quantity' => $model->base_quantity
         ]) ?>
         <?= Html::submitButton('Купить', ['class' => 'btn btn-success']) ?>
         <?php ActiveForm::end() ?>
