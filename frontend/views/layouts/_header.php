@@ -66,7 +66,92 @@
         <li class="col l5 pull-m6 m6 pull-s9 s3 header-third-section valign left-align">
             <div class="cart-login">
                 <div class="cart">
+                    <a href="#modalcart" class="modal-trigger popup-trigger"><span class="white-text total-price ">0</span></a>
+                    <div id="modalcart" class="modal bottom-sheet modal-fixed-footer popup popup-active popup-cart popup-bottom popup-fixed-footer">
+                        <div class="popup-content modal-content">
+                            <div class="row product valign-wrapper">
+                                <div class="col s3 m3 l3 product-img-wrapper">
+                                    <a href="" class="product-img">
+                                        <img src="../images/catalog1.png" alt="" class="">
+                                    </a>
+                                </div>
+                                <div class="col s7 m7 l7">
+                                    <div class="active-cart-name left-align">
+                                        <a href=""><span
+                                                    class="fs20 fc-orange">Найменование</span></a>
+                                        <a href=""><span
+                                                    class="fs15 fc-light-brown">52.70$</span></a>
+                                        <a href=""><span class="fs11 black-text">3шт</span></a>
+                                    </div>
+                                </div>
+                                <div class="col s2 m2 l2 right-align">
+                                    <button type="submit" class="delete-product"></button>
+                                </div>
+                            </div>
+                            <div class="row product valign-wrapper">
+                                <div class="col s3 m3 l3 product-img-wrapper">
+                                    <a href="" class="product-img">
+                                        <img src="../images/catalog1.png" alt="" class="">
+                                    </a>
+                                </div>
+                                <div class="col s7 m7 l7">
+                                    <div class="active-cart-name left-align">
+                                        <a href=""><span
+                                                    class="fs20 fc-orange">Найменование</span></a>
+                                        <a href=""><span
+                                                    class="fs15 fc-light-brown">52.70$</span></a>
+                                        <a href=""><span class="fs11 black-text">3шт</span></a>
+                                    </div>
+                                </div>
+                                <div class="col s2 m2 l2 right-align">
+                                    <button type="submit" class="delete-product"></button>
+                                </div>
+                            </div>
+                            <div class="row product valign-wrapper">
+                                <div class="col s3 m3 l3 product-img-wrapper">
+                                    <a href="" class="product-img">
+                                        <img src="../images/catalog1.png" alt="" class="">
+                                    </a>
+                                </div>
+                                <div class="col s7 m7 l7">
+                                    <div class="active-cart-name left-align">
+                                        <a href=""><span
+                                                    class="fs20 fc-orange">Найменование</span></a>
+                                        <a href=""><span
+                                                    class="fs15 fc-light-brown">52.70$</span></a>
+                                        <a href=""><span class="fs11 black-text">3шт</span></a>
+                                    </div>
+                                </div>
+                                <div class="col s2 m2 l2 right-align">
+                                    <button type="submit" class="delete-product"></button>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col s12 m12 l12">
+                                    <div class="total-price right ">
+                                        <span class="fs15 fc-brown">Итого</span>
+                                        <span class="fs15 fc-orange">52.52</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="modal-footer popup-footer">
+                            <!--<div class="row">-->
+                            <div class="col s6 m6 l6 center-align">
+                                <div class="btn-active-cart btn-active-cart-first btn-buy center-align fs15 fc-light-brown">
+                                    <a href="#" class="fc-light-brown">Оформить заказ</a>
+                                </div>
 
+                            </div>
+                            <div class="col s6 m6 l6 center-align">
+                                <div class="btn-active-cart btn-active-cart-second btn-buy center-align fs15 fc-light-brown">
+                                    <a href="#" class="fc-light-brown">В корзину</a>
+                                </div>
+                            </div>
+                            <!--</div>-->
+                        </div>
+                    </div>
                 </div>
                 <div class="login border-l">
                     <a id="insert-cabinet" class="modal-trigger popup-trigger hide-on-small-and-down" href="#modallogin">
