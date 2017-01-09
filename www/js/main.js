@@ -119,14 +119,6 @@ $(document).ready(function () {
 
     });
 
-    //range
-    //
-    //
-    // $('#form_filter').find('#brand_select').on('change', function () {
-    //     form = this.form;
-    //     $(form).submit();
-    // });
-
     $(window).on('load resize', function () {
         $('.section-title').fullHeight(-$('header').height());
         var divs = $grid.find('.wrap-overflow');
@@ -208,4 +200,17 @@ $(document).ready(function () {
         $('.checkout').delay(600).hide(0);
 
     });
+
+    $('#remindPassBtn').on('click', function(e){
+        var e = e || event;
+        e.preventDefault();
+        $('#loginbox').addClass('hide');
+        $($(this).attr('href')).removeClass('hide');
+    });
+    $('#loginBtn').on('click', function(e){
+        var e = e || event;
+        e.preventDefault();
+        $('#remindpassbox').addClass('hide');
+        $($(this).attr('href')).removeClass('hide');
+    })
 });

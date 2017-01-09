@@ -100,7 +100,8 @@ JS;
             <div class="nav-wrapper">
                 <div class="page-header">
                     <ul class="row mb-0">
-                        <li class="col l7 m12 s12 valign">
+                        <?= $this->render('_header')?>
+                        <li class="col l7 m12 s12 pull-l5 valign">
                             <?php //todo сделать проверку где представление равно catalogAll?>
                             <ul class="row">
                                 <li class="col s2 m2 l3 hide-on-large-only">

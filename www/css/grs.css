@@ -2782,3 +2782,9 @@ main .page-main .content {
 #selectOptionForm .option-select .select-dropdown{
     margin-bottom: 0!important;
 }
+#modallogin .modal-content{
+    padding: 24px 0;
+}
+#modallogin .modal-content .row{
+    margin: 0!important;
+}
