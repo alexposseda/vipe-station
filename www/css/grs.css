@@ -1226,6 +1226,11 @@ main .page-main .content {
 .delivery-wrap .delivery-content {
     background: #fff;
     height: 100%;
+    padding: 0 15px;
+}
+
+.delivery-wrap .delivery-content p{
+
 }
 
 .delivery-wrap .delivery-img {
