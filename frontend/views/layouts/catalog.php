@@ -100,7 +100,7 @@ JS;
             <div class="nav-wrapper">
                 <div class="page-header">
                     <ul class="row mb-0">
-                        <?= $this->render('_header') ?>
+                        <?= $this->render('_header')?>
                         <li class="col l7 m12 s12 pull-l5 valign">
                             <?php //todo сделать проверку где представление равно catalogAll?>
                             <ul class="row">
@@ -132,19 +132,15 @@ JS;
                                     <span class="white-text title-range">Цена</span>
                                     <?= $search->field($product_search, 'price')
                                                ->label(false)
-                                               ->textInput([
-                                                               'id'       => 'range-filter',
-                                                               'data-min' => $price['min'],
-                                                               'data-max' => $price['max']
+                                               ->textInput(['id'       => 'range-filter',
+                                                            'data-min' => $price['min'],
+                                                            'data-max' => $price['max']
                                                            ]) ?>
                                 </li>
                                 <li class="col s4 l5 radio-form-catalog hide-on-med-and-down">
                                     <div class="input-field col s12">
                                         <label>Бренд</label>
-                                        <?= Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, [
-                                            'prompt'  => 'Выберите бренд',
-                                            'options' => [$selectedBrandId => ['selected' => true]]
-                                        ]) ?>
+                                        <?= Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, ['prompt' => 'Выберите бренд', 'options' => [$selectedBrandId => ['selected' => true]]]) ?>
                                     </div>
                                 </li>
                             </ul>

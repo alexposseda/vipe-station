@@ -82,10 +82,10 @@
             </li>
             <li class="address-schedule">
                 <div class="row valign-wrapper">
-                    <div class="col l6 m12 s12 valign left-align width"><span class="fs14"><a href="tel:+380635964443">+380635964443</a><br>Киев, Воздвиженская 48</span>
+                    <div class="col l6 m12 s12 valign left-align width"><span class="fs14"><a href="tel:+380635964443" style="color:#fff;">+380635964443</a><br>Киев, Воздвиженская 48</span>
                     </div>
                     <div class="col l6 m12 valignleft-align width schedule">
-                        <div class="fs14"><a href="tel:+380993125442">+380993125442</a><br>Будние: с 11 до 20<br>Выходные:
+                        <div class="fs14"><a href="tel:+380993125442" style="color:#fff;">+380993125442</a><br>Будние: с 11 до 20<br>Выходные:
                             с 12 до 19
                         </div>
                     </div>

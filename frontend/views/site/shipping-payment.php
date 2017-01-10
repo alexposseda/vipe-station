@@ -12,7 +12,7 @@
                         </div>
                         <div class="delivery-content">
                             <span class="delivery-title fs20">Доставка</span>
-                            <p><?= nl2br($delivery->desc) ?></p>
+                            <p class="left-align"><?= nl2br($delivery->desc) ?></p>
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="delivery-content">
                             <span class="delivery-title fs20">Оплата</span>
-                            <p><?= nl2br($payment->desc) ?></p>
+                            <p class="left-align"><?= nl2br($payment->desc) ?></p>
                         </div>
                     </div>
                 </div>
