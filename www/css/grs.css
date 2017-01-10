@@ -2096,7 +2096,7 @@ main .page-main .content {
     border-bottom: 1px solid #d0b691;
 }
 
-.cart-page .product .product-total #count {
+.cart-page .product .product-total .count {
     width: 30px;
     height: 30px;
     text-align: center;

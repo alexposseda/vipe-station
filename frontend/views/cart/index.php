@@ -1,4 +1,13 @@
 <?php
+/**
+ * @var $this \yii\web\View
+ */
+use common\models\CartModel;
+use frontend\assets\AppAsset;
+use yii\data\ActiveDataProvider;
+use yii\widgets\ListView;
+
+$this->registerJsFile('js/cart.js', ['depends' => AppAsset::className()]);
 ?>
 <div class="page-main valign-wrapper">
     <div class="content valign">
@@ -7,42 +16,13 @@
                 <div class="col l5 s6 cart-your-order">
                     <div class="cart-your-order-wrap">
                         <h2 class="cart-your-order-title fs30 fc-brown">Ваш заказ</h2>
-                        <div class="products">
-                            <div class="row product">
-                                <div class="col s3 product-img img-wrap-you-order">
-                                    <img src="../images/catalog1.png" alt="">
-                                </div>
-                                <div class="col s9">
-                                    <div class="row">
-                                        <div class="col s10 product-description">
-                                            <div class="fs18 fc-orange title mb-5">Найменование
-                                            </div>
-                                            <div class="fs15 fc-dark-brown brand mb-5">Бренд</div>
-                                        </div>
-                                        <div class="col s2 right-align">
-                                            <button class="delete-product"></button>
-                                        </div>
-                                        <div class="product-total col s12">
-                                            <div class="count-yoy-order left fc-brown">
-                                                <span>Кол-во: </span>
-                                                <a id="down" href="#" onclick="updateSpinner(this);"
-                                                   class="fc-brown">-</a>
-                                                <input id="count" value="1" type="text"/>
-                                                <a id="up" href="#" onclick="updateSpinner(this);"
-                                                   class="fc-brown">+</a>
-                                            </div>
-                                            <div class="right price">
-                                                <span class="fc-dark-brown fs20">17$</span>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="cart-border-bottom col s12"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <?= ListView::widget([
+                            'dataProvider' => new ActiveDataProvider(['query' => CartModel::getCartQuery()]),
+                            'itemView' => '_cartItem',
+                            'layout'       => "{items}",
+                            'options' => ['class' => 'products'],
+                            'itemOptions'  => ['class' => 'row product'],
+                        ]) ?>
                         <div class="row">
                             <div class="col s12 right-align total-you-order mt-30 mb-30">
                                 <span class="fs20 fc-dark-brown">
