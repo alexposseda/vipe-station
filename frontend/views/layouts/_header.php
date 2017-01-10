@@ -66,7 +66,8 @@
         <li class="col l5 pull-m6 m6 pull-s9 s3 header-third-section valign left-align">
             <div class="cart-login">
                 <div class="cart">
-                    <a href="#modalcart" class="modal-trigger popup-trigger"><span class="white-text total-price ">0</span></a>
+<!--                    <a href="#modalcart" class="modal-trigger popup-trigger"><span class="white-text total-price " id="cart-count">0</span></a>-->
+                    <a href="<?= \yii\helpers\Url::to(['/cart/index'])?>" class="modal-trigger popup-trigger"><span class="white-text total-price " id="cart-count">0</span></a>
                     <div id="modalcart" class="modal bottom-sheet modal-fixed-footer popup popup-active popup-cart popup-bottom popup-fixed-footer">
                         <div class="popup-content modal-content">
                             <div class="row product valign-wrapper">
