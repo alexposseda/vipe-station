@@ -51,38 +51,38 @@
 <body>
 <?php $this->beginBody() ?>
 <header>
-    <?php if(Yii::$app->controller->action->id != 'index'):?>
+    <?php if(Yii::$app->controller->action->id != 'index'): ?>
 
-    <nav class="top-nav static">
-        <div class="container">
-            <div class="nav-wrapper">
-                <div class="page-header">
-                    <ul class="row mb-0">
-                        <?= $this->render('_header')?>
-                        <li class="col l7 m12 s12 pull-l5">
-                            <ul class="row mt-10 mb-0">
-                                <li class="col s2 m2 l3 hide-on-large-only">
-                                    <a href="#" data-activates="nav-mobile"
-                                       class="button-collapse top-nav full hide-on-large-only"><i
-                                                class="material-icons large">menu</i></a>
-                                </li>
-                                <li class="col s10 m10 l12 left-align page-title">
-                                    <a href="#" class="fc-orange fs20 border-r"><?= $this->params['headerTitle']?></a>
-                                </li>
+        <nav class="top-nav static">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <div class="page-header">
+                        <ul class="row mb-0">
+                            <?= $this->render('_header') ?>
+                            <li class="col l7 m12 s12 pull-l5">
+                                <ul class="row mt-10 mb-0">
+                                    <li class="col s2 m2 l3 hide-on-large-only">
+                                        <a href="#" data-activates="nav-mobile"
+                                           class="button-collapse top-nav full hide-on-large-only"><i
+                                                    class="material-icons large">menu</i></a>
+                                    </li>
+                                    <li class="col s10 m10 l12 left-align page-title">
+                                        <a href="#" class="fc-orange fs20 border-r"><?= $this->params['headerTitle'] ?></a>
+                                    </li>
 
-                            </ul>
-                        </li>
-                    </ul>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
-    <?php endif;?>
+        </nav>
+    <?php endif; ?>
     <div class="valign-wrapper">
         <ul id="nav-mobile" class="side-nav fixed white-text valign" style="transform: translateX(0%);">
-            <?php if(Yii::$app->controller->action->id != 'index'):?>
-            <a href="#" id="close-sidenav" class="hide-on-med-and-up"><img src="../images/close-round-white.svg" width="45px" alt="Закрыть"></a>
-            <?php endif;?>
+            <?php if(Yii::$app->controller->action->id != 'index'): ?>
+                <a href="#" id="close-sidenav" class="hide-on-med-and-up"><img src="../images/close-round-white.svg" width="45px" alt="Закрыть"></a>
+            <?php endif; ?>
             <li class="logo">
                 <a id="logo" href="<?= Url::to(['site/index']) ?>" class="brand-logo">
                     <img class="logo" src="<?= Url::to('/images/logo.png', true) ?>">
@@ -133,12 +133,14 @@
             <li>
                 <div class="row mb-0">
                     <div class="col s12 m12 l12 center-align">
-                        <?php foreach($socials as $social): ?>
-                            <a href="<?= $social->link ?>" class="social-icon">
-                                <img src="<?= FileManager::getInstance()
-                                                         ->getStorageUrl().substr($social->icon, 1) ?>" alt="<?= $social->title ?>">
-                            </a>
-                        <?php endforeach; ?>
+                        <?php if($socials): ?>
+                            <?php foreach($socials as $social): ?>
+                                <a href="<?= $social->link ?>" class="social-icon">
+                                    <img src="<?= FileManager::getInstance()
+                                                             ->getStorageUrl().substr($social->icon, 1) ?>" alt="<?= $social->title ?>">
+                                </a>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </li>

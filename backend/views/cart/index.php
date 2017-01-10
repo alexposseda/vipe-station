@@ -1,8 +1,10 @@
 <?php
 
+    use common\models\ProductModel;
     use common\models\ProductOptionModel;
     use yii\helpers\Html;
     use yii\grid\GridView;
+    use yii\helpers\Url;
 
     /* @var $this yii\web\View */
     /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -28,21 +30,25 @@
                                          }
                                      }
                                  ],
-                                 'product.title',
+                                 [
+                                     'attribute' => 'product.title',
+                                     'content'   => function($data){
+                                         return Html::a($data->product->title, Url::to(['product/view', 'id' => $data->product->id]));
+                                     }
+                                 ],
                                  'product.cover:image',
                                  'quantity',
                                  'product.base_price',
                                  [
                                      'label'   => 'опции',
                                      'content' => function($data){
-                                         $html = ' ';
+                                         $html = '';
                                          /** @var \common\models\CartModel $data */
-                                         if($data->options){
-                                             $options = json_decode($data->options);
-                                             if(!empty($options->options)){
-                                                 foreach($options->options as $option){
-                                                     $optionModel = ProductOptionModel::findOne($option);
-                                                     $html .= $optionModel->characteristic->title.' '.$optionModel->delta_price.'<br>';
+                                         $options = ProductModel::getOptions($data->product);
+                                         foreach($options as $product_id => $productOptions){
+                                             if($product_id == $data->product_id){
+                                                 foreach($productOptions as $option){
+                                                     $html .= $option['title'].' '.$option['value'].'<br>';
                                                  }
                                              }
                                          }
@@ -52,7 +58,10 @@
                                  ],
                                  'price',
 
-                                 ['class' => 'yii\grid\ActionColumn'],
+                                 [
+                                     'class'    => 'yii\grid\ActionColumn',
+                                     'template' => '{delete}'
+                                 ],
                              ],
                          ]); ?>
 </div>

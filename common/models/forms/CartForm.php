@@ -13,6 +13,12 @@
         public $product_id;
         public $quantity = 1;
 
+        protected $_cartItems = [];
+
+        public function init(){
+            $this->_cartItems = CartModel::getCart();
+        }
+
         public function attributeLabels(){
             return [
                 'characteristic_id' => Yii::t('models', 'Characteristics'),
@@ -29,18 +35,17 @@
         }
 
         public function add(){
-            $cart = new CartModel();
-            $cart->setID();
-
-            $cart->product_id = $this->product_id;
-
-            $cart->options = json_encode(['characteristics' => $this->characteristic_id, 'options' => $this->option_id]);
-            $cart->quantity = $this->quantity;
-            if($cart->save()){
-                return true;
+            $index = $this->findInCart($this->product_id);
+            $model = null;
+            if($index !== false){
+                $model = $this->_cartItems[$index];
+                $model->quantity += $this->quantity;
+            }else{
+                $model = new CartModel(['product_id' => $this->product_id, 'quantity' => $this->quantity]);
+                $this->_cartItems[] = $model;
             }
 
-            return false;
+            return $model->save();
         }
 
         public function characteristics($model){
@@ -49,5 +54,17 @@
 
         public function options($model){
             return ArrayHelper::map($model->productOptions, 'id', 'characteristic.title');
+        }
+
+        protected function findInCart($product_id){
+            if(!is_null($this->_cartItems)){
+                foreach($this->_cartItems as $index => $cartItem){
+                    if($cartItem->product_id == $product_id){
+                        return $index;
+                    }
+                }
+            }
+
+            return false;
         }
     }
