@@ -59,6 +59,11 @@
         ]) ?>
         <?= Html::submitButton('Купить', ['class' => 'btn btn-success']) ?>
         <?php ActiveForm::end() ?>
+        <div class ="btn btn-primary">
+            <a href="<?= Url::to(['cart/index']) ?>" class="btn btn-sm btn-success pull-right">
+                Перейти в корзину
+            </a>
+        </div>
     </div>
     <div class="clearfix"></div>
     <div class="row">

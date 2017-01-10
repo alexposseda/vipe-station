@@ -84,6 +84,11 @@
                     </div>
                 </div>
             </div>
+            <div class = "btn btn-primary">
+                <a href="<?= Url::to(['cart/index']) ?>" class="btn btn-sm btn-success pull-right">
+                    Перейти в корзину
+                </a>
+            </div>
         </div>
     </div>
     <div class="col-sm-12 col-md-8 col-lg-9">

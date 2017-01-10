@@ -9,7 +9,6 @@
     use yii\helpers\Url;
 
     $src = (!empty($model->cover)) ? $model->cover : '/img/noPicture.png';
-    $cartModel = new CartForm();
     $this->registerJsFile('/js/product_form.js', [
         'position' => \yii\web\View::POS_END,
         'depends'  => \backend\assets\AppAsset::className()
@@ -120,21 +119,6 @@
             </div>
             <div class="panel-footer text-center">
                 <p><strong>Цена:</strong> <?= $model->base_price ?> | <strong>Количество:</strong> <?= $model->base_quantity ?></p>
-                <?php $cartForm = ActiveForm::begin([
-                                                        'action'  => Url::to(['/cart/add-to-cart'], 1),
-                                                        'options' => [
-                                                            'data-pjax' => 1,
-                                                            'class'     => 'form-inline '
-                                                        ]
-                                                    ]) ?>
-                <?= Html::activeHiddenInput($cartModel, 'product_id', ['value' => $model->id]) ?>
-                <?= Html::activeInput('number', $cartModel, 'quantity', [
-                    'class' => 'form-control',
-                    'style' => 'width: 75px;',
-                    'data-base_quantity' => $model->base_quantity
-                ]) ?>
-                <?= Html::submitButton('Купить', ['class' => 'btn btn-success']) ?>
-                <?php ActiveForm::end() ?>
             </div>
         </div>
     </div>
