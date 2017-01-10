@@ -204,12 +204,14 @@ JS;
             <li>
                 <div class="row mb-0">
                     <div class="col s12 m12 l12 center-align">
-                        <?php foreach($socials as $social): ?>
-                            <a href="<?= $social->link ?>" class="social-icon">
-                                <img src="<?= FileManager::getInstance()
-                                                         ->getStorageUrl().substr($social->icon, 1) ?>" alt="<?= $social->title ?>">
-                            </a>
-                        <?php endforeach; ?>
+                        <?php if($socials): ?>
+                            <?php foreach($socials as $social): ?>
+                                <a href="<?= $social->link ?>" class="social-icon">
+                                    <img src="<?= FileManager::getInstance()
+                                                             ->getStorageUrl().substr($social->icon, 1) ?>" alt="<?= $social->title ?>">
+                                </a>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </li>

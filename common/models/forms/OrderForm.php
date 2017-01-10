@@ -56,7 +56,7 @@
 
         public function loadAll($post){
             if($this->order->load($post) && $this->client->load($post) && $this->deliveryData->load($post) && $this->client->load(Yii::$app->request->post(),
-                                                                                                    $this->deliveryData->formName())
+                                                                                                                                  $this->deliveryData->formName())
             ){
                 return true;
             }
@@ -70,6 +70,9 @@
         public function save(){
             $transaction = Yii::$app->db->beginTransaction();
             try{
+                foreach($this->orderData as $orderdata){
+                    $temp = $orderdata->product;
+                }
                 $this->order->delivery_data = json_encode($this->deliveryData);
                 $isNewRecord = $this->order->isNewRecord;
 
@@ -97,7 +100,8 @@
                 }
 
                 if($isNewRecord){
-                    $this->order->total_cost = $this->order->getOrderDatas()->sum('price') + $this->order->delivery->price;
+                    $this->order->total_cost = $this->order->getOrderDatas()
+                                                           ->sum('price') + $this->order->delivery->price;
                     $sender = new Sender();
                     if(!$sender->sendMail($this->client->email, Yii::t('system/view', 'Test buy'), 'mail-template-customer', ['model' => $this])){
                         throw new \Exception('error send customer email');
@@ -109,11 +113,27 @@
                     }
                 }
 
+                /*Gektor*/
+                /** @var \common\models\OrderDataModel $orderdata  */
+                if($this->order->status == OrderModel::ORDER_STATUS_CONFIRMED){
+
+                    foreach($this->orderData as $orderdata){
+                        $orderdata->product->base_quantity = $orderdata->product->base_quantity - $orderdata->quantity;
+                        $orderdata->product->save();
+                    }
+                }else if($this->order->status == OrderModel::ORDER_STATUS_ABORTED){
+                    foreach($this->orderData as $orderdata){
+                        $orderdata->product->base_quantity = $orderdata->product->base_quantity + $orderdata->quantity;
+                        $orderdata->product->save();
+                    }
+                }
+
                 if($isNewRecord){
                     foreach($this->carts as $cart){
                         $cart->delete();
                     }
                 }
+
                 $transaction->commit();
 
                 return true;
