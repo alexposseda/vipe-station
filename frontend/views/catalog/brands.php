@@ -9,6 +9,9 @@
 
 ?>
 <div class="col s12 page-main ">
+    <div class="sub-title">
+        <span class="fs30 white-text title-catalog"><?=Yii::t('models','Brands')?></span>
+    </div>
     <?php $dependency = new DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.BrandModel::tableName()]);
         if($this->beginCache('all_brandCache', ['duration' => 0, 'dependency' => $dependency])):
             ?>

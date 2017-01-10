@@ -66,45 +66,15 @@ function popupToModal(toModal) {
 }
 
 function updateSpinner(obj) {
-    debugger;
     var contentObj = document.getElementById("count");
     var value = parseInt(contentObj.value);
     if (obj.id == "down") {
-        if (value != 0)
-            value--;
+        value--;
     } else {
         value++;
     }
     contentObj.value = value;
 }
-
-$('div.count-yoy-order a').on('click', function () {
-    var input = $(this).siblings('input');
-    var count = parseInt(input.val());
-    var base_quantity = parseInt(input.data('base_quantity'));
-
-    var price = parseFloat($(this).parents('.product-total').find('.all_price').data('base_price'));
-    if ($(this).hasClass('down')) {
-        if (count != 1)
-            count--;
-    } else {
-        if(count < base_quantity)
-        count++;
-    }
-    price = price * count;
-    $(this).parents('.product-total').find('.all_price').text(price);
-    input.val(count);
-    TotalCount();
-})
-
-function TotalCount() {
-    var total_price = 0;
-    $('.product-total').each(function(){
-        total_price += parseFloat($(this).find('span.all_price').text());
-    });
-    $('span#total-price').text(total_price);
-}
-
 
 $(document).ready(function () {
     $('.button-collapse').sideNav({
@@ -129,8 +99,10 @@ $(document).ready(function () {
             showHideLangList();
         }
         else {
+            $('.checkout').hide();
             popupToModal(true);
         }
+
     });
 
     $(document).ready(function () {
@@ -145,19 +117,6 @@ $(document).ready(function () {
         var href = $(this).attr('href');
         // $(href).leanModal('open');
 
-    });
-
-    //range
-    $("#range-filter").ionRangeSlider({
-        type: "double",
-        min: $(this).data('min'),
-        max: $(this).data('max'),
-        postfix: "uah"
-    });
-
-    $('#form_filter').find('#brand_select').on('change', function () {
-        form = this.form;
-        $(form).submit();
     });
 
     $(window).on('load resize', function () {
@@ -213,4 +172,45 @@ $(document).ready(function () {
 
     $('ul.tabs').tabs();
 
+    jQuery(".input-phone").mask("(000) 000-00-00", {
+        placeholder: "(ХХ) ХХХ-ХХ-ХХ"
+    });
+
+    $('#move_to_checkout').click(function () {
+        $('.checkout').show();
+        $('.move-to-checkout').css({
+            "-webkit-transform": "translateX(-50%)",
+            "-ms-transform": "translateX(-50%)",
+            "transform": "translateX(-50%)"
+        });
+    });
+
+    $('#move_to_cart').click(function () {
+
+        $('html, body').animate({
+            scrollTop: 0
+        }, 1000);
+
+        $('.move-to-checkout').css({
+            "-webkit-transform": "translateX(0)",
+            "-ms-transform": "translateX(0)",
+            "transform": "translateX(0)"
+        });
+
+        $('.checkout').delay(600).hide(0);
+
+    });
+
+    $('#remindPassBtn').on('click', function(e){
+        var e = e || event;
+        e.preventDefault();
+        $('#loginbox').addClass('hide');
+        $($(this).attr('href')).removeClass('hide');
+    });
+    $('#loginBtn').on('click', function(e){
+        var e = e || event;
+        e.preventDefault();
+        $('#remindpassbox').addClass('hide');
+        $($(this).attr('href')).removeClass('hide');
+    })
 });

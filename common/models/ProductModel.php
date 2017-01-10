@@ -8,6 +8,7 @@
     use yii\behaviors\SluggableBehavior;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
+    use yii\helpers\Url;
 
     /**
      * This is the model class for table "{{%product}}".
@@ -254,8 +255,13 @@
         }
 
         public function getCover(){
-            return ($this->gallery) ? FileManager::getInstance()
+            $cover = ($this->gallery) ? FileManager::getInstance()
                                                  ->getStorageUrl().json_decode($this->gallery)[0] : '';
+            if(empty($cover)){
+                $cover = Url::to('/images/noPicture.png', true);
+            }
+
+            return $cover;
         }
 
         /**
@@ -318,6 +324,7 @@
                 if($prodCharItem->characteristic->isOption){
                     $options[$model->id][] = [
                         'id'    => $prodCharItem->characteristic->id,
+                        'itemId' => $prodCharItem->id,
                         'title' => $prodCharItem->characteristic->title,
                         'value' => $prodCharItem->value
                     ];
@@ -328,6 +335,7 @@
                     if($prodCharItem->characteristic->isOption){
                         $options[$rp->id][] = [
                             'id'    => $prodCharItem->characteristic->id,
+                            'itemId' => $prodCharItem->id,
                             'title' => $prodCharItem->characteristic->title,
                             'value' => $prodCharItem->value
                         ];

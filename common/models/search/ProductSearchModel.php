@@ -12,9 +12,9 @@
      */
     class ProductSearchModel extends ProductModel{
         public $category_id;
-        public $catName;
+        public $catSlug;
         public $brand_id;
-        public $brandName;
+        public $brandSlug;
         public $price;
 
         /**
@@ -108,13 +108,13 @@
                                    ]);
 
             $query->andFilterWhere(['title' => $this->title]);
-            if($this->brandName){
+            if($this->brandSlug){
                 $query->joinWith('brand b')
-                      ->andFilterWhere(['b.title' => $this->brandName]);
+                      ->andFilterWhere(['b.slug' => $this->brandSlug]);
             }
-            if($this->catName){
+            if($this->catSlug){
                 $query->joinWith('categories c')
-                      ->andFilterWhere(['c.title' => $this->catName]);
+                      ->andFilterWhere(['c.slug' => $this->catSlug]);
             }
             if($this->price){
                 $price = explode(';', $this->price);
@@ -132,8 +132,8 @@
 
             $query->andFilterWhere([
                                        'like',
-                                       'title',
-                                       $this->title
+                                       'slug',
+                                       $this->slug
                                    ])
                   ->andFilterWhere([
                                        'like',
