@@ -16,6 +16,7 @@
         'City'                => 'Город',
         'Address'             => 'Адрес',
 
-        'Your orders' => 'Ваши заказы',
-        'Total'       => 'Итог'
+        'Your orders'    => 'Ваши заказы',
+        'Your addresses' => 'Ваши адресса',
+        'Total'          => 'Итог'
     ];
