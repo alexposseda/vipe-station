@@ -2,6 +2,7 @@
 /**
  * @var $this  \yii\web\View
  * @var $order \common\models\forms\OrderForm
+ * @var $od \common\models\OrderDataModel
  */
 use common\models\ClientModel;
 use common\models\DeliveryModel;
@@ -57,6 +58,23 @@ $('#orderclientdatamodel-client_id').on('change',function(){
         }
     });
 });
+$('input').on('click', function () {
+    console.log('Hello');
+    var input = $(this);
+    var count = parseInt(input.val());
+    var base_quantity = parseInt(input.data('base_quantity'));
+
+    if (count < 1) {
+        count = 1;
+        alert('Invalid: value = 0');
+    } else if (count > base_quantity) {
+        count = base_quantity;
+        alert('Invalid: value > base_quantity');
+    }
+
+
+    input.val(count);
+});
 JS;
 
 $this->registerJs($js, View::POS_END);
@@ -75,7 +93,8 @@ $this->registerJs($js, View::POS_END);
             <p class="panel-heading"><?= Yii::t('models/order', 'Order Data') ?></p>
             <div class="row">
                 <?php if ($order->orderData): ?>
-                    <?php foreach ($order->orderData as $index => $od): ?>
+                    <?php
+                    foreach ($order->orderData as $index => $od): ?>
                         <div class="panel-body col-lg-4">
                             <div class="product-img">
                                 <img src="<?= $od->product->cover ?>">
@@ -118,8 +137,9 @@ $this->registerJs($js, View::POS_END);
                                     <p><?= Yii::t('models/order', 'Price') ?></p>
                                     <?= $od->price . ' ' . Yii::t('models/cart', 'UAH') ?>
                                 </div>
+<!--                                'data-base_quantity' => $od->product->base_quantity-->
                                 <?= $orderForm->field($od, '[' . $index . ']quantity')
-                                    ->input('number') ?>
+                                    ->input('number',['data-base_quantity' => $od->product->base_quantity])?>
                             </div>
                         </div>
                     <?php endforeach; ?>
