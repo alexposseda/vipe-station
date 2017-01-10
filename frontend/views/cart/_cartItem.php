@@ -26,14 +26,15 @@ use yii\helpers\Url;
         </div>
         <div class="product-total col s12">
             <div class="count-yoy-order left fc-brown"
-                 data-url="<?=Url::to(['cart/add-to-cart', 'product_id'=>$model->product_id])?>">
+                 data-url="<?= Url::to(['cart/change-quantity', 'product_id' => $model->product_id]) ?>">
                 <span>Кол-во: </span>
                 <span class="quantity-btn fc-brown" data-action="minus">-</span>
                 <input class="count" type="text" readonly value="<?= $model->quantity ?>">
                 <span class="quantity-btn fc-brown" data-action="plus">+</span>
             </div>
             <div class="right price">
-                <span class="fc-dark-brown fs20">17$</span>
+                <span class="fc-dark-brown fs20 cart-item-price"
+                      data-price="<?= $model->product->base_price ?>"><?= $model->price ?></span>
             </div>
             <div class="clearfix"></div>
         </div>

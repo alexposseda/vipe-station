@@ -61,7 +61,7 @@
                                  [
                                      'attribute' => 'quantity',
                                      'content'   => function($data){
-                                         return '<div class="input-group count-inp" data-url="'.Url::to(['cart/add-to-cart', 'product_id'=>$data->product_id]).'"><span class="quantity-btn" data-action="minus">-</span><input type="text" readonly value="'.$data->quantity.'"><span class="quantity-btn" data-action="plus">+</span></div>';
+                                         return '<div class="input-group count-inp" data-url="'.Url::to(['cart/change-quantity', 'product_id'=>$data->product_id]).'"><span class="quantity-btn" data-action="minus">-</span><input type="text" readonly value="'.$data->quantity.'"><span class="quantity-btn" data-action="plus">+</span></div>';
                                      }
                                  ],
                                  'product.base_price',
