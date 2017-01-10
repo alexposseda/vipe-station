@@ -153,7 +153,7 @@ JS;
     </nav>
     <div class="valign-wrapper">
         <ul id="nav-mobile" class="side-nav fixed white-text valign" style="transform: translateX(0%);">
-            <a href="#" id="close-sidenav" class="hide-on-med-and-up"><img src="../images/close-round-white.svg" width="45px" alt="Закрыть"></a>
+            <a href="#" id="close-sidenav" class="hide-on-med-and-up"><img src="/images/close-round-white.svg" width="45px" alt="Закрыть"></a>
             <li class="logo">
                 <a id="logo" href="<?= Url::to(['site/index']) ?>" class="brand-logo">
                     <img class="logo" src="<?= Url::to('/images/logo.png', true) ?>">

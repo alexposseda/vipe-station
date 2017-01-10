@@ -70,7 +70,7 @@
         <ul id="nav-mobile" class="side-nav fixed white-text valign" style="transform: translateX(0%)"><a href="#"
                                                                                                           id="close-sidenav"
                                                                                                           class="hide-on-med-and-up"><img
-                    src="../images/close-round-white.svg" width="45px" alt="Закрыть"></a>
+                    src="/images/close-round-white.svg" width="45px" alt="Закрыть"></a>
             <li class="logo"><a id="logo" href="#" class="brand-logo"><img class="logo" src="../images/logo.png"></a>
             </li>
             <li class="menu">
