@@ -106,4 +106,16 @@
 
             return $this->render('order_form', ['order' => $order]);
         }
+
+        public function changeQuantity($product_id){
+            $quantity = Yii::$app->request->post('quantity');
+            $item = CartModel::getCart($product_id);
+            if(!$item){
+                return false;
+            }
+            $model = $item[0];
+            $model->quantity = $quantity;
+            return $model->save();
+
+        }
     }
