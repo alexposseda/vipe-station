@@ -46,4 +46,4 @@ $('form #cartform-quantity').on('click', function () {
 
 
     input.val(count);
-})
+});
