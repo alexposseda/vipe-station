@@ -11,7 +11,7 @@
 <div class="wrap-items">
     <div class="wrap-items-first-section left center-align">
         <div class="product-img">
-            <img src="<?= (empty($model->cover)) ? Url::to('/images/noPicture.png', true) : \yii\alexposseda\fileManager\FileManager::getInstance()->getStorageUrl().$model->cover?>" alt="<?= $model->title?>" class="">
+            <img src="<?= (empty($model->cover)) ? Url::to('/images/noPicture.png', true) : \yii\alexposseda\fileManager\FileManager::getInstance()->getStorageUrl().json_decode($model->cover)[0]?>" alt="<?= $model->title?>" class="">
         </div>
         <div class="wrap-text-block">
             <div class="product-title fs20 fc-orange"><?= $model->title?></div>

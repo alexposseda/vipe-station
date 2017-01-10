@@ -275,8 +275,10 @@ header ul.side-nav.fixed li.address-schedule {
 }
 
 header ul.side-nav.fixed li.address-schedule .schedule {
+    /*
     padding-right: 45px;
     background: url(../images/header/phone.png) center right no-repeat;
+    */
 }
 
 header ul.side-nav.fixed ul.nav-menu {
@@ -1226,6 +1228,11 @@ main .page-main .content {
 .delivery-wrap .delivery-content {
     background: #fff;
     height: 100%;
+    padding: 0 15px;
+}
+
+.delivery-wrap .delivery-content p{
+
 }
 
 .delivery-wrap .delivery-img {
