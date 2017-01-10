@@ -8,10 +8,10 @@
             <div class="nav-wrapper">
                 <form>
                     <div class="input-field ">
-                        <input id="search" type="search" required
+                        <input id="search" type="search"
                                class="search-header-input input-left">
                         <button data-target="modalsearch" type="submit"
-                                class="modal-trigger material-icons do-search">search
+                                class="modal-trigger_ material-icons do-search">search
                         </button>
                         <div class="clearfix"></div>
                     </div>
