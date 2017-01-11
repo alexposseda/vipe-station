@@ -29,6 +29,7 @@ class ClientModel extends ActiveRecord
     public $l_name;
     public $phones_arr;
     public $email;
+    public $delivery_data_arr;
 
     public function afterFind()
     {
@@ -39,7 +40,7 @@ class ClientModel extends ActiveRecord
             $this->phones_arr = json_decode($this->phones);
         $this->email = $this->user->email;
         if (!empty($this->delivery_data)) {
-            $this->delivery_data = json_decode($this->delivery_data);
+            $this->delivery_data_arr = json_decode($this->delivery_data);
         }
     }
 
@@ -53,7 +54,7 @@ class ClientModel extends ActiveRecord
         }
 
         if (!empty($this->delivery_data)) {
-            $this->delivery_data = json_encode($this->delivery_data);
+            $this->delivery_data = json_encode($this->delivery_data_arr);
         }
         return parent::beforeValidate();
     }
