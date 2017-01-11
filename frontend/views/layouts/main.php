@@ -51,7 +51,7 @@
 <body>
 <?php $this->beginBody() ?>
 <header>
-    <?php if(Yii::$app->controller->action->id != 'index'):?>
+    <?php if(Yii::$app->controller->id != 'site' or Yii::$app->controller->action->id != 'index' ):?>
 
     <nav class="top-nav static">
         <div class="container">

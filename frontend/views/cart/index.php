@@ -9,7 +9,7 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\widgets\ListView;
-
+    $this->params['headerTitle'] = 'Корзина';
 $this->registerJsFile('js/cart.js', ['depends' => AppAsset::className()]);
 
 ?>
