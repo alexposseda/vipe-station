@@ -22,7 +22,13 @@ use yii\helpers\Url;
             <div class="fs15 fc-dark-brown brand mb-5"><?= $model->product->brand->title ?></div>
         </div>
         <div class="col s2 right-align">
-            <?= Html::a('', Url::to(['delete', 'id' => $model->id]),['class' => 'delete-product']) ?>
+            <?= Html::a('', ['delete', 'id' => $model->id], [
+                'class' => 'delete-product',
+                'data'  => [
+                    'confirm' => Yii::t('system/view', 'Are you sure you want to delete this item?'),
+                    'method'  => 'post',
+                ],
+            ]) ?>
         </div>
         <div class="product-total col s12">
             <div class="count-yoy-order left fc-brown"
