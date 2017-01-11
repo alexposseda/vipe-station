@@ -275,8 +275,10 @@ header ul.side-nav.fixed li.address-schedule {
 }
 
 header ul.side-nav.fixed li.address-schedule .schedule {
+    /*
     padding-right: 45px;
     background: url(../images/header/phone.png) center right no-repeat;
+    */
 }
 
 header ul.side-nav.fixed ul.nav-menu {
@@ -409,10 +411,6 @@ nav.top-nav i {
     cursor: pointer;
 }
 
-nav.top-nav ul {
-    width: 100%;
-}
-
 nav.top-nav ul li {
     line-height: 20px;
     display: inline-block;
@@ -420,6 +418,7 @@ nav.top-nav ul li {
 
 nav.top-nav ul li a {
     line-height: 20px;
+    padding: 0;
 }
 
 nav.top-nav ul li .remind-pass {
@@ -596,10 +595,11 @@ nav.top-nav ul li .button-collapse {
     position: relative;
     margin: 0;
     padding: 0;
+    text-align: left;
 }
 
 nav.top-nav ul li .button-collapse i {
-    font-size: 48px;
+    font-size: 36px;
 }
 
 @media only screen and (min-width: 600px) {
@@ -615,6 +615,9 @@ nav.top-nav img.search-header {
 }
 
 @media only screen and (min-width: 992px) {
+    nav.top-nav ul {
+        width: 100%;
+    }
     nav.top-nav div.input-search {
         position: relative;
         left: 70% !important;
@@ -1115,7 +1118,7 @@ main .page-main {
 main .page-main .content {
     width: 90%;
     height: 90%;
-    overflow: hidden;
+    /*overflow: hidden;*/
     border: 3px solid #E5C595;
     margin: 0px auto;
     background-color: #fff;
@@ -1226,6 +1229,10 @@ main .page-main .content {
 .delivery-wrap .delivery-content {
     background: #fff;
     height: 100%;
+}
+
+.delivery-wrap .delivery-content p{
+
 }
 
 .delivery-wrap .delivery-img {
@@ -2090,7 +2097,7 @@ main .page-main .content {
     border-bottom: 1px solid #d0b691;
 }
 
-.cart-page .product .product-total #count {
+.cart-page .product .product-total .count {
     width: 30px;
     height: 30px;
     text-align: center;
@@ -2743,6 +2750,10 @@ main .page-main .content {
     width: 20%;
     text-align: center;
     margin: 0 10px;
+}
+
+.quantity-btn {
+    cursor: pointer;
 }
 .product-gallery-wrap{
 }

@@ -20,6 +20,11 @@
     if(!empty($gallery)){
         $gallery = json_decode($gallery);
     }
+
+    $this->registerJsFile('/js/product_form.js', [
+        'position' => \yii\web\View::POS_END,
+        'depends'  => \backend\assets\AppAsset::className()
+    ]);
 ?>
 <div class="product-model-view">
     <p class="pull-left">
@@ -48,11 +53,17 @@
                                             ]) ?>
         <?= Html::activeHiddenInput($cartModel, 'product_id', ['value' => $model->id]) ?>
         <?= Html::activeInput('number', $cartModel, 'quantity', [
-            'class' => 'form-control',
-            'style' => 'width: 75px;'
+            'class'              => 'form-control',
+            'style'              => 'width: 75px;',
+            'data-base_quantity' => $model->base_quantity
         ]) ?>
         <?= Html::submitButton('Купить', ['class' => 'btn btn-success']) ?>
         <?php ActiveForm::end() ?>
+        <div class ="btn btn-primary">
+            <a href="<?= Url::to(['cart/index']) ?>" class="btn btn-sm btn-success pull-right">
+                Перейти в корзину
+            </a>
+        </div>
     </div>
     <div class="clearfix"></div>
     <div class="row">

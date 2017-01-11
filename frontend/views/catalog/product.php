@@ -5,6 +5,7 @@
      */
 
     use yii\alexposseda\fileManager\FileManager;
+    use yii\helpers\Url;
 
     \frontend\assets\ProductAsset::register($this);
 
@@ -114,12 +115,13 @@
                 <div class="row">
                     <div class="col s12 m12 l4 push-l4 offset-l2">
                         <div class="input-group count-inp">
-                            <span>-</span><input type="text" readonly value="1"><span>+</span>
+                            <span class="quantity-btn" data-action="minus">-</span><input type="text" readonly value="1" id="product-quantity"><span class="quantity-btn" data-action="plus">+</span>
                         </div>
                     </div>
                     <div class="col s12 m12 l4 pull-l4 ">
                         <div class="btn-buy center-align fs15 fc full-width">
-                            <button data-target="buyproduct">Купить</button>
+                            <input type="hidden" id="product_id" value="<?= $model->id?>">
+                            <button data-target="buyproduct" id="addToCart" data-url="<?= Url::to(['cart/add-to-cart'])?>">Купить</button>
                         </div>
                     </div>
                 </div>

@@ -21,7 +21,12 @@
         }
         $markers = json_encode($markers);
     }
-    $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAUYPzaG4lQCw-v_7JUodo1mgWDlztuD0s', ['position' => \yii\web\View::POS_HEAD]);
+    if(is_null($shopAddresses)){
+        $shopAddresses = [];
+    }
+
+    $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAUYPzaG4lQCw-v_7JUodo1mgWDlztuD0s',
+                          ['position' => \yii\web\View::POS_HEAD]);
     $this->registerJsFile('js/map.js', ['depends' => 'frontend\assets\AppAsset']);
     $js = <<<JS
 mapInit();
@@ -46,13 +51,15 @@ JS;
                         <hr>
                         <?php if(!empty($aboutUs)){
                             echo nl2br($aboutUs);
-                        }?>
+                        } ?>
                     </div>
                     <div class="col l6 about-adress">
-                        <span class="fs25 fc-orange">Адрес</span><hr>
-                        <?php foreach($shopAddresses as $address):?>
-                        <span class="fs20 fc-dark-brown"><?= $address->address?><br><?= nl2br($address->phones)?><br><?= $address->schedule?></span>
-                        <?php endforeach;?>
+                        <span class="fs25 fc-orange">Адрес</span>
+                        <hr>
+                        <?php foreach($shopAddresses as $address): ?>
+                            <span class="fs20 fc-dark-brown"><?= $address->address ?><br><?= nl2br($address->phones) ?>
+                                <br><?= $address->schedule ?></span>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 

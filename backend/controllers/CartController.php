@@ -64,6 +64,18 @@
             return false;
         }
 
+        public function changeQuantity($product_id){
+            $quantity = Yii::$app->request->post('quantity');
+            $item = CartModel::getCart($product_id);
+            if(!$item){
+                return false;
+            }
+            $model = $item[0];
+            $model->quantity = $quantity;
+            return $model->save();
+
+        }
+
         public function actionLogin(){
             /** @var CartModel[] $cart */
             $guest_id = Yii::$app->session->get('guest_id');

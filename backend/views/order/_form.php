@@ -2,6 +2,7 @@
 /**
  * @var $this  \yii\web\View
  * @var $order \common\models\forms\OrderForm
+ * @var $od \common\models\OrderDataModel
  */
 use common\models\ClientModel;
 use common\models\DeliveryModel;
@@ -16,16 +17,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
 
-$payArr = PaymentModel::getDb()
-    ->cache(function () {
-        return PaymentModel::find()
-            ->all();
-    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM ' . PaymentModel::tableName()]));
-$deliverArr = DeliveryModel::getDb()
-    ->cache(function () {
-        return DeliveryModel::find()
-            ->all();
-    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM ' . DeliveryModel::tableName()]));
 $clientArr = ClientModel::getDb()
     ->cache(function () {
         return ClientModel::find()
@@ -57,6 +48,23 @@ $('#orderclientdatamodel-client_id').on('change',function(){
         }
     });
 });
+$('input').on('click', function () {
+    console.log('Hello');
+    var input = $(this);
+    var count = parseInt(input.val());
+    var base_quantity = parseInt(input.data('base_quantity'));
+
+    if (count < 1) {
+        count = 1;
+        alert('Invalid: value = 0');
+    } else if (count > base_quantity) {
+        count = base_quantity;
+        alert('Invalid: value > base_quantity');
+    }
+
+
+    input.val(count);
+});
 JS;
 
 $this->registerJs($js, View::POS_END);
@@ -66,16 +74,17 @@ $this->registerJs($js, View::POS_END);
 <div class="row">
     <div class="col-lg-8 left-panel">
         <?= $orderForm->field($order->order, 'payment_id')
-            ->dropDownList(ArrayHelper::map($payArr, 'id', 'name'), ['prompt' => 'Select Payment']) ?>
+            ->dropDownList(ArrayHelper::map($order->getPayArr(), 'id', 'name'), ['prompt' => 'Select Payment']) ?>
         <?= $orderForm->field($order->order, 'delivery_id')
-            ->dropDownList(ArrayHelper::map($deliverArr, 'id', 'name'), ['prompt' => 'Select Delivery']) ?>
+            ->dropDownList(ArrayHelper::map($order->getDeliverArr(), 'id', 'name'), ['prompt' => 'Select Delivery']) ?>
         <?= $orderForm->field($order->order, 'status')
             ->dropDownList($orderStatus, ['prompt' => 'Select order status']) ?>
         <div class="panel panel-default order-detail">
             <p class="panel-heading"><?= Yii::t('models/order', 'Order Data') ?></p>
             <div class="row">
                 <?php if ($order->orderData): ?>
-                    <?php foreach ($order->orderData as $index => $od): ?>
+                    <?php
+                    foreach ($order->orderData as $index => $od): ?>
                         <div class="panel-body col-lg-4">
                             <div class="product-img">
                                 <img src="<?= $od->product->cover ?>">
@@ -118,8 +127,9 @@ $this->registerJs($js, View::POS_END);
                                     <p><?= Yii::t('models/order', 'Price') ?></p>
                                     <?= $od->price . ' ' . Yii::t('models/cart', 'UAH') ?>
                                 </div>
+                                <!--                                'data-base_quantity' => $od->product->base_quantity-->
                                 <?= $orderForm->field($od, '[' . $index . ']quantity')
-                                    ->input('number') ?>
+                                    ->input('number', ['data-base_quantity' => $od->product->base_quantity]) ?>
                             </div>
                         </div>
                     <?php endforeach; ?>

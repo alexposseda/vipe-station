@@ -10,7 +10,7 @@ function rangeInit() {
             max: $(this).data('max'),
             from: rangeFrom,
             to: rangeTo,
-            postfix: "uah",
+            postfix: "грн",
             onFinish: function () {
                 $('#catalog-search').submit()
             }
@@ -20,7 +20,7 @@ function rangeInit() {
             type: "double",
             min: $(this).data('min'),
             max: $(this).data('max'),
-            postfix: "uah",
+            postfix: "грн",
             onFinish: function () {
                 $('#catalog-search').submit()
             }

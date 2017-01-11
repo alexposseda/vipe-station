@@ -81,7 +81,7 @@
     <div class="valign-wrapper">
         <ul id="nav-mobile" class="side-nav fixed white-text valign" style="transform: translateX(0%);">
             <?php if(Yii::$app->controller->action->id != 'index'):?>
-            <a href="#" id="close-sidenav" class="hide-on-med-and-up"><img src="../images/close-round-white.svg" width="45px" alt="Закрыть"></a>
+            <a href="#" id="close-sidenav" class="hide-on-med-and-up"><img src="/images/close-round-white.svg" width="45px" alt="Закрыть"></a>
             <?php endif;?>
             <li class="logo">
                 <a id="logo" href="<?= Url::to(['site/index']) ?>" class="brand-logo">
@@ -133,12 +133,14 @@
             <li>
                 <div class="row mb-0">
                     <div class="col s12 m12 l12 center-align">
-                        <?php foreach($socials as $social): ?>
-                            <a href="<?= $social->link ?>" class="social-icon">
-                                <img src="<?= FileManager::getInstance()
-                                                         ->getStorageUrl().substr($social->icon, 1) ?>" alt="<?= $social->title ?>">
-                            </a>
-                        <?php endforeach; ?>
+                        <?php if($socials): ?>
+                            <?php foreach($socials as $social): ?>
+                                <a href="<?= $social->link ?>" class="social-icon">
+                                    <img src="<?= FileManager::getInstance()
+                                                             ->getStorageUrl().substr($social->icon, 1) ?>" alt="<?= $social->title ?>">
+                                </a>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </li>

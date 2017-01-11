@@ -1,8 +1,9 @@
 <?php
     return [
-        'Options'  => 'Опции',
-        'Quantity' => 'Количество',
-        'pc'       => 'шт',
+        'Options'    => 'Опции',
+        'Quantity'   => 'Количество',
+        'pc'         => 'шт',
+        'Full price' => 'Сумма',
 
         'Zakaz' => 'Оформить Заказ',
 

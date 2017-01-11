@@ -30,7 +30,8 @@
 
             <div class="product-description fs15 fc-dark-brown"><p><?=  nl2br($model->description)?></p></div>
             <div class="btn-buy center-align fs15 fc">
-                <button data-target="buyproduct">Купить</button>
+<!--                <button data-target="buyproduct">Детали</button>-->
+                <a href="<?= \yii\helpers\Url::to(['catalog/product', 'slug' => $model->slug])?>">Перейти</a>
             </div>
         </div>
         <div class="clearfix"></div>
