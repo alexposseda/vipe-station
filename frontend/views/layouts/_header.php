@@ -154,6 +154,7 @@
                     </div>
                 </div>
                 <div class="login border-l">
+                    <?php if(Yii::$app->user->isGuest):?>
                     <a id="insert-cabinet" class="modal-trigger popup-trigger hide-on-small-and-down" href="#modallogin">
                         <span class="white-text fs15">Кабинет</span>
                     </a>
@@ -234,7 +235,11 @@
                             </div>
                         </div>
                     </div>
-
+                    <?php else: ?>
+                        <a href="<?= \yii\helpers\Url::to(['/personal/index'])?>" class="popup-trigger hide-on-small-and-down">
+                            <span class="white-text fs15">Кабинет</span>
+                        </a>
+                    <?php endif;?>
                 </div>
             </div>
         </li>
