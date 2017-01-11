@@ -11,11 +11,11 @@ $('.quantity-btn').on('click', function () {
             offset = 1;
             break;
     }
-
+    var product = $(this).parents('.product-total');
     inp.val(inpValue + offset);
 
     $.post($(this).parent().data('url'), {quantity: inpValue + offset}, function (result) {
-        var price = $('.cart-item-price');
+        var price = product.find('.cart-item-price');
         price.text(parseInt(price.data('price')) * parseInt(result));
         initTotalPrice();
     });
@@ -27,11 +27,8 @@ function initTotalPrice() {
     var cartItems = $('.cart-item-price');
     var total = 0;
     for(var i =0 ; i < cartItems.length; i++){
-        debugger;
         total+= parseInt($(cartItems[i]).text());
     }
-    console.log(total);
-    console.log(cartItems);
 
     $('#total-cart-price').text(total);
 }

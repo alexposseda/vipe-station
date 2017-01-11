@@ -3,9 +3,12 @@
  * @var $this \yii\web\View
  * @var $model \common\models\CartModel
  */
-use yii\helpers\Html;
+    use common\models\OrderDataModel;
+    use yii\helpers\Html;
 use yii\helpers\Url;
+    use yii\widgets\ActiveForm;
 
+    $orderModel = new OrderDataModel();
 ?>
 
 <div class="col s3 product-img img-wrap-you-order">
@@ -29,7 +32,7 @@ use yii\helpers\Url;
                  data-url="<?= Url::to(['cart/change-quantity', 'product_id' => $model->product_id]) ?>">
                 <span>Кол-во: </span>
                 <span class="quantity-btn fc-brown" data-action="minus">-</span>
-                <input class="count" type="text" readonly value="<?= $model->quantity ?>">
+                <input name="OrderDataModel[][quantity]" class="count" type="text" readonly value="<?= $model->quantity ?>">
                 <span class="quantity-btn fc-brown" data-action="plus">+</span>
             </div>
             <div class="right price">

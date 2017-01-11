@@ -4,6 +4,7 @@ namespace common\models\forms;
 
 use common\components\sender\Sender;
 use common\models\CartModel;
+use common\models\ClientModel;
 use common\models\DeliveryModel;
 use common\models\OrderClientDataModel;
 use common\models\OrderDataModel;
@@ -91,6 +92,14 @@ class OrderForm extends Model
             $this->client->order_id = $this->order->id;
             if (!$this->client->save()) {
                 throw new \Exception('error save client data ' . $this->client->getErrors()[0]);
+            }else{
+                $client_model = new ClientModel();
+                $client_model->name = $this->client->name;
+                $client_model->phones = json_encode([$this->client->phone]);
+                $client_model->email = $this->client->email;
+                if(!$client_model->save()){
+                    throw new \Exception('error create client');
+                }
             }
 
             foreach ($this->orderData as $od) {

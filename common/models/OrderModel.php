@@ -66,7 +66,7 @@ class OrderModel extends ActiveRecord
         return [
             [['comment', 'status', 'delivery_data'], 'string'],
             [['delivery_id', 'payment_id', 'created_at', 'updated_at'], 'integer'],
-            [['delivery_data'], 'required'],
+            [['delivery_data','delivery_id','payment_id'], 'required'],
             [['total_cost'], 'number'],
             [
                 ['delivery_id'],
