@@ -29,6 +29,16 @@
         public $phones_arr;
         public $email;
 
+        public static function clientExists($email){
+            if($user = UserIdentity::findByEmail($email)){
+                return self::find()
+                           ->where(['user_id' => $user->id])
+                           ->exists();
+            }
+
+            return false;
+        }
+
         public function afterFind(){
             $tmp = explode(' ', trim($this->name));
             $this->f_name = $tmp[0];

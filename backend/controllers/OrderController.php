@@ -71,7 +71,7 @@ class OrderController extends Controller
     public function actionUpdate($id)
     {
         $order = new OrderForm([
-            'order' => OrderModel::findOne($id)
+            'order' => OrderModel::findOne($id),
         ]);
         if ($order->loadAll(Yii::$app->request->post()) && $order->save()) {
             Yii::$app->session->addFlash('success', 'Заказ №' . $order->order->id . ' изменен');

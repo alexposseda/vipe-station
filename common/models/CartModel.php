@@ -35,7 +35,7 @@ class CartModel extends ActiveRecord
 
     public static function getCart($product_id = null)
     {
-        if (!Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             $guest_id = Yii::$app->request->cookies->get('guest_id');
             if ($guest_id) {
                 $guest_id = Yii::$app->session->get('guest_id');
@@ -53,7 +53,7 @@ class CartModel extends ActiveRecord
 
     public static function getCartQuery($product_id = null)
     {
-        if (!Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             $guest_id = Yii::$app->request->cookies->get('guest_id');
             if ($guest_id) {
                 $guest_id = Yii::$app->session->get('guest_id');

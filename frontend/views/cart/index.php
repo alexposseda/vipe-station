@@ -47,15 +47,17 @@
                     <div class="row">
                         <div class="col s12">
                             <ul class="tabs fs25 fc-dark-brown ">
-                                <li class="tab col s6"><a class="active" href="#new_customer">Новый покупатель</a>
-                                </li>
-                                <li class="tab col s6"><a href="#regular_customer">Постояный покупатель</a></li>
+                                <?php if(Yii::$app->user->isGuest): ?>
+                                    <li class="tab col s6"><a class="active" href="#new_customer">Новый покупатель</a>
+                                    </li>
+                                    <li class="tab col s6"><a href="#regular_customer">Постояный покупатель</a></li>
+                                <?php endif; ?>
                             </ul>
                         </div>
                         <div id="new_customer" class="col s12">
                             <div class="row">
                                 <div class="col s12 m6 l6">
-                                    <p class="n1 title-form-new-customer fs16 fc-orange">Авторизация</p>
+                                    <p class="n1 title-form-new-customer fs16 fc-orange">Информация о получателе</p>
                                     <?= $orderForm->field($orderModel->deliveryData, 'f_name', ['options' => ['class' => 'col s12']]) ?>
                                     <?= $orderForm->field($orderModel->deliveryData, 'l_name', ['options' => ['class' => 'col s12']]) ?>
                                     <?= $orderForm->field($orderModel->deliveryData, 'phone',
@@ -104,37 +106,40 @@
                                 </div>
                                 <div class="col s12 m6 l12 center-align">
                                     <div class="btn-buy">
+                                        <?php //echo \yii\helpers\Html::a('выйти',['/site/logout'],['method'=>'post'])?>
                                         <button type="button" id="move_to_checkout">Оформить заказ</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="regular_customer" class="col s12">
-                            <div class="row">
-                                <div class="col s12 center-align cart-signIn">
-                                    <img src="../images/cabinet3.png" alt="">
+                        <?php if(Yii::$app->user->isGuest): ?>
+                            <div id="regular_customer" class="col s12">
+                                <div class="row">
+                                    <div class="col s12 center-align cart-signIn">
+                                        <img src="../images/cabinet3.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="col s12 center-align cabinet-form">
+                                    <form class="row">
+                                        <div class="input-field col s12">
+                                            <input placeholder="Placeholder" id="first_name" type="email"
+                                                   class="validate input-form">
+                                            <label for="first_name" class="label-form">First Name</label>
+                                        </div>
+                                        <div class="input-field col s12 margin-center">
+                                            <input placeholder="Placeholder" id="first_name" type="password"
+                                                   class="validate input-form">
+                                            <label for="first_name" class="label-form">Password</label>
+                                        </div>
+                                        <div class="col s12 center-align">
+                                            <div class="btn-buy">
+                                                <button type="submit">Войти</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <div class="col s12 center-align cabinet-form">
-                                <form class="row">
-                                    <div class="input-field col s12">
-                                        <input placeholder="Placeholder" id="first_name" type="email"
-                                               class="validate input-form">
-                                        <label for="first_name" class="label-form">First Name</label>
-                                    </div>
-                                    <div class="input-field col s12 margin-center">
-                                        <input placeholder="Placeholder" id="first_name" type="password"
-                                               class="validate input-form">
-                                        <label for="first_name" class="label-form">Password</label>
-                                    </div>
-                                    <div class="col s12 center-align">
-                                        <div class="btn-buy">
-                                            <button type="submit">Войти</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <?php ActiveForm::end() ?>
