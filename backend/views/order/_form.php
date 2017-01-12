@@ -5,9 +5,7 @@
  * @var $od \common\models\OrderDataModel
  */
 use common\models\ClientModel;
-use common\models\DeliveryModel;
 use common\models\OrderModel;
-use common\models\PaymentModel;
 use common\models\ProductCharacteristicItemModel;
 use common\models\ProductOptionModel;
 use yii\bootstrap\ActiveForm;
@@ -49,7 +47,6 @@ $('#orderclientdatamodel-client_id').on('change',function(){
     });
 });
 $('input').on('click', function () {
-    console.log('Hello');
     var input = $(this);
     var count = parseInt(input.val());
     var base_quantity = parseInt(input.data('base_quantity'));
@@ -61,8 +58,6 @@ $('input').on('click', function () {
         count = base_quantity;
         alert('Invalid: value > base_quantity');
     }
-
-
     input.val(count);
 });
 JS;
@@ -97,32 +92,7 @@ $this->registerJs($js, View::POS_END);
                                     <p><?= Yii::t('models', 'Brand') ?></p>
                                     <?= Html::encode($od->product->brand->title) ?>
                                 </div>
-                                <div class="product-characteristics ">
-                                    <p><?= Yii::t('models', 'Characteristics') ?></p>
-                                    <?php if ($od->options) {
-                                        $options = json_decode($od->options);
-                                        if (!empty($options->characteristics)) {
-                                            foreach ($options->characteristics as $character) {
-                                                $characterModel = ProductCharacteristicItemModel::findOne($character);
-                                                echo $characterModel->characteristic->title . ' ' . $characterModel->value . '<br>';
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                </div>
-                                <div class="product-options">
-                                    <p><?= Yii::t('models', 'Options') ?></p>
-                                    <?php if ($od->options) {
-                                        $options = json_decode($od->options);
-                                        if (!empty($options->options)) {
-                                            foreach ($options->options as $option) {
-                                                $optionModel = ProductOptionModel::findOne($option);
-                                                echo $optionModel->characteristic->title . ' ' . $optionModel->value . ' ' . $optionModel->delta_price . '<br>';
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                </div>
+
                                 <div class="product-price fs20 fc-light-brown">
                                     <p><?= Yii::t('models/order', 'Price') ?></p>
                                     <?= $od->price . ' ' . Yii::t('models/cart', 'UAH') ?>

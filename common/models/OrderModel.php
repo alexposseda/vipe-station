@@ -34,12 +34,6 @@ class OrderModel extends ActiveRecord
     const ORDER_STATUS_FINISHED = 'finished';
     const ORDER_STATUS_PAID = 'paid';
 
-    public function afterFind()
-    {
-        $this->total_cost = $this->getOrderDatas()
-                ->sum('price') + $this->delivery->price;
-    }
-
     /**
      * @inheritdoc
      */
@@ -97,9 +91,9 @@ class OrderModel extends ActiveRecord
             'delivery_id' => 'Delivery ID',
             'delivery_data' => 'Delivery Data',
             'payment_id' => 'Payment ID',
-            'total_cost' => 'Total Cost',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'total_cost' => Yii::t('models/order','Total Cost'),
+            'created_at'  => Yii::t('models', 'Created'),
+            'updated_at'  => Yii::t('models', 'Last Update'),
         ];
     }
 

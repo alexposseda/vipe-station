@@ -3,10 +3,14 @@
      * @var $this   \yii\web\View
      * @var $orders \yii\data\ActiveDataProvider
      */
+    use yii\bootstrap\Html;
     use yii\grid\GridView;
     use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
+//    var_dump($orders->models);
 ?>
+<?php Pjax::begin()?>
 <?= GridView::widget([
                          'dataProvider' => $orders,
                          'filterModel'  => null,
@@ -24,14 +28,22 @@
                                  'headerOptions'  => [
                                      'style' => 'width: 20%;max-width: 150px;'
                                  ],
-                                 'contentOptions' => ['style' => 'vertical-align:middle;']
+                                 'contentOptions' => ['style' => 'vertical-align:middle;'],
+                                 'content'        => function($data){
+                                     return Yii::t('models/order', $data->status);
+                                 }
                              ],
                              [
                                  'attribute'      => 'orderClientData.client.name',
                                  'headerOptions'  => [
                                      'style' => 'width: 20%;max-width: 150px;'
                                  ],
-                                 'contentOptions' => ['style' => 'vertical-align:middle;']
+                                 'contentOptions' => ['style' => 'vertical-align:middle;'],
+                                 'content'        => function($data){
+                                     /** @var \common\models\OrderModel $data */
+                                     return Html::a($data->orderClientData->client->name,
+                                                    ['/client/view', 'id' => $data->orderClientData->client_id]);
+                                 }
                              ],
                              [
                                  'attribute'      => 'delivery.name',
@@ -45,7 +57,11 @@
                                  'headerOptions'  => [
                                      'style' => 'width: 30%;max-width: 280px;'
                                  ],
-                                 'contentOptions' => ['style' => 'vertical-align:middle;']
+                                 'contentOptions' => ['style' => 'vertical-align:middle;'],
+                                 'content'        => function($data){
+                                     /** @var \common\models\OrderModel $data */
+                                     return $data->delivery->price == 0 ? '<span class="text-success">'.Yii::t('models/order', 'Free delivery').'</span>' : $data->delivery->price;
+                                 }
                              ],
                              [
                                  'attribute'      => 'payment.name',
@@ -93,6 +109,7 @@
                              ],
                          ]
                      ]); ?>
+<?php Pjax::end()?>
 <a href="<?= Url::to(['cart/index']) ?>" class="btn btn-sm btn-success pull-right">
     Перейти в корзину
 </a>

@@ -11,5 +11,7 @@
         OrderModel::ORDER_STATUS_SENT      => 'отправлен',
 
         'Cart is empty' => 'Корзина пуста',
-        'Price'         => 'Цена'
+        'Price'         => 'Цена',
+        'Free delivery' => 'доставка бесплатная',
+        'Total Cost'    => 'Сумма'
     ];

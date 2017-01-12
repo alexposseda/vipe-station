@@ -121,11 +121,12 @@
                             throw new \Exception('error save order data '.$od->getErrors()[0]);
                         }
                     }
+                    $this->order->total_cost = $this->order->getOrderDatas()
+                                                           ->sum('price*quantity') + $this->order->delivery->price;
+                    $this->order->save();
                 }
 
                 if($isNewRecord){
-                    $this->order->total_cost = $this->order->getOrderDatas()
-                                                           ->sum('price') + $this->order->delivery->price;
                     $sender = new Sender();
                     if(!$sender->sendMail($this->client->email, Yii::t('system/view', 'Test buy'), 'mail-template-customer', ['model' => $this])){
                         throw new \Exception('error send customer email');
