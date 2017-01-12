@@ -12,12 +12,14 @@ $('.quantity-btn').on('click', function () {
             break;
     }
     var product = $(this).parents('.product-total');
-    inp.val(inpValue + offset);
 
     $.post($(this).parent().data('url'), {quantity: inpValue + offset}, function (result) {
-        var price = product.find('.cart-item-price');
-        price.text(parseInt(price.data('price')) * parseInt(result));
-        initTotalPrice();
+        if (result) {
+            inp.val(inpValue + offset);
+            var price = product.find('.cart-item-price');
+            price.text(parseInt(price.data('price')) * parseInt(result));
+            initTotalPrice();
+        }
     });
 });
 
@@ -26,8 +28,8 @@ initTotalPrice();
 function initTotalPrice() {
     var cartItems = $('.cart-item-price');
     var total = 0;
-    for(var i =0 ; i < cartItems.length; i++){
-        total+= parseInt($(cartItems[i]).text());
+    for (var i = 0; i < cartItems.length; i++) {
+        total += parseInt($(cartItems[i]).text());
     }
 
     $('#total-cart-price').text(total);

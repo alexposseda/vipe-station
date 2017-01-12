@@ -851,6 +851,7 @@ div.btn-buy button:active, div.btn-buy a:active {
 }
 
 .delete-product {
+    display: inline-block;
     background: transparent url("../images/close.png") center center no-repeat;
     border: none;
     width: 20px;

@@ -27,6 +27,7 @@ use yii\helpers\Url;
                 'data'  => [
                     'confirm' => Yii::t('system/view', 'Are you sure you want to delete this item?'),
                     'method'  => 'post',
+                    'pjax' => 1
                 ],
             ]) ?>
         </div>

@@ -21,6 +21,7 @@
                 <div class="col l5 s6 cart-your-order">
                     <div class="cart-your-order-wrap">
                         <h2 class="cart-your-order-title fs30 fc-brown">Ваш заказ</h2>
+                        <?php \yii\widgets\Pjax::begin()?>
                         <?= ListView::widget([
                                                  'dataProvider' => new ActiveDataProvider(['query' => CartModel::getCartQuery()]),
                                                  'itemView'     => '_cartItem',
@@ -28,6 +29,7 @@
                                                  'options'      => ['class' => 'products'],
                                                  'itemOptions'  => ['class' => 'row product'],
                                              ]) ?>
+                        <?php \yii\widgets\Pjax::end()?>
                         <div class="row">
                             <div class="col s12 right-align total-you-order mt-30 mb-30">
                                 <span class="fs20 fc-dark-brown">
