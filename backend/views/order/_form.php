@@ -17,16 +17,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
 
-$payArr = PaymentModel::getDb()
-    ->cache(function () {
-        return PaymentModel::find()
-            ->all();
-    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM ' . PaymentModel::tableName()]));
-$deliverArr = DeliveryModel::getDb()
-    ->cache(function () {
-        return DeliveryModel::find()
-            ->all();
-    }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM ' . DeliveryModel::tableName()]));
 $clientArr = ClientModel::getDb()
     ->cache(function () {
         return ClientModel::find()
@@ -84,9 +74,9 @@ $this->registerJs($js, View::POS_END);
 <div class="row">
     <div class="col-lg-8 left-panel">
         <?= $orderForm->field($order->order, 'payment_id')
-            ->dropDownList(ArrayHelper::map($payArr, 'id', 'name'), ['prompt' => 'Select Payment']) ?>
+            ->dropDownList(ArrayHelper::map($order->getPayArr(), 'id', 'name'), ['prompt' => 'Select Payment']) ?>
         <?= $orderForm->field($order->order, 'delivery_id')
-            ->dropDownList(ArrayHelper::map($deliverArr, 'id', 'name'), ['prompt' => 'Select Delivery']) ?>
+            ->dropDownList(ArrayHelper::map($order->getDeliverArr(), 'id', 'name'), ['prompt' => 'Select Delivery']) ?>
         <?= $orderForm->field($order->order, 'status')
             ->dropDownList($orderStatus, ['prompt' => 'Select order status']) ?>
         <div class="panel panel-default order-detail">
@@ -137,9 +127,9 @@ $this->registerJs($js, View::POS_END);
                                     <p><?= Yii::t('models/order', 'Price') ?></p>
                                     <?= $od->price . ' ' . Yii::t('models/cart', 'UAH') ?>
                                 </div>
-<!--                                'data-base_quantity' => $od->product->base_quantity-->
+                                <!--                                'data-base_quantity' => $od->product->base_quantity-->
                                 <?= $orderForm->field($od, '[' . $index . ']quantity')
-                                    ->input('number',['data-base_quantity' => $od->product->base_quantity])?>
+                                    ->input('number', ['data-base_quantity' => $od->product->base_quantity]) ?>
                             </div>
                         </div>
                     <?php endforeach; ?>

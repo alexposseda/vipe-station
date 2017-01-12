@@ -4,11 +4,15 @@
 
     use common\components\sender\Sender;
     use common\models\CartModel;
+    use common\models\ClientModel;
+    use common\models\DeliveryModel;
     use common\models\OrderClientDataModel;
     use common\models\OrderDataModel;
     use common\models\OrderModel;
+    use common\models\PaymentModel;
     use Yii;
     use yii\base\Model;
+    use yii\caching\DbDependency;
 
     /**
      * Class OrderForm
@@ -43,22 +47,25 @@
                     $this->orderData[] = $order_data;
                 }
                 $this->client = new OrderClientDataModel();
+                if(!Yii::$app->user->isGuest){
+                    $this->client->client_id = Yii::$app->user->identity->client->id;
+                }
             }else{
                 $this->orderData = $this->order->orderDatas;
                 $this->client = OrderClientDataModel::findOne(['order_id' => $this->order->id]);
             }
 
             $del_data = json_decode($this->order->delivery_data);
+            if(!$del_data){
+                $del_data = json_decode($this->client->client->delivery_data)[0];
+            }
             $this->deliveryData = new DeliveryAddressForm($del_data ? $del_data : null);
-            $this->deliveryData->f_name = $this->client->client->f_name;
-            $this->deliveryData->l_name = $this->client->client->l_name;
-            $this->deliveryData->email = $this->client->client->email;
             $this->oldStatus = $this->order->status;
         }
 
         public function loadAll($post){
-            if($this->order->load($post) && $this->client->load($post) && $this->deliveryData->load($post) && $this->client->load(Yii::$app->request->post(),
-                                                                                                                                  $this->deliveryData->formName())
+            if($this->order->load($post) /*&& $this->client->load($post)*/ && $this->deliveryData->load($post) && $this->client->load(Yii::$app->request->post(),
+                                                                                                                                      $this->deliveryData->formName())
             ){
                 return true;
             }
@@ -81,6 +88,23 @@
 
                 $this->client->name = $this->deliveryData->name;
                 $this->client->order_id = $this->order->id;
+
+                if(!ClientModel::clientExists($this->client->email)){
+                    $client_model = new ClientModel();
+                    $client_model->name = $this->client->name;
+                    $client_model->phones = json_encode([$this->client->phone]);
+                    $client_model->email = $this->client->email;
+                    $client_model->delivery_data = json_encode([$this->deliveryData]);
+                    if(!$client_model->save()){
+                        throw new \Exception('error create client');
+                    }
+                }else{
+                    $client_model = Yii::$app->user->identity->client;
+                }
+                if($client_model){
+                    $this->client->client_id = $client_model->id;
+                }
+
                 if(!$this->client->save()){
                     throw new \Exception('error save client data '.$this->client->getErrors()[0]);
                 }
@@ -90,7 +114,6 @@
                     $od->order_id = $this->order->id;
                 }
 
-                //error quantuty
                 if(Model::loadMultiple($this->orderData, Yii::$app->request->post())){
                     foreach($this->orderData as $od){
                         $od->price = $od->product->base_price * $od->quantity;
@@ -99,8 +122,6 @@
                         }
                     }
                 }
-
-
 
                 if($isNewRecord){
                     $this->order->total_cost = $this->order->getOrderDatas()
@@ -145,5 +166,25 @@
 
                 return false;
             }
+        }
+
+        public function getPayArr(){
+            $payArr = PaymentModel::getDb()
+                                  ->cache(function(){
+                                      return PaymentModel::find()
+                                                         ->all();
+                                  }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.PaymentModel::tableName()]));
+
+            return $payArr;
+        }
+
+        public function getDeliverArr(){
+            $deliverArr = DeliveryModel::getDb()
+                                       ->cache(function(){
+                                           return DeliveryModel::find()
+                                                               ->all();
+                                       }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM '.DeliveryModel::tableName()]));
+
+            return $deliverArr;
         }
     }
