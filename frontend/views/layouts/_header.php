@@ -5,13 +5,14 @@
 <li class="col l5 m12 s12 push-l7 valign">
     <ul class="row valign-wrapper mt-25">
         <li class="col l7 push-m6 m6 push-s3 s9 header-second-section input-search search-left valign">
+
             <div class="nav-wrapper">
                 <form>
                     <div class="input-field ">
-                        <input id="search" type="search" required
+                        <input id="search" type="search"
                                class="search-header-input input-left">
                         <button data-target="modalsearch" type="submit"
-                                class="modal-trigger material-icons do-search">search
+                                class="modal-trigger_ material-icons do-search">search
                         </button>
                         <div class="clearfix"></div>
                     </div>
@@ -155,6 +156,7 @@
                     </div>
                 </div>
                 <div class="login border-l">
+                    <?php if(Yii::$app->user->isGuest):?>
                     <a id="insert-cabinet" class="modal-trigger popup-trigger hide-on-small-and-down" href="#modallogin">
                         <span class="white-text fs15">Кабинет</span>
                     </a>
@@ -235,7 +237,11 @@
                             </div>
                         </div>
                     </div>
-
+                    <?php else: ?>
+                        <a href="<?= \yii\helpers\Url::to(['/personal/index'])?>" class="popup-trigger hide-on-small-and-down">
+                            <span class="white-text fs15">Кабинет</span>
+                        </a>
+                    <?php endif;?>
                 </div>
             </div>
         </li>

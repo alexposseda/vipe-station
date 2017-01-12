@@ -1,16 +1,16 @@
 <?php
-    /**
-     * @var $this       \yii\web\View
-     * @var $orderModel \common\models\forms\OrderForm
-     */
-    use common\models\CartModel;
-    use frontend\assets\AppAsset;
-    use yii\data\ActiveDataProvider;
-    use yii\helpers\ArrayHelper;
-    use yii\widgets\ActiveForm;
-    use yii\widgets\ListView;
-
-    $this->registerJsFile('js/cart.js', ['depends' => AppAsset::className()]);
+/**
+ * @var $this \yii\web\View
+ * @var $orderModel \common\models\forms\OrderForm
+ */
+use common\models\CartModel;
+use frontend\assets\AppAsset;
+use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
+use yii\widgets\ActiveForm;
+use yii\widgets\ListView;
+    $this->params['headerTitle'] = 'Корзина';
+$this->registerJsFile('js/cart.js', ['depends' => AppAsset::className()]);
 
 ?>
 <div class="page-main valign-wrapper">

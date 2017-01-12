@@ -138,17 +138,20 @@
                 }
 
                 /*Gektor*/
-                /** @var \common\models\OrderDataModel $orderdata */
+                /*todo нужно вести лог изменения статусов заказов
+                (во первых для того что бы при статусе отменен добавлять остаток только тогда когда у заказа был статус подтвержден)
+                */
                 if($this->order->status == OrderModel::ORDER_STATUS_CONFIRMED){
 
-                    foreach($this->orderData as $orderdata){
-                        $orderdata->product->base_quantity = $orderdata->product->base_quantity - $orderdata->quantity;
-                        $orderdata->product->save();
+                    foreach($this->order->orderDatas as $order_data){
+                        /** @var OrderDataModel $order_data */
+                        $order_data->product->base_quantity -= $order_data->quantity;
+                        $order_data->product->save();
                     }
                 }else if($this->order->status == OrderModel::ORDER_STATUS_ABORTED){
-                    foreach($this->orderData as $orderdata){
-                        $orderdata->product->base_quantity = $orderdata->product->base_quantity + $orderdata->quantity;
-                        $orderdata->product->save();
+                    foreach($this->order->orderDatas as $order_data){
+                        $order_data->product->base_quantity += $order_data->quantity;
+                        $order_data->product->save();
                     }
                 }
 
