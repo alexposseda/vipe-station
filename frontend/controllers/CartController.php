@@ -111,10 +111,7 @@
             if($order->loadAll(Yii::$app->request->post()) && $order->save()){
                 Yii::$app->session->addFlash('success', 'Заказ №'.$order->order->id.' оформлен');
 
-                return $this->redirect([
-                                           'index',
-                                           ['orderModel' => $order]
-                                       ]);
+                return $this->render('thanks');
             }
 
             return $this->render('index', ['orderModel' => $order]);
