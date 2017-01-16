@@ -112,7 +112,6 @@
          */
         public function actionUpdate($id){
             $model = $this->findModel($id);
-            $t = $model->delivery_data_arr[0]->f_name;
 
             if($model->load(Yii::$app->request->post()) && $model->save()){
                 return $this->redirect([
