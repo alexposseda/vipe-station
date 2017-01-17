@@ -59,7 +59,7 @@
                                              'dataProvider' => $brands,
                                              'itemView'     => '_brand_item',
                                              'itemOptions'  => ['class' => 'wrap-overflow brand'],
-                                             'layout'       => "<div class='catalog-wrap-content brand-carousel'>{items}<div class='clear'></div></div>",
+                                             'layout'       => "<div class='catalog-wrap-content brand-carousel'>{items}</div>",
                                          ]) ?>
                     <?php $this->endCache();
                 endif; ?>
