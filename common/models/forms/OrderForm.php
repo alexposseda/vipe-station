@@ -121,6 +121,9 @@
                             throw new \Exception('error save order data '.$od->getErrors()[0]);
                         }
                     }
+                    $this->order->total_cost = $this->order->getOrderDatas()
+                                                           ->sum('price*quantity') + $this->order->delivery->price;
+                    $this->order->save();
                 }
 
                 if($isNewRecord){
