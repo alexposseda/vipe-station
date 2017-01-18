@@ -5,7 +5,7 @@ function mapInit() {
         document.getElementById('map'),
         {
             center: centerMap,
-            zoom: 11,
+            zoom: 15,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
     );
