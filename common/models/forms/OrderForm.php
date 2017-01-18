@@ -31,6 +31,7 @@
         public $payment_id;
         public $delivery_id;
         public $deliveryData;
+        public $oldStatus;
 
         public function init(){
             parent::init();
@@ -59,6 +60,7 @@
                 $del_data = json_decode($this->client->client->delivery_data)[0];
             }
             $this->deliveryData = new DeliveryAddressForm($del_data ? $del_data : null);
+            $this->oldStatus = $this->order->status;
         }
 
         public function loadAll($post){
@@ -77,9 +79,6 @@
         public function save(){
             $transaction = Yii::$app->db->beginTransaction();
             try{
-                foreach($this->orderData as $orderdata){
-                    $temp = $orderdata->product;
-                }
                 $this->order->delivery_data = json_encode($this->deliveryData);
                 $isNewRecord = $this->order->isNewRecord;
 
@@ -117,6 +116,7 @@
 
                 if(Model::loadMultiple($this->orderData, Yii::$app->request->post())){
                     foreach($this->orderData as $od){
+                        $od->price = $od->product->base_price * $od->quantity;
                         if(!$od->save()){
                             throw new \Exception('error save order data '.$od->getErrors()[0]);
                         }
@@ -127,6 +127,8 @@
                 }
 
                 if($isNewRecord){
+                    $this->order->total_cost = $this->order->getOrderDatas()
+                                                           ->sum('price') + $this->order->delivery->price;
                     $sender = new Sender();
                     if(!$sender->sendMail($this->client->email, Yii::t('system/view', 'Test buy'), 'mail-template-customer', ['model' => $this])){
                         throw new \Exception('error send customer email');
@@ -139,20 +141,17 @@
                 }
 
                 /*Gektor*/
-                /*todo нужно вести лог изменения статусов заказов
-                (во первых для того что бы при статусе отменен добавлять остаток только тогда когда у заказа был статус подтвержден)
-                */
-                if($this->order->status == OrderModel::ORDER_STATUS_CONFIRMED){
+                /** @var \common\models\OrderDataModel $orderdata  */
+                if($this->order->status == OrderModel::ORDER_STATUS_CONFIRMED && $this->order->status != $this->oldStatus){
 
-                    foreach($this->order->orderDatas as $order_data){
-                        /** @var OrderDataModel $order_data */
-                        $order_data->product->base_quantity -= $order_data->quantity;
-                        $order_data->product->save();
+                    foreach($this->orderData as $orderdata){
+                        $orderdata->product->base_quantity = $orderdata->product->base_quantity - $orderdata->quantity;
+                        $orderdata->product->save();
                     }
-                }else if($this->order->status == OrderModel::ORDER_STATUS_ABORTED){
-                    foreach($this->order->orderDatas as $order_data){
-                        $order_data->product->base_quantity += $order_data->quantity;
-                        $order_data->product->save();
+                }else if($this->order->status == OrderModel::ORDER_STATUS_ABORTED && $this->order->status != $this->oldStatus){
+                    foreach($this->orderData as $orderdata){
+                        $orderdata->product->base_quantity = $orderdata->product->base_quantity + $orderdata->quantity;
+                        $orderdata->product->save();
                     }
                 }
 

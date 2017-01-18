@@ -1,15 +1,18 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\DetailView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
+    use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\ClientModel */
+    /* @var $this yii\web\View */
+    /* @var $model common\models\ClientModel */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Clients'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+    $this->title = $model->name;
+    $this->params['breadcrumbs'][] = [
+        'label' => Yii::t('models', 'Clients'),
+        'url'   => ['index']
+    ];
+    $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="client-model-view">
@@ -44,12 +47,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="phones">
                     <p><?= Yii::t('models/client', 'Phones') ?></p>
                     <?php
-                    if (is_array($model->phones_arr)):
-                        foreach ($model->phones_arr as $phone): ?>
-                            <p><?= Html::encode($phone) ?></p>
-                            <?php
-                        endforeach;
-                    endif; ?>
+                        if(is_array($model->phones_arr)):
+                            foreach($model->phones_arr as $phone): ?>
+                                <p><?= Html::encode($phone) ?></p>
+                                <?php
+                            endforeach;
+                        endif; ?>
 
                 </div>
                 <div class="birthday">
@@ -66,28 +69,48 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
 
-        <?= Html::a(Yii::t('system/view', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('system/view', 'Request password reset'),
-            ['request-password-reset', 'email' => $model->user->email, 'goback' => Url::to(['view', 'id' => $model->id])],
-            ['class' => 'btn btn-danger']) ?>
+        <?= Html::a(Yii::t('system/view', 'Update'), [
+            'update',
+            'id' => $model->id
+        ], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('system/view', 'Request password reset'), [
+                                                                       'request-password-reset',
+                                                                       'email' => $model->user->email,
+                                                                       'goback' => Url::to([
+                                                                                               'view',
+                                                                                               'id' => $model->id
+                                                                                           ])
+                                                                   ], ['class' => 'btn btn-danger']) ?>
 
     </div>
     <div class="client-orders tab-pane" id="orders">
         <h4><?= Yii::t('models/client', 'Your orders') ?></h4>
-        <?php foreach ($model->orderClientDatas as $orderClientData): ?>
+        <?php foreach($model->orderClientDatas as $index => $orderClientData): ?>
             <div class="row">
                 <div class="col-lg-2">
-                    <?= Html::a($orderClientData->order->id, ['order/view', 'id' => $orderClientData->order->id]) ?>
+                    <?= Html::a($index + 1, [
+                        'order/view',
+                        'id' => $orderClientData->order->id
+                    ]) ?>
                     <?= date('d.M.Y', $orderClientData->order->created_at) ?>
                 </div>
                 <div class="col-lg-5">
-                    наименования
+                    <?= Yii::t('models/product', 'Title')?>
+                    <?php foreach($orderClientData->order->orderDatas as $data) : ?>
+                            <p><?= $data->product->title;?></p>
+                    <?php endforeach; ?>
                 </div>
                 <div class="col-lg-3">
-                    количество
+                    <?= Yii::t('models/cart', 'Quantity')?>
+                    <?php foreach($orderClientData->order->orderDatas as $data) : ?>
+                        <p><?= $data->quantity?></p>
+                    <?php endforeach; ?>
                 </div>
                 <div class="col-lg-2">
-                    price
+                    <?= Yii::t('models/product', 'Price')?>
+                    <?php foreach($orderClientData->order->orderDatas as $data) : ?>
+                        <p><?= $data->product->base_price?></p>
+                    <?php endforeach; ?>
                 </div>
 
             </div>
@@ -95,7 +118,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endforeach; ?>
     </div>
     <div class="client-delivery tab-pane" id="delivers">
-        Доставки
+        <h4><?= Yii::t('models/client', 'Your addresses') ?></h4>
+
     </div>
 </div>
 
