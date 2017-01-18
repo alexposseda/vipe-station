@@ -14,9 +14,11 @@ function mapInit() {
 function addMarker(coordinates) {
     coordinates.lat = parseFloat(coordinates.lat);
     coordinates.lng = parseFloat(coordinates.lng);
-    markers.push(new google.maps.Marker({
+    var marker = new google.maps.Marker({
         map: map,
         draggable: false,
         position: coordinates
-    }));
+    });
+    markers.push(marker);
+    map.setCenter(marker.getPosition());
 }
