@@ -185,4 +185,18 @@
 
         }
 
+        public static function allChildren($id, &$children = []){
+            $models = CategoryModel::findAll(['parent' => $id]);
+            if(!empty($models)) {
+                foreach ($models as $model) {
+                    $children[] = $model;
+                    self::allChildren($model->id, $children);
+                }
+            } else {
+                return $children;
+            }
+
+            return $children;
+        }
+
     }

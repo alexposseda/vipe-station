@@ -2,6 +2,7 @@
 
     namespace common\models\search;
 
+    use common\models\CategoryModel;
     use Yii;
     use yii\base\Model;
     use yii\data\ActiveDataProvider;
@@ -113,8 +114,18 @@
                       ->andFilterWhere(['b.slug' => $this->brandSlug]);
             }
             if($this->catSlug){
-                $query->joinWith('categories c')
-                      ->andFilterWhere(['c.slug' => $this->catSlug]);
+//                $query->joinWith('categories c')
+//                      ->andFilterWhere(['c.slug' => $this->catSlug]);
+                $category = CategoryModel::find()->where(['slug' => $this->catSlug])->one();
+                if(!is_null($category)){
+                    $categories = CategoryModel::allChildren($category->id);
+                    $categories_ids[] = $category->id;
+                    foreach ($categories as $cat) {
+                        $categories_ids[]  = $cat->id;
+                    }
+
+                    $query->joinWith('productInCategories pic')->andFilterWhere(['in', 'pic.category_id', $categories_ids]);
+                }
             }
             if($this->price){
                 $price = explode(';', $this->price);
