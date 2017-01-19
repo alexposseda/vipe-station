@@ -79,7 +79,8 @@
                                      'itemView'     => '_catalog_item',
                                      'itemOptions'  => ['class' => 'wrap-overflow product'],
                                      'layout'       => "<div class='sort-wraper sub-title white-text'><span class='sorted-by border-r'>".Yii::t('models/product',
-                                                                                                                                                'Sort by')."</span>{sorter}</div>\n<div class='content products-wrapper-isotope valign'>{items}</div>\n{summary}",
+                                                                                                                                                'Sort by')."</span>{sorter}</div>\n<div class='content products-wrapper-isotope valign'>{items}</div>\n<div class='pager'>{summary}{pager}</div>",
+                                     'pager'        => ['maxButtonCount' => 0],
                                      'sorter'       => ['options' => ['class' => 'sort ']],
                                      'summary'      => '<div class="count-page fs25">{page} / {pageCount}</div>',
                                  ]) ?>

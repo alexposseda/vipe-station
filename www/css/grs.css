@@ -2804,3 +2804,26 @@ main .page-main .content {
 .clear.slick-slide {
     display: none;
 }
+
+.pager {
+    position: relative;
+}
+.pagination{
+    position: absolute;
+    top: -13px;
+    width: auto;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.pagination li span {
+    display: inline-block;
+    font-size: 1.2rem;
+    padding: 0 10px;
+    line-height: 30px;
+    color:#ddd;
+}
+
+.pagination li.prev {
+    margin-right: 60px;
+}
