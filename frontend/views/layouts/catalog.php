@@ -164,11 +164,11 @@ JS;
                                             'options' => [$selectedCategoryId => ['selected' => true]]
                                         ]) ?>
 
-<!--                                        <label>Бранд</label>-->
-<!--                                        -->//= Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, [
-//                                            'prompt'  => 'Выберите бренд',
-//                                            'options' => [$selectedBrandId => ['selected' => true]]
-//                                        ])
+                                     <!--  <label>Бранд</label>
+                                         Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, [
+                                            'prompt'  => 'Выберите бренд',
+                                            'options' => [$selectedBrandId => ['selected' => true]]
+                                        ])-->
 
                                     </div>
                                 </li>
