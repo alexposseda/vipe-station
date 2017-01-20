@@ -2,6 +2,10 @@
 $('#productsearchmodel-brand_id').on('change',function () {
     $('#catalog-search').submit();
 });
+
+$('#productsearchmodel-category_id').on('change',function () {
+    $('#catalog-search').submit();
+});
 function rangeInit() {
     try {
         $("#range-filter").ionRangeSlider({
