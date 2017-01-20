@@ -58,6 +58,7 @@
                                                ->all();
                           }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM'.BrandModel::tableName()]));
 
+    /*Gektor Change brands to categories*/
     $allCategoryChildren = [];
     foreach($allCategory as $category){
         if($category->slug == Yii::$app->request->get('slug')){
@@ -67,6 +68,8 @@
     }
 
     $allCategoryMap = ArrayHelper::map($allCategoryChildren, 'id', 'title');
+    /**/
+
     $allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
 
     $price = (new \yii\db\Query())->select(['MIN(base_price) as min, MAX(base_price) as max'])
@@ -91,6 +94,7 @@ JS;
     }
 
     $selectedCategoryId = (int)Yii::$app->request->get('ProductSearchModel')['category_id'];
+    //$selectedBrandId = (int)Yii::$app->request->get('ProductSearchModel')['brand_id'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -159,6 +163,13 @@ JS;
                                             'prompt'  => 'Выберите подкатегорию',
                                             'options' => [$selectedCategoryId => ['selected' => true]]
                                         ]) ?>
+
+<!--                                        <label>Бранд</label>-->
+<!--                                        -->//= Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, [
+//                                            'prompt'  => 'Выберите бренд',
+//                                            'options' => [$selectedBrandId => ['selected' => true]]
+//                                        ])
+
                                     </div>
                                 </li>
                             </ul>
