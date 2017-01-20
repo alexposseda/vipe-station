@@ -2,6 +2,7 @@
     /**
      * @var $this    \yii\web\View
      * @var $content string
+     * @var common\models\CategoryModel $category
      */
 
     use common\models\BrandModel;
@@ -56,6 +57,16 @@
                               return BrandModel::find()
                                                ->all();
                           }, 0, new DbDependency(['sql' => 'SELECT MAX(`updated_at`) FROM'.BrandModel::tableName()]));
+
+    $allCategoryChildren = [];
+    foreach($allCategory as $category){
+        if($category->slug == Yii::$app->request->get('slug')){
+            $allCategoryChildren = $category::allChildren($category->id);
+            break;
+        }
+    }
+
+    $allCategoryMap = ArrayHelper::map($allCategoryChildren, 'id', 'title');
     $allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
 
     $price = (new \yii\db\Query())->select(['MIN(base_price) as min, MAX(base_price) as max'])
@@ -79,7 +90,7 @@ JS;
         $this->registerJs($js, \yii\web\View::POS_END);
     }
 
-    $selectedBrandId = (int)Yii::$app->request->get('ProductSearchModel')['brand_id'];
+    $selectedCategoryId = (int)Yii::$app->request->get('ProductSearchModel')['category_id'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -143,10 +154,10 @@ JS;
                                 </li>
                                 <li class="col s4 l5 radio-form-catalog hide-on-med-and-down">
                                     <div class="input-field col s12">
-                                        <label>Бренд</label>
-                                        <?= Html::activeDropDownList($product_search, 'brand_id', $allBrandMap, [
-                                            'prompt'  => 'Выберите бренд',
-                                            'options' => [$selectedBrandId => ['selected' => true]]
+                                        <label>Подкатегория</label>
+                                        <?= Html::activeDropDownList($product_search, 'category_id', $allCategoryMap, [
+                                            'prompt'  => 'Выберите подкатегорию',
+                                            'options' => [$selectedCategoryId => ['selected' => true]]
                                         ]) ?>
                                     </div>
                                 </li>
