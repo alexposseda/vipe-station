@@ -1190,6 +1190,9 @@ main .page-main .content {
 
 .radio-form-catalog form label {
     width: 200px;
+}
+
+.radio-form-catalog > .input-field > label {
     color: #fff !important;
 }
 
