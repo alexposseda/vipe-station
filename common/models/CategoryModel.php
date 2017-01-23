@@ -191,11 +191,16 @@
                 foreach ($models as $model) {
                     $children[] = $model;
                     self::allChildren($model->id, $children);
+
                 }
-            } else {
-                return $children;
             }
 
+            if(empty($children)){
+                $source = CategoryModel::findOne($id);
+                if($source->parent0){
+                    self::allChildren($source->parent0->id,$children);
+                }
+            }
             return $children;
         }
 
