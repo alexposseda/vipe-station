@@ -60,8 +60,15 @@
 
     /*Gektor Change brands to categories*/
     $allCategoryChildren = [];
+
+    $selectedCategoryId = (int)Yii::$app->request->get('ProductSearchModel')['category_id'];
+
     foreach($allCategory as $category){
         if($category->slug == Yii::$app->request->get('slug')){
+            $allCategoryChildren = $category::allChildren($category->id);
+            break;
+        }
+        if($category->id == $selectedCategoryId){
             $allCategoryChildren = $category::allChildren($category->id);
             break;
         }
@@ -93,7 +100,6 @@ JS;
         $this->registerJs($js, \yii\web\View::POS_END);
     }
 
-    $selectedCategoryId = (int)Yii::$app->request->get('ProductSearchModel')['category_id'];
     //$selectedBrandId = (int)Yii::$app->request->get('ProductSearchModel')['brand_id'];
 ?>
 <?php $this->beginPage() ?>
