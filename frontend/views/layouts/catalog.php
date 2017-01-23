@@ -156,7 +156,7 @@ JS;
                                                                'data-max' => $price['max']
                                                            ]) ?>
                                 </li>
-                                <li class="col s4 l5 radio-form-catalog hide-on-med-and-down">
+                                <li class="col push-s2 s10 l5 radio-form-catalog">
                                     <div class="input-field col s12">
                                         <label>Подкатегория</label>
                                         <?= Html::activeDropDownList($product_search, 'category_id', $allCategoryMap, [

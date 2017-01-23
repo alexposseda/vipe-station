@@ -1178,6 +1178,11 @@ main .page-main .content {
     position: relative;
 }
 
+.radio-form-catalog {
+    margin-top: 30px;
+    padding-left: 0;
+}
+
 .radio-form-catalog form p {
     height: 30px;
     margin: 0;
@@ -1185,6 +1190,7 @@ main .page-main .content {
 
 .radio-form-catalog form label {
     width: 200px;
+    color: #fff !important;
 }
 
 .delivery-wrap {
