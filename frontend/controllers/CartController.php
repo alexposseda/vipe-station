@@ -92,6 +92,10 @@
         public function actionDelete($id){
             $this->findModel($id)
                  ->delete();
+            if(!count(CartModel::getCart())){
+                //todo вывести сообщение о пустой корзине
+                return $this->redirect(['/catalog']);
+            }
 
             return $this->redirect(['index']);
         }
