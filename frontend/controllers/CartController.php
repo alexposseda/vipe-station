@@ -19,6 +19,7 @@
      */
     class CartController extends Controller{
         public $layout = 'main';
+
         /**
          * @inheritdoc
          */
@@ -35,6 +36,11 @@
 
 
         public function actionIndex(){
+            if(!count(CartModel::getCart())){
+                //todo вывести сообщение о пустой корзине
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+
             $client = new OrderClientDataModel();
             if(!Yii::$app->user->isGuest){
                 $client->client_id = Yii::$app->user->identity->client->id;
