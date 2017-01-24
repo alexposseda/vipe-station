@@ -37,7 +37,5 @@ $('button#add-delivery').click(function () {
 })
 $('.del-delivery').on('click', deleteDelivery);
 function deleteDelivery(){
-
-    console.log($(this).parent());
     $(this).parent().remove();
 }

@@ -89,9 +89,6 @@
 
                     </div>
 
-                    <div id="delivery-list"></div>
-                    <div id="new-delivery-list"></div>
-
                     <div class="panel-footer text-left">
                         <button type="button" class="btn btn-primary" id="add-delivery"><?= (Yii::t('system/view', 'Add').' '.Yii::t('models/client',
                                                                                                                                      'Address')) ?></button>
