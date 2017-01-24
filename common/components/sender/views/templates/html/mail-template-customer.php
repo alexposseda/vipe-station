@@ -91,7 +91,7 @@
                                                                     </td>
                                                                     <td
                                                                             style="text-align:left;vertical-align:middle;border:1px solid #eee;font-family:'Helvetica Neue',Helvetica,Roboto,Arial,sans-serif;color:#737373;padding:12px">
-                                                                        <span><?= $od->price ?>&nbsp;<span><?= Yii::t('models/cart', 'UAH') ?></span></span>
+                                                                        <span><?= $od->price*$od->quantity ?>&nbsp;<span><?= Yii::t('models/cart', 'UAH') ?></span></span>
                                                                     </td>
                                                                 </tr>
                                                             <?php endforeach; ?>
@@ -105,7 +105,7 @@
                                                                 </th>
                                                                 <td style="text-align:left;border-top-width:4px;color:#737373;border:1px solid #e4e4e4;padding:12px">
                                                                     <span><?= $model->order->getOrderDatas()
-                                                                                           ->sum('price') ?>&nbsp;<span><?= Yii::t('models/cart',
+                                                                                           ->sum('price*quantity') ?>&nbsp;<span><?= Yii::t('models/cart',
                                                                                                                                    'UAH') ?></span></span>
                                                                 </td>
                                                             </tr>

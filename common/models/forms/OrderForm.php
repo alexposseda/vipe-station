@@ -116,7 +116,7 @@
 
                 if(Model::loadMultiple($this->orderData, Yii::$app->request->post())){
                     foreach($this->orderData as $od){
-                        $od->price = $od->product->base_price * $od->quantity;
+                        $od->price = $od->product->base_price;
                         if(!$od->save()){
                             throw new \Exception('error save order data '.$od->getErrors()[0]);
                         }
@@ -127,8 +127,6 @@
                 }
 
                 if($isNewRecord){
-                    $this->order->total_cost = $this->order->getOrderDatas()
-                                                           ->sum('price') + $this->order->delivery->price;
                     $sender = new Sender();
                     if(!$sender->sendMail($this->client->email, Yii::t('system/view', 'Test buy'), 'mail-template-customer', ['model' => $this])){
                         throw new \Exception('error send customer email');
