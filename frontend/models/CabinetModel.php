@@ -8,6 +8,7 @@
 	use yii\data\ActiveDataProvider;
 
 	class CabinetModel extends Model{
+		public $save_model;
 		public $model;
 		public $passModel;
 		public $ordersProvider;
@@ -30,13 +31,16 @@
 		public function load( $data, $formName = null ) {
 			$success = false;
 			if ( array_key_exists( $this->passModel->formName(), $data ) ) {
-				$success = $this->passModel->load( $data ) && $this->passModel->validate();
+				$success          = $this->passModel->load( $data ) && $this->passModel->validate();
+				$this->save_model = 'pass';
 			}
 			if ( array_key_exists( $this->deliveryModel->formName(), $data ) ) {
-				$success                    = true;
+				$this->save_model = 'client';
+				$success          = true;
 			}
 			if ( array_key_exists( $this->model->formName(), $data ) ) {
-				$success = $this->model->load( $data ) && $this->model->validate();
+				$success          = $this->model->load( $data ) && $this->model->validate();
+				$this->save_model = 'client';
 			}
 
 			return $success;
@@ -44,11 +48,13 @@
 
 		public function save() {
 			$success = false;
-			if ( $this->model ) {
-				$success = $this->model->save();
-			}
-			if ( $this->passModel ) {
-				$success = $this->passModel->changePass();
+			switch ($this->save_model){
+				case 'pass':
+					$success = $this->passModel->changePass();
+					break;
+				case 'client':
+					$success = $this->model->save();
+					break;
 			}
 
 			return $success;
