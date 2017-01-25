@@ -5,10 +5,12 @@
 
 	use yii\widgets\ActiveForm;
 	use yii\widgets\ListView;
+	use yii\widgets\MaskedInput;
 
-	$model     = \common\models\ClientModel::findOne( 5 );
-	$passModel = new \frontend\models\ChangeClientPasswordForm();
-	$ordersProvider = new \yii\data\ActiveDataProvider( [ 'query' => $model->getOrderClientDatas() ] )
+	$model          = \common\models\ClientModel::findOne( 5 );
+	$passModel      = new \frontend\models\ChangeClientPasswordForm();
+	$ordersProvider = new \yii\data\ActiveDataProvider( [ 'query' => $model->getOrderClientDatas() ] );
+	$deliveryModel  = new \common\models\forms\DeliveryAddressForm();
 ?>
 
 <div class="row cabinet">
@@ -83,47 +85,44 @@
     </div>
     <div id="delivery-address">
         <div class="col l5 m7 hide-on-small-only center-align">
-
             <img src="../images/cabinet1.png" alt="" class="img-cabinet">
-
         </div>
-        <div class="col l3 m5 s5 cabinet-client fs20">
-            <span>Иван Иванов</span><br>
-            <span class="fc-brown">+3066666666</span><br>
-            <span class="fc-brown">Киев</span><br>
-            <span class="fc-brown">улю Горького 177</span><br>
+        <div class="col l3 m5 s5 fs20">
+			<?php if ( ! empty( $model->deliveryData ) ): ?>
+				<?php foreach ( $model->deliveryData as $delivery ) : ?>
+                    <div class="cabinet-client">
+                        <span><?= $delivery->name ?></span><br>
+                        <span class="fc-brown"><?= $delivery->phone ?></span><br>
+                        <span class="fc-brown"><?= $delivery->city ?></span><br>
+                        <span class="fc-brown"><?= $delivery->address ?></span><br>
+                    </div>
+				<?php endforeach; ?>
+			<?php endif; ?>
         </div>
 
         <div class="col l4 m5 cabinet-form">
             <a href="#" class="fs20 fc-orange">Добавления нового адреса</a>
-
-            <form class="row">
-                <div class="input-field col s10">
-                    <input placeholder="Placeholder" id="first_name" type="text" class="validate input-form error">
-                    <label for="first_name" class="label-form">Имя получателя</label>
-                    <div class="help-block help-block-error">Message error</div>
-                </div>
-                <div class="input-field col s10">
-                    <input placeholder="Placeholder" id="first_name" type="text" class="validate input-form">
-                    <label for="first_name" class="label-form">Фамилия получателя</label>
-                    <div class="help-block">Message error</div>
-                </div>
-                <div class="input-field col s10">
-                    <input placeholder="Placeholder" id="first_name" type="text" class="validate input-form">
-                    <label for="first_name" class="label-form">Город</label>
-                    <div class="help-block">Message error</div>
-                </div>
-                <div class="input-field col s10">
-                    <input placeholder="Placeholder" id="first_name" type="text" class="validate input-form">
-                    <label for="first_name" class="label-form">Адрес</label>
-                    <div class="help-block">Message error</div>
-                </div>
-                <div class="input-field col s10">
-                    <input placeholder="Placeholder" id="first_name" type="text" class="validate input-form">
-                    <label for="first_name" class="label-form">Телефон</label>
-                    <div class="help-block">Message error</div>
-                </div>
-            </form>
+			<?php $deliveryForm = ActiveForm::begin( [ 'id' => 'delivery-form' ] ) ?>
+            <div class="row">
+				<?= $deliveryForm->field( $deliveryModel, "[$index]f_name", [ 'options' => [ 'class' => 'col s10 input-field' ] ] )
+				                 ->textInput( [ 'placeholder' => Yii::t( 'models/client', 'First name' ), ] )
+				                 ->label( 'Имя получателя' ) ?>
+				<?= $deliveryForm->field( $deliveryModel, "[$index]l_name", [ 'options' => [ 'class' => 'col s10 input-field' ] ] )
+				                 ->textInput( [ 'placeholder' => Yii::t( 'models/client', 'Last name' ), ] )
+				                 ->label( 'Фамилия получателя' ) ?>
+				<?= $deliveryForm->field( $deliveryModel, "[$index]city", [ 'options' => [ 'class' => 'col s10 input-field' ] ] )
+				                 ->textInput( [ 'placeholder' => Yii::t( 'models/client', 'City' ), ] )
+				                 ->label( 'Город' ) ?>
+				<?= $deliveryForm->field( $deliveryModel, "[$index]address", [ 'options' => [ 'class' => 'col s10 input-field' ] ] )
+				                 ->textInput( [ 'placeholder' => Yii::t( 'models/client', 'Address' ), ] )
+				                 ->label( 'Адрес' ) ?>
+				<?= $deliveryForm->field( $deliveryModel, "[$index]phone", [ 'options' => [ 'class' => 'col s10 input-field' ] ] )
+				                 ->textInput( [ 'class'       => 'input-phone',
+				                                'placeholder' => Yii::t( 'models/client', 'Phone' ),
+				                              ] )
+				                 ->label( 'Телефон' ) ?>
+            </div>
+			<?php ActiveForm::end() ?>
         </div>
         <div class="col l12 pull-m2 center-align fs20"><input value="Сохранить" type="submit" class="btn-save"></div>
     </div>
