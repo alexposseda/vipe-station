@@ -85,6 +85,7 @@
 
             $model = new ClientModel();
 
+
             if($model->load(Yii::$app->request->post()) && $model->save()){
                 if(!is_null($redirect)){
                     return $this->redirect([

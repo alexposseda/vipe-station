@@ -2,9 +2,11 @@
 
     namespace common\models;
 
+    use common\models\forms\DeliveryAddressForm;
     use common\models\forms\PasswordResetRequestForm;
     use common\models\forms\SignupForm;
     use Yii;
+    use yii\base\Model;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
 
@@ -22,12 +24,15 @@
      *
      * @property User                   $user
      * @property OrderClientDataModel[] $orderClientDatas
+     * @property DeliveryAddressForm [] $deliveryData
      */
     class ClientModel extends ActiveRecord{
         public $f_name;
         public $l_name;
         public $phones_arr;
         public $email;
+        public $deliveryData = [];
+
 
         public static function clientExists($email){
             if($user = UserIdentity::findByEmail($email)){
@@ -49,6 +54,9 @@
             $this->email = $this->user->email;
             if(!empty($this->delivery_data)){
                 $this->delivery_data = json_decode($this->delivery_data);
+                foreach($this->delivery_data as $delivery){
+                    $this->deliveryData[] = new DeliveryAddressForm($delivery);
+                }
             }
         }
 
@@ -60,9 +68,19 @@
             if(!empty($this->phones_arr)){
                 $this->phones = json_encode($this->phones_arr);
             }
-
-            if(!empty($this->delivery_data)){
-                $this->delivery_data = json_encode($this->delivery_data);
+            $this->deliveryData = [];
+            $leng = count(Yii::$app->request->post('DeliveryAddressForm'));
+            if($leng > 0){
+                $keys = array_keys(Yii::$app->request->post('DeliveryAddressForm'));
+                for($i = 0; $i < $leng; $i++){
+                    $this->deliveryData[$keys[$i]] = new DeliveryAddressForm();
+                }
+                if(!Model::loadMultiple($this->deliveryData, Yii::$app->request->post()) && !Model::validateMultiple($this->deliveryData)){
+                    return false;
+                }
+                $this->delivery_data = json_encode($this->deliveryData);
+            }else{
+                $this->delivery_data = '';
             }
 
             return parent::beforeValidate();
@@ -89,13 +107,49 @@
          */
         public function rules(){
             return [
-                [['name'], 'required'],
-                [['user_id', 'birthday', 'created_at', 'updated_at'], 'integer'],
-                [['email'], 'string'],
-                [['name', 'phones'], 'string', 'max' => 255],
-                [['phones_arr', 'delivery_data',], 'safe'],
-                [['user_id'], 'unique'],
-                [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+                [
+                    ['name'],
+                    'required'
+                ],
+                [
+                    [
+                        'user_id',
+                        'birthday',
+                        'created_at',
+                        'updated_at'
+                    ],
+                    'integer'
+                ],
+                [
+                    ['email'],
+                    'string'
+                ],
+                [
+                    [
+                        'name',
+                        'phones'
+                    ],
+                    'string',
+                    'max' => 255
+                ],
+                [
+                    [
+                        'phones_arr',
+                        'deliveryData',
+                    ],
+                    'safe'
+                ],
+                [
+                    ['user_id'],
+                    'unique'
+                ],
+                [
+                    ['user_id'],
+                    'exist',
+                    'skipOnError'     => true,
+                    'targetClass'     => User::className(),
+                    'targetAttribute' => ['user_id' => 'id']
+                ],
             ];
         }
 
