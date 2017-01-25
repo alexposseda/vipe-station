@@ -32,24 +32,27 @@
 
                     <div class="form-group phones">
                         <label class="control-label"><?= $model->getAttributeLabel('phones') ?></label>
-                        <?php if(count($model->phones_arr)): ?>
-                            <?php foreach($model->phones_arr as $index => $phone): ?>
-                                <?= MaskedInput::widget([
-                                                            'model'     => $model,
-                                                            'attribute' => 'phones_arr['.$index.']',
-                                                            'mask'      => '(999)999-99-99'
-                                                        ]) ?>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <?= MaskedInput::widget([
-                                                        'model'     => $model,
-                                                        'attribute' => 'phones_arr[0]',
-                                                        'mask'      => '(999)999-99-99'
-                                                    ]) ?>
-                        <?php endif; ?>
-                        <?= Html::button('Add Phone', ['id' => 'btn_add_phone']) ?>
-                    </div>
 
+                            <?php foreach($model->phones_arr as $index => $phone): ?>
+                                <div class="form-inline">
+                                    <?= $form->field($phone, "phones_arr[$index]")
+                                             ->widget(MaskedInput::className(), ['mask' => '(999)999-99-99'])
+                                             ->label(false) ?>
+<!--                                    --><?//= MaskedInput::widget([
+//                                                                'model'     => $model,
+//                                                                'attribute' => 'phones_arr['.$index.']',
+//                                                                'mask'      => '(999)999-99-99'
+//                                                            ]) ?>
+
+                                    <button type="button" class="btn btn-sm btn-danger del-phone"
+                                            data-index="<?= $index ?>"><span class="glyphicon glyphicon-remove"></span></button>
+                                </div>
+                            <?php endforeach; ?>
+
+
+
+                    </div>
+                    <?= Html::button('Add Phone', ['id' => 'btn_add_phone']) ?>
 
                     <?= $form->field($model, 'birthday')
                              ->textInput() ?>

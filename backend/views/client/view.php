@@ -47,7 +47,7 @@
                 <div class="phones">
                     <p><?= Yii::t('models/client', 'Phones') ?></p>
                     <?php
-                        if(is_array($model->phones_arr)):
+                        if($model->phones_arr):
                             foreach($model->phones_arr as $phone): ?>
                                 <p><?= Html::encode($phone) ?></p>
                                 <?php
