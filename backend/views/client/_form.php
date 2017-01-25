@@ -2,6 +2,7 @@
 
     use backend\assets\ClientAddressAsset;
     use yii\helpers\Html;
+    use yii\helpers\Url;
     use yii\widgets\ActiveForm;
     use yii\widgets\MaskedInput;
 
@@ -18,7 +19,7 @@
 
 <div class="client-model-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'client_form']); ?>
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
             <div class="panel panel-default">
@@ -56,55 +57,41 @@
                     <div class="form-group delivery">
                         <label class="control-label"> <?= Yii::t('models/client', 'Delivery data') ?> </label>
                         <div class="address-input">
-                            <div class="form-inline">
-                                <?php if(count($model->delivery_data_arr)): ?>
-                                    <?php foreach($model->delivery_data_arr as $index => $data) : ?>
-                                        <?= $form->field($model, 'delivery_data_arr['.$index.'][f_name]')
-                                                 ->textInput(['placeholder' => Yii::t('models/client', 'First name'),])
-                                                 ->label(false) ?>
-                                        <?= $form->field($model, 'delivery_data_arr['.$index.'][l_name]')
-                                                 ->textInput(['placeholder' => Yii::t('models/client', 'Last name'),])
-                                                 ->label(false) ?>
-                                        <?= $form->field($model, 'delivery_data_arr['.$index.'][city]')
-                                                 ->textInput(['placeholder' => Yii::t('models/client', 'City'),])
-                                                 ->label(false) ?>
-                                        <?= $form->field($model, 'delivery_data_arr['.$index.'][address]')
-                                                 ->textInput(['placeholder' => Yii::t('models/client', 'Address'),])
-                                                 ->label(false) ?>
 
-                                        <?= MaskedInput::widget([
-                                                                    'model'     => $model,
-                                                                    'attribute' => 'delivery_data_arr['.$index.']->phone',
-                                                                    'mask'      => '(999)999-99-99',
-                                                                ]) ?>
-                                    <?php endforeach; ?>
-                                <?php else : ?>
-                                    <?= $form->field($model, 'delivery_data_arr[0][f_name]')
+
+                            <?php foreach($model->deliveryData as $index => $data) : ?>
+                                <div class="form-inline">
+                                    <?= $form->field($data, "[$index]f_name")
                                              ->textInput(['placeholder' => Yii::t('models/client', 'First name'),])
                                              ->label(false) ?>
-                                    <?= $form->field($model, 'delivery_data_arr[0][l_name]')
+                                    <?= $form->field($data, "[$index]l_name")
                                              ->textInput(['placeholder' => Yii::t('models/client', 'Last name'),])
                                              ->label(false) ?>
-                                    <?= $form->field($model, 'delivery_data_arr[0][city]')
+                                    <?= $form->field($data, "[$index]city")
                                              ->textInput(['placeholder' => Yii::t('models/client', 'City'),])
                                              ->label(false) ?>
-                                    <?= $form->field($model, 'delivery_data_arr[0][address]')
+                                    <?= $form->field($data, "[$index]address")
                                              ->textInput(['placeholder' => Yii::t('models/client', 'Address'),])
                                              ->label(false) ?>
+                                    <?= $form->field($data, "[$index]phone")
+                                             ->widget(MaskedInput::className(), ['mask' => '(999)999-99-99'])
+                                             ->label(false) ?>
 
-                                    <?= MaskedInput::widget([
-                                                                'model'     => $model,
-                                                                'attribute' => 'delivery_data_arr[0][phone]',
-                                                                'mask'      => '(999)999-99-99',
-                                                            ]) ?>
-                                <?php endif; ?>
-                            </div>
+
+                                    <button type="button" class="btn btn-sm btn-danger del-delivery"
+                                            data-index="<?= $index ?>"><span class="glyphicon glyphicon-remove"></span></button>
+
+                                </div>
+                            <?php endforeach; ?>
+
+
                         </div>
 
                     </div>
-                    <div class="form-group">
-                        <?= Html::button(Yii::t('system/view', 'Add').' '.Yii::t('models/client', 'Address'),
-                                         ['class' => 'add-delivery btn btn-primary']) ?>
+
+                    <div class="panel-footer text-left">
+                        <button type="button" class="btn btn-primary" id="add-delivery"><?= (Yii::t('system/view', 'Add').' '.Yii::t('models/client',
+                                                                                                                                     'Address')) ?></button>
                     </div>
                 </div>
             </div>
