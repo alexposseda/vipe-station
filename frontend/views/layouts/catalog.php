@@ -7,15 +7,18 @@
 
     use common\models\BrandModel;
     use common\models\CategoryModel;
-    use common\models\search\ProductSearchModel;
+	use common\models\ProductModel;
+	use common\models\search\ProductSearchModel;
     use common\models\ShopSettingTable;
     use frontend\assets\AppAsset;
     use yii\alexposseda\fileManager\FileManager;
     use yii\caching\DbDependency;
-    use yii\helpers\ArrayHelper;
+	use yii\db\Query;
+	use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     use yii\helpers\Url;
-    use yii\widgets\ActiveForm;
+	use yii\web\View;
+	use yii\widgets\ActiveForm;
 
     \frontend\assets\CatalogAsset::register($this);
 
@@ -79,8 +82,8 @@
 
     $allBrandMap = ArrayHelper::map($allBrand, 'id', 'title');
 
-    $price = (new \yii\db\Query())->select(['MIN(base_price) as min, MAX(base_price) as max'])
-                                  ->from(\common\models\ProductModel::tableName())
+    $price = (new Query())->select(['MIN(base_price) as min, MAX(base_price) as max'])
+                                  ->from(ProductModel::tableName())
                                   ->one();
     $searchQuery = Yii::$app->request->get('ProductSearchModel');
     if(!empty($searchQuery['price'])){
@@ -92,14 +95,13 @@ rangeFrom = {$minP};
 rangeTo = {$maxP};
 rangeInit();
 JS;
-        $this->registerJs($js, \yii\web\View::POS_END);
     }else{
         $js = <<<JS
 rangeInit();
 JS;
-        $this->registerJs($js, \yii\web\View::POS_END);
-    }
 
+    }
+	$this->registerJs($js, View::POS_END);
     //$selectedBrandId = (int)Yii::$app->request->get('ProductSearchModel')['brand_id'];
 ?>
 <?php $this->beginPage() ?>
