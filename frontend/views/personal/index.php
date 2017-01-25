@@ -4,6 +4,7 @@
 	 * @var $cabinet \frontend\models\CabinetModel
 	 */
 
+	use yii\helpers\Html;
 	use yii\widgets\ActiveForm;
 	use yii\widgets\ListView;
 
@@ -55,6 +56,9 @@
                 <a href="#" class="fs20 fc-orange">Изменение пароля</a>
 				<?php $changePasswordForm = ActiveForm::begin( [ 'id' => 'change-pass-form' ] ) ?>
                 <div class="row">
+					<?= $changePasswordForm->field( $cabinet->passModel, 'user_id' )
+					                       ->hiddenInput( [ 'value' => $cabinet->model->user_id ] )
+					                       ->label( false ) ?>
 					<?= $changePasswordForm->field( $cabinet->passModel, 'old_password', [ 'options' => [ 'class' => 'col s10 input-field' ] ] )
 					                       ->passwordInput( [ 'placeholder' => ' ' ] ) ?>
 					<?= $changePasswordForm->field( $cabinet->passModel, 'password_repeat', [ 'options' => [ 'class' => 'col s10 input-field' ] ] )
@@ -121,7 +125,7 @@
         <div class="col l4 m5 cabinet-form">
             <a href="#" class="fs20 fc-orange">Добавления нового адреса</a>
             <div class="row">
-				<?php $deliverIndex = isset( $deliverIndex ) ? $deliverIndex+1 : 0 ?>
+				<?php $deliverIndex = isset( $deliverIndex ) ? $deliverIndex + 1 : 0 ?>
 				<?= $deliveryForm->field( $cabinet->deliveryModel, "[$deliverIndex]f_name", [ 'options' => [ 'class' => 'col s10 input-field' ] ] )
 				                 ->textInput( [ 'placeholder' => Yii::t( 'models/client', 'First name' ), ] )
 				                 ->label( 'Имя получателя' ) ?>
