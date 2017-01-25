@@ -19,7 +19,7 @@
 
 <div class="client-model-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'client_form']); ?>
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
             <div class="panel panel-default">
