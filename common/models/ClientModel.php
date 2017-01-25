@@ -74,6 +74,7 @@
                 $keys = array_keys(Yii::$app->request->post('DeliveryAddressForm'));
                 for($i = 0; $i < $leng; $i++){
                     $this->deliveryData[$keys[$i]] = new DeliveryAddressForm();
+	                $this->deliveryData[$keys[$i]]->email = $this->email;
                 }
                 if(!Model::loadMultiple($this->deliveryData, Yii::$app->request->post()) && !Model::validateMultiple($this->deliveryData)){
                     return false;
