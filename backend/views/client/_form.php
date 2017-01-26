@@ -33,22 +33,16 @@
                     <div class="form-group phones">
                         <label class="control-label"><?= $model->getAttributeLabel('phones') ?></label>
 
-                            <?php foreach($model->phones_arr as $index => $phone): ?>
-                                <div class="form-inline">
-                                    <?= $form->field($phone, "phones_arr[$index]")
-                                             ->widget(MaskedInput::className(), ['mask' => '(999)999-99-99'])
-                                             ->label(false) ?>
-<!--                                    --><?//= MaskedInput::widget([
-//                                                                'model'     => $model,
-//                                                                'attribute' => 'phones_arr['.$index.']',
-//                                                                'mask'      => '(999)999-99-99'
-//                                                            ]) ?>
+                        <?php foreach($model->phones_arr as $index => $phone): ?>
+                            <div class="form-inline">
+                                <?= $form->field($model, "phones_arr[$index]")
+                                         ->widget(MaskedInput::className(), ['mask' => '(999)999-99-99'])
+                                         ->label(false) ?>
 
-                                    <button type="button" class="btn btn-sm btn-danger del-phone"
-                                            data-index="<?= $index ?>"><span class="glyphicon glyphicon-remove"></span></button>
-                                </div>
-                            <?php endforeach; ?>
-
+                                <button type="button" class="btn btn-sm btn-danger del-phone"
+                                        data-index="<?= $index ?>"><span class="glyphicon glyphicon-remove"></span></button>
+                            </div>
+                        <?php endforeach; ?>
 
 
                     </div>

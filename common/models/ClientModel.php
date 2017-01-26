@@ -49,7 +49,11 @@
             $this->f_name = $tmp[0];
             $this->l_name = $tmp[1];
             if(!empty($this->phones)){
-                $this->phones_arr = json_decode($this->phones);
+                $temp =  json_decode($this->phones);
+                foreach($temp as $key => $t){
+                    $this->phones_arr[$key] = $t;
+                }
+
             }
             $this->email = $this->user->email;
             if(!empty($this->delivery_data)){
