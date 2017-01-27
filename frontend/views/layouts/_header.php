@@ -1,9 +1,11 @@
 <?php
     use yii\helpers\Html;
+    use yii\widgets\ActiveForm;
     use yii\widgets\Pjax;
 
     $loginModel = new \common\models\forms\LoginForm();
     $remindModel = new \common\models\forms\PasswordResetRequestForm();
+    $model = new \common\models\search\ProductSearchModel();
 ?>
 <li class="col l5 m12 s12 push-l7 valign">
     <ul class="row valign-wrapper mt-25">
@@ -12,26 +14,33 @@
 
             <div class="nav-wrapper">
                 <?php Pjax::begin(); ?>
-                <?= Html::beginForm(['/catalog/search'], 'post', [
-                    'data-pjax' => '1',
-                    'class'     => 'search_form'
-                ]); ?>
+                <?php $form = ActiveForm::begin([
+
+                                                    'action'  => ['/catalog/search'],
+                                                    'method'  => 'get',
+                                                    'options' => [
+                                                        'data-pjax' => 1,
+                                                    ],
+                                                    'class'   => 'search_form'
+                                                ]); ?>
+
                 <div class="input-field ">
-                    <?= Html::input('search', 'title', Yii::$app->request->post('title'), ['class' => 'search-header-input input-left', 'id' =>'search']) ?>
-                    <?= Html::submitButton('search', ['data-target' => 'modalsearch', 'class' => 'modal-trigger_ material-icons do-search', 'id' => 'searchId']) ?>
+                    <?= Html::activeInput('search', $model, 'title', ['class' => 'search-header-input input-left']); ?>
+                    <?= Html::submitButton('search', [
+                        'data-target' => 'modalsearch',
+                        'class'       => 'modal-trigger_ material-icons do-search',
+                        'id'          => 'searchId'
+                    ]) ?>
                     <div class="clearfix"></div
                 </div>
-                <?= Html::endForm() ?>
-                <!--<form class="search_form">
-                    <div class="input-field ">
-                        <input id="search" type="search"
-                               class="search-header-input input-left">
-                        <button data-target="modalsearch" type="submit"
-                                class="modal-trigger_ material-icons do-search" id="searchId">search
-                        </button>
-                        <div class="clearfix"></div>
-                    </div>
-                </form>-->
+                <?php ActiveForm::end(); ?>
+
+            </div>
+
+            <div id="modalsearch"
+                 class="modal bottom-sheet popup popup-active popup-search popup-bottom">
+                <div class="popup-content modal-content">
+                </div>
             </div>
             <?php Pjax::end(); ?>
         </li>
