@@ -13,7 +13,7 @@
 
 
             <div class="nav-wrapper">
-                <?php Pjax::begin(); ?>
+
                 <?php $form = ActiveForm::begin([
 
                                                     'action'  => ['/catalog/search'],
@@ -37,12 +37,7 @@
 
             </div>
 
-            <div id="modalsearch"
-                 class="modal bottom-sheet popup popup-active popup-search popup-bottom">
-                <div class="popup-content modal-content">
-                </div>
-            </div>
-            <?php Pjax::end(); ?>
+
         </li>
         <li class="col l5 pull-m6 m6 pull-s9 s3 header-third-section valign left-align">
             <div class="cart-login">
