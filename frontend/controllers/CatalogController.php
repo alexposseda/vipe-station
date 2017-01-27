@@ -22,7 +22,7 @@
     class CatalogController extends Controller{
 
         protected $_search;
-        public $layout = 'catalog';
+        public    $layout = 'catalog';
 
         public function init(){
             parent::init();
@@ -36,7 +36,10 @@
             $brands = (new BrandSearchModel())->search(Yii::$app->request->queryParams);
             $brands->sort->defaultOrder = ['title' => SORT_DESC];
 
-            return $this->render('index', ['popular' => $popular, 'brands' => $brands]);
+            return $this->render('index', [
+                'popular' => $popular,
+                'brands'  => $brands
+            ]);
         }
 
         public function actionBrand($slug = null){
@@ -61,7 +64,10 @@
                 throw new NotFoundHttpException();
             }
 
-            return $this->render('product', ['model' => $model, 'url' => Url::current()]);
+            return $this->render('product', [
+                'model' => $model,
+                'url'   => Url::current()
+            ]);
         }
 
         public function actionGetProduct(){
@@ -69,13 +75,18 @@
             if(empty($options)){
                 throw new NotFoundHttpException();
             }
-            $query = (new Query())->select(['count(*) as c','product_id'])->from(ProductCharacteristicItemModel::tableName());
+            $query = (new Query())->select([
+                                               'count(*) as c',
+                                               'product_id'
+                                           ])
+                                  ->from(ProductCharacteristicItemModel::tableName());
             foreach($options as $characteristic_id => $value){
                 $query->orWhere(['value' => $value]);
             }
             $query->groupBy('product_id');
-            $result = $query->createCommand()->queryAll();
-            $target= count($options);
+            $result = $query->createCommand()
+                            ->queryAll();
+            $target = count($options);
             $model = null;
             foreach($result as $row){
                 if($row['c'] == $target){
@@ -84,7 +95,10 @@
                 }
             }
             if(!is_null($model)){
-                return $this->render('product', ['model' => $model, 'url' => Url::current()]);
+                return $this->render('product', [
+                    'model' => $model,
+                    'url'   => Url::current()
+                ]);
             }else{
                 return $this->render('productNotFound');
             }
@@ -105,6 +119,16 @@
             }
 
             return $this->goBack(Yii::$app->request->post('submit'));
+        }
+
+        public function actionSearch(){
+
+            $catalog = $this->_search->search(Yii::$app->request->queryParams);
+            $catalog->pagination->pageSize = 8;
+
+            return $this->render('search', [
+                'catalog' => $catalog,
+            ]);
         }
 
     }
