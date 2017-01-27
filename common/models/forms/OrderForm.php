@@ -56,7 +56,8 @@
             }
 
             $del_data = json_decode($this->order->delivery_data);
-            if(!$del_data){
+            //Gektor change !empty
+            if(!empty($del_data)){
                 $del_data = json_decode($this->client->client->delivery_data)[0];
             }
             $this->deliveryData = new DeliveryAddressForm($del_data ? $del_data : null);
