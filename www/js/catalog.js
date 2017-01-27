@@ -31,8 +31,3 @@ function rangeInit() {
         });
     }
 }
-
-$('.do-search').on('click', function (){
-    var parent = $(this).parent();
-    console.log(parent.children('input').val());
-});
