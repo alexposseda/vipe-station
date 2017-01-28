@@ -36,7 +36,7 @@ use yii\helpers\Url;
                  data-url="<?= Url::to(['cart/change-quantity', 'product_id' => $model->product_id]) ?>">
                 <span>Кол-во: </span>
                 <span class="quantity-btn fc-brown" data-action="minus">-</span>
-                <input name="OrderDataModel[][quantity]" class="count" type="text" readonly value="<?= $model->quantity ?>">
+                <input name="OrderDataModel[][quantity]" class="count" type="text" data-base_quantity="<?= $model->product->base_quantity?>" readonly value="<?= $model->quantity ?>">
                 <span class="quantity-btn fc-brown" data-action="plus">+</span>
             </div>
             <div class="right price">
