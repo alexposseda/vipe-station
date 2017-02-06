@@ -38,6 +38,7 @@
         public function actionIndex(){
             if(!count(CartModel::getCart())){
                 //todo вывести сообщение о пустой корзине
+                Yii::$app->session->setFlash('success', 'Корзина пуста');
                 return $this->redirect(Yii::$app->request->referrer);
             }
 
