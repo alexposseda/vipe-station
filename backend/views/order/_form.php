@@ -30,39 +30,6 @@ $orderStatus = [
     OrderModel::ORDER_STATUS_SENT => Yii::t('models/order', OrderModel::ORDER_STATUS_SENT),
 ];
 $url = Url::to(['client/get-client-data']);
-$js = <<<JS
-$('#orderclientdatamodel-client_id').on('change',function(){
-    $.get({
-        'url':'{$url}',
-        'data':{'client_id':$(this).val()},
-        'success':function(response){
-            var client = JSON.parse(response);
-            $('#deliveryaddressform-f_name').val(client.f_name);
-            $('#deliveryaddressform-l_name').val(client.l_name);
-            $('#deliveryaddressform-city').val(client.city);
-            $('#deliveryaddressform-address').val(client.address);
-            $('#deliveryaddressform-phone').val(client.phones_arr);
-            $('#deliveryaddressform-email').val(client.email);
-        }
-    });
-});
-$('input').on('click', function () {
-    var input = $(this);
-    var count = parseInt(input.val());
-    var base_quantity = parseInt(input.data('base_quantity'));
-
-    if (count < 1) {
-        count = 1;
-        alert('Invalid: value = 0');
-    } else if (count > base_quantity) {
-        count = base_quantity;
-        alert('Invalid: value > base_quantity');
-    }
-    input.val(count);
-});
-JS;
-
-$this->registerJs($js, View::POS_END);
 ?>
 
 <?php $orderForm = ActiveForm::begin() ?>

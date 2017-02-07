@@ -58,8 +58,9 @@
             $this->email = $this->user->email;
             if(!empty($this->delivery_data)){
                 $this->delivery_data = json_decode($this->delivery_data);
-                foreach($this->delivery_data as $delivery){
+                foreach($this->delivery_data as $index => $delivery){
                     $this->deliveryData[] = new DeliveryAddressForm($delivery);
+                    $this->deliveryData[$index]['email'] = $this->email;
                 }
             }
         }
