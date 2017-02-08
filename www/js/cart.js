@@ -12,7 +12,7 @@ $('.quantity-btn').on('click', function () {
             offset = -1;
             break;
         case'plus':
-            console.log(parseInt(inp.data('base_quantity')));
+            //console.log(parseInt(inp.data('base_quantity')));
             if (parseInt(inp.data('base_quantity')) == inpValue) {
                 break;
             }
