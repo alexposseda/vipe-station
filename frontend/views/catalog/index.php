@@ -20,7 +20,7 @@
     </div>
     <div class="content">
 <!--        <div class="catalog-background">-->
-            <?php $dependency = [
+            <?php $dependencyPopular = [
                 'class'        => ChainedDependency::className(),
                 'dependencies' => [
                     new DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductModel::tableName()]),
@@ -29,7 +29,7 @@
                     new DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.ProductCharacteristicItemModel::tableName()]),
                 ]
             ];
-                if($this->beginCache('popularCache', ['duration' => 0, 'dependency' => $dependency])):
+                if($this->beginCache('popularCache', ['duration' => 0, 'dependency' => $dependencyPopular])):
                     ?>
                     <?= ListView::widget([
                                              'dataProvider' => $popular,
@@ -47,13 +47,13 @@
     </div>
     <div class="content">
         <div class="catalog-background">
-            <?php $dependency = [
+            <?php $dependencyBrands = [
                 'class'        => ChainedDependency::className(),
                 'dependencies' => [
                     new DbDependency(['sql' => 'SELECT MAX(updated_at) FROM '.BrandModel::tableName()]),
                 ]
             ];
-                if($this->beginCache('brandCatalogCache', ['duration' => 0, 'dependency' => $dependency])):
+                if($this->beginCache('brandCatalogCache', ['duration' => 0, 'dependency' => $dependencyBrands])):
                     ?>
                     <?= ListView::widget([
                                              'dataProvider' => $brands,

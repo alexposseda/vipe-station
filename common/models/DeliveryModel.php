@@ -21,7 +21,11 @@
      */
     class DeliveryModel extends ActiveRecord{
 
-        /**
+    	public function afterDelete() {
+		    Yii::$app->cache->flush();
+	    }
+
+	    /**
          * @inheritdoc
          */
         public function behaviors(){

@@ -44,6 +44,10 @@
             return false;
         }
 
+	    public function afterDelete(  ) {
+		    Yii::$app->cache->flush();
+	    }
+
         public function afterFind(){
             $tmp = explode(' ', trim($this->name));
             $this->f_name = $tmp[0];
