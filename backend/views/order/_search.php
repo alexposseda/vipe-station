@@ -31,6 +31,5 @@
             </div>
         </div>
     </div>
-	<?= Html::submitButton( Yii::t( 'system/view', 'Search' ) ) ?>
 	<?php ActiveForm::end() ?>
 </div>

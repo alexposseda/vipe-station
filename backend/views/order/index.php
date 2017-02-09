@@ -15,7 +15,7 @@
 <div class="row">
     <div class="col-md-12 col-lg-3">
         <p>
-			<?= Html::a( Yii::t( 'system/view', 'Create' ) . ' ' . Yii::t( 'models/client', 'Client' ), [ 'create' ],
+			<?= Html::a( Yii::t( 'system/view', 'Create' ) . ' ' . Yii::t( 'models', 'Order' ), [ 'create' ],
 			             [ 'class' => 'btn btn-success' ] ) ?>
 			<?= $this->render( '_search', [ 'model' => $searchOrder ] ); ?>
         </p>
