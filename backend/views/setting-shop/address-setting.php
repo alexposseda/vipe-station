@@ -29,7 +29,7 @@ function addAddress(){
     $('#accordion').append(content);
     addMarker('addressform-'+index+'-coordinates','addressform-'+index+'-address');
     initAutocomplete('addressform-'+index+'-coordinates','addressform-'+index+'-address');
-}
+};
 
 var markersData = {$markers};
 
