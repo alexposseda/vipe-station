@@ -13,6 +13,7 @@
 	$this->params['headerTitle'] = 'Корзина';
 	$this->registerJsFile( 'js/cart.js', [ 'depends' => AppAsset::className() ] );
 
+	$this->title = 'Корзина';
 ?>
 <div class="page-main valign-wrapper">
     <div class="content valign">
