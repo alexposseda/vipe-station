@@ -1,35 +1,36 @@
 <?php
-/**
- * @var $this \yii\web\View
- * @var $orderModel \common\models\forms\OrderForm
- */
-use common\models\CartModel;
-use frontend\assets\AppAsset;
-use yii\data\ActiveDataProvider;
-use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
-use yii\widgets\ListView;
-    $this->params['headerTitle'] = 'Корзина';
-$this->registerJsFile('js/cart.js', ['depends' => AppAsset::className()]);
+	/**
+	 * @var $this       \yii\web\View
+	 * @var $orderModel \common\models\forms\OrderForm
+	 */
+	use common\models\CartModel;
+	use frontend\assets\AppAsset;
+	use yii\data\ActiveDataProvider;
+	use yii\helpers\ArrayHelper;
+	use yii\widgets\ActiveForm;
+	use yii\widgets\ListView;
+
+	$this->params['headerTitle'] = 'Корзина';
+	$this->registerJsFile( 'js/cart.js', [ 'depends' => AppAsset::className() ] );
 
 ?>
 <div class="page-main valign-wrapper">
     <div class="content valign">
         <div class="cart-page">
             <div class="row move-to-checkout">
-                <?php $orderForm = ActiveForm::begin(['id' => 'order-form', 'action' => '/cart/create-order']) ?>
+				<?php $orderForm = ActiveForm::begin( [ 'id' => 'order-form', 'action' => '/cart/create-order' ] ) ?>
                 <div class="col l5 s6 cart-your-order">
                     <div class="cart-your-order-wrap">
                         <h2 class="cart-your-order-title fs30 fc-brown">Ваш заказ</h2>
-                        <?php \yii\widgets\Pjax::begin()?>
-                        <?= ListView::widget([
-                                                 'dataProvider' => new ActiveDataProvider(['query' => CartModel::getCartQuery()]),
-                                                 'itemView'     => '_cartItem',
-                                                 'layout'       => "{items}",
-                                                 'options'      => ['class' => 'products'],
-                                                 'itemOptions'  => ['class' => 'row product'],
-                                             ]) ?>
-                        <?php \yii\widgets\Pjax::end()?>
+						<?php \yii\widgets\Pjax::begin() ?>
+						<?= ListView::widget( [
+							                      'dataProvider' => new ActiveDataProvider( [ 'query' => CartModel::getCartQuery() ] ),
+							                      'itemView'     => '_cartItem',
+							                      'layout'       => "{items}",
+							                      'options'      => [ 'class' => 'products' ],
+							                      'itemOptions'  => [ 'class' => 'row product' ],
+						                      ] ) ?>
+						<?php \yii\widgets\Pjax::end() ?>
                         <div class="row">
                             <div class="col s12 right-align total-you-order mt-30 mb-30">
                                 <span class="fs20 fc-dark-brown">
@@ -49,53 +50,54 @@ $this->registerJsFile('js/cart.js', ['depends' => AppAsset::className()]);
                     <div class="row">
                         <div class="col s12">
                             <ul class="tabs fs25 fc-dark-brown ">
-                                <?php if(Yii::$app->user->isGuest): ?>
+								<?php if ( Yii::$app->user->isGuest ): ?>
                                     <li class="tab col s6"><a class="active" href="#new_customer">Новый покупатель</a>
                                     </li>
                                     <li class="tab col s6"><a href="#regular_customer">Постояный покупатель</a></li>
-                                <?php endif; ?>
+								<?php endif; ?>
                             </ul>
                         </div>
                         <div id="new_customer" class="col s12">
                             <div class="row">
                                 <div class="col s12 m6 l6">
                                     <p class="n1 title-form-new-customer fs16 fc-orange">Информация о получателе</p>
-                                    <?= $orderForm->field($orderModel->deliveryData, 'f_name', ['options' => ['class' => 'col s12']]) ?>
-                                    <?= $orderForm->field($orderModel->deliveryData, 'l_name', ['options' => ['class' => 'col s12']]) ?>
-                                    <?= $orderForm->field($orderModel->deliveryData, 'phone',
-                                                          ['options' => ['class' => 'col s12 input-phone-wrapper input-field']])
-                                                  ->textInput(['class' => 'input-phone']) ?>
-                                    <?= $orderForm->field($orderModel->deliveryData, 'email', ['options' => ['class' => 'col s12']]) ?>
+									<?= $orderForm->field( $orderModel->deliveryData, 'f_name', [ 'options' => [ 'class' => 'col s12' ] ] )
+									              ->label( null, [ 'class' => 'fs15 fc-brown' ] ) ?>
+									<?= $orderForm->field( $orderModel->deliveryData, 'l_name', [ 'options' => [ 'class' => 'col s12' ] ] )
+									              ->label( null, [ 'class' => 'fs15 fc-brown' ] ) ?>
+									<?= $orderForm->field( $orderModel->deliveryData, 'phone',
+									                       [ 'options' => [ 'class' => 'col s12 input-phone-wrapper input-field' ] ] )
+									              ->textInput( [ 'class' => 'input-phone' ] ) ?>
+									<?= $orderForm->field( $orderModel->deliveryData, 'email', [ 'options' => [ 'class' => 'col s12' ] ] )
+									              ->label( null, [ 'class' => 'fs15 fc-brown' ] ) ?>
                                 </div>
                                 <!--По дизайну здесь надо разделить на 2 шага для мобильной верстки-->
                                 <div class="col s12 m6 l6 order-property">
                                     <p class="n2 title-form-new-customer fs16 fc-orange">Информация о доставке</p>
                                     <div class="row">
+										<?= $orderForm->field( $orderModel->deliveryData, 'city', [ 'options' => [ 'class' => 'col s12' ] ] )
+										              ->label( null, [ 'class' => 'fs15 fc-brown' ] )
+										              ->textInput( [ 'placeholder' => 'Placeholder' ] ) ?>
 
-                                        <?= $orderForm->field($orderModel->deliveryData, 'city', ['options' => ['class' => 'col s12']])
-                                                      ->textInput(['placeholder' => 'Placeholder'])
-                                                      ->label($orderModel->deliveryData->getAttributeLabel('city'), ['class' => 'fs15 fc-brown']) ?>
+										<?= $orderForm->field( $orderModel->order, 'delivery_id', [ 'options' => [ 'class' => 'col s12' ] ] )
+										              ->label( 'Вариант доставки', [ 'class' => 'fs15 fc-brown' ] )
+										              ->dropDownList( ArrayHelper::map( $orderModel->getDeliverArr(), 'id', 'name' ), [
+											              'prompt' => 'Выберите вариант',
+											              'class'  => 'fc-dark-brown'
+										              ] ) ?>
+										<?= $orderForm->field( $orderModel->deliveryData, 'address', [ 'options' => [ 'class' => 'col s12' ] ] )
+										              ->label( null, [ 'class' => 'fs15 fc-brown' ] )
+										              ->textInput( [ 'placeholder' => 'Placeholder' ] ) ?>
 
-                                        <?= $orderForm->field($orderModel->order, 'delivery_id', ['options' => ['class' => 'col s12']])
-                                                      ->label('Вариант доставки', ['class' => 'fs15 fc-brown'])
-                                                      ->dropDownList(ArrayHelper::map($orderModel->getDeliverArr(), 'id', 'name'), [
-                                                          'prompt' => 'Выберите вариант',
-                                                          'class'  => 'fc-dark-brown'
-                                                      ]) ?>
-                                        <?= $orderForm->field($orderModel->deliveryData, 'address', ['options' => ['class' => 'col s12']])
-                                                      ->textInput(['placeholder' => 'Placeholder'])
-                                                      ->label($orderModel->deliveryData->getAttributeLabel('address'),
-                                                              ['class' => 'fs15 fc-brown']) ?>
-
-                                        <?= $orderForm->field($orderModel->order, 'payment_id', ['options' => ['class' => 'col s12']])
-                                                      ->label('Вариант оплаты', ['class' => 'fs15 fc-brown'])
-                                                      ->dropDownList(ArrayHelper::map($orderModel->getPayArr(), 'id', 'name'), [
-                                                          'prompt' => 'Выберите вариант',
-                                                          'class'  => 'fc-dark-brown'
-                                                      ]) ?>
-                                        <?= $orderForm->field($orderModel->order, 'comment', ['options' => ['class' => 'col s12']])
-                                                      ->textarea(['class' => 'materialize-textarea'])
-                                                      ->label('Комментарий к заказу', ['class' => 'fs15 fc-brown']) ?>
+										<?= $orderForm->field( $orderModel->order, 'payment_id', [ 'options' => [ 'class' => 'col s12' ] ] )
+										              ->label( 'Вариант оплаты', [ 'class' => 'fs15 fc-brown' ] )
+										              ->dropDownList( ArrayHelper::map( $orderModel->getPayArr(), 'id', 'name' ), [
+											              'prompt' => 'Выберите вариант',
+											              'class'  => 'fc-dark-brown'
+										              ] ) ?>
+										<?= $orderForm->field( $orderModel->order, 'comment', [ 'options' => [ 'class' => 'col s12' ] ] )
+										              ->label( 'Комментарий к заказу', [ 'class' => 'fs15 fc-brown' ] )
+										              ->textarea( [ 'class' => 'materialize-textarea' ] ) ?>
 
                                     </div>
                                 </div>
@@ -108,13 +110,13 @@ $this->registerJsFile('js/cart.js', ['depends' => AppAsset::className()]);
                                 </div>
                                 <div class="col s12 m6 l12 center-align">
                                     <div class="btn-buy">
-                                        <?php //echo \yii\helpers\Html::a('выйти',['/site/logout'],['method'=>'post'])?>
+										<?php //echo \yii\helpers\Html::a('выйти',['/site/logout'],['method'=>'post'])?>
                                         <button type="button" id="move_to_checkout">Оформить заказ</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?php if(Yii::$app->user->isGuest): ?>
+						<?php if ( Yii::$app->user->isGuest ): ?>
                             <div id="regular_customer" class="col s12">
                                 <div class="row">
                                     <div class="col s12 center-align cart-signIn">
@@ -141,10 +143,10 @@ $this->registerJsFile('js/cart.js', ['depends' => AppAsset::className()]);
                                     </form>
                                 </div>
                             </div>
-                        <?php endif; ?>
+						<?php endif; ?>
                     </div>
                 </div>
-                <?php ActiveForm::end() ?>
+				<?php ActiveForm::end() ?>
             </div>
         </div>
     </div>

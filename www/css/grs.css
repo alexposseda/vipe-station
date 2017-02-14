@@ -1253,7 +1253,7 @@ main .page-main .content {
 
 .cabinet {
     position: relative;
-    padding-left: 50px;
+    padding: 25px;
 }
 
 .cabinet img.img-cabinet {
@@ -1312,11 +1312,6 @@ main .page-main .content {
 
 .cabinet .cabinet-form form {
     padding-top: 50px;
-}
-
-.cabinet div {
-    margin: 0 auto;
-    width: 100%;
 }
 
 .cabinet .cabinet-client {
@@ -2160,6 +2155,10 @@ main .page-main .content {
     border: 1px solid #8E5D36 !important;
     height: 25px;
     padding-left: 10px;
+}
+#new_customer input[type=text]{
+    padding: 0 16px;
+    box-sizing: border-box;
 }
 
 .cart-page .cart-your-order {

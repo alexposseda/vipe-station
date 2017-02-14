@@ -1,145 +1,147 @@
 <?php
 
-    namespace frontend\controllers;
+	namespace frontend\controllers;
 
-    use common\models\forms\CartForm;
-    use common\models\forms\OrderForm;
-    use common\models\OrderClientDataModel;
-    use common\models\OrderModel;
-    use Yii;
-    use common\models\CartModel;
-    use yii\data\ActiveDataProvider;
-    use yii\web\ConflictHttpException;
-    use yii\web\Controller;
-    use yii\web\NotFoundHttpException;
-    use yii\filters\VerbFilter;
+	use common\models\forms\CartForm;
+	use common\models\forms\OrderForm;
+	use common\models\OrderClientDataModel;
+	use common\models\OrderModel;
+	use Yii;
+	use common\models\CartModel;
+	use yii\data\ActiveDataProvider;
+	use yii\web\ConflictHttpException;
+	use yii\web\Controller;
+	use yii\web\NotFoundHttpException;
+	use yii\filters\VerbFilter;
 
-    /**
-     * CartController implements the CRUD actions for CartModel model.
-     */
-    class CartController extends Controller{
-        public $layout = 'main';
+	/**
+	 * CartController implements the CRUD actions for CartModel model.
+	 */
+	class CartController extends Controller{
+		public $layout = 'main';
 
-        /**
-         * @inheritdoc
-         */
-        public function behaviors(){
-            return [
-                'verbs' => [
-                    'class'   => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ];
-        }
+		/**
+		 * @inheritdoc
+		 */
+		public function behaviors() {
+			return [
+				'verbs' => [
+					'class'   => VerbFilter::className(),
+					'actions' => [
+						'delete' => [ 'POST' ],
+					],
+				],
+			];
+		}
 
 
-        public function actionIndex(){
-            if(!count(CartModel::getCart())){
-                //todo вывести сообщение о пустой корзине
-                Yii::$app->session->setFlash('success', 'Корзина пуста');
-                return $this->redirect(Yii::$app->request->referrer);
-            }
+		public function actionIndex() {
+			if ( ! count( CartModel::getCart() ) ) {
+				//todo вывести сообщение о пустой корзине
+				Yii::$app->session->setFlash( 'success', 'Корзина пуста' );
 
-            $client = new OrderClientDataModel();
-            if(!Yii::$app->user->isGuest){
-                $client->client_id = Yii::$app->user->identity->client->id;
-            }
-            $order = new OrderForm([
-                                       'carts'  => CartModel::getCart(),
-                                       'order'  => new OrderModel(),
-                                       'client' => $client
-                                   ]);
+				return $this->redirect( Yii::$app->request->referrer );
+			}
 
-            return $this->render('index', ['orderModel' => $order]);
-        }
+			$client = new OrderClientDataModel();
+			if ( ! Yii::$app->user->isGuest ) {
+				$client->client_id = Yii::$app->user->identity->client->id;
+				$client->email     = Yii::$app->user->identity->email;
+			}
+			$order = new OrderForm( [
+				                        'carts'  => CartModel::getCart(),
+				                        'order'  => new OrderModel(),
+				                        'client' => $client
+			                        ] );
 
-        public function actionAddToCart(){
-            $cartForm = new CartForm();
-            if($cartForm->load(Yii::$app->request->post()) && $cartForm->add()){
-                Yii::$app->session->setFlash('success', 'Добавлено в корзину');
+			return $this->render( 'index', [ 'orderModel' => $order ] );
+		}
 
-                return count(CartModel::getCart());
-            }
-            Yii::$app->session->setFlash('error', 'Error save cart');
+		public function actionAddToCart() {
+			$cartForm = new CartForm();
+			if ( $cartForm->load( Yii::$app->request->post() ) && $cartForm->add() ) {
+				Yii::$app->session->setFlash( 'success', 'Добавлено в корзину' );
 
-            return false;
-        }
+				return count( CartModel::getCart() );
+			}
+			Yii::$app->session->setFlash( 'error', 'Error save cart' );
 
-        public function actionLogin(){
-            $guest_id = Yii::$app->session->get('guest_id');
-            if(!$guest_id){
-                $guest_id = Yii::$app->request->cookies->getValue('guest_id');
-            }
-            $cart = CartModel::findByGuestId($guest_id);
+			return false;
+		}
 
-            if(!empty($cart)){
-                $id = Yii::$app->user->id;
-                foreach($cart as $obj){
-                    $obj->user_id = $id;
-                    $obj->guest_id = null;
-                    if(!$obj->save()){
-                        Yii::$app->session->setFlash('error', 'Not save cart');
+		public function actionLogin() {
+			$guest_id = Yii::$app->session->get( 'guest_id' );
+			if ( ! $guest_id ) {
+				$guest_id = Yii::$app->request->cookies->getValue( 'guest_id' );
+			}
+			$cart = CartModel::findByGuestId( $guest_id );
 
-                        return false;
-                    }
-                }
-            }
+			if ( ! empty( $cart ) ) {
+				$id = Yii::$app->user->id;
+				foreach ( $cart as $obj ) {
+					$obj->user_id  = $id;
+					$obj->guest_id = null;
+					if ( ! $obj->save() ) {
+						Yii::$app->session->setFlash( 'error', 'Not save cart' );
 
-            return true;
-        }
+						return false;
+					}
+				}
+			}
 
-        public function actionDelete($id){
-            $this->findModel($id)
-                 ->delete();
-            if(!count(CartModel::getCart())){
-                //todo вывести сообщение о пустой корзине
-                return $this->redirect(['/catalog']);
-            }
+			return true;
+		}
 
-            return $this->redirect(['index']);
-        }
+		public function actionDelete( $id ) {
+			$this->findModel( $id )
+			     ->delete();
+			if ( ! count( CartModel::getCart() ) ) {
+				//todo вывести сообщение о пустой корзине
+				return $this->redirect( [ '/catalog' ] );
+			}
 
-        protected function findModel($id){
-            if(($model = CartModel::findOne($id)) !== null){
-                return $model;
-            }else{
-                throw new NotFoundHttpException(Yii::t('system/view', 'The requested page does not exist.'));
-            }
-        }
+			return $this->redirect( [ 'index' ] );
+		}
 
-        public function actionCreateOrder(){
-            $carts = CartModel::getCart();
-            if(empty($carts)){
-                throw new ConflictHttpException(Yii::t('models/order', 'Cart is empty'));
-            }
-            $order = new OrderForm([
-                                       'carts' => CartModel::getCart(),
-                                       'order' => new OrderModel()
-                                   ]);
+		protected function findModel( $id ) {
+			if ( ( $model = CartModel::findOne( $id ) ) !== null ) {
+				return $model;
+			} else {
+				throw new NotFoundHttpException( Yii::t( 'system/view', 'The requested page does not exist.' ) );
+			}
+		}
 
-            if($order->loadAll(Yii::$app->request->post()) && $order->save()){
-                Yii::$app->session->addFlash('success', 'Заказ №'.$order->order->id.' оформлен');
+		public function actionCreateOrder() {
+			$carts = CartModel::getCart();
+			if ( empty( $carts ) ) {
+				throw new ConflictHttpException( Yii::t( 'models/order', 'Cart is empty' ) );
+			}
+			$order = new OrderForm( [
+				                        'carts' => CartModel::getCart(),
+				                        'order' => new OrderModel()
+			                        ] );
 
-                return $this->render('thanks');
-            }
+			if ( $order->loadAll( Yii::$app->request->post() ) && $order->save() ) {
+				Yii::$app->session->addFlash( 'success', 'Заказ №' . $order->order->id . ' оформлен' );
 
-            return $this->render('index', ['orderModel' => $order]);
-        }
+				return $this->render( 'thanks' );
+			}
 
-        public function actionChangeQuantity($product_id){
-            $quantity = Yii::$app->request->post('quantity');
-            $item = CartModel::getCart($product_id);
-            if(!$item){
-                return false;
-            }
-            $model = $item[0];
-            $model->quantity = $quantity;
-            if(!$model->save()){
-                return false;
-            }
+			return $this->render( 'index', [ 'orderModel' => $order ] );
+		}
 
-            return $quantity;
-        }
-    }
+		public function actionChangeQuantity( $product_id ) {
+			$quantity = Yii::$app->request->post( 'quantity' );
+			$item     = CartModel::getCart( $product_id );
+			if ( ! $item ) {
+				return false;
+			}
+			$model           = $item[0];
+			$model->quantity = $quantity;
+			if ( ! $model->save() ) {
+				return false;
+			}
+
+			return $quantity;
+		}
+	}
