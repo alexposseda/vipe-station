@@ -14,6 +14,11 @@
 	$this->registerJsFile( 'js/cart.js', [ 'depends' => AppAsset::className() ] );
 
 	$this->title = 'Корзина';
+
+	$change_email = false;
+	if ( $orderModel->deliveryData->email ) {
+		$change_email = true;
+	}
 ?>
 <div class="page-main valign-wrapper">
     <div class="content valign">
@@ -69,8 +74,10 @@
 									<?= $orderForm->field( $orderModel->deliveryData, 'phone',
 									                       [ 'options' => [ 'class' => 'col s12 input-phone-wrapper input-field' ] ] )
 									              ->textInput( [ 'class' => 'input-phone' ] ) ?>
-									<?= $orderForm->field( $orderModel->deliveryData, 'email', [ 'options' => [ 'class' => 'col s12' ] ] )
-									              ->label( null, [ 'class' => 'fs15 fc-brown' ] ) ?>
+
+									<?= $orderForm->field( $orderModel->deliveryData, 'email', [ 'options' => [ 'class' => 'col s12 ' ] ] )
+									              ->label( null, [ 'class' => 'fs15 fc-brown' ] )
+									              ->textInput( [ 'disabled' => $change_email ] ) ?>
                                 </div>
                                 <!--По дизайну здесь надо разделить на 2 шага для мобильной верстки-->
                                 <div class="col s12 m6 l6 order-property">
