@@ -6,17 +6,16 @@
 
 ?>
 <li class="col l3 m4 fs15 fc-brown">
-        <span>#<?= $model->order->id ?></span><br>
-        <span><?= date( 'F', $model->order->created_at ) ?> <br><?= date( 'd.m.y', $model->order->created_at ) ?> <br><?= date( 'H:i',
-		                                                                                                                        $model->order->created_at ) ?></span>
+    <span>#<?= $model->order->id ?></span><br>
+    <span><?= date( 'F', $model->order->created_at ) ?> <br><?= date( 'd.m.y', $model->order->created_at ) ?> <br><?= date( 'H:i',
+	                                                                                                                        $model->order->created_at ) ?></span>
 </li>
 <li class="col l3 m4">
-    <span class="text-uppercase fs20">Что тут должно быть</span><br>
-    <span class="fs15 fc-brown">Адрес доставки</span><br>
-    <span class="fs15 fc-brown">Отделение Новой почты</span>
+    <span class="fs15 fc-brown"><?= $model->order->getDeliveryData()->address ?></span><br>
+    <span class="fs15 fc-brown"><?= $model->order->delivery->name ?></span><br>
+    <span class="fs15 fc-brown"><?= $model->order->payment->name ?></span><br>
 </li>
 <li class="col l3 m3 fs15">
-    <span>Количество</span><span>1</span><br>
 </li>
 <li class="col l3 m12 right-align">
     <span class="fc-dark-brown fs20"><?= $model->order->getOrderDatas()
