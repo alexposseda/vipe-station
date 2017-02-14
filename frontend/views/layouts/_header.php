@@ -1,13 +1,13 @@
 <?php
-    use frontend\assets\AppAsset;
-    use yii\helpers\Html;
-    use yii\widgets\ActiveForm;
-    use yii\widgets\Pjax;
+	use frontend\assets\AppAsset;
+	use yii\helpers\Html;
+	use yii\widgets\ActiveForm;
+	use yii\widgets\Pjax;
 
-    $loginModel = new \common\models\forms\LoginForm();
-    $remindModel = new \common\models\forms\PasswordResetRequestForm();
-    $model = new \common\models\search\ProductSearchModel();
-    $this->registerJsFile('js/_header.js', ['depends' => AppAsset::className()]);
+	$loginModel  = new \common\models\forms\LoginForm();
+	$remindModel = new \common\models\forms\PasswordResetRequestForm();
+	$model       = new \common\models\search\ProductSearchModel();
+	$this->registerJsFile( 'js/_header.js', [ 'depends' => AppAsset::className() ] );
 ?>
 <li class="col l5 m12 s12 push-l7 valign">
     <ul class="row valign-wrapper mt-25">
@@ -16,26 +16,26 @@
 
             <div class="nav-wrapper">
 
-                <?php $form = ActiveForm::begin([
+				<?php $form = ActiveForm::begin( [
 
-                                                    'action'  => ['/catalog/search'],
-                                                    'method'  => 'get',
-                                                    'options' => [
-                                                        'data-pjax' => 1,
-                                                    ],
-                                                    'class'   => 'search_form'
-                                                ]); ?>
+					                                 'action'  => [ '/catalog/search' ],
+					                                 'method'  => 'get',
+					                                 'options' => [
+						                                 'data-pjax' => 1,
+					                                 ],
+					                                 'class'   => 'search_form'
+				                                 ] ); ?>
 
                 <div class="input-field ">
-                    <?= Html::activeInput('search', $model, 'title', ['class' => 'search-header-input input-left']); ?>
-                    <?= Html::submitButton('search', [
-                        'data-target' => 'modalsearch',
-                        'class'       => 'modal-trigger_ material-icons do-search',
-                        'id'          => 'searchId'
-                    ]) ?>
+					<?= Html::activeInput( 'search', $model, 'title', [ 'class' => 'search-header-input input-left' ] ); ?>
+					<?= Html::submitButton( 'search', [
+						'data-target' => 'modalsearch',
+						'class'       => 'modal-trigger_ material-icons do-search',
+						'id'          => 'searchId'
+					] ) ?>
                     <div class="clearfix"></div
                 </div>
-                <?php ActiveForm::end(); ?>
+				<?php ActiveForm::end(); ?>
 
             </div>
 
@@ -45,8 +45,9 @@
             <div class="cart-login">
                 <div class="cart">
                     <!--                    <a href="#modalcart" class="modal-trigger popup-trigger"><span class="white-text total-price " id="cart-count">0</span></a>-->
-                    <a href="<?= \yii\helpers\Url::to(['/cart/index']) ?>" class="modal-trigger popup-trigger" id="cart_index"><span class="white-text total-price "
-                                                                                                                     id="cart-count"><?= count(\common\models\CartModel::getCart()) ?></span></a>
+                    <a href="<?= \yii\helpers\Url::to( [ '/cart/index' ] ) ?>" class="modal-trigger popup-trigger" id="cart_index"><span
+                                class="white-text total-price "
+                                id="cart-count"><?= count( \common\models\CartModel::getCart() ) ?></span></a>
                     <div id="modalcart" class="modal bottom-sheet modal-fixed-footer popup popup-active popup-cart popup-bottom popup-fixed-footer">
                         <div class="popup-content modal-content">
                             <div class="row product valign-wrapper">
@@ -134,32 +135,32 @@
                     </div>
                 </div>
                 <!-- РОЗКОМЕНТИРОВАТЬ КОГДА БУДЕТ РАБОТАТЬ-->
-                <!--<div class="login border-l">
-                    <!<?php if(Yii::$app->user->isGuest): ?>
+                <div class="login border-l">
+                    <?php if ( Yii::$app->user->isGuest ): ?>
                         <a id="insert-cabinet" class="modal-trigger popup-trigger hide-on-small-and-down" href="#modallogin">
                             <span class="white-text fs15">Кабинет</span>
                         </a>
                         <div id="modallogin" class="modal popup popup-active center-align remind-pass popup-form">
                             <div class="modal-content">
                                 <div class="center-align remind-pass popup-form hide-on-med-and-down" id="loginbox">
-                                    <?php $loginForm = \yii\widgets\ActiveForm::begin([
-                                                                                                                                                                          'action'  => \yii\helpers\Url::to(['site/login']),
-                                                                                                                                                                          'method'  => 'post',
-                                                                                                                                                                          'options' => [
-                                                                                                                                                                              'class' => 'row cabinet-form'
-                                                                                                                                                                          ]
-                                                                                                                                                                      ]) ?>
+									<?php $loginForm = \yii\widgets\ActiveForm::begin( [
+										                                                   'action'  => \yii\helpers\Url::to( [ 'site/login' ] ),
+										                                                   'method'  => 'post',
+										                                                   'options' => [
+											                                                   'class' => 'row cabinet-form'
+										                                                   ]
+									                                                   ] ) ?>
                                     <div class="input-field col s12">
                                         <label for="email"
                                                class="fs15 fc-brown left-align">Email</label>
                                         <div class="input-gradient">
-                                            <?= \yii\helpers\Html::activeInput('email', $loginModel, 'email', [
-                    'placeholder' => 'email@example.com',
-                    'class'       => 'validate input-form',
-                    'id'          => 'email',
-                    'onFocus'     => "$(this).parent().addClass('focus')",
-                    'onBlur'      => "$(this).parent().removeClass('focus')"
-                ]) ?>
+											<?= \yii\helpers\Html::activeInput( 'email', $loginModel, 'email', [
+												'placeholder' => 'email@example.com',
+												'class'       => 'validate input-form',
+												'id'          => 'email',
+												'onFocus'     => "$(this).parent().addClass('focus')",
+												'onBlur'      => "$(this).parent().removeClass('focus')"
+											] ) ?>
                                         </div>
                                     </div>
                                     <div class="input-field col s12">
@@ -167,13 +168,13 @@
                                         <a href="#remindpassbox" id="remindPassBtn" class="fs12 fc-dark-brown right">Забыли пароль?</a>
                                         <div class="clear"></div>
                                         <div class="input-gradient">
-                                            <?= \yii\helpers\Html::activeInput('password', $loginModel, 'password', [
-                    'placeholder' => 'password',
-                    'class'       => 'validate input-form',
-                    'id'          => 'password',
-                    'onFocus'     => "$(this).parent().addClass('focus')",
-                    'onBlur'      => "$(this).parent().removeClass('focus')"
-                ]) ?>
+											<?= \yii\helpers\Html::activeInput( 'password', $loginModel, 'password', [
+												'placeholder' => 'password',
+												'class'       => 'validate input-form',
+												'id'          => 'password',
+												'onFocus'     => "$(this).parent().addClass('focus')",
+												'onBlur'      => "$(this).parent().removeClass('focus')"
+											] ) ?>
                                         </div>
                                     </div>
                                     <div class="input-field col s12">
@@ -183,26 +184,26 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <?php \yii\widgets\ActiveForm::end() ?>
+									<?php \yii\widgets\ActiveForm::end() ?>
                                 </div>
                                 <div class="center-align remind-pass popup-form hide-on-med-and-down hide" id="remindpassbox">
-                                    <?php $loginForm = \yii\widgets\ActiveForm::begin([
-                                                                                                                                                                                          'action'  => \yii\helpers\Url::to(['site/request-password-reset']),
-                                                                                                                                                                                          'method'  => 'post',
-                                                                                                                                                                                          'options' => [
-                                                                                                                                                                                              'class' => 'row cabinet-form'
-                                                                                                                                                                                          ]
-                                                                                                                                                                                      ]) ?>
+									<?php $loginForm = \yii\widgets\ActiveForm::begin( [
+										                                                   'action'  => \yii\helpers\Url::to( [ 'site/request-password-reset' ] ),
+										                                                   'method'  => 'post',
+										                                                   'options' => [
+											                                                   'class' => 'row cabinet-form'
+										                                                   ]
+									                                                   ] ) ?>
                                     <div class="input-field col s12">
                                         <label for="first_name" class="fs15 fc-brown">Email</label>
                                         <div class="input-gradient">
-                                            <?= \yii\helpers\Html::activeInput('email', $remindModel, 'email', [
-                    'placeholder' => 'email@example.com',
-                    'class'       => 'validate input-form',
-                    'id'          => 'first_name',
-                    'onFocus'     => "$(this).parent().addClass('focus')",
-                    'onBlur'      => "$(this).parent().removeClass('focus')"
-                ]) ?>
+											<?= \yii\helpers\Html::activeInput( 'email', $remindModel, 'email', [
+												'placeholder' => 'email@example.com',
+												'class'       => 'validate input-form',
+												'id'          => 'first_name',
+												'onFocus'     => "$(this).parent().addClass('focus')",
+												'onBlur'      => "$(this).parent().removeClass('focus')"
+											] ) ?>
                                         </div>
                                         <a href="#loginbox" id="loginBtn" class="fs10 col s12 fc-brown">Вспомнили?</a>
                                         <div class="col s12">
@@ -211,17 +212,17 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <?php \yii\widgets\ActiveForm::end() ?>
+									<?php \yii\widgets\ActiveForm::end() ?>
                                     <div class="clear"></div>
                                 </div>
                             </div>
                         </div>
-                    <?php else: ?>
-                        <a href="<?= \yii\helpers\Url::to(['/personal/index']) ?>" class="popup-trigger hide-on-small-and-down">
+					<?php else: ?>
+                        <a href="<?= \yii\helpers\Url::to( [ '/personal/index' ] ) ?>" class="popup-trigger hide-on-small-and-down">
                             <span class="white-text fs15">Кабинет</span>
                         </a>
-                    <?php endif; ?>
-                </div>-->
+					<?php endif; ?>
+                </div>
             </div>
         </li>
     </ul>

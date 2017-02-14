@@ -38,7 +38,7 @@
 					                ->textInput( [ 'class' => 'input-phone' ] )
 					                ->label( 'Телефон' ) ?>
 					<?= $contactForm->field( $cabinet->model, 'birthday', [ 'options' => [ 'class' => 'col s10 input-field' ] ] )
-					                ->input( 'date', [ 'value' => date( 'm/d/Y', $cabinet->model->birthday ) ] )
+					                ->input( 'date', [ 'value' => date( 'Y-m-d', $cabinet->model->birthday ) ] )
 					                ->label( 'Дата рождения' ) ?>
                     <!-- У нас нет логина
                     <div class="input-field col s10">
