@@ -30,7 +30,6 @@
         ):
             ?>
 
-
             <?= ListView::widget([
                                      'dataProvider' => $catalog,
                                      'itemView'     => '_catalog_item',
