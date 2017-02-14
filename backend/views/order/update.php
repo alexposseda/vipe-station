@@ -1,7 +1,7 @@
 <?php
     /**
      * @var $this  \yii\web\View
-     * @var $order \backend\models\forms\OrderForm
+     * @var $order \common\models\forms\OrderForm
      */
     $this->title = Yii::t('system/view', 'Update').' '.Yii::t('models', 'Order').': '.$order->order->id;
     $this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Orders'), 'url' => ['index']];

@@ -5,9 +5,17 @@ $('.quantity-btn').on('click', function () {
     var offset = 0;
     switch (action) {
         case'minus':
+            if (inpValue == 1) {
+
+                break;
+            }
             offset = -1;
             break;
         case'plus':
+            //console.log(parseInt(inp.data('base_quantity')));
+            if (parseInt(inp.data('base_quantity')) == inpValue) {
+                break;
+            }
             offset = 1;
             break;
     }

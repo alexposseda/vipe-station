@@ -47,7 +47,7 @@
                 <div class="phones">
                     <p><?= Yii::t('models/client', 'Phones') ?></p>
                     <?php
-                        if(is_array($model->phones_arr)):
+                        if($model->phones_arr):
                             foreach($model->phones_arr as $phone): ?>
                                 <p><?= Html::encode($phone) ?></p>
                                 <?php
@@ -74,13 +74,13 @@
             'id' => $model->id
         ], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('system/view', 'Request password reset'), [
-                                                                       'request-password-reset',
-                                                                       'email' => $model->user->email,
-                                                                       'goback' => Url::to([
-                                                                                               'view',
-                                                                                               'id' => $model->id
-                                                                                           ])
-                                                                   ], ['class' => 'btn btn-danger']) ?>
+            'request-password-reset',
+            'email'  => $model->user->email,
+            'goback' => Url::to([
+                                    'view',
+                                    'id' => $model->id
+                                ])
+        ], ['class' => 'btn btn-danger']) ?>
 
     </div>
     <div class="client-orders tab-pane" id="orders">
@@ -95,21 +95,21 @@
                     <?= date('d.M.Y', $orderClientData->order->created_at) ?>
                 </div>
                 <div class="col-lg-5">
-                    <?= Yii::t('models/product', 'Title')?>
+                    <?= Yii::t('models/product', 'Title') ?>
                     <?php foreach($orderClientData->order->orderDatas as $data) : ?>
-                            <p><?= $data->product->title;?></p>
+                        <p><?= $data->product->title; ?></p>
                     <?php endforeach; ?>
                 </div>
                 <div class="col-lg-3">
-                    <?= Yii::t('models/cart', 'Quantity')?>
+                    <?= Yii::t('models/cart', 'Quantity') ?>
                     <?php foreach($orderClientData->order->orderDatas as $data) : ?>
-                        <p><?= $data->quantity?></p>
+                        <p><?= $data->quantity ?></p>
                     <?php endforeach; ?>
                 </div>
                 <div class="col-lg-2">
-                    <?= Yii::t('models/product', 'Price')?>
+                    <?= Yii::t('models/product', 'Price') ?>
                     <?php foreach($orderClientData->order->orderDatas as $data) : ?>
-                        <p><?= $data->product->base_price?></p>
+                        <p><?= $data->product->base_price ?></p>
                     <?php endforeach; ?>
                 </div>
 
@@ -119,7 +119,22 @@
     </div>
     <div class="client-delivery tab-pane" id="delivers">
         <h4><?= Yii::t('models/client', 'Your addresses') ?></h4>
-
+        <hr>
+        <div class="col l12">
+            <ul class="row">
+                <?php foreach($model->deliveryData as $index => $data): ?>
+                    <li class="col l3 m4 fs15 fc-brown">
+                        <span class="fc-dark-brown fs20"><?= Yii::t('models/client', 'Address');?> <?= $index+1?></span><br>
+                        <span class="fc-dark-brown fs15"><?= $data->f_name ?></span><br>
+                        <span class="fc-dark-brown fs15"><?= $data->l_name ?></span><br>
+                        <span class="fc-dark-brown fs15"><?= $data->city ?></span><br>
+                        <span class="fc-dark-brown fs15"><?= $data->address ?></span><br>
+                        <span class="fc-dark-brown fs15"><?= $data->phone ?></span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+            <hr>
+        </div>
     </div>
 </div>
 

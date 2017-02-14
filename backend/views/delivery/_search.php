@@ -29,7 +29,7 @@
     <div class="panel-footer">
         <div class="form-group">
             <?= Html::submitButton(Yii::t('system/view', 'Search'), ['class' => 'btn btn-primary']) ?>
-            <?= Html::resetButton(Yii::t('system/view', 'Reset'), ['class' => 'btn btn-default']) ?>
+            <?= Html::a( Yii::t( 'system/view', 'Reset' ), $form->action, [ 'class' => 'btn btn-default' ] ) ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>

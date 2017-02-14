@@ -44,6 +44,9 @@
      */
     class ProductModel extends ActiveRecord{
 
+	    public function afterDelete() {
+		    Yii::$app->cache->flush();
+	    }
         /**
          * @inheritdoc
          */

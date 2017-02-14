@@ -75,15 +75,15 @@
             // add conditions that should always apply here
 
             $dataProvider = new ActiveDataProvider([
-                                                       'query'      => $query,
+                                                       'query' => $query,
                                                        'pagination' => [
                                                            'pageSize' => isset($params['pageSize']) ? $params['pageSize'] : 10,
                                                        ],
-                                                       'sort'       => [
+                                                       'sort' => [
                                                            'attributes' => [
                                                                'created_at' => ['label' => Yii::t('models/product', 'Novelty')],
                                                                'sales'      => ['label' => Yii::t('models/product', 'Popularity')],
-//                                                               'stock'      => ['label' => Yii::t('models/product', 'Discounts')],
+                                                               //                                                               'stock'      => ['label' => Yii::t('models/product', 'Discounts')],
                                                                'base_price' => ['label' => Yii::t('models/product', 'Price')],
                                                            ]
                                                        ]
@@ -92,7 +92,12 @@
 
             $this->load($params);
             if(empty($this->id) and Yii::$app->controller->id != 'product'){
-                $query->joinWith('relatedProducts0')->where(['is', 'related_product', null]);
+                $query->joinWith('relatedProducts0')
+                      ->where([
+                                  'is',
+                                  'related_product',
+                                  null
+                              ]);
             }
             if(!$this->validate()){
                 // uncomment the following line if you do not want to return any records when validation fails
@@ -102,29 +107,37 @@
 
             // grid filtering conditions
             $query->andFilterWhere([
-                                       self::tableName().'.id'            => $this->id,
-                                       'base_quantity' => $this->base_quantity,
-                                       'created_at'    => $this->created_at,
-                                       'brand_id'      => $this->brand_id,
+                                       self::tableName().'.id' => $this->id,
+                                       'base_quantity'         => $this->base_quantity,
+                                       'created_at'            => $this->created_at,
+                                       'brand_id'              => $this->brand_id,
                                    ]);
 
+            $temp = $this->title;
             $query->andFilterWhere(['title' => $this->title]);
             if($this->brandSlug){
                 $query->joinWith('brand b')
                       ->andFilterWhere(['b.slug' => $this->brandSlug]);
             }
             if($this->catSlug){
-//                $query->joinWith('categories c')
-//                      ->andFilterWhere(['c.slug' => $this->catSlug]);
-                $category = CategoryModel::find()->where(['slug' => $this->catSlug])->one();
+                //                $query->joinWith('categories c')
+                //                      ->andFilterWhere(['c.slug' => $this->catSlug]);
+                $category = CategoryModel::find()
+                                         ->where(['slug' => $this->catSlug])
+                                         ->one();
                 if(!is_null($category)){
                     $categories = CategoryModel::allChildren($category->id);
                     $categories_ids[] = $category->id;
-                    foreach ($categories as $cat) {
-                        $categories_ids[]  = $cat->id;
+                    foreach($categories as $cat){
+                        $categories_ids[] = $cat->id;
                     }
 
-                    $query->joinWith('productInCategories pic')->andFilterWhere(['in', 'pic.category_id', $categories_ids]);
+                    $query->joinWith('productInCategories pic')
+                          ->andFilterWhere([
+                                               'in',
+                                               'pic.category_id',
+                                               $categories_ids
+                                           ]);
                 }
             }
             if($this->price){
@@ -150,6 +163,11 @@
                                        'like',
                                        'description',
                                        $this->description
+                                   ])
+                  ->orFilterWhere([
+                                       'like',
+                                       'title',
+                                       $this->title,
                                    ]);
 
             return $dataProvider;

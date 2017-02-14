@@ -61,14 +61,18 @@ $(function () {
     });
     $('.quantity-btn').on('click', function(){
         var inp = $(this).siblings('input');
+        var base_quantity = parseInt(inp.data('base_quantity'));
+        console.log(base_quantity);
         var inpValue = parseInt(inp.val());
         var action = $(this).data('action');
         var offset = 0;
         switch(action){
             case'minus':
+                if(inpValue != 1)
                 offset = -1;
                 break;
             case'plus':
+                if(inpValue != base_quantity)
                 offset = 1;
                 break;
         }

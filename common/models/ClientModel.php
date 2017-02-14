@@ -29,7 +29,7 @@
     class ClientModel extends ActiveRecord{
         public $f_name;
         public $l_name;
-        public $phones_arr;
+        public $phones_arr = [];
         public $email;
         public $deliveryData = [];
 
@@ -44,18 +44,27 @@
             return false;
         }
 
+	    public function afterDelete(  ) {
+		    Yii::$app->cache->flush();
+	    }
+
         public function afterFind(){
             $tmp = explode(' ', trim($this->name));
             $this->f_name = $tmp[0];
             $this->l_name = $tmp[1];
             if(!empty($this->phones)){
-                $this->phones_arr = json_decode($this->phones);
+                $temp =  json_decode($this->phones);
+                foreach($temp as $key => $t){
+                    $this->phones_arr[$key] = $t;
+                }
+
             }
             $this->email = $this->user->email;
             if(!empty($this->delivery_data)){
             	$delData = json_decode($this->delivery_data);
                 foreach($delData as $delivery){
                     $this->deliveryData[] = new DeliveryAddressForm($delivery);
+                    $this->deliveryData[$index]['email'] = $this->email;
                 }
             }
         }
@@ -65,9 +74,21 @@
                 $this->name = $this->f_name.' '.$this->l_name;
             }
 
+            /*$this->phones_arr = [];
+            $client = (Yii::$app->request->post('ClientModel'));
+            $leng_phon = count($client['phones_arr']);
+            if($leng_phon >0){
+                $keys_phone = array_keys($client['phones_arr']);
+                for($i = 0; $i < $leng_phon; $i++){
+                    $this->phones_arr[$keys_phone[$i]] = $client['phones_arr'][$keys_phone[$i]];
+                }
+            }*/
+
+
             if(!empty($this->phones_arr)){
                 $this->phones = json_encode($this->phones_arr);
             }
+
             $this->deliveryData = [];
             $leng = count(Yii::$app->request->post('DeliveryAddressForm'));
             if($leng > 0){
@@ -79,10 +100,9 @@
                 if(!Model::loadMultiple($this->deliveryData, Yii::$app->request->post()) && !Model::validateMultiple($this->deliveryData)){
                     return false;
                 }
-                $this->delivery_data = json_encode($this->deliveryData);
-            }else{
-                $this->delivery_data = '';
+
             }
+            $this->delivery_data = json_encode($this->deliveryData);
 
             return parent::beforeValidate();
         }

@@ -83,6 +83,14 @@
 			return $this->render( 'update', [ 'order' => $order ] );
 		}
 
+        public function actionView( $id ) {
+            $order = new OrderForm( [
+                                        'order' => OrderModel::findOne( $id ),
+                                    ] );
+
+            return $this->render( 'view', [ 'order' => $order ] );
+        }
+
 		public function actionDelete( $id ) {
 			OrderModel::findOne( $id )
 			          ->delete();
