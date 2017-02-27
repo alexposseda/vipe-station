@@ -48,7 +48,8 @@
                 <div class="col-sm-12 col-md-6 col-lg-5">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <!--Убрал условие новой записи исходный файл в 'temp_form.php'-->
+                            <!--Убрал условие новой записи-->
+                            <?php if($model->product->isNewRecord): ?>
                                 <?= $form->field($model, 'categories[]', ['options' => ['class' => 'disabled']])
                                          ->dropDownList($model->allCategories, [
                                              'multiple'              => 'multiple',
@@ -58,7 +59,20 @@
                                              'data-getRelated-url'   => Url::to(['product/get-related-products']),
                                              'readonly'              => ($model->product->isNewRecord) ? false : true,
                                          ]) ?>
-
+                            <?php else: ?>
+                                <?php foreach($model->categories as $c_id => $other){
+                                    echo Html::hiddenInput($model->formName().'[categories][]', $c_id);
+                                } ?>
+                                <div class="form-group">
+                                    <label for="s1" class="control-label">Категории</label>
+                                    <?= Html::dropDownList('', array_keys($model->categories), $model->allCategories, [
+                                        'class'    => 'form-control',
+                                        'multiple' => 'multiple',
+                                        'disabled' => true,
+                                        'id'       => 's1'
+                                    ]) ?>
+                                </div>
+                            <?php endif; ?>
                             <?= $form->field($model->product, 'brand_id')
                                      ->dropDownList($model->getAllBrand(),
                                                     ['prompt' => Yii::t('system/view', 'Select').' '.Yii::t('models', 'Brand')]) ?>
@@ -162,7 +176,6 @@
             'style' => 'width:100%'
         ]) ?>
     </div>
-
 
     <?php ActiveForm::end(); ?>
 </div>
